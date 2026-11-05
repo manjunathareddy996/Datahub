@@ -47,1255 +47,1255 @@ select 'MAXIMUS' as project, satellite, parent_table, sat_rows, orphan_or_null_r
            count_if(s.ASSESSMENT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_ASSESSMENT_HEADER s
       left join (select distinct ASSESSMENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ASSESSMENT) p on p.k = s.ASSESSMENT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.ASSESSMENT_HKEY is null or s.ASSESSMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.ASSESSMENT_HKEY is null or s.ASSESSMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_CHANNEL_DEFINITION' as satellite, 'HUB_DISTRIBUTION_CHANNEL' as parent_table, count(*) as sat_rows,
            count_if(s.DISTRIBUTION_CHANNEL_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CHANNEL_DEFINITION s
       left join (select distinct DISTRIBUTION_CHANNEL_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DISTRIBUTION_CHANNEL) p on p.k = s.DISTRIBUTION_CHANNEL_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.DISTRIBUTION_CHANNEL_HKEY is null or s.DISTRIBUTION_CHANNEL_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.DISTRIBUTION_CHANNEL_HKEY is null or s.DISTRIBUTION_CHANNEL_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_CLAIM_ASSESSMENT_SUMMARY' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_ASSESSMENT_SUMMARY s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_CLAIM_BENEFIT_HEAD' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_BENEFIT_HEAD s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_CLAIM_CO_RI_SHARE' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_CO_RI_SHARE s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_CLAIM_FNOL' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_FNOL s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_CLAIM_FRAUD' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_FRAUD s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_CLAIM_HEADER' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_HEADER s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_CLAIM_HEALTH_DETAIL' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_HEALTH_DETAIL s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_CLAIM_INVESTIGATION_FINDING' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_INVESTIGATION_FINDING s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_CLAIM_LITIGATION' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_LITIGATION s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_CLAIM_NOTE' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_NOTE s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_CLAIM_PAYMENT_TRANCHE' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_PAYMENT_TRANCHE s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_CLAIM_PA_DETAIL' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_PA_DETAIL s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_CLAIM_PROVIDER_BILLING' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_PROVIDER_BILLING s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_CLAIM_RECOVERY_SALVAGE' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_RECOVERY_SALVAGE s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_CLAIM_REPUDIATION' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_REPUDIATION s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_CLAIM_RESERVE' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_RESERVE s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_CLAIM_RESERVE_HEAD' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_RESERVE_HEAD s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_CLAIM_SETTLEMENT' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_SETTLEMENT s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_CLAIM_SLA_TRACKING' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_SLA_TRACKING s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_CLAIM_TP_FORENSIC' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_TP_FORENSIC s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_CLAIM_TRAVEL_DETAIL' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_TRAVEL_DETAIL s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_COMMON_ADDRESS' as satellite, 'HUB_LOCATION' as parent_table, count(*) as sat_rows,
            count_if(s.LOCATION_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADDRESS s
       left join (select distinct LOCATION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION) p on p.k = s.LOCATION_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.LOCATION_HKEY is null or s.LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.LOCATION_HKEY is null or s.LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_COMMON_ADMIN_GEOGRAPHY' as satellite, 'HUB_LOCATION' as parent_table, count(*) as sat_rows,
            count_if(s.LOCATION_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADMIN_GEOGRAPHY s
       left join (select distinct LOCATION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION) p on p.k = s.LOCATION_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.LOCATION_HKEY is null or s.LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.LOCATION_HKEY is null or s.LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_COMMON_BUSINESS_AUDIT' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_BUSINESS_AUDIT s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_COMMON_CLASSIFICATION' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CLASSIFICATION s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_COMMON_COMMUNICATION_PREFERENCE' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_COMMUNICATION_PREFERENCE s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_COMMON_CONSENT' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONSENT s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_COMMON_CONTACT' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_COMMON_GEO' as satellite, 'HUB_LOCATION' as parent_table, count(*) as sat_rows,
            count_if(s.LOCATION_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_GEO s
       left join (select distinct LOCATION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION) p on p.k = s.LOCATION_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.LOCATION_HKEY is null or s.LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.LOCATION_HKEY is null or s.LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_COMMON_LIFECYCLE' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_LIFECYCLE s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_COMMON_MONETARY_CONTEXT' as satellite, 'HUB_FINANCIAL_TRANSACTION' as parent_table, count(*) as sat_rows,
            count_if(s.FINANCIAL_TRANSACTION_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_MONETARY_CONTEXT s
       left join (select distinct FINANCIAL_TRANSACTION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION) p on p.k = s.FINANCIAL_TRANSACTION_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_COMMON_STATUS' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_STATUS s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_COVERAGE_CONDITIONS' as satellite, 'HUB_COVERAGE' as parent_table, count(*) as sat_rows,
            count_if(s.COVERAGE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_CONDITIONS s
       left join (select distinct COVERAGE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_COVERAGE) p on p.k = s.COVERAGE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_COVERAGE_DEFINITION' as satellite, 'HUB_COVERAGE' as parent_table, count(*) as sat_rows,
            count_if(s.COVERAGE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_DEFINITION s
       left join (select distinct COVERAGE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_COVERAGE) p on p.k = s.COVERAGE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_COVERAGE_SUBLIMIT_SCHEDULE' as satellite, 'HUB_COVERAGE' as parent_table, count(*) as sat_rows,
            count_if(s.COVERAGE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_SUBLIMIT_SCHEDULE s
       left join (select distinct COVERAGE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_COVERAGE) p on p.k = s.COVERAGE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_DOCUMENT_DEFINITION' as satellite, 'HUB_DOCUMENT' as parent_table, count(*) as sat_rows,
            count_if(s.DOCUMENT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_DOCUMENT_DEFINITION s
       left join (select distinct DOCUMENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DOCUMENT) p on p.k = s.DOCUMENT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.DOCUMENT_HKEY is null or s.DOCUMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.DOCUMENT_HKEY is null or s.DOCUMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_FINTXN_ACCOUNTING' as satellite, 'HUB_FINANCIAL_TRANSACTION' as parent_table, count(*) as sat_rows,
            count_if(s.FINANCIAL_TRANSACTION_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_ACCOUNTING s
       left join (select distinct FINANCIAL_TRANSACTION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION) p on p.k = s.FINANCIAL_TRANSACTION_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_FINTXN_CLAIM_PAYMENT' as satellite, 'HUB_FINANCIAL_TRANSACTION' as parent_table, count(*) as sat_rows,
            count_if(s.FINANCIAL_TRANSACTION_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_CLAIM_PAYMENT s
       left join (select distinct FINANCIAL_TRANSACTION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION) p on p.k = s.FINANCIAL_TRANSACTION_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_FINTXN_HEADER' as satellite, 'HUB_FINANCIAL_TRANSACTION' as parent_table, count(*) as sat_rows,
            count_if(s.FINANCIAL_TRANSACTION_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_HEADER s
       left join (select distinct FINANCIAL_TRANSACTION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION) p on p.k = s.FINANCIAL_TRANSACTION_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_FINTXN_PREMIUM' as satellite, 'HUB_FINANCIAL_TRANSACTION' as parent_table, count(*) as sat_rows,
            count_if(s.FINANCIAL_TRANSACTION_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_PREMIUM s
       left join (select distinct FINANCIAL_TRANSACTION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION) p on p.k = s.FINANCIAL_TRANSACTION_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_FINTXN_TAX' as satellite, 'HUB_FINANCIAL_TRANSACTION' as parent_table, count(*) as sat_rows,
            count_if(s.FINANCIAL_TRANSACTION_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_TAX s
       left join (select distinct FINANCIAL_TRANSACTION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION) p on p.k = s.FINANCIAL_TRANSACTION_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_FIN_RECEIPT' as satellite, 'HUB_FINANCIAL_TRANSACTION' as parent_table, count(*) as sat_rows,
            count_if(s.FINANCIAL_TRANSACTION_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_RECEIPT s
       left join (select distinct FINANCIAL_TRANSACTION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION) p on p.k = s.FINANCIAL_TRANSACTION_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_INSTRUMENT_DEFINITION' as satellite, 'HUB_PAYMENT_INSTRUMENT' as parent_table, count(*) as sat_rows,
            count_if(s.PAYMENT_INSTRUMENT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_INSTRUMENT_DEFINITION s
       left join (select distinct PAYMENT_INSTRUMENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PAYMENT_INSTRUMENT) p on p.k = s.PAYMENT_INSTRUMENT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PAYMENT_INSTRUMENT_HKEY is null or s.PAYMENT_INSTRUMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PAYMENT_INSTRUMENT_HKEY is null or s.PAYMENT_INSTRUMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_LNK_PARTY_ROLE_CORE' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_PARTY_ROLE_CORE s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_LNK_POLICY_PARTY_ROLE' as satellite, 'LINK_POLICY_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_POLICY_PARTY_ROLE s
       left join (select distinct POLICY_PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LINK_POLICY_PARTY) p on p.k = s.POLICY_PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_PARTY_HKEY is null or s.POLICY_PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_PARTY_HKEY is null or s.POLICY_PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_LNK_ROLE_AGENT' as satellite, 'LINK_PARTY_ROLE' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_ROLE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_AGENT s
       left join (select distinct PARTY_ROLE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LINK_PARTY_ROLE) p on p.k = s.PARTY_ROLE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_ROLE_HKEY is null or s.PARTY_ROLE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_ROLE_HKEY is null or s.PARTY_ROLE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_LNK_ROLE_CUSTOMER' as satellite, 'LINK_PARTY_ROLE' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_ROLE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_CUSTOMER s
       left join (select distinct PARTY_ROLE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LINK_PARTY_ROLE) p on p.k = s.PARTY_ROLE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_ROLE_HKEY is null or s.PARTY_ROLE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_ROLE_HKEY is null or s.PARTY_ROLE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_LNK_ROLE_EMPLOYEE' as satellite, 'LINK_PARTY_ROLE' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_ROLE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_EMPLOYEE s
       left join (select distinct PARTY_ROLE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LINK_PARTY_ROLE) p on p.k = s.PARTY_ROLE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_ROLE_HKEY is null or s.PARTY_ROLE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_ROLE_HKEY is null or s.PARTY_ROLE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_LOSS_EVENT_DETAIL' as satellite, 'HUB_LOSS_EVENT' as parent_table, count(*) as sat_rows,
            count_if(s.LOSS_EVENT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LOSS_EVENT_DETAIL s
       left join (select distinct LOSS_EVENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOSS_EVENT) p on p.k = s.LOSS_EVENT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.LOSS_EVENT_HKEY is null or s.LOSS_EVENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.LOSS_EVENT_HKEY is null or s.LOSS_EVENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_LOSS_EVENT_NOTIFICATION' as satellite, 'HUB_LOSS_EVENT' as parent_table, count(*) as sat_rows,
            count_if(s.LOSS_EVENT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LOSS_EVENT_NOTIFICATION s
       left join (select distinct LOSS_EVENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOSS_EVENT) p on p.k = s.LOSS_EVENT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.LOSS_EVENT_HKEY is null or s.LOSS_EVENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.LOSS_EVENT_HKEY is null or s.LOSS_EVENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_LOSS_LOCATION_ADDRESS' as satellite, 'HUB_LOSS_EVENT' as parent_table, count(*) as sat_rows,
            count_if(s.LOSS_EVENT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LOSS_LOCATION_ADDRESS s
       left join (select distinct LOSS_EVENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOSS_EVENT) p on p.k = s.LOSS_EVENT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.LOSS_EVENT_HKEY is null or s.LOSS_EVENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.LOSS_EVENT_HKEY is null or s.LOSS_EVENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_ORG_UNIT_DEFINITION' as satellite, 'HUB_ORG_UNIT' as parent_table, count(*) as sat_rows,
            count_if(s.ORG_UNIT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_ORG_UNIT_DEFINITION s
       left join (select distinct ORG_UNIT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ORG_UNIT) p on p.k = s.ORG_UNIT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.ORG_UNIT_HKEY is null or s.ORG_UNIT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.ORG_UNIT_HKEY is null or s.ORG_UNIT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_PARTY_AML_SCREENING' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_AML_SCREENING s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_PARTY_BANKING' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_PARTY_CLAIM_HISTORY' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CLAIM_HISTORY s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_PARTY_CONTACT_ADDRESS_LINK' as satellite, 'LINK_PARTY_LOCATION' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_LOCATION_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CONTACT_ADDRESS_LINK s
       left join (select distinct PARTY_LOCATION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LINK_PARTY_LOCATION) p on p.k = s.PARTY_LOCATION_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_LOCATION_HKEY is null or s.PARTY_LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_LOCATION_HKEY is null or s.PARTY_LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_PARTY_EMPLOYMENT' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_EMPLOYMENT s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_PARTY_FINANCIAL_PROFILE' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_FINANCIAL_PROFILE s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_PARTY_FRAUD_PROFILE' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_FRAUD_PROFILE s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_PARTY_HEALTH_PROFILE' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_PARTY_IDENTIFICATION' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_PARTY_IDENTITY' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_PARTY_KYC' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_PARTY_KYC_REFERENCE' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC_REFERENCE s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_PARTY_ONBOARDING_JOURNEY' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_ONBOARDING_JOURNEY s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_PARTY_ORGANISATION_PROFILE' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_ORGANISATION_PROFILE s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_PARTY_PAYOUT_PROFILE' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_PAYOUT_PROFILE s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_PARTY_POLICY_HISTORY' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_POLICY_HISTORY s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_PARTY_PORTFOLIO_SUMMARY' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_PORTFOLIO_SUMMARY s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_PARTY_RELATIONSHIP_PROFILE' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_RELATIONSHIP_PROFILE s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_POLICY_CANCELLATION' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CANCELLATION s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_POLICY_CLASSIFICATION' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_POLICY_COVERAGE_SCHEDULE' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_COVERAGE_SCHEDULE s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_POLICY_DISCOUNT_LOADING_APPLIED' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_DISCOUNT_LOADING_APPLIED s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_POLICY_ENDORSEMENT' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_ENDORSEMENT s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_POLICY_GROUP' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_GROUP s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_POLICY_HEADER' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_POLICY_INTERMEDIARY_SPLIT' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_INTERMEDIARY_SPLIT s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_POLICY_PORTABILITY_MIGRATION' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_PORTABILITY_MIGRATION s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_POLICY_PREMIUM_HEAD' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_PREMIUM_HEAD s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_POLICY_PREMIUM_SUMMARY' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_PREMIUM_SUMMARY s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_POLICY_RENEWAL' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_RENEWAL s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_POLICY_SERVICING_SUMMARY' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_SERVICING_SUMMARY s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_POLICY_SUM_INSURED_BREAKUP' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_SUM_INSURED_BREAKUP s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_POLICY_TAX_BREAKUP' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_TAX_BREAKUP s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_POLICY_TAX_HEAD' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_TAX_HEAD s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_POLICY_TERMS' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_TERMS s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_PRODUCT_DEFINITION' as satellite, 'HUB_PRODUCT' as parent_table, count(*) as sat_rows,
            count_if(s.PRODUCT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION s
       left join (select distinct PRODUCT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PRODUCT) p on p.k = s.PRODUCT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PRODUCT_HKEY is null or s.PRODUCT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PRODUCT_HKEY is null or s.PRODUCT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_PRODUCT_RATING_STRUCTURE' as satellite, 'HUB_PRODUCT' as parent_table, count(*) as sat_rows,
            count_if(s.PRODUCT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_RATING_STRUCTURE s
       left join (select distinct PRODUCT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PRODUCT) p on p.k = s.PRODUCT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PRODUCT_HKEY is null or s.PRODUCT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PRODUCT_HKEY is null or s.PRODUCT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_PRODUCT_TERMS' as satellite, 'HUB_PRODUCT' as parent_table, count(*) as sat_rows,
            count_if(s.PRODUCT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_TERMS s
       left join (select distinct PRODUCT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PRODUCT) p on p.k = s.PRODUCT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PRODUCT_HKEY is null or s.PRODUCT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PRODUCT_HKEY is null or s.PRODUCT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_QUOTE_HEADER' as satellite, 'HUB_QUOTE' as parent_table, count(*) as sat_rows,
            count_if(s.QUOTE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_QUOTE_HEADER s
       left join (select distinct QUOTE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE) p on p.k = s.QUOTE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_QUOTE_RATING' as satellite, 'HUB_QUOTE' as parent_table, count(*) as sat_rows,
            count_if(s.QUOTE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_QUOTE_RATING s
       left join (select distinct QUOTE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE) p on p.k = s.QUOTE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_QUOTE_RATING_INPUT' as satellite, 'HUB_QUOTE' as parent_table, count(*) as sat_rows,
            count_if(s.QUOTE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_QUOTE_RATING_INPUT s
       left join (select distinct QUOTE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE) p on p.k = s.QUOTE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_RISK_HEALTH_MEMBER_MEDICAL' as satellite, 'HUB_RISK_OBJECT' as parent_table, count(*) as sat_rows,
            count_if(s.RISK_OBJECT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_HEALTH_MEMBER_MEDICAL s
       left join (select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT) p on p.k = s.RISK_OBJECT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_RISK_OBJECT_CORE' as satellite, 'HUB_RISK_OBJECT' as parent_table, count(*) as sat_rows,
            count_if(s.RISK_OBJECT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_OBJECT_CORE s
       left join (select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT) p on p.k = s.RISK_OBJECT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_RISK_OBJECT_VALUATION' as satellite, 'HUB_RISK_OBJECT' as parent_table, count(*) as sat_rows,
            count_if(s.RISK_OBJECT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_OBJECT_VALUATION s
       left join (select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT) p on p.k = s.RISK_OBJECT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_RISK_PERSON_INSURED' as satellite, 'HUB_RISK_OBJECT' as parent_table, count(*) as sat_rows,
            count_if(s.RISK_OBJECT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_INSURED s
       left join (select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT) p on p.k = s.RISK_OBJECT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_RISK_PERSON_MEMBER' as satellite, 'HUB_RISK_OBJECT' as parent_table, count(*) as sat_rows,
            count_if(s.RISK_OBJECT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_MEMBER s
       left join (select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT) p on p.k = s.RISK_OBJECT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_RISK_PERSON_TRAVEL' as satellite, 'HUB_RISK_OBJECT' as parent_table, count(*) as sat_rows,
            count_if(s.RISK_OBJECT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_TRAVEL s
       left join (select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT) p on p.k = s.RISK_OBJECT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_CLAIM_APPROVAL_ACTION' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_APPROVAL_ACTION s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_CLAIM_ASSESSMENT_SUMMARY' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_ASSESSMENT_SUMMARY s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_CLAIM_BENEFIT_HEAD' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_BENEFIT_HEAD s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_CLAIM_CO_RI_SHARE' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_CO_RI_SHARE s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_CLAIM_DEDUCTION_WAIVER' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_DEDUCTION_WAIVER s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_CLAIM_DOCUMENT_REMINDER' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_DOCUMENT_REMINDER s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_CLAIM_EVIDENCE' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_EVIDENCE s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_CLAIM_EXCLUSION_APPLIED' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_EXCLUSION_APPLIED s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_CLAIM_EXPENSE_LINE' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_EXPENSE_LINE s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_CLAIM_FOLLOWUP_TASK' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_FOLLOWUP_TASK s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_CLAIM_FRAUD' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_FRAUD s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_CLAIM_HEADER' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_HEADER s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_CLAIM_LITIGATION' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_LITIGATION s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_CLAIM_NETWORK_VERIFICATION' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_NETWORK_VERIFICATION s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_CLAIM_PAYMENT_TRANCHE' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_PAYMENT_TRANCHE s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_CLAIM_PA_DETAIL' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_PA_DETAIL s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_CLAIM_PROVIDER_BILLING' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_PROVIDER_BILLING s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_CLAIM_QUALITY_AUDIT' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_QUALITY_AUDIT s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_CLAIM_RECOVERY_SALVAGE' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_RECOVERY_SALVAGE s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_CLAIM_SETTLEMENT' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_SETTLEMENT s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_CLAIM_SLA_TRACKING' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_SLA_TRACKING s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_CLAIM_STATUS_HISTORY' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_STATUS_HISTORY s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_CLAIM_SURVEY_APPOINTMENT' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_SURVEY_APPOINTMENT s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_CLAIM_TPA_INTERACTION' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_TPA_INTERACTION s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_CLAIM_TRAVEL_DETAIL' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_TRAVEL_DETAIL s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_CLAIM_TRAVEL_SECTOR' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_TRAVEL_SECTOR s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_COMMON_ADDRESS' as satellite, 'HUB_LOCATION' as parent_table, count(*) as sat_rows,
            count_if(s.LOCATION_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_ADDRESS s
       left join (select distinct LOCATION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION) p on p.k = s.LOCATION_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.LOCATION_HKEY is null or s.LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.LOCATION_HKEY is null or s.LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_COMMON_COMMUNICATION_PREFERENCE' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_COMMUNICATION_PREFERENCE s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_COVERAGE_CONDITIONS' as satellite, 'HUB_COVERAGE' as parent_table, count(*) as sat_rows,
            count_if(s.COVERAGE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_CONDITIONS s
       left join (select distinct COVERAGE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_COVERAGE) p on p.k = s.COVERAGE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_COVERAGE_DEFINITION' as satellite, 'HUB_COVERAGE' as parent_table, count(*) as sat_rows,
            count_if(s.COVERAGE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_DEFINITION s
       left join (select distinct COVERAGE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_COVERAGE) p on p.k = s.COVERAGE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_COVERAGE_LIMITS' as satellite, 'HUB_COVERAGE' as parent_table, count(*) as sat_rows,
            count_if(s.COVERAGE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_LIMITS s
       left join (select distinct COVERAGE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_COVERAGE) p on p.k = s.COVERAGE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE' as satellite, 'HUB_COVERAGE' as parent_table, count(*) as sat_rows,
            count_if(s.COVERAGE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE s
       left join (select distinct COVERAGE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_COVERAGE) p on p.k = s.COVERAGE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_COVERAGE_SUB_COVER_ELEMENT' as satellite, 'HUB_COVERAGE' as parent_table, count(*) as sat_rows,
            count_if(s.COVERAGE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_SUB_COVER_ELEMENT s
       left join (select distinct COVERAGE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_COVERAGE) p on p.k = s.COVERAGE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_DOCUMENT_CHECKLIST' as satellite, 'HUB_DOCUMENT' as parent_table, count(*) as sat_rows,
            count_if(s.DOCUMENT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_DOCUMENT_CHECKLIST s
       left join (select distinct DOCUMENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DOCUMENT) p on p.k = s.DOCUMENT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.DOCUMENT_HKEY is null or s.DOCUMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.DOCUMENT_HKEY is null or s.DOCUMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_DOCUMENT_DISPATCH' as satellite, 'HUB_DOCUMENT' as parent_table, count(*) as sat_rows,
            count_if(s.DOCUMENT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_DOCUMENT_DISPATCH s
       left join (select distinct DOCUMENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DOCUMENT) p on p.k = s.DOCUMENT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.DOCUMENT_HKEY is null or s.DOCUMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.DOCUMENT_HKEY is null or s.DOCUMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER' as satellite, 'HUB_DOCUMENT' as parent_table, count(*) as sat_rows,
            count_if(s.DOCUMENT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER s
       left join (select distinct DOCUMENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DOCUMENT) p on p.k = s.DOCUMENT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.DOCUMENT_HKEY is null or s.DOCUMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.DOCUMENT_HKEY is null or s.DOCUMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_FINTXN_TAX' as satellite, 'HUB_FINANCIAL_TRANSACTION' as parent_table, count(*) as sat_rows,
            count_if(s.FINANCIAL_TRANSACTION_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_TAX s
       left join (select distinct FINANCIAL_TRANSACTION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION) p on p.k = s.FINANCIAL_TRANSACTION_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_FIN_RECEIPT' as satellite, 'HUB_FINANCIAL_TRANSACTION' as parent_table, count(*) as sat_rows,
            count_if(s.FINANCIAL_TRANSACTION_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FIN_RECEIPT s
       left join (select distinct FINANCIAL_TRANSACTION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION) p on p.k = s.FINANCIAL_TRANSACTION_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_CUSTOMER s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_LNK_ROLE_PROVIDER' as satellite, 'LINK_PARTY_ROLE' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_ROLE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_PROVIDER s
       left join (select distinct PARTY_ROLE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LINK_PARTY_ROLE) p on p.k = s.PARTY_ROLE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_ROLE_HKEY is null or s.PARTY_ROLE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_ROLE_HKEY is null or s.PARTY_ROLE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_ORG_UNIT_CONTACT' as satellite, 'HUB_ORG_UNIT' as parent_table, count(*) as sat_rows,
            count_if(s.ORG_UNIT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_ORG_UNIT_CONTACT s
       left join (select distinct ORG_UNIT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ORG_UNIT) p on p.k = s.ORG_UNIT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.ORG_UNIT_HKEY is null or s.ORG_UNIT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.ORG_UNIT_HKEY is null or s.ORG_UNIT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_PARTY_BANKING' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_BANKING s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_PARTY_CLAIM_HISTORY' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_CLAIM_HISTORY s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_PARTY_CONSENT_MANDATE' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_CONSENT_MANDATE s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_PARTY_CONTACT_ADDRESS_LINK' as satellite, 'LINK_PARTY_LOCATION' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_LOCATION_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_CONTACT_ADDRESS_LINK s
       left join (select distinct PARTY_LOCATION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LINK_PARTY_LOCATION) p on p.k = s.PARTY_LOCATION_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_LOCATION_HKEY is null or s.PARTY_LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_LOCATION_HKEY is null or s.PARTY_LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_PARTY_CORRESPONDENCE' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_CORRESPONDENCE s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_PARTY_EMPLOYMENT' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_EMPLOYMENT s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_PARTY_FINANCIAL_PROFILE' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_FINANCIAL_PROFILE s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_PARTY_GROUP_SCHEME' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_GROUP_SCHEME s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_PARTY_HEALTH_PROFILE' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_HEALTH_PROFILE s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_PARTY_HIERARCHY' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_HIERARCHY s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_PARTY_IDENTIFICATION' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_IDENTIFICATION s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_PARTY_IDENTITY' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_IDENTITY s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_PARTY_LOYALTY_CLASSIFICATION' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_LOYALTY_CLASSIFICATION s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_PARTY_ONBOARDING_JOURNEY' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_ONBOARDING_JOURNEY s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_PARTY_PAYOUT_PROFILE' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_PAYOUT_PROFILE s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_PARTY_PREFERENCE_PROFILE' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_PREFERENCE_PROFILE s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_PARTY_RELATIONSHIP_PROFILE' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_RELATIONSHIP_PROFILE s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_PARTY_RISK_ANALYTICS' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_RISK_ANALYTICS s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_POLICY_CLAIM_EXPERIENCE' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_CLAIM_EXPERIENCE s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_POLICY_COVERAGE_SCHEDULE' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_COVERAGE_SCHEDULE s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_POLICY_DELIVERY' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_DELIVERY s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_POLICY_DOCUMENT_DISPATCH' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_DOCUMENT_DISPATCH s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_POLICY_HEADER' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_HEADER s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_POLICY_HEALTH_DECLARATION' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_HEALTH_DECLARATION s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_POLICY_INSURED_DECLARATION' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_INSURED_DECLARATION s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_POLICY_INTERMEDIARY_SPLIT' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_INTERMEDIARY_SPLIT s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_POLICY_NOMINEE_DECLARATION' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_NOMINEE_DECLARATION s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_POLICY_PREMIUM_HEAD' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_PREMIUM_HEAD s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_POLICY_PREMIUM_SUMMARY' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_PREMIUM_SUMMARY s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_POLICY_PROPERTY_LINE' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_PROPERTY_LINE s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_POLICY_RENEWAL' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_RENEWAL s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_POLICY_TERMS' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_TERMS s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_POLICY_TRAVEL_TERMS' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_TRAVEL_TERMS s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_POLICY_UW_QUERY' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_UW_QUERY s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_POLICY_WORK_ITEM' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_WORK_ITEM s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_PRODUCT_RATING_STRUCTURE' as satellite, 'HUB_PRODUCT' as parent_table, count(*) as sat_rows,
            count_if(s.PRODUCT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PRODUCT_RATING_STRUCTURE s
       left join (select distinct PRODUCT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PRODUCT) p on p.k = s.PRODUCT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PRODUCT_HKEY is null or s.PRODUCT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PRODUCT_HKEY is null or s.PRODUCT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_PRODUCT_TERMS' as satellite, 'HUB_PRODUCT' as parent_table, count(*) as sat_rows,
            count_if(s.PRODUCT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PRODUCT_TERMS s
       left join (select distinct PRODUCT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PRODUCT) p on p.k = s.PRODUCT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PRODUCT_HKEY is null or s.PRODUCT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.PRODUCT_HKEY is null or s.PRODUCT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_QUOTE_CLAIM_EXPERIENCE' as satellite, 'HUB_QUOTE' as parent_table, count(*) as sat_rows,
            count_if(s.QUOTE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_CLAIM_EXPERIENCE s
       left join (select distinct QUOTE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE) p on p.k = s.QUOTE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_QUOTE_COVERAGE_LINE' as satellite, 'HUB_QUOTE' as parent_table, count(*) as sat_rows,
            count_if(s.QUOTE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_COVERAGE_LINE s
       left join (select distinct QUOTE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE) p on p.k = s.QUOTE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_QUOTE_COVERAGE_SCHEDULE' as satellite, 'HUB_QUOTE' as parent_table, count(*) as sat_rows,
            count_if(s.QUOTE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_COVERAGE_SCHEDULE s
       left join (select distinct QUOTE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE) p on p.k = s.QUOTE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_QUOTE_COVER_DETAIL' as satellite, 'HUB_QUOTE' as parent_table, count(*) as sat_rows,
            count_if(s.QUOTE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_COVER_DETAIL s
       left join (select distinct QUOTE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE) p on p.k = s.QUOTE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_QUOTE_HEADER' as satellite, 'HUB_QUOTE' as parent_table, count(*) as sat_rows,
            count_if(s.QUOTE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_HEADER s
       left join (select distinct QUOTE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE) p on p.k = s.QUOTE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_QUOTE_HEALTH_DECLARATION' as satellite, 'HUB_QUOTE' as parent_table, count(*) as sat_rows,
            count_if(s.QUOTE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_HEALTH_DECLARATION s
       left join (select distinct QUOTE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE) p on p.k = s.QUOTE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_QUOTE_INSURED_DECLARATION' as satellite, 'HUB_QUOTE' as parent_table, count(*) as sat_rows,
            count_if(s.QUOTE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_INSURED_DECLARATION s
       left join (select distinct QUOTE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE) p on p.k = s.QUOTE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_QUOTE_NOMINEE_DECLARATION' as satellite, 'HUB_QUOTE' as parent_table, count(*) as sat_rows,
            count_if(s.QUOTE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_NOMINEE_DECLARATION s
       left join (select distinct QUOTE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE) p on p.k = s.QUOTE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_QUOTE_PREMIUM_HEAD' as satellite, 'HUB_QUOTE' as parent_table, count(*) as sat_rows,
            count_if(s.QUOTE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_PREMIUM_HEAD s
       left join (select distinct QUOTE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE) p on p.k = s.QUOTE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_QUOTE_PROPERTY_LINE' as satellite, 'HUB_QUOTE' as parent_table, count(*) as sat_rows,
            count_if(s.QUOTE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_PROPERTY_LINE s
       left join (select distinct QUOTE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE) p on p.k = s.QUOTE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_QUOTE_RATING' as satellite, 'HUB_QUOTE' as parent_table, count(*) as sat_rows,
            count_if(s.QUOTE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_RATING s
       left join (select distinct QUOTE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE) p on p.k = s.QUOTE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_QUOTE_RISK_LINE' as satellite, 'HUB_QUOTE' as parent_table, count(*) as sat_rows,
            count_if(s.QUOTE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_RISK_LINE s
       left join (select distinct QUOTE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE) p on p.k = s.QUOTE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_QUOTE_SUM_INSURED_BREAKUP' as satellite, 'HUB_QUOTE' as parent_table, count(*) as sat_rows,
            count_if(s.QUOTE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_SUM_INSURED_BREAKUP s
       left join (select distinct QUOTE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE) p on p.k = s.QUOTE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_QUOTE_TERMS' as satellite, 'HUB_QUOTE' as parent_table, count(*) as sat_rows,
            count_if(s.QUOTE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_TERMS s
       left join (select distinct QUOTE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE) p on p.k = s.QUOTE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_QUOTE_TRAVEL_TRIP' as satellite, 'HUB_QUOTE' as parent_table, count(*) as sat_rows,
            count_if(s.QUOTE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_TRAVEL_TRIP s
       left join (select distinct QUOTE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE) p on p.k = s.QUOTE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE' as satellite, 'HUB_QUOTE' as parent_table, count(*) as sat_rows,
            count_if(s.QUOTE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE s
       left join (select distinct QUOTE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE) p on p.k = s.QUOTE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_QUOTE_UW_QUERY' as satellite, 'HUB_QUOTE' as parent_table, count(*) as sat_rows,
            count_if(s.QUOTE_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_UW_QUERY s
       left join (select distinct QUOTE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE) p on p.k = s.QUOTE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_RISK_OBJECT_CORE' as satellite, 'HUB_RISK_OBJECT' as parent_table, count(*) as sat_rows,
            count_if(s.RISK_OBJECT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_OBJECT_CORE s
       left join (select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT) p on p.k = s.RISK_OBJECT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_RISK_OBJECT_PREMIUM' as satellite, 'HUB_RISK_OBJECT' as parent_table, count(*) as sat_rows,
            count_if(s.RISK_OBJECT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_OBJECT_PREMIUM s
       left join (select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT) p on p.k = s.RISK_OBJECT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_RISK_PERSON_INSURED' as satellite, 'HUB_RISK_OBJECT' as parent_table, count(*) as sat_rows,
            count_if(s.RISK_OBJECT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_INSURED s
       left join (select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT) p on p.k = s.RISK_OBJECT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_RISK_PERSON_TRAVEL' as satellite, 'HUB_RISK_OBJECT' as parent_table, count(*) as sat_rows,
            count_if(s.RISK_OBJECT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_TRAVEL s
       left join (select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT) p on p.k = s.RISK_OBJECT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_RISK_TRAVEL_COVER_TERMS' as satellite, 'HUB_RISK_OBJECT' as parent_table, count(*) as sat_rows,
            count_if(s.RISK_OBJECT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_TRAVEL_COVER_TERMS s
       left join (select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT) p on p.k = s.RISK_OBJECT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_RISK_TRAVEL_RATING_INPUT' as satellite, 'HUB_RISK_OBJECT' as parent_table, count(*) as sat_rows,
            count_if(s.RISK_OBJECT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_TRAVEL_RATING_INPUT s
       left join (select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT) p on p.k = s.RISK_OBJECT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_RISK_TRAVEL_SPONSOR' as satellite, 'HUB_RISK_OBJECT' as parent_table, count(*) as sat_rows,
            count_if(s.RISK_OBJECT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_TRAVEL_SPONSOR s
       left join (select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT) p on p.k = s.RISK_OBJECT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY' as satellite, 'HUB_RISK_OBJECT' as parent_table, count(*) as sat_rows,
            count_if(s.RISK_OBJECT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY s
       left join (select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT) p on p.k = s.RISK_OBJECT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
+     where startswith(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
   )
  order by iff(status = 'FAIL', 0, 1), satellite;
 
@@ -1307,7 +1307,8 @@ select 'MAXIMUS' as project, satellite, parent_table, sat_rows, orphan_or_null_r
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK ASSESSMENT_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS [4 col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS [4
+-- col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct ASSESSMENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ASSESSMENT
@@ -1322,7 +1323,7 @@ select 'MAXIMUS' as project, 'SAT_ASSESSMENT_HEADER' as satellite, 'HUB_ASSESSME
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_ASSESSMENT_HEADER s
   left join p on p.k = s.ASSESSMENT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS')
    and (s.ASSESSMENT_HKEY is null or s.ASSESSMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1335,13 +1336,13 @@ select 'MAXIMUS' as project, 'SAT_ASSESSMENT_HEADER' as satellite, 'HUB_ASSESSME
 -- all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
 -- satellite, automate_dv.sat; PK DISTRIBUTION_CHANNEL_HKEY; 4 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [4 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -1357,7 +1358,7 @@ select 'MAXIMUS' as project, 'SAT_CHANNEL_DEFINITION' as satellite, 'HUB_DISTRIB
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CHANNEL_DEFINITION s
   left join p on p.k = s.DISTRIBUTION_CHANNEL_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.DISTRIBUTION_CHANNEL_HKEY is null or s.DISTRIBUTION_CHANNEL_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1370,7 +1371,7 @@ select 'MAXIMUS' as project, 'SAT_CHANNEL_DEFINITION' as satellite, 'HUB_DISTRIB
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS [1 col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM
@@ -1385,7 +1386,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_ASSESSMENT_SUMMARY' as satellite, 'HUB_C
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_ASSESSMENT_SUMMARY s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1399,13 +1400,13 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_ASSESSMENT_SUMMARY' as satellite, 'HUB_C
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK CLAIM_HKEY, child key BENEFIT_HEAD_CODE; 4 RECORD_SOURCE
 -- group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [6 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [3 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -1422,7 +1423,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_BENEFIT_HEAD' as satellite, 'HUB_CLAIM' 
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_BENEFIT_HEAD s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1435,9 +1436,9 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_BENEFIT_HEAD' as satellite, 'HUB_CLAIM' 
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [2 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -1453,7 +1454,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_CO_RI_SHARE' as satellite, 'HUB_CLAIM' a
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_CO_RI_SHARE s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1466,9 +1467,9 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_CO_RI_SHARE' as satellite, 'HUB_CLAIM' a
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [14
--- col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [14 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM
@@ -1483,7 +1484,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_FNOL' as satellite, 'HUB_CLAIM' as paren
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_FNOL s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1496,13 +1497,13 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_FNOL' as satellite, 'HUB_CLAIM' as paren
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 4 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [5
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [5 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -1518,7 +1519,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_FRAUD' as satellite, 'HUB_CLAIM' as pare
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_FRAUD s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1531,14 +1532,14 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_FRAUD' as satellite, 'HUB_CLAIM' as pare
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 5 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS [6 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS [6 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [11
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [11 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -1554,7 +1555,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_HEADER' as satellite, 'HUB_CLAIM' as par
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_HEADER s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1567,13 +1568,13 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_HEADER' as satellite, 'HUB_CLAIM' as par
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 4 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [5
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [5 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [13 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -1589,7 +1590,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_HEALTH_DETAIL' as satellite, 'HUB_CLAIM'
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_HEALTH_DETAIL s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1603,7 +1604,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_HEALTH_DETAIL' as satellite, 'HUB_CLAIM'
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK CLAIM_HKEY, child key FINDING_SEQUENCE; 1 RECORD_SOURCE
 -- group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -1620,7 +1621,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_INVESTIGATION_FINDING' as satellite, 'HU
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_INVESTIGATION_FINDING s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1633,9 +1634,9 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_INVESTIGATION_FINDING' as satellite, 'HU
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [2 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -1651,7 +1652,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_LITIGATION' as satellite, 'HUB_CLAIM' as
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_LITIGATION s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1664,9 +1665,9 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_LITIGATION' as satellite, 'HUB_CLAIM' as
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK CLAIM_HKEY, child key NOTE_SEQUENCE; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [2 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -1683,7 +1684,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_NOTE' as satellite, 'HUB_CLAIM' as paren
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_NOTE s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1696,10 +1697,10 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_NOTE' as satellite, 'HUB_CLAIM' as paren
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK CLAIM_HKEY, child key TRANCHE_NUMBER; 3 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT [5 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT [5 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
 -- [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [7 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -1716,7 +1717,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_PAYMENT_TRANCHE' as satellite, 'HUB_CLAI
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_PAYMENT_TRANCHE s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1729,7 +1730,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_PAYMENT_TRANCHE' as satellite, 'HUB_CLAI
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [2 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -1745,7 +1746,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_PA_DETAIL' as satellite, 'HUB_CLAIM' as 
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_PA_DETAIL s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1758,9 +1759,9 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_PA_DETAIL' as satellite, 'HUB_CLAIM' as 
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK CLAIM_HKEY, child key BILL_NUMBER; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
 -- [0 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [5 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -1777,7 +1778,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_PROVIDER_BILLING' as satellite, 'HUB_CLA
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_PROVIDER_BILLING s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1790,7 +1791,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_PROVIDER_BILLING' as satellite, 'HUB_CLA
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -1806,7 +1807,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_RECOVERY_SALVAGE' as satellite, 'HUB_CLA
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_RECOVERY_SALVAGE s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1819,9 +1820,9 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_RECOVERY_SALVAGE' as satellite, 'HUB_CLA
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [2 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -1837,7 +1838,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_REPUDIATION' as satellite, 'HUB_CLAIM' a
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_REPUDIATION s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1850,9 +1851,10 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_REPUDIATION' as satellite, 'HUB_CLAIM' a
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK CLAIM_HKEY, child key RESERVE_HEAD; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
--- [2 col(s)], MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE [4 col(s)].
--- Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per member.
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
+-- [2 col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE [4
+-- col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per
+-- member.
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM
@@ -1867,7 +1869,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_RESERVE' as satellite, 'HUB_CLAIM' as pa
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_RESERVE s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1881,7 +1883,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_RESERVE' as satellite, 'HUB_CLAIM' as pa
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK CLAIM_HKEY, child key RESERVE_HEAD_CODE; 1 RECORD_SOURCE
 -- group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [2 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -1898,7 +1900,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_RESERVE_HEAD' as satellite, 'HUB_CLAIM' 
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_RESERVE_HEAD s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1911,7 +1913,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_RESERVE_HEAD' as satellite, 'HUB_CLAIM' 
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -1927,7 +1929,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_SETTLEMENT' as satellite, 'HUB_CLAIM' as
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_SETTLEMENT s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1940,7 +1942,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_SETTLEMENT' as satellite, 'HUB_CLAIM' as
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS [1 col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM
@@ -1955,7 +1957,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_SLA_TRACKING' as satellite, 'HUB_CLAIM' 
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_SLA_TRACKING s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1968,7 +1970,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_SLA_TRACKING' as satellite, 'HUB_CLAIM' 
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [3 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -1984,7 +1986,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_TP_FORENSIC' as satellite, 'HUB_CLAIM' a
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_TP_FORENSIC s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1997,11 +1999,11 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_TP_FORENSIC' as satellite, 'HUB_CLAIM' a
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 3 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [6 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -2017,7 +2019,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_TRAVEL_DETAIL' as satellite, 'HUB_CLAIM'
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_TRAVEL_DETAIL s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2030,33 +2032,34 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_TRAVEL_DETAIL' as satellite, 'HUB_CLAIM'
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK LOCATION_HKEY; 15 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [7
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [7 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
--- [3 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS [5
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [3 col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS [5
 -- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS
 -- [8 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
 -- [6 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [9 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS [9
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS [9
 -- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
 -- [4 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS [8
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS
+-- [8 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
 -- [6 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [9 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST [7 col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- [9 col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST [7
+-- col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct LOCATION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION
@@ -2071,7 +2074,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_ADDRESS' as satellite, 'HUB_LOCATION' a
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADDRESS s
   left join p on p.k = s.LOCATION_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST')
    and (s.LOCATION_HKEY is null or s.LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2084,8 +2087,8 @@ select 'MAXIMUS' as project, 'SAT_COMMON_ADDRESS' as satellite, 'HUB_LOCATION' a
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK LOCATION_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [5
--- col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [5 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct LOCATION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION
@@ -2100,7 +2103,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_ADMIN_GEOGRAPHY' as satellite, 'HUB_LOC
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADMIN_GEOGRAPHY s
   left join p on p.k = s.LOCATION_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.LOCATION_HKEY is null or s.LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2113,9 +2116,9 @@ select 'MAXIMUS' as project, 'SAT_COMMON_ADMIN_GEOGRAPHY' as satellite, 'HUB_LOC
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [3 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -2131,7 +2134,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_BUSINESS_AUDIT' as satellite, 'HUB_POLI
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_BUSINESS_AUDIT s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2144,11 +2147,11 @@ select 'MAXIMUS' as project, 'SAT_COMMON_BUSINESS_AUDIT' as satellite, 'HUB_POLI
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 3 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [4 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -2164,7 +2167,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite, 'HUB_PART
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CLASSIFICATION s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2177,13 +2180,13 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite, 'HUB_PART
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 4 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -2199,7 +2202,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_COMMUNICATION_PREFERENCE' as satellite,
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_COMMUNICATION_PREFERENCE s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2212,11 +2215,11 @@ select 'MAXIMUS' as project, 'SAT_COMMON_COMMUNICATION_PREFERENCE' as satellite,
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 3 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -2232,7 +2235,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CONSENT' as satellite, 'HUB_PARTY' as p
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONSENT s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2246,21 +2249,21 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CONSENT' as satellite, 'HUB_PARTY' as p
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK PARTY_HKEY, child key CONTACT_POINT_TYPE,
 -- CONTACT_PRIORITY_ORDER; 8 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [5
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [5 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS
 -- [6 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
 -- [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS [6
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS
+-- [6 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
 -- [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -2277,7 +2280,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CONTACT' as satellite, 'HUB_PARTY' as p
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2290,11 +2293,11 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CONTACT' as satellite, 'HUB_PARTY' as p
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK LOCATION_HKEY; 3 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
 -- [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
 -- [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
 -- [3 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -2310,7 +2313,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_GEO' as satellite, 'HUB_LOCATION' as pa
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_GEO s
   left join p on p.k = s.LOCATION_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW')
    and (s.LOCATION_HKEY is null or s.LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2323,7 +2326,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_GEO' as satellite, 'HUB_LOCATION' as pa
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -2339,7 +2342,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_LIFECYCLE' as satellite, 'HUB_POLICY' a
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_LIFECYCLE s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2352,10 +2355,11 @@ select 'MAXIMUS' as project, 'SAT_COMMON_LIFECYCLE' as satellite, 'HUB_POLICY' a
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
 -- satellite, automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 4 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [3 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS [4 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
--- [3 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST [2 col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- [3 col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS [4 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+-- [3 col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST [2
+-- col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct FINANCIAL_TRANSACTION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION
@@ -2370,7 +2374,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_MONETARY_CONTEXT' as satellite, 'HUB_FI
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_MONETARY_CONTEXT s
   left join p on p.k = s.FINANCIAL_TRANSACTION_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST')
    and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2383,7 +2387,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_MONETARY_CONTEXT' as satellite, 'HUB_FI
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -2399,7 +2403,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_STATUS' as satellite, 'HUB_POLICY' as p
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_STATUS s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2412,13 +2416,13 @@ select 'MAXIMUS' as project, 'SAT_COMMON_STATUS' as satellite, 'HUB_POLICY' as p
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK COVERAGE_HKEY; 4 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -2434,7 +2438,7 @@ select 'MAXIMUS' as project, 'SAT_COVERAGE_CONDITIONS' as satellite, 'HUB_COVERA
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_CONDITIONS s
   left join p on p.k = s.COVERAGE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2447,15 +2451,15 @@ select 'MAXIMUS' as project, 'SAT_COVERAGE_CONDITIONS' as satellite, 'HUB_COVERA
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK COVERAGE_HKEY; 5 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS [1
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS [1
 -- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
 -- [2 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -2471,7 +2475,7 @@ select 'MAXIMUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'HUB_COVERA
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_DEFINITION s
   left join p on p.k = s.COVERAGE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2485,7 +2489,7 @@ select 'MAXIMUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'HUB_COVERA
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK COVERAGE_HKEY, child key ACTIVE_SEQUENCE_NUMBER; 1
 -- RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [3 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -2502,7 +2506,7 @@ select 'MAXIMUS' as project, 'SAT_COVERAGE_SUBLIMIT_SCHEDULE' as satellite, 'HUB
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_SUBLIMIT_SCHEDULE s
   left join p on p.k = s.COVERAGE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2515,22 +2519,23 @@ select 'MAXIMUS' as project, 'SAT_COVERAGE_SUBLIMIT_SCHEDULE' as satellite, 'HUB
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK DOCUMENT_HKEY; 10 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [9 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [6
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [6 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- [4 col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_DOCUMENT_DETAILS [3
+-- col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DOCUMENT_DETAILS [3
 -- col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- [4 col(s)], MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_DOCUMENT_DETAILS [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DOCUMENT_DETAILS [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_DOCUMENT_DETAILS [3
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_DOCUMENT_DETAIL
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_DOCUMENT_DETAILS
 -- [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_DOCUMENT_DETAIL
+-- [3 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_DOCUMENT_DETAIL [3
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_DOCUMENT_DETAIL
+-- [3 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -2546,7 +2551,7 @@ select 'MAXIMUS' as project, 'SAT_DOCUMENT_DEFINITION' as satellite, 'HUB_DOCUME
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_DOCUMENT_DEFINITION s
   left join p on p.k = s.DOCUMENT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_DOCUMENT_DETAIL', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_DOCUMENT_DETAIL', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_DOCUMENT_DETAIL', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_DOCUMENT_DETAIL', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.DOCUMENT_HKEY is null or s.DOCUMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2559,7 +2564,7 @@ select 'MAXIMUS' as project, 'SAT_DOCUMENT_DEFINITION' as satellite, 'HUB_DOCUME
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
 -- satellite, automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -2575,7 +2580,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_ACCOUNTING' as satellite, 'HUB_FINANCIA
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_ACCOUNTING s
   left join p on p.k = s.FINANCIAL_TRANSACTION_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW')
    and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2588,7 +2593,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_ACCOUNTING' as satellite, 'HUB_FINANCIA
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
 -- satellite, automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
 -- [8 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -2604,7 +2609,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_CLAIM_PAYMENT' as satellite, 'HUB_FINAN
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_CLAIM_PAYMENT s
   left join p on p.k = s.FINANCIAL_TRANSACTION_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW')
    and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2617,12 +2622,13 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_CLAIM_PAYMENT' as satellite, 'HUB_FINAN
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
 -- satellite, automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 4 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
--- [4 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION
--- [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
+-- [4 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION [3
+-- col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -2638,7 +2644,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_HEADER' as satellite, 'HUB_FINANCIAL_TR
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_HEADER s
   left join p on p.k = s.FINANCIAL_TRANSACTION_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2651,10 +2657,11 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_HEADER' as satellite, 'HUB_FINANCIAL_TR
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
 -- satellite, automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 3 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION [1
+-- col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -2670,7 +2677,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'HUB_FINANCIAL_T
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_PREMIUM s
   left join p on p.k = s.FINANCIAL_TRANSACTION_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2684,9 +2691,9 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'HUB_FINANCIAL_T
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
 -- satellite, automate_dv.ma_sat; PK FINANCIAL_TRANSACTION_HKEY, child key TAX_TYPE; 2
 -- RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
 -- [9 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [11 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -2703,7 +2710,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_TAX' as satellite, 'HUB_FINANCIAL_TRANS
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_TAX s
   left join p on p.k = s.FINANCIAL_TRANSACTION_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2716,10 +2723,11 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_TAX' as satellite, 'HUB_FINANCIAL_TRANS
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
 -- satellite, automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 3 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION [5 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION [5
+-- col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -2735,7 +2743,7 @@ select 'MAXIMUS' as project, 'SAT_FIN_RECEIPT' as satellite, 'HUB_FINANCIAL_TRAN
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_RECEIPT s
   left join p on p.k = s.FINANCIAL_TRANSACTION_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2748,9 +2756,10 @@ select 'MAXIMUS' as project, 'SAT_FIN_RECEIPT' as satellite, 'HUB_FINANCIAL_TRAN
 -- rows of the parent (shared vault: the key may have been loaded by the other project).
 -- Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
 -- satellite, automate_dv.sat; PK PAYMENT_INSTRUMENT_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
--- [4 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION
--- [1 col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
+-- [4 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION [1
+-- col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct PAYMENT_INSTRUMENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PAYMENT_INSTRUMENT
@@ -2765,7 +2774,7 @@ select 'MAXIMUS' as project, 'SAT_INSTRUMENT_DEFINITION' as satellite, 'HUB_PAYM
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_INSTRUMENT_DEFINITION s
   left join p on p.k = s.PAYMENT_INSTRUMENT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION')
    and (s.PAYMENT_INSTRUMENT_HKEY is null or s.PAYMENT_INSTRUMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2779,9 +2788,9 @@ select 'MAXIMUS' as project, 'SAT_INSTRUMENT_DEFINITION' as satellite, 'HUB_PAYM
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK PARTY_HKEY, child key ROLE_CODE, ROLE_SEQUENCE; 2 RECORD_SOURCE
 -- group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -2798,7 +2807,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_PARTY_ROLE_CORE' as satellite, 'HUB_PARTY'
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_PARTY_ROLE_CORE s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2812,14 +2821,15 @@ select 'MAXIMUS' as project, 'SAT_LNK_PARTY_ROLE_CORE' as satellite, 'HUB_PARTY'
 -- Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
 -- satellite, automate_dv.ma_sat; PK POLICY_PARTY_HKEY, child key PARTY_ROLE_TYPE,
 -- ROLE_SEQUENCE; 5 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS [2
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS
+-- [2 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION
+-- [1 col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION [1
+-- col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS [2
 -- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION
--- [1 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_RELATION [1
--- col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per
--- member.
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_RELATION
+-- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
+-- per member.
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct POLICY_PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LINK_POLICY_PARTY
@@ -2834,7 +2844,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_POLICY_PARTY_ROLE' as satellite, 'LINK_POL
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_POLICY_PARTY_ROLE s
   left join p on p.k = s.POLICY_PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_RELATION')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_RELATION')
    and (s.POLICY_PARTY_HKEY is null or s.POLICY_PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2847,7 +2857,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_POLICY_PARTY_ROLE' as satellite, 'LINK_POL
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PARTY_ROLE_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [9 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -2863,7 +2873,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_AGENT' as satellite, 'LINK_PARTY_ROLE
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_AGENT s
   left join p on p.k = s.PARTY_ROLE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_ROLE_HKEY is null or s.PARTY_ROLE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2876,11 +2886,11 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_AGENT' as satellite, 'LINK_PARTY_ROLE
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PARTY_ROLE_HKEY; 3 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -2896,7 +2906,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_CUSTOMER' as satellite, 'LINK_PARTY_R
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_CUSTOMER s
   left join p on p.k = s.PARTY_ROLE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.PARTY_ROLE_HKEY is null or s.PARTY_ROLE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2909,13 +2919,13 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_CUSTOMER' as satellite, 'LINK_PARTY_R
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PARTY_ROLE_HKEY; 4 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -2931,7 +2941,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_EMPLOYEE' as satellite, 'LINK_PARTY_R
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_EMPLOYEE s
   left join p on p.k = s.PARTY_ROLE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.PARTY_ROLE_HKEY is null or s.PARTY_ROLE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2944,9 +2954,9 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_EMPLOYEE' as satellite, 'LINK_PARTY_R
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [3 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -2962,7 +2972,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite, 'H
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -2975,8 +2985,8 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite, 'H
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK LOSS_EVENT_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [8
--- col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [8 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct LOSS_EVENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOSS_EVENT
@@ -2991,7 +3001,7 @@ select 'MAXIMUS' as project, 'SAT_LOSS_EVENT_DETAIL' as satellite, 'HUB_LOSS_EVE
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LOSS_EVENT_DETAIL s
   left join p on p.k = s.LOSS_EVENT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.LOSS_EVENT_HKEY is null or s.LOSS_EVENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3004,8 +3014,8 @@ select 'MAXIMUS' as project, 'SAT_LOSS_EVENT_DETAIL' as satellite, 'HUB_LOSS_EVE
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK LOSS_EVENT_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct LOSS_EVENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOSS_EVENT
@@ -3020,7 +3030,7 @@ select 'MAXIMUS' as project, 'SAT_LOSS_EVENT_NOTIFICATION' as satellite, 'HUB_LO
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LOSS_EVENT_NOTIFICATION s
   left join p on p.k = s.LOSS_EVENT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.LOSS_EVENT_HKEY is null or s.LOSS_EVENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3033,8 +3043,8 @@ select 'MAXIMUS' as project, 'SAT_LOSS_EVENT_NOTIFICATION' as satellite, 'HUB_LO
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK LOSS_EVENT_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [4
--- col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [4 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct LOSS_EVENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOSS_EVENT
@@ -3049,7 +3059,7 @@ select 'MAXIMUS' as project, 'SAT_LOSS_LOCATION_ADDRESS' as satellite, 'HUB_LOSS
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LOSS_LOCATION_ADDRESS s
   left join p on p.k = s.LOSS_EVENT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.LOSS_EVENT_HKEY is null or s.LOSS_EVENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3062,10 +3072,10 @@ select 'MAXIMUS' as project, 'SAT_LOSS_LOCATION_ADDRESS' as satellite, 'HUB_LOSS
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK ORG_UNIT_HKEY; 4 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [1 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- [1 col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -3081,7 +3091,7 @@ select 'MAXIMUS' as project, 'SAT_ORG_UNIT_DEFINITION' as satellite, 'HUB_ORG_UN
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_ORG_UNIT_DEFINITION s
   left join p on p.k = s.ORG_UNIT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.ORG_UNIT_HKEY is null or s.ORG_UNIT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3094,9 +3104,9 @@ select 'MAXIMUS' as project, 'SAT_ORG_UNIT_DEFINITION' as satellite, 'HUB_ORG_UN
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -3112,7 +3122,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_AML_SCREENING' as satellite, 'HUB_PARTY'
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_AML_SCREENING s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3126,11 +3136,11 @@ select 'MAXIMUS' as project, 'SAT_PARTY_AML_SCREENING' as satellite, 'HUB_PARTY'
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK PARTY_HKEY, child key ACCOUNT_NUMBER_MASKED; 3 RECORD_SOURCE
 -- group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [6
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [6 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [7 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [7 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -3147,7 +3157,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_BANKING' as satellite, 'HUB_PARTY' as pa
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3160,8 +3170,8 @@ select 'MAXIMUS' as project, 'SAT_PARTY_BANKING' as satellite, 'HUB_PARTY' as pa
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
@@ -3176,7 +3186,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_CLAIM_HISTORY' as satellite, 'HUB_PARTY'
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CLAIM_HISTORY s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3190,17 +3200,17 @@ select 'MAXIMUS' as project, 'SAT_PARTY_CLAIM_HISTORY' as satellite, 'HUB_PARTY'
 -- Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
 -- satellite, automate_dv.ma_sat; PK PARTY_LOCATION_HKEY, child key ADDRESS_USAGE_TYPE; 6
 -- RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS
 -- [0 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
 -- [0 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS [0
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS
 -- [0 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+-- [0 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -3217,7 +3227,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_CONTACT_ADDRESS_LINK' as satellite, 'LIN
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CONTACT_ADDRESS_LINK s
   left join p on p.k = s.PARTY_LOCATION_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_LOCATION_HKEY is null or s.PARTY_LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3230,12 +3240,12 @@ select 'MAXIMUS' as project, 'SAT_PARTY_CONTACT_ADDRESS_LINK' as satellite, 'LIN
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 4 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS [1
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS
+-- [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- [3 col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS [1
 -- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [3 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS [1
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [4 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -3251,7 +3261,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite, 'HUB_PARTY' as
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_EMPLOYMENT s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3264,9 +3274,9 @@ select 'MAXIMUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite, 'HUB_PARTY' as
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -3282,7 +3292,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_FINANCIAL_PROFILE' as satellite, 'HUB_PA
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_FINANCIAL_PROFILE s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3295,9 +3305,9 @@ select 'MAXIMUS' as project, 'SAT_PARTY_FINANCIAL_PROFILE' as satellite, 'HUB_PA
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [4 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [4 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -3313,7 +3323,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_FRAUD_PROFILE' as satellite, 'HUB_PARTY'
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_FRAUD_PROFILE s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3326,9 +3336,9 @@ select 'MAXIMUS' as project, 'SAT_PARTY_FRAUD_PROFILE' as satellite, 'HUB_PARTY'
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [6 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [6 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -3344,7 +3354,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, 'HUB_PARTY
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3358,18 +3368,19 @@ select 'MAXIMUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, 'HUB_PARTY
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK PARTY_HKEY, child key IDENTIFICATION_TYPE_CODE; 8 RECORD_SOURCE
 -- group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [7
--- col(s)], MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [7 col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY [1
+-- col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY [1
+-- col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [23 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [23 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -3386,7 +3397,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'HUB_PARTY
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3399,27 +3410,29 @@ select 'MAXIMUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'HUB_PARTY
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 14 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
--- col(s)], MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY [4 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY [4 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
--- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS [10
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [2 col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY [4
+-- col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY [4
 -- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [7 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [1 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS [10 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS
 -- [10 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- [7 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- [1 col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION [1
+-- col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS [10
+-- col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- [10 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+-- [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -3435,7 +3448,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'HUB_PARTY' as p
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3448,9 +3461,9 @@ select 'MAXIMUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'HUB_PARTY' as p
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [4 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [6 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -3466,7 +3479,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite, '
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3479,9 +3492,9 @@ select 'MAXIMUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite, '
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [7 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [7 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -3497,7 +3510,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_KYC' as satellite, 'HUB_PARTY' as parent
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3511,9 +3524,9 @@ select 'MAXIMUS' as project, 'SAT_PARTY_KYC' as satellite, 'HUB_PARTY' as parent
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK PARTY_HKEY, child key KYC_REFERENCE_TYPE; 2 RECORD_SOURCE
 -- group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -3530,7 +3543,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_KYC_REFERENCE' as satellite, 'HUB_PARTY'
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC_REFERENCE s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3543,7 +3556,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_KYC_REFERENCE' as satellite, 'HUB_PARTY'
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [4 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -3559,7 +3572,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_ONBOARDING_JOURNEY' as satellite, 'HUB_P
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_ONBOARDING_JOURNEY s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3572,12 +3585,12 @@ select 'MAXIMUS' as project, 'SAT_PARTY_ONBOARDING_JOURNEY' as satellite, 'HUB_P
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 4 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS [3
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS
+-- [3 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- [14 col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS [3
 -- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [14 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS [3
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [18 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -3593,7 +3606,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_ORGANISATION_PROFILE' as satellite, 'HUB
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_ORGANISATION_PROFILE s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3606,7 +3619,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_ORGANISATION_PROFILE' as satellite, 'HUB
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -3622,7 +3635,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_PAYOUT_PROFILE' as satellite, 'HUB_PARTY
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_PAYOUT_PROFILE s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3635,8 +3648,8 @@ select 'MAXIMUS' as project, 'SAT_PARTY_PAYOUT_PROFILE' as satellite, 'HUB_PARTY
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
@@ -3651,7 +3664,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_POLICY_HISTORY' as satellite, 'HUB_PARTY
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_POLICY_HISTORY s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3664,8 +3677,8 @@ select 'MAXIMUS' as project, 'SAT_PARTY_POLICY_HISTORY' as satellite, 'HUB_PARTY
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [8
--- col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [8 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
@@ -3680,7 +3693,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_PORTFOLIO_SUMMARY' as satellite, 'HUB_PA
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_PORTFOLIO_SUMMARY s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3693,8 +3706,8 @@ select 'MAXIMUS' as project, 'SAT_PARTY_PORTFOLIO_SUMMARY' as satellite, 'HUB_PA
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
@@ -3709,7 +3722,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_RELATIONSHIP_PROFILE' as satellite, 'HUB
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_RELATIONSHIP_PROFILE s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3722,7 +3735,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_RELATIONSHIP_PROFILE' as satellite, 'HUB
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [5 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -3738,7 +3751,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_CANCELLATION' as satellite, 'HUB_POLICY
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CANCELLATION s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3752,11 +3765,11 @@ select 'MAXIMUS' as project, 'SAT_POLICY_CANCELLATION' as satellite, 'HUB_POLICY
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key CLASSIFICATION_TYPE; 3 RECORD_SOURCE
 -- group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -3773,7 +3786,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite, 'HUB_POLI
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3787,16 +3800,17 @@ select 'MAXIMUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite, 'HUB_POLI
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key COVERAGE_REFERENCE, COVERAGE_SEQUENCE; 6
 -- RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
--- col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS [2
+-- col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [6 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [4 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -3813,7 +3827,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_COVERAGE_SCHEDULE' as satellite, 'HUB_P
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_COVERAGE_SCHEDULE s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3826,11 +3840,11 @@ select 'MAXIMUS' as project, 'SAT_POLICY_COVERAGE_SCHEDULE' as satellite, 'HUB_P
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key ITEM_CODE; 3 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [6 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -3847,7 +3861,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_DISCOUNT_LOADING_APPLIED' as satellite,
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_DISCOUNT_LOADING_APPLIED s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3860,9 +3874,9 @@ select 'MAXIMUS' as project, 'SAT_POLICY_DISCOUNT_LOADING_APPLIED' as satellite,
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key ENDORSEMENT_NUMBER; 2 RECORD_SOURCE
--- group(s): MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS [7
+-- group(s): MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS [7
 -- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [4 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -3879,7 +3893,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_ENDORSEMENT' as satellite, 'HUB_POLICY'
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_ENDORSEMENT s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3892,7 +3906,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_ENDORSEMENT' as satellite, 'HUB_POLICY'
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [7 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -3908,7 +3922,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_GROUP' as satellite, 'HUB_POLICY' as pa
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_GROUP s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3921,16 +3935,17 @@ select 'MAXIMUS' as project, 'SAT_POLICY_GROUP' as satellite, 'HUB_POLICY' as pa
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 7 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [3
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- [2 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [5 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [3 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- [2 col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [5 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [8 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [14 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS [4
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- [14 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS [4
 -- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
 -- [2 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -3946,7 +3961,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_HEADER' as satellite, 'HUB_POLICY' as p
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3959,8 +3974,8 @@ select 'MAXIMUS' as project, 'SAT_POLICY_HEADER' as satellite, 'HUB_POLICY' as p
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key INTERMEDIARY_REFERENCE; 2 RECORD_SOURCE
--- group(s): MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- group(s): MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -3977,7 +3992,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_INTERMEDIARY_SPLIT' as satellite, 'HUB_
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_INTERMEDIARY_SPLIT s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -3990,7 +4005,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_INTERMEDIARY_SPLIT' as satellite, 'HUB_
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -4006,7 +4021,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_PORTABILITY_MIGRATION' as satellite, 'H
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_PORTABILITY_MIGRATION s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4020,13 +4035,13 @@ select 'MAXIMUS' as project, 'SAT_POLICY_PORTABILITY_MIGRATION' as satellite, 'H
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key ADJUSTED_INDICATOR, COVERAGE_REFERENCE,
 -- PREMIUM_HEAD_CODE, SECTION; 4 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS [1
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS [1
 -- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [4 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [3 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -4043,7 +4058,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_PREMIUM_HEAD' as satellite, 'HUB_POLICY
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_PREMIUM_HEAD s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4056,12 +4071,13 @@ select 'MAXIMUS' as project, 'SAT_POLICY_PREMIUM_HEAD' as satellite, 'HUB_POLICY
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 5 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [2 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [6 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS [1
--- col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_PREMIUM_DETAILS [2 col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- [6 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS [1
+-- col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_PREMIUM_DETAILS [2 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY
@@ -4076,7 +4092,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_PREMIUM_SUMMARY' as satellite, 'HUB_POL
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_PREMIUM_SUMMARY s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_PREMIUM_DETAILS')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_PREMIUM_DETAILS')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4089,8 +4105,8 @@ select 'MAXIMUS' as project, 'SAT_POLICY_PREMIUM_SUMMARY' as satellite, 'HUB_POL
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
--- col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [2 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY
@@ -4105,7 +4121,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_RENEWAL' as satellite, 'HUB_POLICY' as 
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_RENEWAL s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4118,8 +4134,8 @@ select 'MAXIMUS' as project, 'SAT_POLICY_RENEWAL' as satellite, 'HUB_POLICY' as 
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY
@@ -4134,7 +4150,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_SERVICING_SUMMARY' as satellite, 'HUB_P
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_SERVICING_SUMMARY s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4148,11 +4164,11 @@ select 'MAXIMUS' as project, 'SAT_POLICY_SERVICING_SUMMARY' as satellite, 'HUB_P
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key SUM_INSURED_HEAD; 3 RECORD_SOURCE
 -- group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -4169,7 +4185,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_SUM_INSURED_BREAKUP' as satellite, 'HUB
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_SUM_INSURED_BREAKUP s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4182,8 +4198,8 @@ select 'MAXIMUS' as project, 'SAT_POLICY_SUM_INSURED_BREAKUP' as satellite, 'HUB
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [9 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -4199,7 +4215,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_TAX_BREAKUP' as satellite, 'HUB_POLICY'
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_TAX_BREAKUP s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4212,10 +4228,10 @@ select 'MAXIMUS' as project, 'SAT_POLICY_TAX_BREAKUP' as satellite, 'HUB_POLICY'
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key TAX_HEAD_CODE; 3 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -4232,7 +4248,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_TAX_HEAD' as satellite, 'HUB_POLICY' as
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_TAX_HEAD s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4245,7 +4261,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_TAX_HEAD' as satellite, 'HUB_POLICY' as
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -4261,7 +4277,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_TERMS' as satellite, 'HUB_POLICY' as pa
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_TERMS s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4274,16 +4290,17 @@ select 'MAXIMUS' as project, 'SAT_POLICY_TERMS' as satellite, 'HUB_POLICY' as pa
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PRODUCT_HKEY; 7 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
--- col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [2 col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [2 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS [1
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- [2 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS [1
 -- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
 -- [2 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -4299,7 +4316,7 @@ select 'MAXIMUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'HUB_PRODUCT
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION s
   left join p on p.k = s.PRODUCT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.PRODUCT_HKEY is null or s.PRODUCT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4312,9 +4329,9 @@ select 'MAXIMUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'HUB_PRODUCT
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PRODUCT_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
 -- [2 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -4330,7 +4347,7 @@ select 'MAXIMUS' as project, 'SAT_PRODUCT_RATING_STRUCTURE' as satellite, 'HUB_P
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_RATING_STRUCTURE s
   left join p on p.k = s.PRODUCT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.PRODUCT_HKEY is null or s.PRODUCT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4343,9 +4360,9 @@ select 'MAXIMUS' as project, 'SAT_PRODUCT_RATING_STRUCTURE' as satellite, 'HUB_P
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PRODUCT_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -4361,7 +4378,7 @@ select 'MAXIMUS' as project, 'SAT_PRODUCT_TERMS' as satellite, 'HUB_PRODUCT' as 
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_TERMS s
   left join p on p.k = s.PRODUCT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.PRODUCT_HKEY is null or s.PRODUCT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4374,10 +4391,10 @@ select 'MAXIMUS' as project, 'SAT_PRODUCT_TERMS' as satellite, 'HUB_PRODUCT' as 
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK QUOTE_HKEY; 3 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS [4 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS [4 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
 -- [7 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
 -- [3 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -4393,7 +4410,7 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_HEADER' as satellite, 'HUB_QUOTE' as par
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_QUOTE_HEADER s
   left join p on p.k = s.QUOTE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4406,10 +4423,10 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_HEADER' as satellite, 'HUB_QUOTE' as par
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK QUOTE_HKEY; 3 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS [3 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
 -- [5 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -4425,7 +4442,7 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_RATING' as satellite, 'HUB_QUOTE' as par
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_QUOTE_RATING s
   left join p on p.k = s.QUOTE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4438,15 +4455,15 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_RATING' as satellite, 'HUB_QUOTE' as par
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK QUOTE_HKEY, child key FACTOR_CODE; 5 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
 -- [3 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -4463,7 +4480,7 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_RATING_INPUT' as satellite, 'HUB_QUOTE' 
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_QUOTE_RATING_INPUT s
   left join p on p.k = s.QUOTE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4477,9 +4494,9 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_RATING_INPUT' as satellite, 'HUB_QUOTE' 
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK RISK_OBJECT_HKEY, child key CONDITION_CODE, MEMBER_REFERENCE; 2
 -- RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [5 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [5 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -4496,7 +4513,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_HEALTH_MEMBER_MEDICAL' as satellite, 'HUB
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_HEALTH_MEMBER_MEDICAL s
   left join p on p.k = s.RISK_OBJECT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
    and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4509,12 +4526,14 @@ select 'MAXIMUS' as project, 'SAT_RISK_HEALTH_MEMBER_MEDICAL' as satellite, 'HUB
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK RISK_OBJECT_HKEY; 6 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
--- col(s)], MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [4 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [2 col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK [1
+-- col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS [2
+-- col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- [4 col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST [3
+-- col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
 -- [4 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -4530,7 +4549,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_OBJECT_CORE' as satellite, 'HUB_RISK_OBJE
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_OBJECT_CORE s
   left join p on p.k = s.RISK_OBJECT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4543,10 +4562,11 @@ select 'MAXIMUS' as project, 'SAT_RISK_OBJECT_CORE' as satellite, 'HUB_RISK_OBJE
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK RISK_OBJECT_HKEY; 4 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [3 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- [3 col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST [1
+-- col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
 -- [3 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -4562,7 +4582,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_OBJECT_VALUATION' as satellite, 'HUB_RISK
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_OBJECT_VALUATION s
   left join p on p.k = s.RISK_OBJECT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4575,9 +4595,9 @@ select 'MAXIMUS' as project, 'SAT_RISK_OBJECT_VALUATION' as satellite, 'HUB_RISK
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK RISK_OBJECT_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [5 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
 -- [5 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -4593,7 +4613,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_PERSON_INSURED' as satellite, 'HUB_RISK_O
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_INSURED s
   left join p on p.k = s.RISK_OBJECT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4607,9 +4627,9 @@ select 'MAXIMUS' as project, 'SAT_RISK_PERSON_INSURED' as satellite, 'HUB_RISK_O
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK RISK_OBJECT_HKEY, child key MEMBER_SEQUENCE; 2 RECORD_SOURCE
 -- group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -4626,7 +4646,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_PERSON_MEMBER' as satellite, 'HUB_RISK_OB
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_MEMBER s
   left join p on p.k = s.RISK_OBJECT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
    and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4639,19 +4659,19 @@ select 'MAXIMUS' as project, 'SAT_RISK_PERSON_MEMBER' as satellite, 'HUB_RISK_OB
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK RISK_OBJECT_HKEY; 7 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [6 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [6 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
 -- [3 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -4667,7 +4687,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite, 'HUB_RISK_OB
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_TRAVEL s
   left join p on p.k = s.RISK_OBJECT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4680,9 +4700,9 @@ select 'MAXIMUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite, 'HUB_RISK_OB
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [8 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [7 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -4698,7 +4718,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_APPROVAL_ACTION' as satellite, 'HUB_
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_APPROVAL_ACTION s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4711,10 +4731,10 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_APPROVAL_ACTION' as satellite, 'HUB_
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 3 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [6
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [6 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [3 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -4730,7 +4750,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_ASSESSMENT_SUMMARY' as satellite, 'H
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_ASSESSMENT_SUMMARY s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4744,11 +4764,11 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_ASSESSMENT_SUMMARY' as satellite, 'H
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.ma_sat; PK CLAIM_HKEY, child key BENEFIT_HEAD_CODE; 3 RECORD_SOURCE
 -- group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [12 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -4765,7 +4785,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_BENEFIT_HEAD' as satellite, 'HUB_CLA
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_BENEFIT_HEAD s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4778,9 +4798,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_BENEFIT_HEAD' as satellite, 'HUB_CLA
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [2 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -4796,7 +4816,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_CO_RI_SHARE' as satellite, 'HUB_CLAI
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_CO_RI_SHARE s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4809,8 +4829,8 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_CO_RI_SHARE' as satellite, 'HUB_CLAI
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM
@@ -4825,7 +4845,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_DEDUCTION_WAIVER' as satellite, 'HUB
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_DEDUCTION_WAIVER s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4839,7 +4859,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_DEDUCTION_WAIVER' as satellite, 'HUB
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.ma_sat; PK CLAIM_HKEY, child key REMINDER_SEQUENCE, REQUIREMENT_TYPE_NAME;
 -- 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -4856,7 +4876,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_DOCUMENT_REMINDER' as satellite, 'HU
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_DOCUMENT_REMINDER s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4869,7 +4889,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_DOCUMENT_REMINDER' as satellite, 'HU
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [6 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -4885,7 +4905,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT' as satellite, 
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4898,8 +4918,8 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT' as satellite, 
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
--- col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [2 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM
@@ -4914,7 +4934,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_EVIDENCE' as satellite, 'HUB_CLAIM' 
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_EVIDENCE s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4928,9 +4948,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_EVIDENCE' as satellite, 'HUB_CLAIM' 
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.ma_sat; PK CLAIM_HKEY, child key EXCLUSION_SET_CODE; 1 RECORD_SOURCE
 -- group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per
--- member.
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
+-- per member.
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM
@@ -4945,7 +4965,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_EXCLUSION_APPLIED' as satellite, 'HU
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_EXCLUSION_APPLIED s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4958,7 +4978,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_EXCLUSION_APPLIED' as satellite, 'HU
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [12 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -4974,7 +4994,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_EXPENSE_LINE' as satellite, 'HUB_CLA
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_EXPENSE_LINE s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -4987,7 +5007,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_EXPENSE_LINE' as satellite, 'HUB_CLA
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_EVENT_FOLLOWUP [13 col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_EVENT_FOLLOWUP [13 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM
@@ -5002,7 +5022,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_FOLLOWUP_TASK' as satellite, 'HUB_CL
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_FOLLOWUP_TASK s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_EVENT_FOLLOWUP')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_EVENT_FOLLOWUP')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5015,13 +5035,13 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_FOLLOWUP_TASK' as satellite, 'HUB_CL
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 4 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [5 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [6
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [6 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [5 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [2 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -5037,7 +5057,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_FRAUD' as satellite, 'HUB_CLAIM' as 
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_FRAUD s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5050,10 +5070,10 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_FRAUD' as satellite, 'HUB_CLAIM' as 
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 3 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS [4 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [11
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS [4 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [11 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -5069,7 +5089,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_HEADER' as satellite, 'HUB_CLAIM' as
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_HEADER s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5082,11 +5102,11 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_HEADER' as satellite, 'HUB_CLAIM' as
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 3 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [5 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [2 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [5 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -5102,7 +5122,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_LITIGATION' as satellite, 'HUB_CLAIM
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_LITIGATION s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5115,9 +5135,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_LITIGATION' as satellite, 'HUB_CLAIM
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -5133,7 +5153,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_NETWORK_VERIFICATION' as satellite, 
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_NETWORK_VERIFICATION s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5146,10 +5166,10 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_NETWORK_VERIFICATION' as satellite, 
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.ma_sat; PK CLAIM_HKEY, child key TRANCHE_NUMBER; 3 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT [4 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT [4 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
 -- [6 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [6 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -5166,7 +5186,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_PAYMENT_TRANCHE' as satellite, 'HUB_
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_PAYMENT_TRANCHE s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5179,9 +5199,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_PAYMENT_TRANCHE' as satellite, 'HUB_
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [2 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [4 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -5197,7 +5217,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_PA_DETAIL' as satellite, 'HUB_CLAIM'
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_PA_DETAIL s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5210,7 +5230,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_PA_DETAIL' as satellite, 'HUB_CLAIM'
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.ma_sat; PK CLAIM_HKEY, child key BILL_NUMBER; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [23 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -5227,7 +5247,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_PROVIDER_BILLING' as satellite, 'HUB
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_PROVIDER_BILLING s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5240,8 +5260,8 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_PROVIDER_BILLING' as satellite, 'HUB
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM
@@ -5256,7 +5276,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_QUALITY_AUDIT' as satellite, 'HUB_CL
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_QUALITY_AUDIT s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5269,9 +5289,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_QUALITY_AUDIT' as satellite, 'HUB_CL
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -5287,7 +5307,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_RECOVERY_SALVAGE' as satellite, 'HUB
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_RECOVERY_SALVAGE s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5300,11 +5320,11 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_RECOVERY_SALVAGE' as satellite, 'HUB
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 3 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -5320,7 +5340,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_SETTLEMENT' as satellite, 'HUB_CLAIM
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_SETTLEMENT s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5333,9 +5353,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_SETTLEMENT' as satellite, 'HUB_CLAIM
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [8
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [8 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [3 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -5351,7 +5371,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_SLA_TRACKING' as satellite, 'HUB_CLA
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_SLA_TRACKING s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5364,7 +5384,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_SLA_TRACKING' as satellite, 'HUB_CLA
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_HISTORY [16 col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_HISTORY [16 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM
@@ -5379,7 +5399,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_STATUS_HISTORY' as satellite, 'HUB_C
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_STATUS_HISTORY s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_HISTORY')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_HISTORY')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5392,8 +5412,8 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_STATUS_HISTORY' as satellite, 'HUB_C
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM
@@ -5408,7 +5428,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_SURVEY_APPOINTMENT' as satellite, 'H
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_SURVEY_APPOINTMENT s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5421,7 +5441,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_SURVEY_APPOINTMENT' as satellite, 'H
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [2 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -5437,7 +5457,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TPA_INTERACTION' as satellite, 'HUB_
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_TPA_INTERACTION s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5450,8 +5470,8 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TPA_INTERACTION' as satellite, 'HUB_
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [14 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -5467,7 +5487,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TRAVEL_DETAIL' as satellite, 'HUB_CL
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_TRAVEL_DETAIL s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5480,7 +5500,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TRAVEL_DETAIL' as satellite, 'HUB_CL
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [16 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -5496,7 +5516,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TRAVEL_SECTOR' as satellite, 'HUB_CL
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_TRAVEL_SECTOR s
   left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5509,9 +5529,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TRAVEL_SECTOR' as satellite, 'HUB_CL
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK LOCATION_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -5527,7 +5547,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COMMON_ADDRESS' as satellite, 'HUB_LOCATIO
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_ADDRESS s
   left join p on p.k = s.LOCATION_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.LOCATION_HKEY is null or s.LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5540,9 +5560,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_COMMON_ADDRESS' as satellite, 'HUB_LOCATIO
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -5558,7 +5578,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COMMON_COMMUNICATION_PREFERENCE' as satell
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_COMMUNICATION_PREFERENCE s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5571,9 +5591,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_COMMON_COMMUNICATION_PREFERENCE' as satell
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK COVERAGE_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -5589,7 +5609,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_CONDITIONS' as satellite, 'HUB_CO
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_CONDITIONS s
   left join p on p.k = s.COVERAGE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5602,13 +5622,13 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_CONDITIONS' as satellite, 'HUB_CO
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK COVERAGE_HKEY; 4 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
 -- [2 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -5624,7 +5644,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_DEFINITION' as satellite, 'HUB_CO
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_DEFINITION s
   left join p on p.k = s.COVERAGE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5637,9 +5657,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_DEFINITION' as satellite, 'HUB_CO
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK COVERAGE_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -5655,7 +5675,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_LIMITS' as satellite, 'HUB_COVERA
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_LIMITS s
   left join p on p.k = s.COVERAGE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5669,7 +5689,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_LIMITS' as satellite, 'HUB_COVERA
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.ma_sat; PK COVERAGE_HKEY, child key ACTIVE_SEQUENCE_NUMBER; 1
 -- RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [17 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -5686,7 +5706,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE' as satellite, 
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE s
   left join p on p.k = s.COVERAGE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5700,7 +5720,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE' as satellite, 
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.ma_sat; PK COVERAGE_HKEY, child key SUB_COVER_CODE; 1 RECORD_SOURCE
 -- group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -5717,7 +5737,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_SUB_COVER_ELEMENT' as satellite, 
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_SUB_COVER_ELEMENT s
   left join p on p.k = s.COVERAGE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5731,7 +5751,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_SUB_COVER_ELEMENT' as satellite, 
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.ma_sat; PK DOCUMENT_HKEY, child key REQUIRED_DOCUMENT_TYPE; 1
 -- RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [3 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -5748,7 +5768,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_DOCUMENT_CHECKLIST' as satellite, 'HUB_DOC
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_DOCUMENT_CHECKLIST s
   left join p on p.k = s.DOCUMENT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.DOCUMENT_HKEY is null or s.DOCUMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5761,7 +5781,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_DOCUMENT_CHECKLIST' as satellite, 'HUB_DOC
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK DOCUMENT_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [6 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -5777,7 +5797,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_DOCUMENT_DISPATCH' as satellite, 'HUB_DOCU
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_DOCUMENT_DISPATCH s
   left join p on p.k = s.DOCUMENT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.DOCUMENT_HKEY is null or s.DOCUMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5791,7 +5811,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_DOCUMENT_DISPATCH' as satellite, 'HUB_DOCU
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.ma_sat; PK DOCUMENT_HKEY, child key REMINDER_SEQUENCE; 1 RECORD_SOURCE
 -- group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -5808,7 +5828,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER' as satellit
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER s
   left join p on p.k = s.DOCUMENT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.DOCUMENT_HKEY is null or s.DOCUMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5822,9 +5842,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER' as satellit
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE.
 -- augmented satellite, automate_dv.ma_sat; PK FINANCIAL_TRANSACTION_HKEY, child key
 -- TAX_TYPE; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
 -- [4 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [14 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -5841,7 +5861,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_FINTXN_TAX' as satellite, 'HUB_FINANCIAL_T
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_TAX s
   left join p on p.k = s.FINANCIAL_TRANSACTION_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5854,11 +5874,12 @@ select 'MAXIMUS' as project, 'SAT_AUG_FINTXN_TAX' as satellite, 'HUB_FINANCIAL_T
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE.
 -- augmented satellite, automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 3 RECORD_SOURCE
--- group(s): MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION [1
+-- group(s):
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION [1
 -- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -5874,7 +5895,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_FIN_RECEIPT' as satellite, 'HUB_FINANCIAL_
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FIN_RECEIPT s
   left join p on p.k = s.FINANCIAL_TRANSACTION_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5887,7 +5908,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_FIN_RECEIPT' as satellite, 'HUB_FINANCIAL_
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -5903,7 +5924,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite, 'HUB_PART
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_CUSTOMER s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5916,7 +5937,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite, 'HUB_PART
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK PARTY_ROLE_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -5932,7 +5953,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_LNK_ROLE_PROVIDER' as satellite, 'LINK_PAR
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_PROVIDER s
   left join p on p.k = s.PARTY_ROLE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_ROLE_HKEY is null or s.PARTY_ROLE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5946,7 +5967,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_LNK_ROLE_PROVIDER' as satellite, 'LINK_PAR
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.ma_sat; PK ORG_UNIT_HKEY, child key CONTACT_POINT_TYPE; 1 RECORD_SOURCE
 -- group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
 -- [3 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -5963,7 +5984,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_ORG_UNIT_CONTACT' as satellite, 'HUB_ORG_U
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_ORG_UNIT_CONTACT s
   left join p on p.k = s.ORG_UNIT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW')
    and (s.ORG_UNIT_HKEY is null or s.ORG_UNIT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -5976,13 +5997,13 @@ select 'MAXIMUS' as project, 'SAT_AUG_ORG_UNIT_CONTACT' as satellite, 'HUB_ORG_U
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 4 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [7 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [7 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -5998,7 +6019,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_BANKING' as satellite, 'HUB_PARTY' a
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_BANKING s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6011,9 +6032,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_BANKING' as satellite, 'HUB_PARTY' a
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [3 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -6029,7 +6050,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CLAIM_HISTORY' as satellite, 'HUB_PA
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_CLAIM_HISTORY s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6042,9 +6063,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CLAIM_HISTORY' as satellite, 'HUB_PA
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -6060,7 +6081,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CONSENT_MANDATE' as satellite, 'HUB_
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_CONSENT_MANDATE s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6074,9 +6095,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CONSENT_MANDATE' as satellite, 'HUB_
 -- Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented
 -- satellite, automate_dv.ma_sat; PK PARTY_LOCATION_HKEY, child key ADDRESS_USAGE_TYPE; 2
 -- RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -6093,7 +6114,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CONTACT_ADDRESS_LINK' as satellite, 
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_CONTACT_ADDRESS_LINK s
   left join p on p.k = s.PARTY_LOCATION_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_LOCATION_HKEY is null or s.PARTY_LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6107,9 +6128,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CONTACT_ADDRESS_LINK' as satellite, 
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.ma_sat; PK PARTY_HKEY, child key DISPATCH_REFERENCE; 1 RECORD_SOURCE
 -- group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per
--- member.
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
+-- per member.
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
@@ -6124,7 +6145,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CORRESPONDENCE' as satellite, 'HUB_P
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_CORRESPONDENCE s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6137,9 +6158,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CORRESPONDENCE' as satellite, 'HUB_P
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [3 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -6155,7 +6176,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite, 'HUB_PARTY
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_EMPLOYMENT s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6168,11 +6189,11 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite, 'HUB_PARTY
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 3 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [6 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [8 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -6188,7 +6209,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_FINANCIAL_PROFILE' as satellite, 'HU
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_FINANCIAL_PROFILE s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6201,7 +6222,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_FINANCIAL_PROFILE' as satellite, 'HU
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -6217,7 +6238,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_GROUP_SCHEME' as satellite, 'HUB_PAR
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_GROUP_SCHEME s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6230,9 +6251,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_GROUP_SCHEME' as satellite, 'HUB_PAR
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [3 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -6248,7 +6269,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_HEALTH_PROFILE' as satellite, 'HUB_P
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_HEALTH_PROFILE s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6261,7 +6282,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_HEALTH_PROFILE' as satellite, 'HUB_P
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [3 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -6277,7 +6298,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_HIERARCHY' as satellite, 'HUB_PARTY'
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_HIERARCHY s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6291,15 +6312,15 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_HIERARCHY' as satellite, 'HUB_PARTY'
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.ma_sat; PK PARTY_HKEY, child key IDENTIFICATION_TYPE_CODE; 5 RECORD_SOURCE
 -- group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [12 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [13 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -6316,7 +6337,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_IDENTIFICATION' as satellite, 'HUB_P
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_IDENTIFICATION s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6329,14 +6350,14 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_IDENTIFICATION' as satellite, 'HUB_P
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 5 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS [2
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS
+-- [2 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- [2 col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS [2
 -- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [2 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS [2
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -6352,7 +6373,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_IDENTITY' as satellite, 'HUB_PARTY' 
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_IDENTITY s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6365,11 +6386,11 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_IDENTITY' as satellite, 'HUB_PARTY' 
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 3 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [7 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [17 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -6385,7 +6406,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellit
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6399,9 +6420,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellit
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.ma_sat; PK PARTY_HKEY, child key LOYALTY_CLASSIFICATION_TYPE; 1
 -- RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per
--- member.
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
+-- per member.
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
@@ -6416,7 +6437,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_LOYALTY_CLASSIFICATION' as satellite
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_LOYALTY_CLASSIFICATION s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6429,9 +6450,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_LOYALTY_CLASSIFICATION' as satellite
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [14 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -6447,7 +6468,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_ONBOARDING_JOURNEY' as satellite, 'H
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_ONBOARDING_JOURNEY s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6460,9 +6481,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_ONBOARDING_JOURNEY' as satellite, 'H
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [6 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -6478,7 +6499,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_PAYOUT_PROFILE' as satellite, 'HUB_P
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_PAYOUT_PROFILE s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6491,9 +6512,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_PAYOUT_PROFILE' as satellite, 'HUB_P
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -6509,7 +6530,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_PREFERENCE_PROFILE' as satellite, 'H
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_PREFERENCE_PROFILE s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6522,12 +6543,12 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_PREFERENCE_PROFILE' as satellite, 'H
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 4 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS [1
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS
+-- [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- [4 col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS [1
 -- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [4 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS [1
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [4 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -6543,7 +6564,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_RELATIONSHIP_PROFILE' as satellite, 
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_RELATIONSHIP_PROFILE s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6556,8 +6577,8 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_RELATIONSHIP_PROFILE' as satellite, 
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
@@ -6572,7 +6593,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_RISK_ANALYTICS' as satellite, 'HUB_P
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_RISK_ANALYTICS s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6585,7 +6606,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_RISK_ANALYTICS' as satellite, 'HUB_P
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [3 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -6601,7 +6622,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_CLAIM_EXPERIENCE' as satellite, 'HU
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_CLAIM_EXPERIENCE s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6615,11 +6636,11 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_CLAIM_EXPERIENCE' as satellite, 'HU
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key COVERAGE_REFERENCE, COVERAGE_SEQUENCE; 3
 -- RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS [1
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS [1
 -- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [28 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [5 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -6636,7 +6657,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_COVERAGE_SCHEDULE' as satellite, 'H
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_COVERAGE_SCHEDULE s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6649,7 +6670,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_COVERAGE_SCHEDULE' as satellite, 'H
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -6665,7 +6686,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_DELIVERY' as satellite, 'HUB_POLICY
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_DELIVERY s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6678,8 +6699,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_DELIVERY' as satellite, 'HUB_POLICY
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key DISPATCH_SERIAL_NUMBER; 1 RECORD_SOURCE
--- group(s): MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS [10 col(s)].
--- Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per member.
+-- group(s): MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS [10
+-- col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per
+-- member.
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY
@@ -6694,7 +6716,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_DOCUMENT_DISPATCH' as satellite, 'H
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_DOCUMENT_DISPATCH s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6707,11 +6729,11 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_DOCUMENT_DISPATCH' as satellite, 'H
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 4 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [1 col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [3 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [17 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -6727,7 +6749,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_HEADER' as satellite, 'HUB_POLICY' 
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_HEADER s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6740,7 +6762,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_HEADER' as satellite, 'HUB_POLICY' 
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [2 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -6756,7 +6778,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_HEALTH_DECLARATION' as satellite, '
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_HEALTH_DECLARATION s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6769,7 +6791,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_HEALTH_DECLARATION' as satellite, '
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [5 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -6785,7 +6807,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_INSURED_DECLARATION' as satellite, 
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_INSURED_DECLARATION s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6799,9 +6821,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_INSURED_DECLARATION' as satellite, 
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key INTERMEDIARY_REFERENCE; 2 RECORD_SOURCE
 -- group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+-- [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -6818,7 +6840,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_INTERMEDIARY_SPLIT' as satellite, '
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_INTERMEDIARY_SPLIT s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6831,7 +6853,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_INTERMEDIARY_SPLIT' as satellite, '
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [4 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -6847,7 +6869,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_NOMINEE_DECLARATION' as satellite, 
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_NOMINEE_DECLARATION s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6861,9 +6883,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_NOMINEE_DECLARATION' as satellite, 
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key ADJUSTED_INDICATOR, COVERAGE_REFERENCE,
 -- PREMIUM_HEAD_CODE, SECTION; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS [1
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS [1
 -- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -6880,7 +6902,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_PREMIUM_HEAD' as satellite, 'HUB_PO
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_PREMIUM_HEAD s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6893,9 +6915,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_PREMIUM_HEAD' as satellite, 'HUB_PO
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [20 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -6911,7 +6933,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_PREMIUM_SUMMARY' as satellite, 'HUB
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_PREMIUM_SUMMARY s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6924,7 +6946,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_PREMIUM_SUMMARY' as satellite, 'HUB
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [4 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -6940,7 +6962,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_PROPERTY_LINE' as satellite, 'HUB_P
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_PROPERTY_LINE s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6953,8 +6975,8 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_PROPERTY_LINE' as satellite, 'HUB_P
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [7 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -6970,7 +6992,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_RENEWAL' as satellite, 'HUB_POLICY'
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_RENEWAL s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -6983,7 +7005,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_RENEWAL' as satellite, 'HUB_POLICY'
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [7 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -6999,7 +7021,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TERMS' as satellite, 'HUB_POLICY' a
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_TERMS s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7012,7 +7034,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TERMS' as satellite, 'HUB_POLICY' a
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [9 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -7028,7 +7050,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TRAVEL_TERMS' as satellite, 'HUB_PO
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_TRAVEL_TERMS s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7041,7 +7063,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TRAVEL_TERMS' as satellite, 'HUB_PO
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [9 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -7057,7 +7079,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE' as satellite,
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7070,7 +7092,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE' as satellite,
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [11 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -7086,7 +7108,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_UW_QUERY' as satellite, 'HUB_POLICY
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_UW_QUERY s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7099,7 +7121,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_UW_QUERY' as satellite, 'HUB_POLICY
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_WORK_ITEM_DETAILS [6 col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_WORK_ITEM_DETAILS [6 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY
@@ -7114,7 +7136,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_WORK_ITEM' as satellite, 'HUB_POLIC
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_WORK_ITEM s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_WORK_ITEM_DETAILS')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_WORK_ITEM_DETAILS')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7127,9 +7149,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_WORK_ITEM' as satellite, 'HUB_POLIC
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK PRODUCT_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -7145,7 +7167,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PRODUCT_RATING_STRUCTURE' as satellite, 'H
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PRODUCT_RATING_STRUCTURE s
   left join p on p.k = s.PRODUCT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.PRODUCT_HKEY is null or s.PRODUCT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7158,9 +7180,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_PRODUCT_RATING_STRUCTURE' as satellite, 'H
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK PRODUCT_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -7176,7 +7198,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'HUB_PRODUCT'
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PRODUCT_TERMS s
   left join p on p.k = s.PRODUCT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.PRODUCT_HKEY is null or s.PRODUCT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7189,7 +7211,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'HUB_PRODUCT'
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK QUOTE_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [3 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -7205,7 +7227,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_CLAIM_EXPERIENCE' as satellite, 'HUB
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_CLAIM_EXPERIENCE s
   left join p on p.k = s.QUOTE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
    and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7218,10 +7240,11 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_CLAIM_EXPERIENCE' as satellite, 'HUB
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK QUOTE_HKEY; 3 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER [2
+-- col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
 -- [29 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
 -- [13 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -7237,7 +7260,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_COVERAGE_LINE' as satellite, 'HUB_QU
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_COVERAGE_LINE s
   left join p on p.k = s.QUOTE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7251,7 +7274,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_COVERAGE_LINE' as satellite, 'HUB_QU
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.ma_sat; PK QUOTE_HKEY, child key COVERAGE_REFERENCE; 1 RECORD_SOURCE
 -- group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [9 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -7268,7 +7291,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_COVERAGE_SCHEDULE' as satellite, 'HU
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_COVERAGE_SCHEDULE s
   left join p on p.k = s.QUOTE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
    and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7282,7 +7305,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_COVERAGE_SCHEDULE' as satellite, 'HU
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.ma_sat; PK QUOTE_HKEY, child key COVERAGE_REFERENCE, COVERAGE_SEQUENCE; 1
 -- RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
 -- [15 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -7299,7 +7322,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_COVER_DETAIL' as satellite, 'HUB_QUO
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_COVER_DETAIL s
   left join p on p.k = s.QUOTE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7312,18 +7335,19 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_COVER_DETAIL' as satellite, 'HUB_QUO
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK QUOTE_HKEY; 9 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [1 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS [6 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- [1 col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS [6 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
--- [51 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY
--- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY [1
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+-- [51 col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST [1
 -- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY
+-- [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY [1
+-- col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
 -- [9 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -7339,7 +7363,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_HEADER' as satellite, 'HUB_QUOTE' as
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_HEADER s
   left join p on p.k = s.QUOTE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7352,7 +7376,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_HEADER' as satellite, 'HUB_QUOTE' as
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK QUOTE_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [2 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -7368,7 +7392,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_HEALTH_DECLARATION' as satellite, 'H
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_HEALTH_DECLARATION s
   left join p on p.k = s.QUOTE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
    and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7381,7 +7405,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_HEALTH_DECLARATION' as satellite, 'H
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK QUOTE_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [5 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -7397,7 +7421,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_INSURED_DECLARATION' as satellite, '
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_INSURED_DECLARATION s
   left join p on p.k = s.QUOTE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
    and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7410,7 +7434,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_INSURED_DECLARATION' as satellite, '
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK QUOTE_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [4 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -7426,7 +7450,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_NOMINEE_DECLARATION' as satellite, '
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_NOMINEE_DECLARATION s
   left join p on p.k = s.QUOTE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
    and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7440,7 +7464,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_NOMINEE_DECLARATION' as satellite, '
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.ma_sat; PK QUOTE_HKEY, child key PREMIUM_HEAD_CODE; 1 RECORD_SOURCE
 -- group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [2 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -7457,7 +7481,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_PREMIUM_HEAD' as satellite, 'HUB_QUO
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_PREMIUM_HEAD s
   left join p on p.k = s.QUOTE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
    and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7470,7 +7494,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_PREMIUM_HEAD' as satellite, 'HUB_QUO
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK QUOTE_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [4 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -7486,7 +7510,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_PROPERTY_LINE' as satellite, 'HUB_QU
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_PROPERTY_LINE s
   left join p on p.k = s.QUOTE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
    and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7499,10 +7523,10 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_PROPERTY_LINE' as satellite, 'HUB_QU
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK QUOTE_HKEY; 3 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS [3 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
 -- [39 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
 -- [11 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -7518,7 +7542,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_RATING' as satellite, 'HUB_QUOTE' as
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_RATING s
   left join p on p.k = s.QUOTE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7531,7 +7555,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_RATING' as satellite, 'HUB_QUOTE' as
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK QUOTE_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST [5 col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST [5 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct QUOTE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE
@@ -7546,7 +7570,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_RISK_LINE' as satellite, 'HUB_QUOTE'
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_RISK_LINE s
   left join p on p.k = s.QUOTE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST')
    and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7560,7 +7584,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_RISK_LINE' as satellite, 'HUB_QUOTE'
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.ma_sat; PK QUOTE_HKEY, child key SUM_INSURED_HEAD; 1 RECORD_SOURCE
 -- group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -7577,7 +7601,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_SUM_INSURED_BREAKUP' as satellite, '
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_SUM_INSURED_BREAKUP s
   left join p on p.k = s.QUOTE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
    and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7590,8 +7614,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_SUM_INSURED_BREAKUP' as satellite, '
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK QUOTE_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
--- [10 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST [1 col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+-- [10 col(s)], MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST [1
+-- col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct QUOTE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE
@@ -7606,7 +7631,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_TERMS' as satellite, 'HUB_QUOTE' as 
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_TERMS s
   left join p on p.k = s.QUOTE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST')
    and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7619,7 +7644,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_TERMS' as satellite, 'HUB_QUOTE' as 
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK QUOTE_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [12 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -7635,7 +7660,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_TRAVEL_TRIP' as satellite, 'HUB_QUOT
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_TRAVEL_TRIP s
   left join p on p.k = s.QUOTE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
    and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7648,7 +7673,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_TRAVEL_TRIP' as satellite, 'HUB_QUOT
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK QUOTE_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [9 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -7664,7 +7689,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE' as satellite, 
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE s
   left join p on p.k = s.QUOTE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
    and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7677,7 +7702,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE' as satellite, 
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK QUOTE_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [11 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -7693,7 +7718,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_UW_QUERY' as satellite, 'HUB_QUOTE' 
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_UW_QUERY s
   left join p on p.k = s.QUOTE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
    and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7706,10 +7731,10 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_UW_QUERY' as satellite, 'HUB_QUOTE' 
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK RISK_OBJECT_HKEY; 3 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS [1 col(s)],
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
 -- [2 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -7725,7 +7750,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_OBJECT_CORE' as satellite, 'HUB_RISK_
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_OBJECT_CORE s
   left join p on p.k = s.RISK_OBJECT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7738,7 +7763,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_OBJECT_CORE' as satellite, 'HUB_RISK_
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS [2 col(s)].
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS [2 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT
@@ -7753,7 +7778,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_OBJECT_PREMIUM' as satellite, 'HUB_RI
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_OBJECT_PREMIUM s
   left join p on p.k = s.RISK_OBJECT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS')
    and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7766,9 +7791,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_OBJECT_PREMIUM' as satellite, 'HUB_RI
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK RISK_OBJECT_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [10 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
 -- [10 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -7784,7 +7809,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_PERSON_INSURED' as satellite, 'HUB_RI
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_INSURED s
   left join p on p.k = s.RISK_OBJECT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7797,19 +7822,19 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_PERSON_INSURED' as satellite, 'HUB_RI
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK RISK_OBJECT_HKEY; 7 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [13 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [9 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
 -- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
 -- [13 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -7825,7 +7850,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_PERSON_TRAVEL' as satellite, 'HUB_RIS
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_TRAVEL s
   left join p on p.k = s.RISK_OBJECT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7839,9 +7864,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_PERSON_TRAVEL' as satellite, 'HUB_RIS
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.ma_sat; PK RISK_OBJECT_HKEY, child key SUB_COVER_CODE; 2 RECORD_SOURCE
 -- group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [3 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -7858,7 +7883,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_TRAVEL_COVER_TERMS' as satellite, 'HU
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_TRAVEL_COVER_TERMS s
   left join p on p.k = s.RISK_OBJECT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
    and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7872,7 +7897,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_TRAVEL_COVER_TERMS' as satellite, 'HU
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.ma_sat; PK RISK_OBJECT_HKEY, child key RATING_INPUT_CODE; 1 RECORD_SOURCE
 -- group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [3 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
@@ -7889,7 +7914,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_TRAVEL_RATING_INPUT' as satellite, 'H
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_TRAVEL_RATING_INPUT s
   left join p on p.k = s.RISK_OBJECT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
    and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7902,9 +7927,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_TRAVEL_RATING_INPUT' as satellite, 'H
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK RISK_OBJECT_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
 -- [2 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -7920,7 +7945,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_TRAVEL_SPONSOR' as satellite, 'HUB_RI
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_TRAVEL_SPONSOR s
   left join p on p.k = s.RISK_OBJECT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
    and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -7933,9 +7958,9 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_TRAVEL_SPONSOR' as satellite, 'HUB_RI
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK RISK_OBJECT_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [10 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+-- MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [10 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -7951,7 +7976,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY' as satellite, 
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY s
   left join p on p.k = s.RISK_OBJECT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+ where s.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
    and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;

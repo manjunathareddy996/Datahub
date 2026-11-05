@@ -84,6 +84,52 @@ A.resolve = AT.resolve_travel
 A.PROJECTS = PROJECTS
 
 
+# ---------------------------------------------------------------------------
+# Walk-aware link_src_union: when a feed's arm comes from a resolved_mt__
+# view, alias the base RAW as `b`, left-join each walk's parent RAW table,
+# and prefix every column reference with the right alias so unresolved
+# `w0_<name>` tokens disappear from the emitted SQL. Falls through to the
+# partner emitter for every non-walk arm.
+# ---------------------------------------------------------------------------
+_ORIG_LINK_SRC_UNION = R.link_src_union
+
+
+def _rewrite(expr, alias_map):
+    return AT._rewrite_arm_expr(expr, alias_map) if expr else expr
+
+
+def link_src_union_travel(ln, with_label=True):
+    parts = []
+    for label, arm in ln.feeds:
+        walks = getattr(arm, "walks", None)
+        md = getattr(arm, "_md", None)
+        joins, alias_map = [], {}
+        if walks and md is not None:
+            joins, alias_map, _unres = AT._walk_join_sql(md, walks)
+        lk = arm.lookup
+        cols = []
+        if with_label:
+            cols.append(f"{AT.A.lit(label)} as src_feed")
+        cols.append(f"{_rewrite(lk.get(ln.pk), alias_map)} as link_hkey")
+        cols += [f"{_rewrite(lk.get(fk), alias_map)} as {fk}" for fk in ln.fks]
+        where = [f"{_rewrite(lk.get(fk), alias_map)} is not null" for fk in ln.fks]
+        if arm.where:
+            where.append(f"({_rewrite(arm.where, alias_map)})")
+        if joins:
+            frm = f"{arm.raw} b"
+            for jl in joins:
+                frm += f"\n       {jl}"
+        else:
+            frm = arm.raw
+        parts.append(
+            f"-- via {label}\nselect " + ",\n       ".join(cols) +
+            f"\n  from {frm}\n where " + "\n   and ".join(where))
+    return "\nunion all\n".join(parts)
+
+
+R.link_src_union = link_src_union_travel
+
+
 def build_links_travel():
     links = []
     for project, md in PROJECTS:
