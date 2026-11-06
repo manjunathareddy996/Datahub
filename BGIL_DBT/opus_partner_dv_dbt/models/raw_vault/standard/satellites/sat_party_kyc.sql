@@ -5,22 +5,25 @@
     )
 }}
 
--- PARTNER+KYC STANDARD-MODEL sat() for SAT_PARTY_KYC (HUB_PARTY grain) -- union of 5 branch(es).
--- data_7: hist 'SCD2', childkey '', anchor parent 'HUB_PARTY'.
--- Payload rendered GLUED (DEC-01, anchor kind HUB read from data_7's parent field).
+-- PARTNER+KYC STANDARD-MODEL sat() for SAT_PARTY_KYC (HUB_PARTY grain), keyed on part_id.
 --
--- KNOWN DESTRUCTIVE OVERWRITE, BUILT AS MAPPED AND RAISED (5.7). 1 attribute(s)
--- of this SINGLE-ACTIVE satellite are written by more than one source table
--- under a byte-identical HUB_PARTY key with an EMPTY discriminator, so whichever
--- branch loads last wins: KYC Completion Date.
--- The builder refuses to invent a discriminator. One modeller answer unblocks it.
+-- PARTY KEY: every branch resolves part_id through BJAZ_T_KYC_DETAILS (the only KYC table
+-- that carries the partner, on rows where FIELD_TYPE = partner field type and FIELD_VALUE =
+-- part_id) and hashes 'HUB_PARTY|' || part_id -- the same key as stg2_hub_cp_partners__party.
+--   BJAZ_T_KYC_DETAILS   own partner row, else POI_DOC_ID   (stage_kyc__bjaz_t_kyc_details)
+--   BJAZ_T_CKYC_SEARCH   SEARCH_ID                         (stage_kyc__bjaz_t_ckyc_search)
+--   BJAZ_T_KYC_INCOMING  INCOMING_ID                       (stage_kyc__bjaz_t_kyc_incoming)
 --
--- opus_partner_dv_dbt: written in this project's pattern -- incremental append, sat_multi_source, src_record_source_map OPUS, src_column_map per source; source_model listed once each.
+-- PENDING, NOT LOADED UNTIL THEIR JOIN IS CONFIRMED (they still carry the old CKYC: key,
+-- which has no HUB_PARTY row):
+--   stg2_sat_bjaz_t_ckyc_personal_dtls__party_kyc                    (KYCTYPE, OVDSUBMITTEDCOUNT)
+--   stg2_sat_bjaz_t_ckyc_rel_persion_dtls__party_kyc__related_person (KYCCOMPLETIONDATE)
+--
+-- KNOWN OVERWRITE: KYC Completion Date is written by CKYC_SEARCH and KYC_DETAILS under the
+-- same PARTY_HKEY; RECORD_SOURCE keeps them as separate histories.
 
 {%- set yaml_metadata -%}
 source_model:
-  - 'stg2_sat_bjaz_t_ckyc_personal_dtls__party_kyc'
-  - 'stg2_sat_bjaz_t_ckyc_rel_persion_dtls__party_kyc__related_person'
   - 'stg2_sat_bjaz_t_ckyc_search__party_kyc'
   - 'stg2_sat_bjaz_t_kyc_details__party_kyc'
   - 'stg2_sat_bjaz_t_kyc_incoming__party_kyc'
@@ -38,8 +41,6 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_sat_bjaz_t_ckyc_personal_dtls__party_kyc: 'OPUS_PARTNER'
-  stg2_sat_bjaz_t_ckyc_rel_persion_dtls__party_kyc__related_person: 'OPUS_PARTNER'
   stg2_sat_bjaz_t_ckyc_search__party_kyc: 'OPUS_PARTNER'
   stg2_sat_bjaz_t_kyc_details__party_kyc: 'OPUS_PARTNER'
   stg2_sat_bjaz_t_kyc_incoming__party_kyc: 'OPUS_PARTNER'
@@ -55,8 +56,6 @@ src_record_source_map:
                     source_model=metadata_dict['source_model'],
                     src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
-                        'stg2_sat_bjaz_t_ckyc_personal_dtls__party_kyc': ['KYCTYPE', 'OVDSUBMITTEDCOUNT'],
-                        'stg2_sat_bjaz_t_ckyc_rel_persion_dtls__party_kyc__related_person': ['KYCCOMPLETIONDATE'],
                         'stg2_sat_bjaz_t_ckyc_search__party_kyc': ['CKYCNUMBER', 'CKYCREGISTRATIONSTATUS', 'KYCCOMPLETIONDATE', 'LASTKYCREVIEWDATE'],
                         'stg2_sat_bjaz_t_kyc_details__party_kyc': ['KYCCOMPLETIONDATE', 'KYCSTATUS'],
                         'stg2_sat_bjaz_t_kyc_incoming__party_kyc': ['KYCMODE', 'KYCTYPE']
