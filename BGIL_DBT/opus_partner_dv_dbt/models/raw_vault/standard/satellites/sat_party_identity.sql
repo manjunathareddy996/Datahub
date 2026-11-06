@@ -10,6 +10,9 @@
 -- KYC: 8 KYC feeds added; converted automate_dv.sat -> sat_multi_source (same payload,
 -- grain and hashdiff). Each KYC source supplies only its columns via src_column_map.
 
+-- OCR: stg2_sat_bjaz_t_kyc_ocr__party_identity is NOT loaded -- BJAZ_T_KYC_DETAILS has no OCR_ID, so its rows cannot
+-- resolve to part_id yet. Re-add once the OCR join is confirmed.
+
 {%- set yaml_metadata -%}
 source_model:
   - 'stg2_party_identity'
@@ -20,7 +23,6 @@ source_model:
   - 'stg2_sat_bjaz_t_kyc_auth__party_identity'
   - 'stg2_sat_bjaz_t_kyc_details__party_identity'
   - 'stg2_sat_bjaz_t_kyc_incoming__party_identity'
-  - 'stg2_sat_bjaz_t_kyc_ocr__party_identity'
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'AGE'
@@ -54,7 +56,6 @@ src_record_source_map:
   stg2_sat_bjaz_t_kyc_auth__party_identity: 'OPUS_PARTNER'
   stg2_sat_bjaz_t_kyc_details__party_identity: 'OPUS_PARTNER'
   stg2_sat_bjaz_t_kyc_incoming__party_identity: 'OPUS_PARTNER'
-  stg2_sat_bjaz_t_kyc_ocr__party_identity: 'OPUS_PARTNER'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
@@ -75,6 +76,5 @@ src_record_source_map:
                         'stg2_sat_bjaz_t_ekyc__party_identity': ['DATEOFBIRTH', 'GENDERCODE', 'PARTYFULLNAME'],
                         'stg2_sat_bjaz_t_kyc_auth__party_identity': ['DATEOFBIRTH', 'GENDERCODE', 'PARTYFULLNAME'],
                         'stg2_sat_bjaz_t_kyc_details__party_identity': ['DATEOFBIRTH', 'PARTYDISPLAYNAME', 'PARTYFULLNAME'],
-                        'stg2_sat_bjaz_t_kyc_incoming__party_identity': ['DATEOFBIRTH', 'GENDERCODE', 'PARTYFULLNAME', 'PARTYTYPECODE'],
-                        'stg2_sat_bjaz_t_kyc_ocr__party_identity': ['DATEOFBIRTH', 'GENDERCODE', 'LASTNAME', 'NATIONALITY', 'PLACEOFBIRTH']
+                        'stg2_sat_bjaz_t_kyc_incoming__party_identity': ['DATEOFBIRTH', 'GENDERCODE', 'PARTYFULLNAME', 'PARTYTYPECODE']
                     }) }}

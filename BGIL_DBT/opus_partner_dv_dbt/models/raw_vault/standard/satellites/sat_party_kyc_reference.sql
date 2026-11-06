@@ -8,6 +8,10 @@
 -- PARTNER STANDARD-MODEL sat() for SAT_PARTY_KYC_REFERENCE (HUB_PARTY grain) -- single source.
 -- KYC: 3 KYC feeds added; converted automate_dv.sat -> sat_multi_source (same payload,
 -- grain and hashdiff). The 3 KYC stages carry KYCREFERENCETYPE as NULL (merged mapping).
+-- KYC PARTY KEY: part_id resolved through BJAZ_T_KYC_DETAILS, same key as CP_PARTNERS:
+--   BJAZ_T_CKYC_OTP              FIELD_TYPE, FIELD_VALUE   (stage_kyc__bjaz_t_ckyc_otp)
+--   BJAZ_T_CKYC_SEARCH           SEARCH_ID                 (stage_kyc__bjaz_t_ckyc_search)
+--   BJAZ_T_CKYC_REL_PERSION_DTLS CKYC_NO -> CKYC_SEARCH    (stage_kyc__bjaz_t_ckyc_rel_persion_dtls)
 
 {%- set yaml_metadata -%}
 source_model:

@@ -18,26 +18,13 @@
 -- were hashed with; promoting it to src_cdk would re-chain the hashdiff.
 -- One line to change: KR.SWITCHES['SAT_PARTY_KYC_REFERENCE_GRAIN']['merged'].
 --
--- KYC-SUBJECT PARTY KEY: FORM RATIFIED, SEMANTICS UNVERIFIED (KEY_FORM_RATIFIED_SEMANTICS_UNVERIFIED).
--- Operands on this table: CATEGORY / INPUT, selected by the ratified rule -- first COMPLETE pair
--- of (CATEGORY, INPUT), (SEARCH_CATEGORY, SEARCH_INPUT), (FIELD_TYPE, FIELD_VALUE).
--- Re-derived from the source DDL and asserted against the ratified table pair for pair;
--- a disagreement fails the build. Authority: ratified by the mapping counterparty on its caller's authority; re-derived from inputs/KYC_Tables_source_ddl.xlsx and asserted against the counterparty's table pair for pair at import time.
---
--- THE nullif(..., ':') GUARD IS PART OF THE KEY, NOT DECORATION. Without it an all-blank
--- row reduces to the bare constant ':' and every such row keys to ONE party.
---
--- UNDETERMINED, AND SETTLEABLE ONLY BY THE SOURCE OWNER: is this pair an identifier TYPE
--- and VALUE, or a record of what was SEARCHED FOR? If the latter, keying HUB_PARTY on it
--- MERGES EVERY PARTY EVER SEARCHED BY THE SAME VALUE. Built as mapped and raised (5.7).
--- BJAZ_T_KYC_INCOMING IS THE ROW TO CHANGE FIRST: it is the request root and its
--- SEARCH_CATEGORY is VARCHAR2(2) against CATEGORY's 10 or 20, so a two-character category
--- reads more like a search-type flag than an identifier type. Refusing the request root
--- would strand the 8 tables that foreign-key to INCOMING_ID, so it is built.
--- One line to switch this table off: pkyc_party_key.ENABLED['BJAZ_T_CKYC_OTP'] = False.
+-- PARTY KEY: part_id, resolved in stage_kyc__bjaz_t_ckyc_otp
+-- (FIELD_TYPE, FIELD_VALUE -> BJAZ_T_KYC_DETAILS FIELD_TYPE, FIELD_VALUE).
+-- Same key form as stg2_hub_cp_partners__party ('HUB_PARTY|' || part_id). Rows with no
+-- resolved part_id hash to NULL and are dropped by sat_multi_source.
 
 {%- set yaml_metadata -%}
-source_model: 'stg_partner__bjaz_t_ckyc_otp'
+source_model: 'stage_kyc__bjaz_t_ckyc_otp'
 hashed_columns:
   PARTY_HKEY: 'PARENT_NK'
   HASHDIFF:
@@ -45,8 +32,8 @@ hashed_columns:
     columns:
       - 'KYCREFERENCETYPE'
 derived_columns:
-  PARENT_BK: "nullif(upper(trim(coalesce(category,''))) || ':' || upper(trim(coalesce(input,''))), ':')"
-  PARENT_NK: "'HUB_PARTY|' || (nullif(upper(trim(coalesce(category,''))) || ':' || upper(trim(coalesce(input,''))), ':'))"
+  PARENT_BK: 'part_id'
+  PARENT_NK: "'HUB_PARTY|' || (part_id)"
   KYCREFERENCETYPE: "cast(null as varchar)"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_CKYC_OTP'
