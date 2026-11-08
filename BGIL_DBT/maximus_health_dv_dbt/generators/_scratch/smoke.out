@@ -1,0 +1,49 @@
+load: 0.32s
+  blocks: 2948
+  conflict_group_list: ['MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_PIVOT_VW|HUB_COVERAGE|None|["\'COV:\' || \'BASIC\'", "\'COV:\' || \'CLAIM_MULTIPLIER\'", "\'COV:\' || \'COMPREHENSIVE\'", "\'COV:\' || \'DEDUCTIBLE\'", "\'COV:\' || \'DOUBLE_SUM_INSURED\'", "\'COV:\' || \'ENHANCED\'", "\'COV:\' || \'INSTA_SHIELD\'", "\'COV:\' || \'INTERNATIONAL\'", "\'COV:\' || \'INTERNATIONAL_ENHANCED\'", "\'COV:\' || nullif(trim(coalesce(nullif(trim(PRODUCT_CODE),\'\'),\'\') || \'#\' || coalesce(nullif(trim(PLAN),\'\'),\'\') || \'#\' || coalesce(nullif(trim(SUB_PLAN),\'\'),\'\')), \'##\')", "nullif(\'COV:\' || coalesce(nullif(trim(PRODUCT_CODE),\'\'),\'\') || \'#\' || coalesce(nullif(trim(PLAN),\'\'),\'\') || \'#\' || coalesce(nullif(trim(SUB_PLAN),\'\'),\'\'), \'COV:##\')"]', 'MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY|HUB_RISK_OBJECT|insured-member|["\'MEMBER:\' || (nullif(trim(PARTY_CODE),\'\'))", "\'MEMBER:\' || nullif(trim(PARTY_CODE),\'\')"]']
+  conflict_rows: 66
+  hubs: 20
+  input_digests: 159
+  key_slots: 280
+  kind:augmentation: 948
+  kind:hub_key: 111
+  kind:link_key: 1
+  kind:satellite_attribute: 1888
+  link_component_slot: 62
+  link_component_spine_no_slot: 124
+  link_slot_with_spine_expression: 148
+  links: 5
+  outcome:augmentation_needed: 1010
+  outcome:mapped: 1938
+  rows: 2948
+  satellites: 381
+  slot_groups_conflicting: 2
+  slot_groups_multi_but_governed_by_key_row: 8
+  slot_skipped_tier_unresolved: 16
+  slot_source_anchor_expression: 315
+  slot_source_resolved_key: 2427
+  spec_unresolved:anchor_does_not_resolve_uniquely: 213
+  spec_unresolved:anchor_has_no_declared_expression_on_this_view: 43
+  spec_unresolved:do_not_build: 4
+  spec_unresolved:refuse_row: 3
+  spine_expression_not_single_no_slot: 112
+  spine_slot_on_terminal: 1475
+  tables: 158
+  unresolved_entries: 334
+  walks: 87
+deterministic (two loads, identical health_spec text): True (2,320,479 chars)
+round-trip parse_spec == canonical spec: True
+satellite tracks: Counter({'standard': 365, 'augmented': 16})
+satellite parent_origin: Counter({'own_spec': 381})
+key slot origins: Counter({'spec.resolved_key': 280})
+untyped columns: Counter({'legacy': 3833})
+key columns: 583
+expected gap rows from spec_unresolved: 263 Counter({'anchor_does_not_resolve_uniquely': 213, 'anchor_has_no_declared_expression_on_this_view': 43, 'do_not_build': 4, 'refuse_row': 3})
+plan: 6.09s
+artifacts: 1306 [('bridge', 31), ('hub', 17), ('sat', 194), ('stage_aug', 162), ('stage_hub', 182), ('stage_sat', 562), ('stg1', 158)]
+gaps: 1132
+gaps by (track, reason): [(('augmented', 'missing_grain_key'), 41), (('augmented', 'no_verified_augmentation_key'), 177), (('augmented', 'unresolved_mapping'), 284), (('standard', 'missing_grain_key'), 299), (('standard', 'unresolved_mapping'), 331)]
+gap rows (sum of row_ids): 1132
+gap rows with spec_unresolved covered: 263 of 263
+hist_skips: 0 not_fed: 220
+max artifact path length: 145

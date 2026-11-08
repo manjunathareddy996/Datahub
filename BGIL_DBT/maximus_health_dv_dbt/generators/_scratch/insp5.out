@@ -1,0 +1,103 @@
+i==index: False
+leg backing: Counter({'literal': 782, 'template': 563, None: 134, 'surrogate': 45, 'column': 36, 'unresolved': 5, 'source_gap': 3})
+leg state: Counter({'ok': 1380, 'unresolved': 138, 'surrogate_quarantine': 45, 'refused_component_scope': 5})
+leg from: Counter({'components': 1434, 'displayed_value': 121, 'displayed_value_unnamed': 13})
+LEG literal: value='PROOF_OF_ADDRESS' rendered="'PROOF_OF_ADDRESS'" status=[{'leg': 'KYC Reference Type', 'state': 'ok', 'backing': 'literal', 'resolved_on_view': True}]
+LEG literal: value='PROOF_OF_IDENTITY' rendered="'PROOF_OF_IDENTITY'" status=[{'leg': 'KYC Reference Type', 'state': 'ok', 'backing': 'literal', 'resolved_on_view': True}]
+LEG None: value='1' rendered="'1'" status=[{'leg': 'Mandate Sequence', 'state': 'ok', 'backing': None, 'resolved_on_view': None}]
+LEG None: value='2' rendered="'2'" status=[{'leg': 'Mandate Sequence', 'state': 'ok', 'backing': None, 'resolved_on_view': None}]
+LEG surrogate: value='{spine:KEY_HASH}' rendered=None status=[{'leg': 'Instalment Number', 'state': 'surrogate_quarantine', 'backing': 'surrogate'}]
+LEG surrogate: value='{spine:KEY_HASH}' rendered=None status=[{'leg': 'Certificate Number', 'state': 'surrogate_quarantine', 'backing': 'surrogate'}]
+LEG column: value='{REQUIREMENTNAME}#{SEQUENCENO}' rendered="coalesce(nullif(trim(REQUIREMENTNAME),''),'') || '#' || coalesce(nullif(trim(SEQUENCENO),''),'')" status=[{'leg': 'Required Document Type', 'state': 'ok', 'backing': 'column', 'resolved_on_view': True}]
+LEG column: value='{REQUIREMENTNAME}#{SEQUENCENO}' rendered="coalesce(nullif(trim(REQUIREMENTNAME),''),'') || '#' || coalesce(nullif(trim(SEQUENCENO),''),'')" status=[{'leg': 'Required Document Type', 'state': 'ok', 'backing': 'column', 'resolved_on_view': True}]
+LEG source_gap: value=None rendered=None status=[{'leg': 'Account Number Masked', 'state': 'unresolved', 'backing': 'source_gap', 'resolved_on_view': False, 'why': 'leg has no value at all'}]
+LEG source_gap: value=None rendered=None status=[{'leg': 'Account Number Masked', 'state': 'unresolved', 'backing': 'source_gap', 'resolved_on_view': False, 'why': 'leg has no value at all'}]
+LEG unresolved: value=None rendered=None status=[{'leg': 'Endorsement Number', 'state': 'refused_component_scope', 'backing': 'unresolved'}]
+LEG unresolved: value=None rendered=None status=[{'leg': 'Endorsement Number', 'state': 'refused_component_scope', 'backing': 'unresolved'}]
+LEG template: value="{nullif(trim(spine:MEMBERS_PARTY.PARTY_CODE),'')|nullif(trim(MEMBER_CODE),'')|nullif(trim(HEALTH_CARD_NUMBER),'')|nullif(trim(INSURED_MEMBER_CODE),'')}" rendered="coalesce(coalesce(nullif(trim(HEALTH_CARD_NUMBER),''), nullif(trim(INSURED_MEMBER_CODE),'')),'')" status=[{'leg': 'Certificate Number', 'state': 'ok', 'backing': 'template', 'resolved_on_view': True}]
+LEG template: value="{nullif(trim(spine:MEMBERS_PARTY.PARTY_CODE),'')|nullif(trim(MEMBER_CODE),'')|nullif(trim(HEALTH_CARD_NUMBER),'')|nullif(trim(INSURED_MEMBER_CODE),'')}" rendered="coalesce(coalesce(nullif(trim(HEALTH_CARD_NUMBER),''), nullif(trim(INSURED_MEMBER_CODE),'')),'')" status=[{'leg': 'Member Reference', 'state': 'ok', 'backing': 'template', 'resolved_on_view': True}]
+leg count vs rendered_child_key: Counter({(0, 0): 1721, (1, 1): 842, (2, 2): 192, (2, 1): 130, (1, 0): 56, (4, 4): 6, (2, 0): 1})
+multi_active vs declared_child_key: Counter({(None, False): 1157, (None, True): 847, (False, False): 557, (True, True): 234, (True, False): 152, (False, True): 1})
+ok legs without rendered: 13 [(1245, None), (1246, None), (1247, None), (1248, None), (1768, None)]
+rendered but state not ok: Counter({'ok': 1367})
+declared_child_key != model childkey: 0 []
+no-sat sat rows: 64
+   {"i": 2295, "view": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_LIST_OF_COVERS_ENTITY_HEADS_ENTITY_GRID_ROWS_ROW_ATTRIBUTES_PIVOT_VW", "column": "ADDITIONAL_BILL_DISCOUNT", "outcome": "augmentation_needed", "kind": "satellite_attribute", "attribute": null, "anchor": "HUB_CLAIM", "instance": null, "satellite": null, "home": null, "new_satellite": null}
+   {"i": 2298, "view": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_LIST_OF_COVERS_ENTITY_HEADS_ENTITY_GRID_ROWS_ROW_ATTRIBUTES_PIVOT_VW", "column": "APPROVED_QUANTITY", "outcome": "augmentation_needed", "kind": "satellite_attribute", "attribute": null, "anchor": "HUB_CLAIM", "instance": null, "satellite": null, "home": null, "new_satellite": null}
+   {"i": 2301, "view": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_LIST_OF_COVERS_ENTITY_HEADS_ENTITY_GRID_ROWS_ROW_ATTRIBUTES_PIVOT_VW", "column": "BENEFIT_LIMIT_PER_WEEK", "outcome": "augmentation_needed", "kind": "satellite_attribute", "attribute": null, "anchor": "HUB_COVERAGE", "instance": null, "satellite": null, "home": null, "new_satellite": null}
+   {"i": 2307, "view": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_LIST_OF_COVERS_ENTITY_HEADS_ENTITY_GRID_ROWS_ROW_ATTRIBUTES_PIVOT_VW", "column": "BENEFIT_PERCENTAGE", "outcome": "augmentation_needed", "kind": "satellite_attribute", "attribute": null, "anchor": "HUB_CLAIM", "instance": null, "satellite": null, "home": null, "new_satellite": null}
+outcome by kind with sat none: Counter({('satellite_attribute', 'augmentation_needed'): 62, ('augmentation', 'augmentation_needed'): 2})
+NEWSAT SAT_POLICY_FOLLOW_UP_LOG rows=7 anchors=['HUB_POLICY'] childkeys=[''] multi=['True'] homes=['SAT_POLICY_FOLLOW_UP_LOG'] satellite=['None']
+NEWSAT SAT_INSTRUMENT_NACH_MANDATE rows=13 anchors=['HUB_PAYMENT_INSTRUMENT'] childkeys=[''] multi=['True'] homes=['SAT_INSTRUMENT_NACH_MANDATE'] satellite=['None']
+NEWSAT SAT_POLICY_PAYMENT_INSTRUCTION rows=1 anchors=['HUB_POLICY'] childkeys=[''] multi=['None'] homes=['SAT_POLICY_PAYMENT_INSTRUCTION'] satellite=['None']
+NEWSAT SAT_ASSESSMENT_LAB_RESULT rows=13 anchors=['HUB_ASSESSMENT'] childkeys=[''] multi=['True'] homes=['SAT_ASSESSMENT_LAB_RESULT'] satellite=['None']
+NEWSAT SAT_POLICY_COVERAGE_RISK_BENEFIT rows=62 anchors=['LNK_POLICY_COVERAGE_RISK'] childkeys=[''] multi=['True'] homes=['SAT_POLICY_COVERAGE_RISK_BENEFIT'] satellite=['None']
+NEWSAT SAT_RISK_HEALTH_MEMBER_PPC_PACKAGE rows=18 anchors=['HUB_RISK_OBJECT'] childkeys=[''] multi=['True'] homes=['SAT_RISK_HEALTH_MEMBER_PPC_PACKAGE'] satellite=['None']
+NEWSAT SAT_PARTY_BENEFICIARY_LINE rows=2 anchors=['HUB_PARTY'] childkeys=[''] multi=['True'] homes=['SAT_PARTY_BENEFICIARY_LINE'] satellite=['None']
+NEWSAT SAT_DOCUMENT_REQUIREMENT_CHASER rows=4 anchors=['HUB_DOCUMENT'] childkeys=[''] multi=['True'] homes=['SAT_DOCUMENT_REQUIREMENT_CHASER'] satellite=['None']
+NEWSAT SAT_CLAIM_PRIOR_POLICY_HISTORY rows=4 anchors=['HUB_CLAIM'] childkeys=[''] multi=['None', 'True'] homes=['SAT_CLAIM_PRIOR_POLICY_HISTORY'] satellite=['None']
+NEWSAT SAT_POLICY_PRE_POLICY_CHECKUP rows=3 anchors=['HUB_POLICY'] childkeys=[''] multi=['False'] homes=['SAT_POLICY_PRE_POLICY_CHECKUP'] satellite=['None']
+NEWSAT SAT_CLAIM_PACKAGE_SERVICE_TARIFF rows=10 anchors=['HUB_CLAIM'] childkeys=[''] multi=['True'] homes=['SAT_CLAIM_PACKAGE_SERVICE_TARIFF'] satellite=['None']
+NEWSAT SAT_PROPOSAL_MEDICAL_TEST_READING rows=9 anchors=['HUB_PROPOSAL'] childkeys=[''] multi=['True'] homes=['SAT_PROPOSAL_MEDICAL_TEST_READING'] satellite=['None']
+NEWSAT SAT_POLICY_BONUS_BY_COVER rows=3 anchors=['HUB_POLICY'] childkeys=[''] multi=['True'] homes=['SAT_POLICY_BONUS_BY_COVER'] satellite=['None']
+NEWSAT SAT_CLAIM_INWARD_DOCUMENT_GRID rows=2 anchors=['HUB_DOCUMENT'] childkeys=[''] multi=['True'] homes=['SAT_CLAIM_INWARD_DOCUMENT_GRID'] satellite=['None']
+NEWSAT SAT_CLAIM_STATUS_TRANSITION rows=4 anchors=['HUB_CLAIM'] childkeys=[''] multi=['True'] homes=['SAT_CLAIM_STATUS_TRANSITION'] satellite=['None']
+NEWSAT SAT_CLAIM_QUESTIONNAIRE_RESPONSE rows=1 anchors=['HUB_CLAIM'] childkeys=[''] multi=['True'] homes=['SAT_CLAIM_QUESTIONNAIRE_RESPONSE'] satellite=['None']
+aug rows home!=satellite: 156
+row anchor != model parent: 0 []
+block columns not in staging columns: 0 []
+needs_columns not in staging: 0 []
+terminal columns not in terminal table columns: 0 []
+legacy augmented: 112 files
+legacy hopviews: 75 files
+legacy quarantine: 7 files
+legacy reference_decode: 2 files
+legacy reject_log: 77 files
+legacy resolvers: 61 files
+legacy stage: 83 files
+legacy staging: 83 files
+legacy tests: 3 files
+legacy unpivot: 14 files
+legacy vault: 5 files
+{{ config(materialized='view') }}
+-- GENERATED by gen_mxh3_staging.py -- models are generated, never hand-edited.
+--   source view : MAXI_HLTH_CLM_VW_DATA_AUTHORIZATION_REMARKS
+--   cast reason : supplies 3 referenced column(s)
+--   columns     : 9 of 17 on the view (a view gets a cast because it NEEDS
+--                 one, not because it is in the map)
+--   lineage     : 7 spine column(s) retained: FOREIGN_KEY, KEY_HASH, PARENT_KEY_HASH, PARENT_RECORD_HASH, PARENT_TABLE_NAME, RECORD_HASH, ROOT_HASH
+--   convention  : UPPER_SNAKE_PHYSICAL (RECOMMENDED_NOT_RATIFIED)
+--   pivot view  : no
+
+select
+    FOREIGN_KEY::varchar as FOREIGN_KEY,
+    KEY_HASH::number as KEY_HASH,
+    NAME::varchar as NAME,
+    PARENT_KEY_HASH::number as PARENT_KEY_HASH,
+    PARENT_RECORD_HASH::number as PARENT_RECORD_HASH,
+    PARENT_TABLE_NAME::varchar as PARENT_TABLE_NAME,
+    RECORD_HASH::number as RECORD_HASH,
+    ROOT_HASH::number as ROOT_HASH,
+    VALUE::varchar as VALUE
+from {{ source('maxi_hlth_v3', 'MAXI_HLTH_CLM_VW_DATA_AUTHORIZATION_REMARKS') }}
+
+{{ config(materialized='view') }}
+-- GENERATED by gen_mxh3_hopviews.py -- models are generated, never hand-edited.
+--   source view : MAXI_HLTH_CLM_VW_DATA
+--   WALK-ONLY CAST: this view is on a walk; NO map row names it
+--   shred depth : 0
+--   columns     : 5 (walk terminal columns + the spine lineage needed to
+--                 join one real level at a time)
+--   WHY         : only 52 of 1,812 climbs name the DIRECT parent, so every
+--                 intervening level must exist as a table to join through.
+--   convention  : UPPER_SNAKE_PHYSICAL (RECOMMENDED_NOT_RATIFIED)
+
+select
+    FOREIGN_KEY::varchar as FOREIGN_KEY,
+    KEY_HASH::number as KEY_HASH,
+    PARENT_TABLE_NAME::varchar as PARENT_TABLE_NAME,
+    RECORD_HASH::number as RECORD_HASH,
+    ROOT_HASH::number as ROOT_HASH
+from {{ source('maxi_hlth_v3', 'MAXI_HLTH_CLM_VW_DATA') }}
+
+stem files: staging model stems == files? True
