@@ -107,5 +107,6 @@ select
     cast(selfpassportno as varchar) as selfpassportno,
     cast(selfpreexisitngdisease as varchar) as selfpreexisitngdisease,
     cast(selfrelation as varchar) as selfrelation,
-    cast(selfweight as varchar) as selfweight
+    cast(selfweight as varchar) as selfweight,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_WS_FAMILY_DTLS_BANDHAN') }}

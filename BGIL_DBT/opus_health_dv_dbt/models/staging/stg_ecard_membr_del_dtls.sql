@@ -19,5 +19,6 @@ select
     cast(emp_neme as varchar) as emp_neme,
     cast(natrl_reason as varchar) as natrl_reason,
     cast(quote_ref as varchar) as quote_ref,
-    cast(relation as varchar) as relation
+    cast(relation as varchar) as relation,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_ECARD_MEMBR_DEL_DTLS') }}

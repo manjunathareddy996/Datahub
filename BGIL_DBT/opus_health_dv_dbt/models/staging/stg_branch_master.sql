@@ -43,5 +43,6 @@ select
     cast(state_code as varchar) as state_code,
     cast(telephone1 as varchar) as telephone1,
     cast(telephone2 as varchar) as telephone2,
-    cast(ut_flag as varchar) as ut_flag
+    cast(ut_flag as varchar) as ut_flag,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_v2', 'BJAZ_BRANCH_MASTER') }}

@@ -23,5 +23,6 @@ select
     cast(prem_flag as varchar) as prem_flag,
     cast(section_id as varchar) as section_id,
     cast(sr_no as varchar) as sr_no,
-    cast(total_si as varchar) as total_si
+    cast(total_si as varchar) as total_si,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_delta3', 'BJAZ_STARPKG_COV_PREM_MST') }}

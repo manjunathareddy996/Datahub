@@ -56,5 +56,6 @@ select
     cast(sum_insured as varchar) as sum_insured,
     cast(surname as varchar) as surname,
     cast(telephone as varchar) as telephone,
-    cast(title as varchar) as title
+    cast(title as varchar) as title,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_GENERIC_LOADER_LOG_TABLE') }}

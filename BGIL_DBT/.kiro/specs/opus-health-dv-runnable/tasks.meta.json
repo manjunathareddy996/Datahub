@@ -1,0 +1,476 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Copy `dbt_packages/` verbatim from partner": [
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241104267
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241119470
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241322341
+      }
+    ],
+    "1.2 Copy `macros/` verbatim from partner": [
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241106550
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241120947
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241323411
+      }
+    ],
+    "1.3 Author the extended `macros/stitch_incremental_hcon.sql`": [
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241106850
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241329735
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241513405
+      },
+      {
+        "executionId": "ec954468-51a5-48d4-a0c6-4241d18ca397",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794244736242
+      },
+      {
+        "executionId": "ec954468-51a5-48d4-a0c6-4241d18ca397",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794244786048
+      }
+    ],
+    "1.4 Create the standard empty dbt directories": [
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241107052
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241122297
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241324279
+      }
+    ],
+    "2.1 Author `dbt_project.yml` adapted from partner": [
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241107226
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241331074
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241513029
+      }
+    ],
+    "2.2 Author `packages.yml`": [
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241107416
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241332723
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241509257
+      }
+    ],
+    "2.3 Author `profiles.yml`": [
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241107604
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241333429
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241508263
+      }
+    ],
+    "2.4 Author `models/staging/_health__sources.yml`": [
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241107775
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241334189
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241510681
+      }
+    ],
+    "3. Checkpoint — verify scaffolding parses": [
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241108217
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241530100
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241844101
+      }
+    ],
+    "4.1 Document and apply the repeatable reshape procedure on one pilot file": [
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241108386
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241848422
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794242996710
+      }
+    ],
+    "5.1 Reshape `stitch_00`, `stitch_02`–`stitch_09` (satellite-feeding)": [
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241108522
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794243003179
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794244423212
+      }
+    ],
+    "6.1 Reshape `stitch_11`–`stitch_19` (satellite-feeding)": [
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241108686
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794243004700
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794244423041
+      }
+    ],
+    "7.1 Reshape `stitch_20`–`stitch_29` (satellite-feeding)": [
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241108859
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794243006415
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794244423367
+      }
+    ],
+    "8.1 Reshape `stitch_30`–`stitch_39` (satellite-feeding)": [
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241109101
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794243007215
+      }
+    ],
+    "9.1 Reshape `stitch_40`–`stitch_42`, `stitch_44`, `stitch_45` (satellite-feeding)": [
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241109320
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794243008263
+      },
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794244423479
+      }
+    ],
+    "10. Checkpoint — verify end-to-end compile (stitched plus hub-key consumers)": [
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241109492
+      }
+    ],
+    "11. Compile the follow-up findings document": [
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241109621
+      }
+    ],
+    "2. Author project configuration files": [
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241513713
+      }
+    ],
+    "1. Vendor dependencies, create standard dbt directories, add the extended macro": [
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794241513836
+      }
+    ],
+    "4. Establish the per-file stitched reshape procedure": [
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794242996864
+      }
+    ],
+    "6. Reshape stitched models 11–19": [
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794244423583
+      }
+    ],
+    "5. Reshape stitched models 00–09": [
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794244423731
+      }
+    ],
+    "9. Reshape stitched models 40–45": [
+      {
+        "executionId": "1dc8415c-4342-4062-8280-3e1662a0d326",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794244423883
+      }
+    ],
+    "12.1 Pilot: per-satellite stitches for `stitch_01`": [
+      {
+        "executionId": "ec954468-51a5-48d4-a0c6-4241d18ca397",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794245009479
+      },
+      {
+        "executionId": "ec954468-51a5-48d4-a0c6-4241d18ca397",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794246041467
+      },
+      {
+        "executionId": "ec954468-51a5-48d4-a0c6-4241d18ca397",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794246101786
+      },
+      {
+        "executionId": "ec954468-51a5-48d4-a0c6-4241d18ca397",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794246367763
+      }
+    ],
+    "12.2 Batch `stitch_00`, `stitch_02`–`stitch_09`": [
+      {
+        "executionId": "ec954468-51a5-48d4-a0c6-4241d18ca397",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794245009644
+      }
+    ],
+    "12.3 Batch `stitch_11`–`stitch_19`": [
+      {
+        "executionId": "ec954468-51a5-48d4-a0c6-4241d18ca397",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794245009763
+      }
+    ],
+    "12.4 Batch `stitch_30`–`stitch_34`, `stitch_36`–`stitch_39`": [
+      {
+        "executionId": "ec954468-51a5-48d4-a0c6-4241d18ca397",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794245009963
+      }
+    ],
+    "12.5 Batch `stitch_40`–`stitch_42`, `stitch_44`, `stitch_45`": [
+      {
+        "executionId": "ec954468-51a5-48d4-a0c6-4241d18ca397",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794245010138
+      }
+    ],
+    "13. Checkpoint — per-satellite stitch set is complete and consistent": [
+      {
+        "executionId": "ec954468-51a5-48d4-a0c6-4241d18ca397",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794245010293
+      }
+    ],
+    "7.1 Reshape `stitch_20`–`stitch_29` one stitch per satellite (satellite-feeding)": [
+      {
+        "executionId": "ec954468-51a5-48d4-a0c6-4241d18ca397",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794245020464
+      },
+      {
+        "executionId": "ec954468-51a5-48d4-a0c6-4241d18ca397",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794245919436
+      }
+    ],
+    "7. Reshape stitched models 20–29": [
+      {
+        "executionId": "ec954468-51a5-48d4-a0c6-4241d18ca397",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794245919876
+      }
+    ],
+    "8.1 Reshape `stitch_30`–`stitch_39` (satellite-feeding), first pass": [
+      {
+        "executionId": "ec954468-51a5-48d4-a0c6-4241d18ca397",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794245926944
+      }
+    ],
+    "8. Reshape stitched models 30–39": [
+      {
+        "executionId": "ec954468-51a5-48d4-a0c6-4241d18ca397",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794245927178
+      }
+    ],
+    "5.2 Flag `stitch_10_policy__lnk_role_nominee_beneficiary` as not reshapable": [
+      {
+        "executionId": "ec954468-51a5-48d4-a0c6-4241d18ca397",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794245944524
+      },
+      {
+        "executionId": "ec954468-51a5-48d4-a0c6-4241d18ca397",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794246036719
+      }
+    ],
+    "9.2 Flag `stitch_43_policy__lnk_party_role_core` as not reshapable": [
+      {
+        "executionId": "ec954468-51a5-48d4-a0c6-4241d18ca397",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794245945055
+      },
+      {
+        "executionId": "ec954468-51a5-48d4-a0c6-4241d18ca397",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794246036869
+      }
+    ],
+    "14.1 Edit all 109 `models/staging/stg_*.sql`": [
+      {
+        "executionId": "ec954468-51a5-48d4-a0c6-4241d18ca397",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794246180652
+      },
+      {
+        "executionId": "ec954468-51a5-48d4-a0c6-4241d18ca397",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794246193479
+      },
+      {
+        "executionId": "ec954468-51a5-48d4-a0c6-4241d18ca397",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794246254661
+      }
+    ],
+    "14.2 Static verification of the staging edit": [
+      {
+        "executionId": "ec954468-51a5-48d4-a0c6-4241d18ca397",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794246181182
+      },
+      {
+        "executionId": "ec954468-51a5-48d4-a0c6-4241d18ca397",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794246260367
+      },
+      {
+        "executionId": "ec954468-51a5-48d4-a0c6-4241d18ca397",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794246360257
+      }
+    ],
+    "14. Add `inc_job_updated_at` to health staging models": [
+      {
+        "executionId": "ec954468-51a5-48d4-a0c6-4241d18ca397",
+        "chatSessionId": "sess_378a0885-4262-470d-ba36-3c7cb32c7082",
+        "timestamp": 1794246360750
+      }
+    ]
+  }
+}

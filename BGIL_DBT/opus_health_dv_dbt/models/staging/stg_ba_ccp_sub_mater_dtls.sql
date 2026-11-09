@@ -78,5 +78,6 @@ select
     cast(terr_prem as varchar) as terr_prem,
     cast(tot_sec_prem as varchar) as tot_sec_prem,
     cast(type_loan as varchar) as type_loan,
-    cast(version_no as varchar) as version_no
+    cast(version_no as varchar) as version_no,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_delta3', 'BA_CCP_SUB_MATER_DTLS') }}

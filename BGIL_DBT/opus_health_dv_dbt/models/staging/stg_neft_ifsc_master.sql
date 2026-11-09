@@ -24,5 +24,6 @@ select
     cast(ifsc_code as varchar) as ifsc_code,
     cast(micr_code as varchar) as micr_code,
     cast(neft_status as varchar) as neft_status,
-    cast(state as varchar) as state
+    cast(state as varchar) as state,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_v2', 'BJAZ_NEFT_IFSC_MASTER') }}

@@ -45,5 +45,6 @@ select
     cast(tot_app_amtmou as varchar) as tot_app_amtmou,
     cast(tot_bill_amt as varchar) as tot_bill_amt,
     cast(tot_copay_amt as varchar) as tot_copay_amt,
-    cast(tot_disallow_amt as varchar) as tot_disallow_amt
+    cast(tot_disallow_amt as varchar) as tot_disallow_amt,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_HM_BILL_DETAIL') }}

@@ -20,5 +20,6 @@ select
     cast(mem_add_flag as varchar) as mem_add_flag,
     cast(mem_status as varchar) as mem_status,
     cast(part_id as varchar) as part_id,
-    cast(prem_base_cover as varchar) as prem_base_cover
+    cast(prem_base_cover as varchar) as prem_base_cover,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BA_HCP_DT_POL_COV') }}

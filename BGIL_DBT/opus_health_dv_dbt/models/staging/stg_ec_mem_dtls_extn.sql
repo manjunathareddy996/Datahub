@@ -70,5 +70,6 @@ select
     cast(smoke_consump as varchar) as smoke_consump,
     cast(status as varchar) as status,
     cast(sum_insured as varchar) as sum_insured,
-    cast(weight_kg as varchar) as weight_kg
+    cast(weight_kg as varchar) as weight_kg,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_EC_MEM_DTLS_EXTN') }}

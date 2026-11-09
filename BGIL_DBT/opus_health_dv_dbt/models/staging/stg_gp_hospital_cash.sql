@@ -85,5 +85,6 @@ select
     cast(term_end_date as varchar) as term_end_date,
     cast(term_start_date as varchar) as term_start_date,
     cast(user_id as varchar) as user_id,
-    cast(weight as varchar) as weight
+    cast(weight as varchar) as weight,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_GP_HOSPITAL_CASH') }}

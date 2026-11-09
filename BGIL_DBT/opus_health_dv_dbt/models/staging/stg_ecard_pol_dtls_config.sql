@@ -57,5 +57,6 @@ select
     cast(quote_status as varchar) as quote_status,
     cast(risk_expiry_date as varchar) as risk_expiry_date,
     cast(risk_inception_date as varchar) as risk_inception_date,
-    cast(short_period_date as varchar) as short_period_date
+    cast(short_period_date as varchar) as short_period_date,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_ECARD_POL_DTLS_CONFIG') }}

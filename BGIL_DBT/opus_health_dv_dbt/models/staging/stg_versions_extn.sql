@@ -21,5 +21,6 @@ select
     cast(endorse_reason as varchar) as endorse_reason,
     cast(endorse_sub_type as varchar) as endorse_sub_type,
     cast(endorse_wording as varchar) as endorse_wording,
-    cast(version_no as varchar) as version_no
+    cast(version_no as varchar) as version_no,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_delta3', 'BJAZ_VERSIONS_EXTN') }}

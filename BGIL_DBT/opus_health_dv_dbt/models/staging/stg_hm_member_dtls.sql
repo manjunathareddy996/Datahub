@@ -66,5 +66,6 @@ select
     cast(suminsured as varchar) as suminsured,
     cast(term_end_date as varchar) as term_end_date,
     cast(term_start_date as varchar) as term_start_date,
-    cast(vip_flg as varchar) as vip_flg
+    cast(vip_flg as varchar) as vip_flg,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_HM_MEMBER_DTLS') }}

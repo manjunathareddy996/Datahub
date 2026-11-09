@@ -25,5 +25,6 @@ select
     cast(partner_id as varchar) as partner_id,
     cast(scheme_code as varchar) as scheme_code,
     cast(scheme_desc as varchar) as scheme_desc,
-    cast(sertax_flag as varchar) as sertax_flag
+    cast(sertax_flag as varchar) as sertax_flag,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_CTNGY_SCHEME_MST') }}

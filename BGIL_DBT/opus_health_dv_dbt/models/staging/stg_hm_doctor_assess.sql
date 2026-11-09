@@ -26,5 +26,6 @@ select
     cast(medical_mgmt_type as varchar) as medical_mgmt_type,
     cast(package_charge as varchar) as package_charge,
     cast(package_flag as varchar) as package_flag,
-    cast(pcs_yn as varchar) as pcs_yn
+    cast(pcs_yn as varchar) as pcs_yn,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_HM_DOCTOR_ASSESS') }}

@@ -28,5 +28,6 @@ select
     cast(request_no as varchar) as request_no,
     cast(scrutiny_no as varchar) as scrutiny_no,
     cast(status as varchar) as status,
-    cast(sum_insured as varchar) as sum_insured
+    cast(sum_insured as varchar) as sum_insured,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_SCR_HLTH_PORTABLE_DTLS') }}

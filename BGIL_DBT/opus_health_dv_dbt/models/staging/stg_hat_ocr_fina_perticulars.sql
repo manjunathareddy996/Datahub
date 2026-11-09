@@ -23,5 +23,6 @@ select
     cast(inward_no as varchar) as inward_no,
     cast(level_3 as varchar) as level_3,
     cast(particular as varchar) as particular,
-    cast(sr_no as varchar) as sr_no
+    cast(sr_no as varchar) as sr_no,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_v2', 'BJAZ_HAT_OCR_FINA_PERTICULARS') }}

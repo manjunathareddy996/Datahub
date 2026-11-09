@@ -60,5 +60,6 @@ select
     cast(sh_period_of_insurance as varchar) as sh_period_of_insurance,
     cast(sh_period_treatment as varchar) as sh_period_treatment,
     cast(smoker_yn as varchar) as smoker_yn,
-    cast(weight_kg as varchar) as weight_kg
+    cast(weight_kg as varchar) as weight_kg,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_v2', 'BJAZ_HM_MEMBER_HLTH_DTLS') }}

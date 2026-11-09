@@ -28,5 +28,6 @@ select
     cast(plan_name as varchar) as plan_name,
     cast(plan_si as varchar) as plan_si,
     cast(product_code as varchar) as product_code,
-    cast(recovery_theft_si as varchar) as recovery_theft_si
+    cast(recovery_theft_si as varchar) as recovery_theft_si,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_HCS_PLANSI_MAPP') }}

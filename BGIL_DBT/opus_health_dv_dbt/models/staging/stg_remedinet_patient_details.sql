@@ -39,5 +39,6 @@ select
     cast(relationship_name as varchar) as relationship_name,
     cast(requestid as varchar) as requestid,
     cast(state as varchar) as state,
-    cast(updated_on as varchar) as updated_on
+    cast(updated_on as varchar) as updated_on,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_delta3', 'BJAZ_REMEDINET_PATIENT_DETAILS') }}

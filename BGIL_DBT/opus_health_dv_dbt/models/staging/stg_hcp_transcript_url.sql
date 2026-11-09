@@ -28,5 +28,6 @@ select
     cast(prop_formyn as varchar) as prop_formyn,
     cast(scrutiny_no as varchar) as scrutiny_no,
     cast(scrutiny_url as varchar) as scrutiny_url,
-    cast(v_second_scr as varchar) as v_second_scr
+    cast(v_second_scr as varchar) as v_second_scr,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_HCP_TRANSCRIPT_URL') }}

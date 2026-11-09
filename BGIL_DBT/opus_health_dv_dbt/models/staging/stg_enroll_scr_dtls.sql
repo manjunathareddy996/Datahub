@@ -70,5 +70,6 @@ select
     cast(transaction_type as varchar) as transaction_type,
     cast(uw_load_amt as varchar) as uw_load_amt,
     cast(uw_load_flag as varchar) as uw_load_flag,
-    cast(uw_load_rate as varchar) as uw_load_rate
+    cast(uw_load_rate as varchar) as uw_load_rate,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_v2', 'BJAZ_ENROLL_SCR_DTLS') }}

@@ -22,5 +22,6 @@ select
     cast(hosp_id as varchar) as hosp_id,
     cast(omni_inward_no as varchar) as omni_inward_no,
     cast(patient_id_card as varchar) as patient_id_card,
-    cast(trans_amount as varchar) as trans_amount
+    cast(trans_amount as varchar) as trans_amount,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_HM_PREAUTH_ENHANCE') }}

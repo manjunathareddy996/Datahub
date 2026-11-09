@@ -162,5 +162,6 @@ select
     cast(total_bill as varchar) as total_bill,
     cast(treatment_type as varchar) as treatment_type,
     cast(type_of_loss as varchar) as type_of_loss,
-    cast(utr_no as varchar) as utr_no
+    cast(utr_no as varchar) as utr_no,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_HM_HCM_EXTRACT') }}

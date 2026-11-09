@@ -35,5 +35,6 @@ select
     cast(quote_sub_no as varchar) as quote_sub_no,
     cast(reg_no as varchar) as reg_no,
     cast(state as varchar) as state,
-    cast(total as varchar) as total
+    cast(total as varchar) as total,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_GRP_HLT_CUST_DTLS') }}

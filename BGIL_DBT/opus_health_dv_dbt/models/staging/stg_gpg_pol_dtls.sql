@@ -74,5 +74,6 @@ select
     cast(tax_code as varchar) as tax_code,
     cast(total_addon_premium as varchar) as total_addon_premium,
     cast(total_base_premium as varchar) as total_base_premium,
-    cast(utgst_amt as varchar) as utgst_amt
+    cast(utgst_amt as varchar) as utgst_amt,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_GPG_POL_DTLS') }}

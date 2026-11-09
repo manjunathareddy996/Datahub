@@ -55,5 +55,6 @@ select
     cast(total_bill_amount as varchar) as total_bill_amount,
     cast(total_claimed_amount as varchar) as total_claimed_amount,
     cast(total_payable_amount as varchar) as total_payable_amount,
-    cast(zone_name as varchar) as zone_name
+    cast(zone_name as varchar) as zone_name,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_REMEDINET_CLAIM_DETAILS') }}

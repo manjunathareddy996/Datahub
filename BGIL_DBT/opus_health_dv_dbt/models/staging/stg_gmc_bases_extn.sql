@@ -29,5 +29,6 @@ select
     cast(sp_conditions as varchar) as sp_conditions,
     cast(sp_perils as varchar) as sp_perils,
     cast(version_no as varchar) as version_no,
-    cast(warrenties as varchar) as warrenties
+    cast(warrenties as varchar) as warrenties,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_delta3', 'BJAZ_GMC_BASES_EXTN') }}

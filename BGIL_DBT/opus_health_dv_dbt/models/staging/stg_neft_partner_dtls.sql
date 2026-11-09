@@ -42,5 +42,6 @@ select
     cast(re_entered_acc_no as varchar) as re_entered_acc_no,
     cast(state as varchar) as state,
     cast(supplier_id as varchar) as supplier_id,
-    cast(supplier_type as varchar) as supplier_type
+    cast(supplier_type as varchar) as supplier_type,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_v2', 'BJAZ_NEFT_PARTNER_DTLS') }}

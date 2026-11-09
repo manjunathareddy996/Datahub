@@ -54,5 +54,6 @@ select
     cast(sender_name as varchar) as sender_name,
     cast(state_name as varchar) as state_name,
     cast(type_of_loss as varchar) as type_of_loss,
-    cast(vip_flag as varchar) as vip_flag
+    cast(vip_flag as varchar) as vip_flag,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_HM_INWARD_DTLS') }}

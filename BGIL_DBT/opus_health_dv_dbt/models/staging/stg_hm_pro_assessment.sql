@@ -28,5 +28,6 @@ select
     cast(repudi_remark as varchar) as repudi_remark,
     cast(tot_approved_amt as varchar) as tot_approved_amt,
     cast(tot_claimed_amt as varchar) as tot_claimed_amt,
-    cast(tot_disallow_amt as varchar) as tot_disallow_amt
+    cast(tot_disallow_amt as varchar) as tot_disallow_amt,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_HM_PRO_ASSESSMENT') }}

@@ -16,5 +16,6 @@
 
 select
     cast(claim_id as varchar) as claim_id,
-    cast(query_remark as varchar) as query_remark
+    cast(query_remark as varchar) as query_remark,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_HM_QUERY_REMARK') }}

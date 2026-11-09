@@ -71,5 +71,6 @@ select
     cast(term_end_date_text as varchar) as term_end_date_text,
     cast(transcript_yn as varchar) as transcript_yn,
     cast(uin_no as varchar) as uin_no,
-    cast(uw_remarks_yn as varchar) as uw_remarks_yn
+    cast(uw_remarks_yn as varchar) as uw_remarks_yn,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_v2', 'BJAZ_CTNGY_GC_CONTROL') }}

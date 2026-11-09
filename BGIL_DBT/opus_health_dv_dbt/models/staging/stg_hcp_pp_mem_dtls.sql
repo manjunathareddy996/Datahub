@@ -44,5 +44,6 @@ select
     cast(sub_status_code as varchar) as sub_status_code,
     cast(sub_status_desc as varchar) as sub_status_desc,
     cast(test_code as varchar) as test_code,
-    cast(type_of_checkup as varchar) as type_of_checkup
+    cast(type_of_checkup as varchar) as type_of_checkup,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BA_HCP_PP_MEM_DTLS') }}

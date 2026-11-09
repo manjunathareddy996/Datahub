@@ -27,5 +27,6 @@ select
     cast(request_type as varchar) as request_type,
     cast(service_hit_cnt as varchar) as service_hit_cnt,
     cast(service_name as varchar) as service_name,
-    cast(user_name as varchar) as user_name
+    cast(user_name as varchar) as user_name,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_delta3', 'BJAZ_BOT_UTILIZATION_DTLS') }}

@@ -36,5 +36,6 @@ select
     cast(relation as varchar) as relation,
     cast(start_date as varchar) as start_date,
     cast(suminsured as varchar) as suminsured,
-    cast(telephone_no as varchar) as telephone_no
+    cast(telephone_no as varchar) as telephone_no,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_HM_ORPHAN_REG') }}

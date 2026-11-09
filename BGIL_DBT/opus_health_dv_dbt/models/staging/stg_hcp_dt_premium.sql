@@ -96,5 +96,6 @@ select
     cast(uw_loading_rate as varchar) as uw_loading_rate,
     cast(voluntary_deduct_amt as varchar) as voluntary_deduct_amt,
     cast(voluntary_deduct_rate as varchar) as voluntary_deduct_rate,
-    cast(voluntary_referral as varchar) as voluntary_referral
+    cast(voluntary_referral as varchar) as voluntary_referral,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BA_HCP_DT_PREMIUM') }}

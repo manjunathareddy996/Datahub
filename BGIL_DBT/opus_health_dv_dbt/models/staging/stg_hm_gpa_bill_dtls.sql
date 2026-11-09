@@ -102,5 +102,6 @@ select
     cast(ttd_leave_from as varchar) as ttd_leave_from,
     cast(ttd_leave_to as varchar) as ttd_leave_to,
     cast(updated_by as varchar) as updated_by,
-    cast(updated_on as varchar) as updated_on
+    cast(updated_on as varchar) as updated_on,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_v2', 'BJAZ_HM_GPA_BILL_DTLS') }}

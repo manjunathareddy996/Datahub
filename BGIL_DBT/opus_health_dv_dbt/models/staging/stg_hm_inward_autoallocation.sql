@@ -22,5 +22,6 @@ select
     cast(bucket_status as varchar) as bucket_status,
     cast(cashless_in_no as varchar) as cashless_in_no,
     cast(claim_id as varchar) as claim_id,
-    cast(omni_inward_no as varchar) as omni_inward_no
+    cast(omni_inward_no as varchar) as omni_inward_no,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_HM_INWARD_AUTOALLOCATION') }}

@@ -18,5 +18,6 @@ select
     cast(case_id as varchar) as case_id,
     cast(inward_no as varchar) as inward_no,
     cast(name as varchar) as name,
-    cast(total as varchar) as total
+    cast(total as varchar) as total,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_HAT_OCR_FINA_DTLS_LST') }}

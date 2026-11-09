@@ -58,5 +58,6 @@ select
     cast(type_of_change as varchar) as type_of_change,
     cast(type_of_comm_arr as varchar) as type_of_comm_arr,
     cast(username as varchar) as username,
-    cast(website_link as varchar) as website_link
+    cast(website_link as varchar) as website_link,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_v2', 'BJAZ_INTERMEDIARY') }}

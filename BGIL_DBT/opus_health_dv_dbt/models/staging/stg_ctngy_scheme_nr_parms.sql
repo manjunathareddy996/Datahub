@@ -39,5 +39,6 @@ select
     cast(section_id as varchar) as section_id,
     cast(transscript_param_ref as varchar) as transscript_param_ref,
     cast(validate_stop_value as varchar) as validate_stop_value,
-    cast(validate_stop_y_n as varchar) as validate_stop_y_n
+    cast(validate_stop_y_n as varchar) as validate_stop_y_n,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_v2', 'BJAZ_CTNGY_SCHEME_NR_PARMS') }}

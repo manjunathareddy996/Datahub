@@ -21,5 +21,6 @@ select
     cast(disc_case_id as varchar) as disc_case_id,
     cast(disc_particular_lead_term as varchar) as disc_particular_lead_term,
     cast(disc_particular_profile_term as varchar) as disc_particular_profile_term,
-    cast(disc_particular_raw as varchar) as disc_particular_raw
+    cast(disc_particular_raw as varchar) as disc_particular_raw,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_v2', 'BJAZ_HAT_DISC_SUMMARY_LST') }}

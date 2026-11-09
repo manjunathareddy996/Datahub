@@ -79,5 +79,6 @@ select
     cast(uw_loading_amt as varchar) as uw_loading_amt,
     cast(uw_loading_per as varchar) as uw_loading_per,
     cast(uw_load_amt as varchar) as uw_load_amt,
-    cast(uw_load_rate as varchar) as uw_load_rate
+    cast(uw_load_rate as varchar) as uw_load_rate,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_HEALTH_WEBSERVICE_INFO') }}

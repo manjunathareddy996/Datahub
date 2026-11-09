@@ -23,5 +23,6 @@ select
     cast(faxcreateddate as varchar) as faxcreateddate,
     cast(fax_no as varchar) as fax_no,
     cast(imagename as varchar) as imagename,
-    cast(inwardno as varchar) as inwardno
+    cast(inwardno as varchar) as inwardno,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_delta3', 'NG_FAX_INWARD_DETAILS') }}

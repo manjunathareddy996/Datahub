@@ -39,5 +39,6 @@ select
     cast(pre_disease as varchar) as pre_disease,
     cast(relation as varchar) as relation,
     cast(special_condition as varchar) as special_condition,
-    cast(sum_insured as varchar) as sum_insured
+    cast(sum_insured as varchar) as sum_insured,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_HLT_ENSURE_MEM_DTLS') }}

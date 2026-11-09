@@ -43,5 +43,6 @@ select
     cast(sex as varchar) as sex,
     cast(status as varchar) as status,
     cast(sum_insured as varchar) as sum_insured,
-    cast(waiting_period as varchar) as waiting_period
+    cast(waiting_period as varchar) as waiting_period,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_HC_PART_EXTN') }}

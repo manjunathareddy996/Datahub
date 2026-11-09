@@ -88,5 +88,6 @@ select
     cast(plc_re_insurance as varchar) as plc_re_insurance,
     cast(plc_special_terms_conditions as varchar) as plc_special_terms_conditions,
     cast(policy_ref as varchar) as policy_ref,
-    cast(pol_serial_no as varchar) as pol_serial_no
+    cast(pol_serial_no as varchar) as pol_serial_no,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BA_HCP_PROD_8432_ECP_LOADER') }}

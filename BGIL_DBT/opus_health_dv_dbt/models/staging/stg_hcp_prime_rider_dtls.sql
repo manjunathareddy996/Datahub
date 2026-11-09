@@ -28,5 +28,6 @@ select
     cast(sgst_amt as varchar) as sgst_amt,
     cast(total_final_premium as varchar) as total_final_premium,
     cast(total_net_premium as varchar) as total_net_premium,
-    cast(utgst_amt as varchar) as utgst_amt
+    cast(utgst_amt as varchar) as utgst_amt,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BA_HCP_PRIME_RIDER_DTLS') }}

@@ -24,5 +24,6 @@ select
     cast(nominee_relation as varchar) as nominee_relation,
     cast(relation as varchar) as relation,
     cast(special_condition as varchar) as special_condition,
-    cast(sum_insured as varchar) as sum_insured
+    cast(sum_insured as varchar) as sum_insured,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_ILLNESS_BASES_EXTN') }}

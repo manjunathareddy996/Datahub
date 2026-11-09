@@ -96,5 +96,6 @@ select
     cast(spe_conditions_ho as varchar) as spe_conditions_ho,
     cast(tax_code as varchar) as tax_code,
     cast(total_permium as varchar) as total_permium,
-    cast(utgst_amt as varchar) as utgst_amt
+    cast(utgst_amt as varchar) as utgst_amt,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_GRP_HLT_MATERNITY_DTLS') }}

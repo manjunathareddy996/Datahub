@@ -37,5 +37,6 @@ select
     cast(uw_load as varchar) as uw_load,
     cast(version_no as varchar) as version_no,
     cast(volex_amt as varchar) as volex_amt,
-    cast(volex_per as varchar) as volex_per
+    cast(volex_per as varchar) as volex_per,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_delta3', 'BJAZ_STARPKG_POL_DTLS') }}

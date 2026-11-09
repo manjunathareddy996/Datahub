@@ -24,5 +24,6 @@ select
     cast(service_d as varchar) as service_d,
     cast(service_e as varchar) as service_e,
     cast(service_f as varchar) as service_f,
-    cast(tpa_code as varchar) as tpa_code
+    cast(tpa_code as varchar) as tpa_code,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_GRP_TPA_EXTN') }}

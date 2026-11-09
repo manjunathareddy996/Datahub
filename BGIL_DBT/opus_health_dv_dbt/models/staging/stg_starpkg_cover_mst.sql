@@ -22,5 +22,6 @@ select
     cast(cover_value as varchar) as cover_value,
     cast(disp_order as varchar) as disp_order,
     cast(rating_flag as varchar) as rating_flag,
-    cast(section_id as varchar) as section_id
+    cast(section_id as varchar) as section_id,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_delta3', 'BJAZ_STARPKG_COVER_MST') }}

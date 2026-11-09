@@ -21,5 +21,6 @@ select
     cast(process_name as varchar) as process_name,
     cast(updated_by as varchar) as updated_by,
     cast(updated_on as varchar) as updated_on,
-    cast(version_no as varchar) as version_no
+    cast(version_no as varchar) as version_no,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_v2', 'BJAZ_HM_CLAIM_TRACKER') }}

@@ -25,5 +25,6 @@ select
     cast(scheme_code as varchar) as scheme_code,
     cast(scheme_version as varchar) as scheme_version,
     cast(section_id as varchar) as section_id,
-    cast(version_no as varchar) as version_no
+    cast(version_no as varchar) as version_no,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_v2', 'BJAZ_CTNGY_COVERS_EXT') }}

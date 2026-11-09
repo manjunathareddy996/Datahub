@@ -85,5 +85,6 @@ select
     cast(spouse_yn as varchar) as spouse_yn,
     cast(subimd_code as varchar) as subimd_code,
     cast(subimd_name as varchar) as subimd_name,
-    cast(uncle_yn as varchar) as uncle_yn
+    cast(uncle_yn as varchar) as uncle_yn,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_v2', 'BJAZ_ENROLL_POL_DTLS') }}

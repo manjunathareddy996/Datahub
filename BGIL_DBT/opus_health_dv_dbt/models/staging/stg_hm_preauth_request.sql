@@ -84,5 +84,6 @@ select
     cast(surgery_name as varchar) as surgery_name,
     cast(test_conducted as varchar) as test_conducted,
     cast(treating_doc_name as varchar) as treating_doc_name,
-    cast(valid_flag as varchar) as valid_flag
+    cast(valid_flag as varchar) as valid_flag,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_v2', 'BJAZ_HM_PREAUTH_REQUEST') }}

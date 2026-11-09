@@ -140,5 +140,6 @@ select
     cast(tds_amount as varchar) as tds_amount,
     cast(tpa_claim_no as varchar) as tpa_claim_no,
     cast(tpa_id as varchar) as tpa_id,
-    cast(treatment as varchar) as treatment
+    cast(treatment as varchar) as treatment,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_TPA_CLAIM_DETAILS_WS') }}

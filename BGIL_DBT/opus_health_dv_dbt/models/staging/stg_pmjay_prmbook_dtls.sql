@@ -23,5 +23,6 @@ select
     cast(family_covered as varchar) as family_covered,
     cast(per_family_prm as varchar) as per_family_prm,
     cast(policy_ref as varchar) as policy_ref,
-    cast(tot_family_prm as varchar) as tot_family_prm
+    cast(tot_family_prm as varchar) as tot_family_prm,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_PMJAY_PRMBOOK_DTLS') }}

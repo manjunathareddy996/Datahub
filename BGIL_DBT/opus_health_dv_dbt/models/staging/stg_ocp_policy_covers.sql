@@ -44,5 +44,6 @@ select
     cast(sum_insured_whole_cover as varchar) as sum_insured_whole_cover,
     cast(sum_insured_whole_cover_swf as varchar) as sum_insured_whole_cover_swf,
     cast(surcharge_discount as varchar) as surcharge_discount,
-    cast(version_no as varchar) as version_no
+    cast(version_no as varchar) as version_no,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_delta3', 'OCP_POLICY_COVERS') }}

@@ -24,5 +24,6 @@ select
     cast(inward_status as varchar) as inward_status,
     cast(patient_name as varchar) as patient_name,
     cast(policy_ref as varchar) as policy_ref,
-    cast(vip_flag_inward as varchar) as vip_flag_inward
+    cast(vip_flag_inward as varchar) as vip_flag_inward,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_HM_CASHLESS_INWARD') }}

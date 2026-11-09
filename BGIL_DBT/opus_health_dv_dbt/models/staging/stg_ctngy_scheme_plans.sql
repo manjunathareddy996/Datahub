@@ -50,5 +50,6 @@ select
     cast(self_exclude as varchar) as self_exclude,
     cast(specific_sms_imds as varchar) as specific_sms_imds,
     cast(sub_imd_code as varchar) as sub_imd_code,
-    cast(sub_imd_validate as varchar) as sub_imd_validate
+    cast(sub_imd_validate as varchar) as sub_imd_validate,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_v2', 'BJAZ_CTNGY_SCHEME_PLANS') }}

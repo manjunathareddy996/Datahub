@@ -27,5 +27,6 @@ select
     cast(level5 as varchar) as level5,
     cast(particular as varchar) as particular,
     cast(price as varchar) as price,
-    cast(unit as varchar) as unit
+    cast(unit as varchar) as unit,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_HAT_OCR_BILL_DETAILS') }}

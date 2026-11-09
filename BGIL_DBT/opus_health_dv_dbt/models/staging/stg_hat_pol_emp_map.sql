@@ -21,5 +21,6 @@ select
     cast(emp_code as varchar) as emp_code,
     cast(mail_indicator as varchar) as mail_indicator,
     cast(policy_no as varchar) as policy_no,
-    cast(status as varchar) as status
+    cast(status as varchar) as status,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_v2', 'BJAZ_HAT_POL_EMP_MAP') }}

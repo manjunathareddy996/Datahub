@@ -146,5 +146,6 @@ select
     cast(uw_load_flag as varchar) as uw_load_flag,
     cast(uw_load_rate as varchar) as uw_load_rate,
     cast(version_no as varchar) as version_no,
-    cast(web_userid as varchar) as web_userid
+    cast(web_userid as varchar) as web_userid,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_delta3', 'BJAZ_POLICY_BASES_EXTN') }}

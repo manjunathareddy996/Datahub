@@ -114,5 +114,6 @@ select
     cast(total_claim as varchar) as total_claim,
     cast(total_no_proposed as varchar) as total_no_proposed,
     cast(user_name as varchar) as user_name,
-    cast(utization_corporate as varchar) as utization_corporate
+    cast(utization_corporate as varchar) as utization_corporate,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_GRP_HLT_DTLS') }}

@@ -105,5 +105,6 @@ select
     cast(vehicle_subtype as varchar) as vehicle_subtype,
     cast(vehicle_type as varchar) as vehicle_type,
     cast(version_no as varchar) as version_no,
-    cast(workshop_id as varchar) as workshop_id
+    cast(workshop_id as varchar) as workshop_id,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_delta3', 'BJAZ_POLICY_SUMMARY') }}

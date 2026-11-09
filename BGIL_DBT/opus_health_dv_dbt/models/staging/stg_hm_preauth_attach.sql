@@ -18,5 +18,6 @@ select
     cast(attachment_id as varchar) as attachment_id,
     cast(attachment_type as varchar) as attachment_type,
     cast(hos_ref_id as varchar) as hos_ref_id,
-    cast(omni_inward_no as varchar) as omni_inward_no
+    cast(omni_inward_no as varchar) as omni_inward_no,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_v2', 'BJAZ_HM_PREAUTH_ATTACH') }}

@@ -30,5 +30,6 @@ select
     cast(prev_policy_no as varchar) as prev_policy_no,
     cast(prev_si as varchar) as prev_si,
     cast(scrutiny_no as varchar) as scrutiny_no,
-    cast(top_indicator as varchar) as top_indicator
+    cast(top_indicator as varchar) as top_indicator,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BA_HCP_PORT_WORDINGS') }}

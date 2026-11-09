@@ -34,5 +34,6 @@ select
     cast(proposer_pre_exist as varchar) as proposer_pre_exist,
     cast(proposer_relation as varchar) as proposer_relation,
     cast(version_no as varchar) as version_no,
-    cast(weight as varchar) as weight
+    cast(weight as varchar) as weight,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_delta3', 'BA_CCP_INSURED_DETAILS') }}

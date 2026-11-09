@@ -20,5 +20,6 @@ select
     cast(param_ref as varchar) as param_ref,
     cast(param_value as varchar) as param_value,
     cast(scheme_code as varchar) as scheme_code,
-    cast(scheme_version as varchar) as scheme_version
+    cast(scheme_version as varchar) as scheme_version,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_v2', 'BJAZ_CTNGY_NR_BASES_EXTN') }}

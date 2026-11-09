@@ -121,5 +121,6 @@ select
     cast(ttd_leave_duration as varchar) as ttd_leave_duration,
     cast(ttd_leave_from as varchar) as ttd_leave_from,
     cast(ttd_leave_to as varchar) as ttd_leave_to,
-    cast(ttd_week_benefit as varchar) as ttd_week_benefit
+    cast(ttd_week_benefit as varchar) as ttd_week_benefit,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_v2', 'BJAZ_HM_HCS_TECH_ASSESS_COV') }}

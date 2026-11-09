@@ -115,5 +115,6 @@ select
     cast(plc_type_of_assignor_dclr as varchar) as plc_type_of_assignor_dclr,
     cast(plc_type_of_loan as varchar) as plc_type_of_loan,
     cast(policy_ref as varchar) as policy_ref,
-    cast(pol_serial_no as varchar) as pol_serial_no
+    cast(pol_serial_no as varchar) as pol_serial_no,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BA_HCP_PROD_8439_CLH_LOADER') }}

@@ -16,5 +16,6 @@
 
 select
     cast(loginname as varchar) as loginname,
-    cast(policy_ref as varchar) as policy_ref
+    cast(policy_ref as varchar) as policy_ref,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_HM_POLICY_USERMAPPING') }}

@@ -24,5 +24,6 @@ select
     cast(rm_code as varchar) as rm_code,
     cast(rm_name as varchar) as rm_name,
     cast(sub_imd_code as varchar) as sub_imd_code,
-    cast(sub_imd_name as varchar) as sub_imd_name
+    cast(sub_imd_name as varchar) as sub_imd_name,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_GRP_HLT_IMD_DTLS') }}

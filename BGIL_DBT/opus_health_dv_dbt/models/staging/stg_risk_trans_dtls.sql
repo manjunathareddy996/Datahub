@@ -27,5 +27,6 @@ select
     cast(risk_susp_fraud_id as varchar) as risk_susp_fraud_id,
     cast(trigger_type as varchar) as trigger_type,
     cast(updated_by as varchar) as updated_by,
-    cast(updated_on as varchar) as updated_on
+    cast(updated_on as varchar) as updated_on,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_delta3', 'BJAZ_RISK_TRANS_DTLS') }}

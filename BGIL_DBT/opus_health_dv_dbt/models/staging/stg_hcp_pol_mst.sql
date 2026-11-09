@@ -30,5 +30,6 @@ select
     cast(policy_ref as varchar) as policy_ref,
     cast(policy_start_date as varchar) as policy_start_date,
     cast(policy_status as varchar) as policy_status,
-    cast(sub_imd_code as varchar) as sub_imd_code
+    cast(sub_imd_code as varchar) as sub_imd_code,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BA_HCP_POL_MST') }}

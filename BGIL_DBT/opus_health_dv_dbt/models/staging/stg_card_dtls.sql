@@ -40,5 +40,6 @@ select
     cast(relation as varchar) as relation,
     cast(relation_desc as varchar) as relation_desc,
     cast(status as varchar) as status,
-    cast(sum_insured as varchar) as sum_insured
+    cast(sum_insured as varchar) as sum_insured,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_CARD_DTLS') }}

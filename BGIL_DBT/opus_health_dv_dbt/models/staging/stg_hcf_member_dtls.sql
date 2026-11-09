@@ -76,5 +76,6 @@ select
     cast(special_conditions as varchar) as special_conditions,
     cast(sum_insured as varchar) as sum_insured,
     cast(to_date as varchar) as to_date,
-    cast(weight_flag as varchar) as weight_flag
+    cast(weight_flag as varchar) as weight_flag,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_HCF_MEMBER_DTLS') }}

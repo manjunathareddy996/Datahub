@@ -22,5 +22,6 @@ select
     cast(cover_prem as varchar) as cover_prem,
     cast(partition_no as varchar) as partition_no,
     cast(section_code as varchar) as section_code,
-    cast(version_no as varchar) as version_no
+    cast(version_no as varchar) as version_no,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_delta3', 'BJAZ_STARPKG_COVER_DTLS') }}

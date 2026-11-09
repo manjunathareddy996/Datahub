@@ -49,5 +49,6 @@ select
     cast(policy_ref as varchar) as policy_ref,
     cast(rnw_flag as varchar) as rnw_flag,
     cast(user_id as varchar) as user_id,
-    cast(user_trans_key_no as varchar) as user_trans_key_no
+    cast(user_trans_key_no as varchar) as user_trans_key_no,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_v2', 'BJAZ_PMSBY_DATA_WEB_SERVICE') }}

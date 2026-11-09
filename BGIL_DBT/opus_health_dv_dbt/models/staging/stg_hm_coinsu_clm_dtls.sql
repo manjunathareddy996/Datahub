@@ -71,5 +71,6 @@ select
     cast(sum_insured as varchar) as sum_insured,
     cast(total_amount as varchar) as total_amount,
     cast(type_of_claim as varchar) as type_of_claim,
-    cast(valid_upto_date as varchar) as valid_upto_date
+    cast(valid_upto_date as varchar) as valid_upto_date,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_HM_COINSU_CLM_DTLS') }}

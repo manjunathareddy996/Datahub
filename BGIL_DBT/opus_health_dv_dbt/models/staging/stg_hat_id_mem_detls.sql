@@ -52,5 +52,6 @@ select
     cast(state as varchar) as state,
     cast(status as varchar) as status,
     cast(sum_insured as varchar) as sum_insured,
-    cast(tel as varchar) as tel
+    cast(tel as varchar) as tel,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_HAT_ID_MEM_DETLS') }}

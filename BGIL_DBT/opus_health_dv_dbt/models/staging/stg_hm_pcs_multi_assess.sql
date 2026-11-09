@@ -21,5 +21,6 @@ select
     cast(medical_mgmt_date as varchar) as medical_mgmt_date,
     cast(medical_mgmt_type as varchar) as medical_mgmt_type,
     cast(pcs_id as varchar) as pcs_id,
-    cast(pcs_sno as varchar) as pcs_sno
+    cast(pcs_sno as varchar) as pcs_sno,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_HM_PCS_MULTI_ASSESS') }}

@@ -46,5 +46,6 @@ select
     cast(s_account_number as varchar) as s_account_number,
     cast(term_end_date as varchar) as term_end_date,
     cast(term_start_date as varchar) as term_start_date,
-    cast(weight as varchar) as weight
+    cast(weight as varchar) as weight,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_HDFC_SEC_FHPP') }}

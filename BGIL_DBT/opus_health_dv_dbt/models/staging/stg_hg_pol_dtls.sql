@@ -100,5 +100,6 @@ select
     cast(trace_number as varchar) as trace_number,
     cast(utgst_amt as varchar) as utgst_amt,
     cast(voluntary_co_pay as varchar) as voluntary_co_pay,
-    cast(zone as varchar) as zone
+    cast(zone as varchar) as zone,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BJAZ_HG_POL_DTLS') }}

@@ -35,5 +35,6 @@ select
     cast(prorata_er_cntr as varchar) as prorata_er_cntr,
     cast(prorata_premium as varchar) as prorata_premium,
     cast(relation as varchar) as relation,
-    cast(sum_inusred as varchar) as sum_inusred
+    cast(sum_inusred as varchar) as sum_inusred,
+    cast(inc_job_updated_at as timestamp_ntz) as inc_job_updated_at
 from {{ source('opus_health_legacy_v4', 'BGIL_GMC_FINAL_INSTL_DATA') }}
