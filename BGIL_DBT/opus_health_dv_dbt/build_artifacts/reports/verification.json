@@ -1,0 +1,128 @@
+{
+ "tally": {
+  "PASS": 16,
+  "NOT RUN": 1
+ },
+ "tree_digest": "8d89f91a14f0231fe9ff9d545e4483d29f34c182b602dc89a1ec7833a3a8f609",
+ "checks": [
+  {
+   "check": "rule 2 -- each satellite is fed WHOLE by exactly ONE stage model",
+   "status": "PASS",
+   "population": 131,
+   "detail": "a satellite reading two sources is a satellite split across views, which is what rule 2 forbids and what this build is for",
+   "evidence": []
+  },
+  {
+   "check": "rule 5 -- every hub is derived from the central views, via hub feeds",
+   "status": "PASS",
+   "population": 656,
+   "detail": "a hub fed from anywhere but the view its satellites are built on keys the hub from one place and its satellites from another",
+   "evidence": []
+  },
+  {
+   "check": "rule 6 -- every link takes all its legs from ONE central view",
+   "status": "PASS",
+   "population": 59,
+   "detail": "legs taken from two views assert a relationship no row ever carried",
+   "evidence": []
+  },
+  {
+   "check": "single hash site -- only the stage layer hashes a business key",
+   "status": "PASS",
+   "population": 268,
+   "detail": "a key hashed in two models has two spellings, and two spellings of one key are two keys",
+   "evidence": []
+  },
+  {
+   "check": "no mapper notation survives into executable SQL",
+   "status": "PASS",
+   "population": 1486,
+   "detail": "prose and notation are valid SQL once inside a function call, so only an explicit search finds them; the gates check form, not meaning",
+   "evidence": []
+  },
+  {
+   "check": "every ref() resolves to a model this build emitted",
+   "status": "PASS",
+   "population": 2760,
+   "detail": "a dangling ref is a model that cannot run, and dbt reports it only at run time",
+   "evidence": []
+  },
+  {
+   "check": "model names are injective -- one logical object, one file, nothing overwritten",
+   "status": "PASS",
+   "population": 332,
+   "detail": "a name collision overwrites a file and leaves a layer one model short, which looks exactly like a layer that had one fewer object to emit",
+   "evidence": []
+  },
+  {
+   "check": "no model in a feeding layer is orphaned",
+   "status": "PASS",
+   "population": 837,
+   "detail": "an orphan layer is dead code that looks like work; a sibling build shipped 104 dead stage models this way",
+   "evidence": []
+  },
+  {
+   "check": "no model selects the same alias twice inside ONE select list",
+   "status": "PASS",
+   "population": 3171,
+   "detail": "30 models in a sibling build failed exactly this way, where a child-key leg collided with a payload attribute of the same name. Population is select LISTS, not models, because that is the unit the defect lives in",
+   "evidence": []
+  },
+  {
+   "check": "every FULL OUTER join keys on the coalesce over all already-joined tables",
+   "status": "PASS",
+   "population": 636,
+   "detail": "keying on the first table alone scatters one business key across several partial rows, which no structural check and no gate can see",
+   "evidence": []
+  },
+  {
+   "check": "shared gate check_internal",
+   "status": "PASS",
+   "population": 1486,
+   "detail": "PASS -- refs resolve, every declared source column is emitted, names unique.",
+   "evidence": []
+  },
+  {
+   "check": "shared gate check_patterns",
+   "status": "PASS",
+   "population": 19,
+   "detail": "PASS -- no control bytes, every statically-known pattern compiles.",
+   "evidence": []
+  },
+  {
+   "check": "shared gate check_prose_shape",
+   "status": "PASS",
+   "population": 1486,
+   "detail": "PASS -- no identifier-position token contains a space.",
+   "evidence": []
+  },
+  {
+   "check": "shared gate check_prose_counts",
+   "status": "PASS",
+   "population": 2,
+   "detail": "PASS -- every quantity in current-state prose is sourced or absent.",
+   "evidence": []
+  },
+  {
+   "check": "shared gate check_vault_alignment",
+   "status": "NOT RUN",
+   "population": 0,
+   "detail": "the gate discovers satellites by globbing models/automate_dv/*/satellites/*.sql, a gen-1 path. This project emits them under models/vault/satellites/, so the gate found 0 of them and every finding downstream of that discovery -- its 0% coverage and its 554 'satellite not built at all' items -- is an artifact of looking in the wrong place, not a result. Its two findings that do NOT depend on that discovery were checked by hand and are both false positives: the 109 'illegal alias' items are comment text (' ... reads as work.'), and the 764 'alias selected more than once' items are the cast keyword in cast(col as varchar). Check 9 here re-measures the real figure as 0. The gate is NOT edited, because vault_tools is shared by every project in this estate.",
+   "evidence": []
+  },
+  {
+   "check": "reproducible -- models/ deleted and rebuilt to the SAME tree digest",
+   "status": "PASS",
+   "population": 1486,
+   "detail": "digest before 8d89f91a14f0231f, after 8d89f91a14f0231f. The build wipes models/ first, so this proves it can reconstruct every model without reading one.",
+   "evidence": []
+  },
+  {
+   "check": "ABSOLUTE -- no other build changed",
+   "status": "PASS",
+   "population": 22357,
+   "detail": "every file in 22 sibling project(s) plus vault_tools was checked for a modification time at or after this project's own oldest file (22357 files scanned). Content digests are also recorded now, so a later run can compare bytes as well -- but on THIS run mtime is the only evidence that exists, because no pre-work baseline was captured.",
+   "evidence": []
+  }
+ ]
+}

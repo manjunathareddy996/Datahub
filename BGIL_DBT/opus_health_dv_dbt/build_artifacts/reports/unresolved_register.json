@@ -1,0 +1,1785 @@
+{
+ "count": 148,
+ "by_kind": {
+  "child_key_leg_unresolved": 38,
+  "link_leg_not_staged_on_its_view": 12,
+  "payload_column_is_also_a_child_key_leg": 14,
+  "payload_withheld_table_not_joinable": 5,
+  "proposed_satellite_anchor_not_staged": 6,
+  "proposed_satellite_has_no_central_view": 61,
+  "satellite_anchor_key_not_staged": 6,
+  "satellite_has_no_renderable_payload_on_its_view": 2,
+  "source_table_grouped_but_never_joined": 3,
+  "undefined_udf_normalise": 1
+ },
+ "by_whose_call": {
+  "mapper": 72,
+  "modeller": 75,
+  "source owner": 1
+ },
+ "register_note": "Every entry is something this build REFUSED to resolve rather than defaulting. A fallback always produces a row, so it never produces an error; an entry here is the error a fallback would have hidden.",
+ "entries": [
+  {
+   "kind": "source_table_grouped_but_never_joined",
+   "object": "BJAZ_HM_CLAIM_STATUS_DASH_APP",
+   "detail": "every view that needed this table refused it from its join, so no model reads it and no staging model is emitted for it. Emitting one would be dead code that reads as work. The reason it was refused is registered against the view.",
+   "whose_call": "mapper",
+   "views_that_wanted_it": [
+    9
+   ]
+  },
+  {
+   "kind": "source_table_grouped_but_never_joined",
+   "object": "BJAZ_HM_EXCLUSION_MASTER",
+   "detail": "every view that needed this table refused it from its join, so no model reads it and no staging model is emitted for it. Emitting one would be dead code that reads as work. The reason it was refused is registered against the view.",
+   "whose_call": "mapper",
+   "views_that_wanted_it": [
+    45
+   ]
+  },
+  {
+   "kind": "source_table_grouped_but_never_joined",
+   "object": "BJAZ_HM_INWARD_OMNI_MAPPING",
+   "detail": "every view that needed this table refused it from its join, so no model reads it and no staging model is emitted for it. Emitting one would be dead code that reads as work. The reason it was refused is registered against the view.",
+   "whose_call": "mapper",
+   "views_that_wanted_it": [
+    35
+   ]
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_COMMON_CONTACT",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Contact Point Type + Contact Priority Order', and 2 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 4,
+   "unresolved_legs": [
+    "Contact Point Type",
+    "Contact Priority Order"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_PARTY_IDENTIFICATION",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Identification Type Code', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 5,
+   "unresolved_legs": [
+    "Identification Type Code"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "payload_withheld_table_not_joinable",
+   "object": "SAT_CLAIM_HEADER",
+   "detail": "1 attribute(s) of this satellite sit on table(s) refused from its own view's join, so they are WITHHELD rather than reached by a cross join",
+   "whose_call": "mapper",
+   "view": 9,
+   "attributes": [
+    "Claim Status"
+   ],
+   "tables": [
+    "BJAZ_HM_CLAIM_STATUS_DASH_APP"
+   ]
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_PARTY_GROUP_CENSUS",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Member Reference', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 18,
+   "unresolved_legs": [
+    "Member Reference"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_RISK_HEALTH_MEMBER_COVERAGE",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Member Reference', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 19,
+   "unresolved_legs": [
+    "Member Reference"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_PARTY_PROVIDER_CAPABILITY",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Facility Code', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 20,
+   "unresolved_legs": [
+    "Facility Code"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_POLICY_SUM_INSURED_BREAKUP",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Sum Insured Head', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 20,
+   "unresolved_legs": [
+    "Sum Insured Head"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_RISK_PERSON_MEMBER",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Member Sequence', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 20,
+   "unresolved_legs": [
+    "Member Sequence"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_CLAIM_NOTE",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Note Sequence', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 22,
+   "unresolved_legs": [
+    "Note Sequence"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_PROVIDER_TARIFF",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Service Code', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 23,
+   "unresolved_legs": [
+    "Service Code"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "payload_withheld_table_not_joinable",
+   "object": "SAT_PARTY_HEALTH_PROFILE",
+   "detail": "5 attribute(s) of this satellite sit on table(s) refused from its own view's join, so they are WITHHELD rather than reached by a cross join",
+   "whose_call": "mapper",
+   "view": 25,
+   "attributes": [
+    "Obstetric Abortion Count",
+    "Obstetric Gravida Count",
+    "Obstetric Live Birth Count",
+    "Obstetric Para Count",
+    "Pre-Existing Disease Description"
+   ],
+   "tables": [
+    "BJAZ_HM_PREAUTH_REQUEST"
+   ]
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_POLICY_DOC_CHECKLIST",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Active Sequence Number', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 25,
+   "unresolved_legs": [
+    "Active Sequence Number"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Member Reference + Condition Code', and 2 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 25,
+   "unresolved_legs": [
+    "Member Reference",
+    "Condition Code"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_RISK_HEALTH_PED_WAITING",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Condition Code', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 25,
+   "unresolved_legs": [
+    "Condition Code"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_RI_CESSION_DETAIL",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Cession Reference', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 27,
+   "unresolved_legs": [
+    "Cession Reference"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_FINTXN_COMMISSION",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Commission Type + Intermediary Reference', and 2 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 31,
+   "unresolved_legs": [
+    "Commission Type",
+    "Intermediary Reference"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_FINTXN_RECON_INSTRUMENT",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Instrument Sequence', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 31,
+   "unresolved_legs": [
+    "Instrument Sequence"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_POLICY_TENURE_SCHEDULE",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Tenure Sequence', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 31,
+   "unresolved_legs": [
+    "Tenure Sequence"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_PROPOSAL_QUESTIONNAIRE",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Question Code', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 31,
+   "unresolved_legs": [
+    "Question Code"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_CLAIM_COMMUNICATION",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Communication Date + Sequence', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 32,
+   "unresolved_legs": [
+    "Sequence"
+   ],
+   "resolved_legs": [
+    "Communication Date"
+   ]
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_CLAIM_RESERVE",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Reserve Head', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 32,
+   "unresolved_legs": [
+    "Reserve Head"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_POLICY_PREMIUM_SETTLEMENT",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Settlement Line Sequence', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 32,
+   "unresolved_legs": [
+    "Settlement Line Sequence"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_CLAIM_RESERVE_HEAD",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Reserve Head Code', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 33,
+   "unresolved_legs": [
+    "Reserve Head Code"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_QUOTE_RATING_INPUT",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Factor Code', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 33,
+   "unresolved_legs": [
+    "Factor Code"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "payload_withheld_table_not_joinable",
+   "object": "SAT_CASE_EXTERNAL_REF",
+   "detail": "2 attribute(s) of this satellite sit on table(s) refused from its own view's join, so they are WITHHELD rather than reached by a cross join",
+   "whose_call": "mapper",
+   "view": 35,
+   "attributes": [
+    "External Reference",
+    "Redirect Indicator"
+   ],
+   "tables": [
+    "BJAZ_HM_INWARD_OMNI_MAPPING"
+   ]
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_CASE_EXTERNAL_REF",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Reference Type', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 35,
+   "unresolved_legs": [
+    "Reference Type"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_CLAIM_BILL_DIGITISATION",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Active Sequence Number', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 35,
+   "unresolved_legs": [
+    "Active Sequence Number"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_POLICY_CLAUSE_ATTACHED",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Clause Code', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 35,
+   "unresolved_legs": [
+    "Clause Code"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_POLICY_EXCESS_STRUCTURE",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Excess Code', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 38,
+   "unresolved_legs": [
+    "Excess Code"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_COVERAGE_SUBLIMIT_SCHEDULE",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Active Sequence Number', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 39,
+   "unresolved_legs": [
+    "Active Sequence Number"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_LNK_POLICY_PARTY_ROLE",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Party Role Type + Role Sequence', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 39,
+   "unresolved_legs": [
+    "Party Role Type"
+   ],
+   "resolved_legs": [
+    "Role Sequence"
+   ]
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_PARTY_DIGITAL_IDENTITY",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Active Sequence Number', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 39,
+   "unresolved_legs": [
+    "Active Sequence Number"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Item Code', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 40,
+   "unresolved_legs": [
+    "Item Code"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_POLICY_TAX_HEAD",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Tax Head Code', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 40,
+   "unresolved_legs": [
+    "Tax Head Code"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_POLICY_PREMIUM_HEAD",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Premium Head Code + Coverage Reference + Section + Adjusted Indicator', and 4 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 41,
+   "unresolved_legs": [
+    "Premium Head Code",
+    "Coverage Reference",
+    "Section",
+    "Adjusted Indicator"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_FIN_CHARGE_RATE",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Charge Type', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 42,
+   "unresolved_legs": [
+    "Charge Type"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "payload_withheld_table_not_joinable",
+   "object": "SAT_LNK_PARTY_ROLE_CORE",
+   "detail": "1 attribute(s) of this satellite sit on table(s) refused from its own view's join, so they are WITHHELD rather than reached by a cross join",
+   "whose_call": "mapper",
+   "view": 43,
+   "attributes": [
+    "Role Type"
+   ],
+   "tables": [
+    "BJAZ_NEFT_PARTNER_DTLS"
+   ]
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_LNK_PARTY_ROLE_CORE",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Role Code + Role Sequence', and 2 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 43,
+   "unresolved_legs": [
+    "Role Code",
+    "Role Sequence"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "payload_withheld_table_not_joinable",
+   "object": "SAT_PRODUCT_EXCLUSION_CATALOGUE",
+   "detail": "4 attribute(s) of this satellite sit on table(s) refused from its own view's join, so they are WITHHELD rather than reached by a cross join",
+   "whose_call": "mapper",
+   "view": 45,
+   "attributes": [
+    "Active Sequence Number",
+    "Exclusion Code",
+    "Exclusion Sub Sequence Number",
+    "Exclusion Title"
+   ],
+   "tables": [
+    "BJAZ_HM_EXCLUSION_MASTER"
+   ]
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_POLICY_REFUND_DETAIL",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Active Sequence Number', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 45,
+   "unresolved_legs": [
+    "Active Sequence Number"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_PRODUCT_EXCLUSION_CATALOGUE",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Active Sequence Number', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 45,
+   "unresolved_legs": [
+    "Active Sequence Number"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_PRODUCT_RATING_FACTOR",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Active Sequence Number', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 45,
+   "unresolved_legs": [
+    "Active Sequence Number"
+   ],
+   "resolved_legs": []
+  },
+  {
+   "kind": "child_key_leg_unresolved",
+   "object": "SAT_RISK_OBJECT_INSURABLE_INTEREST",
+   "detail": "data_7.js declares this satellite Multi-Active SCD2 with child key 'Interest Type + Interest Holder Reference', and 1 leg(s) resolve to no column on any table of its own view. The legs are NOT rendered: a wrong child key is unrecoverable after load. The view dedupes on the legs it could resolve, which is RECORDED here as a narrower grain than the model declares.",
+   "whose_call": "mapper",
+   "view": 45,
+   "unresolved_legs": [
+    "Interest Holder Reference"
+   ],
+   "resolved_legs": [
+    "Interest Type"
+   ]
+  },
+  {
+   "kind": "satellite_has_no_renderable_payload_on_its_view",
+   "object": "SAT_CASE_EXTERNAL_REF",
+   "detail": "its own central view rendered none of this satellite's attributes, so there is nothing to hash and no satellite is emitted",
+   "whose_call": "mapper",
+   "view": 35,
+   "attributes_wanted": [
+    "External Reference",
+    "Redirect Indicator"
+   ]
+  },
+  {
+   "kind": "satellite_has_no_renderable_payload_on_its_view",
+   "object": "SAT_PRODUCT_EXCLUSION_CATALOGUE",
+   "detail": "its own central view rendered none of this satellite's attributes, so there is nothing to hash and no satellite is emitted",
+   "whose_call": "mapper",
+   "view": 45,
+   "attributes_wanted": [
+    "Active Sequence Number",
+    "Exclusion Code",
+    "Exclusion Sub Sequence Number",
+    "Exclusion Title"
+   ]
+  },
+  {
+   "kind": "undefined_udf_normalise",
+   "object": "normalise()",
+   "detail": "normalise() appears in 32 stage model(s), carried verbatim from map key expressions. It is defined nowhere in this project or in either original. The expressions are NOT rewritten -- a tidied key is a different key -- so the UDF must exist in the warehouse before these models run.",
+   "whose_call": "source owner",
+   "stage_models_affected": 32
+  },
+  {
+   "kind": "link_leg_not_staged_on_its_view",
+   "object": "LNK_CLAIM_COVERAGE",
+   "detail": "the plan places this link on central view 24, whose stage model emits no hash key for leg(s) HUB_COVERAGE. The link is NOT emitted from a partial grain: a link row missing a leg records a relationship to nothing.",
+   "whose_call": "mapper",
+   "view": 24,
+   "legs": [
+    "HUB_CLAIM",
+    "HUB_COVERAGE"
+   ]
+  },
+  {
+   "kind": "link_leg_not_staged_on_its_view",
+   "object": "LNK_CLAIM_DOCUMENT",
+   "detail": "the plan places this link on central view 25, whose stage model emits no hash key for leg(s) HUB_CLAIM. The link is NOT emitted from a partial grain: a link row missing a leg records a relationship to nothing.",
+   "whose_call": "mapper",
+   "view": 25,
+   "legs": [
+    "HUB_CLAIM",
+    "HUB_DOCUMENT"
+   ]
+  },
+  {
+   "kind": "link_leg_not_staged_on_its_view",
+   "object": "LNK_LOSS_EVENT_LOCATION",
+   "detail": "the plan places this link on central view 26, whose stage model emits no hash key for leg(s) HUB_LOCATION. The link is NOT emitted from a partial grain: a link row missing a leg records a relationship to nothing.",
+   "whose_call": "mapper",
+   "view": 26,
+   "legs": [
+    "HUB_LOSS_EVENT",
+    "HUB_LOCATION"
+   ]
+  },
+  {
+   "kind": "link_leg_not_staged_on_its_view",
+   "object": "LNK_COVERAGE_HIERARCHY",
+   "detail": "the plan places this link on central view 28, whose stage model emits no hash key for leg(s) HUB_COVERAGE, HUB_COVERAGE. The link is NOT emitted from a partial grain: a link row missing a leg records a relationship to nothing.",
+   "whose_call": "mapper",
+   "view": 28,
+   "legs": [
+    "HUB_COVERAGE",
+    "HUB_COVERAGE"
+   ]
+  },
+  {
+   "kind": "link_leg_not_staged_on_its_view",
+   "object": "LNK_POLICY_COVERAGE",
+   "detail": "the plan places this link on central view 28, whose stage model emits no hash key for leg(s) HUB_COVERAGE. The link is NOT emitted from a partial grain: a link row missing a leg records a relationship to nothing.",
+   "whose_call": "mapper",
+   "view": 28,
+   "legs": [
+    "HUB_POLICY",
+    "HUB_COVERAGE"
+   ]
+  },
+  {
+   "kind": "link_leg_not_staged_on_its_view",
+   "object": "LNK_POLICY_COVERAGE_RISK",
+   "detail": "the plan places this link on central view 28, whose stage model emits no hash key for leg(s) HUB_COVERAGE. The link is NOT emitted from a partial grain: a link row missing a leg records a relationship to nothing.",
+   "whose_call": "mapper",
+   "view": 28,
+   "legs": [
+    "HUB_POLICY",
+    "HUB_COVERAGE",
+    "HUB_RISK_OBJECT"
+   ]
+  },
+  {
+   "kind": "link_leg_not_staged_on_its_view",
+   "object": "LNK_PRODUCT_COVERAGE",
+   "detail": "the plan places this link on central view 28, whose stage model emits no hash key for leg(s) HUB_COVERAGE. The link is NOT emitted from a partial grain: a link row missing a leg records a relationship to nothing.",
+   "whose_call": "mapper",
+   "view": 28,
+   "legs": [
+    "HUB_PRODUCT",
+    "HUB_COVERAGE"
+   ]
+  },
+  {
+   "kind": "link_leg_not_staged_on_its_view",
+   "object": "LNK_CHANNEL_ORG_UNIT",
+   "detail": "the plan places this link on central view 45, whose stage model emits no hash key for leg(s) HUB_ORG_UNIT. The link is NOT emitted from a partial grain: a link row missing a leg records a relationship to nothing.",
+   "whose_call": "mapper",
+   "view": 45,
+   "legs": [
+    "HUB_DISTRIBUTION_CHANNEL",
+    "HUB_ORG_UNIT"
+   ]
+  },
+  {
+   "kind": "link_leg_not_staged_on_its_view",
+   "object": "LNK_ORG_UNIT_HIERARCHY",
+   "detail": "the plan places this link on central view 45, whose stage model emits no hash key for leg(s) HUB_ORG_UNIT, HUB_ORG_UNIT. The link is NOT emitted from a partial grain: a link row missing a leg records a relationship to nothing.",
+   "whose_call": "mapper",
+   "view": 45,
+   "legs": [
+    "HUB_ORG_UNIT",
+    "HUB_ORG_UNIT"
+   ]
+  },
+  {
+   "kind": "link_leg_not_staged_on_its_view",
+   "object": "LNK_ORG_UNIT_LOCATION",
+   "detail": "the plan places this link on central view 45, whose stage model emits no hash key for leg(s) HUB_ORG_UNIT. The link is NOT emitted from a partial grain: a link row missing a leg records a relationship to nothing.",
+   "whose_call": "mapper",
+   "view": 45,
+   "legs": [
+    "HUB_ORG_UNIT",
+    "HUB_LOCATION"
+   ]
+  },
+  {
+   "kind": "link_leg_not_staged_on_its_view",
+   "object": "LNK_PARTY_ORG_UNIT",
+   "detail": "the plan places this link on central view 45, whose stage model emits no hash key for leg(s) HUB_ORG_UNIT. The link is NOT emitted from a partial grain: a link row missing a leg records a relationship to nothing.",
+   "whose_call": "mapper",
+   "view": 45,
+   "legs": [
+    "HUB_PARTY",
+    "HUB_ORG_UNIT"
+   ]
+  },
+  {
+   "kind": "link_leg_not_staged_on_its_view",
+   "object": "LNK_POLICY_ORG_UNIT",
+   "detail": "the plan places this link on central view 45, whose stage model emits no hash key for leg(s) HUB_ORG_UNIT. The link is NOT emitted from a partial grain: a link row missing a leg records a relationship to nothing.",
+   "whose_call": "mapper",
+   "view": 45,
+   "legs": [
+    "HUB_POLICY",
+    "HUB_ORG_UNIT"
+   ]
+  },
+  {
+   "kind": "payload_column_is_also_a_child_key_leg",
+   "object": "SAT_POLICY_CERTIFICATE",
+   "detail": "1 column(s) ['CERTIFICATE_NUMBER'] are both a child-key leg and a payload attribute. The LEG is kept because it is part of the grain; the payload copy is WITHHELD rather than selected twice.",
+   "whose_call": "modeller",
+   "view": 6
+  },
+  {
+   "kind": "payload_column_is_also_a_child_key_leg",
+   "object": "SAT_POLICY_CLASSIFICATION",
+   "detail": "1 column(s) ['CLASSIFICATION_TYPE'] are both a child-key leg and a payload attribute. The LEG is kept because it is part of the grain; the payload copy is WITHHELD rather than selected twice.",
+   "whose_call": "modeller",
+   "view": 11
+  },
+  {
+   "kind": "payload_column_is_also_a_child_key_leg",
+   "object": "SAT_POLICY_COVERAGE_SCHEDULE",
+   "detail": "2 column(s) ['COVERAGE_REFERENCE', 'COVERAGE_SEQUENCE'] are both a child-key leg and a payload attribute. The LEG is kept because it is part of the grain; the payload copy is WITHHELD rather than selected twice.",
+   "whose_call": "modeller",
+   "view": 12
+  },
+  {
+   "kind": "satellite_anchor_key_not_staged",
+   "object": "SAT_COVERAGE_CONDITIONS",
+   "detail": "its own central view 24 stages no hash key for HUB_COVERAGE, so the satellite cannot be keyed from the view it is built on",
+   "whose_call": "mapper",
+   "view": 24,
+   "anchor_basis": "hub parent (data_7.js)",
+   "hubs_required": [
+    "HUB_COVERAGE"
+   ],
+   "hubs_staged": [
+    "HUB_ASSESSMENT",
+    "HUB_CLAIM",
+    "HUB_DISTRIBUTION_CHANNEL",
+    "HUB_FINANCIAL_ACCOUNT",
+    "HUB_LOCATION",
+    "HUB_ORG_UNIT",
+    "HUB_PARTY",
+    "HUB_POLICY",
+    "HUB_PRODUCT",
+    "HUB_PROPOSAL",
+    "HUB_QUOTE",
+    "HUB_RISK_OBJECT"
+   ]
+  },
+  {
+   "kind": "payload_column_is_also_a_child_key_leg",
+   "object": "SAT_CLAIM_BENEFIT_HEAD",
+   "detail": "1 column(s) ['BENEFIT_HEAD_CODE'] are both a child-key leg and a payload attribute. The LEG is kept because it is part of the grain; the payload copy is WITHHELD rather than selected twice.",
+   "whose_call": "modeller",
+   "view": 26
+  },
+  {
+   "kind": "payload_column_is_also_a_child_key_leg",
+   "object": "SAT_CLAIM_PROVIDER_BILLING",
+   "detail": "1 column(s) ['BILL_NUMBER'] are both a child-key leg and a payload attribute. The LEG is kept because it is part of the grain; the payload copy is WITHHELD rather than selected twice.",
+   "whose_call": "modeller",
+   "view": 26
+  },
+  {
+   "kind": "satellite_anchor_key_not_staged",
+   "object": "SAT_COVERAGE_LIVES_COUNT",
+   "detail": "its own central view 28 stages no hash key for HUB_COVERAGE, so the satellite cannot be keyed from the view it is built on",
+   "whose_call": "mapper",
+   "view": 28,
+   "anchor_basis": "hub parent (data_7.js)",
+   "hubs_required": [
+    "HUB_COVERAGE"
+   ],
+   "hubs_staged": [
+    "HUB_ASSESSMENT",
+    "HUB_DISTRIBUTION_CHANNEL",
+    "HUB_FINANCIAL_ACCOUNT",
+    "HUB_ORG_UNIT",
+    "HUB_PARTY",
+    "HUB_POLICY",
+    "HUB_PRODUCT",
+    "HUB_RISK_OBJECT"
+   ]
+  },
+  {
+   "kind": "satellite_anchor_key_not_staged",
+   "object": "SAT_COVERAGE_MEMBER_BENEFIT",
+   "detail": "its own central view 28 stages no hash key for HUB_COVERAGE, so the satellite cannot be keyed from the view it is built on",
+   "whose_call": "mapper",
+   "view": 28,
+   "anchor_basis": "hub parent (data_7.js)",
+   "hubs_required": [
+    "HUB_COVERAGE"
+   ],
+   "hubs_staged": [
+    "HUB_ASSESSMENT",
+    "HUB_DISTRIBUTION_CHANNEL",
+    "HUB_FINANCIAL_ACCOUNT",
+    "HUB_ORG_UNIT",
+    "HUB_PARTY",
+    "HUB_POLICY",
+    "HUB_PRODUCT",
+    "HUB_RISK_OBJECT"
+   ]
+  },
+  {
+   "kind": "payload_column_is_also_a_child_key_leg",
+   "object": "SAT_FINTXN_TAX",
+   "detail": "1 column(s) ['TAX_TYPE'] are both a child-key leg and a payload attribute. The LEG is kept because it is part of the grain; the payload copy is WITHHELD rather than selected twice.",
+   "whose_call": "modeller",
+   "view": 29
+  },
+  {
+   "kind": "payload_column_is_also_a_child_key_leg",
+   "object": "SAT_POLICY_INSTALMENT_SCHEDULE",
+   "detail": "1 column(s) ['INSTALMENT_NUMBER'] are both a child-key leg and a payload attribute. The LEG is kept because it is part of the grain; the payload copy is WITHHELD rather than selected twice.",
+   "whose_call": "modeller",
+   "view": 31
+  },
+  {
+   "kind": "payload_column_is_also_a_child_key_leg",
+   "object": "SAT_CLAIM_COMMUNICATION",
+   "detail": "1 column(s) ['COMMUNICATION_DATE'] are both a child-key leg and a payload attribute. The LEG is kept because it is part of the grain; the payload copy is WITHHELD rather than selected twice.",
+   "whose_call": "modeller",
+   "view": 32
+  },
+  {
+   "kind": "payload_column_is_also_a_child_key_leg",
+   "object": "SAT_PARTY_BANKING",
+   "detail": "1 column(s) ['ACCOUNT_NUMBER_MASKED'] are both a child-key leg and a payload attribute. The LEG is kept because it is part of the grain; the payload copy is WITHHELD rather than selected twice.",
+   "whose_call": "modeller",
+   "view": 32
+  },
+  {
+   "kind": "satellite_anchor_key_not_staged",
+   "object": "SAT_COMMON_GEO",
+   "detail": "its own central view 34 stages no hash key for HUB_LOCATION, so the satellite cannot be keyed from the view it is built on",
+   "whose_call": "mapper",
+   "view": 34,
+   "anchor_basis": "hub parent (data_7.js)",
+   "hubs_required": [
+    "HUB_LOCATION"
+   ],
+   "hubs_staged": [
+    "HUB_AGREEMENT",
+    "HUB_ASSESSMENT",
+    "HUB_CLAIM",
+    "HUB_COVERAGE",
+    "HUB_DISTRIBUTION_CHANNEL",
+    "HUB_DOCUMENT",
+    "HUB_FINANCIAL_ACCOUNT",
+    "HUB_FINANCIAL_TRANSACTION",
+    "HUB_LOSS_EVENT",
+    "HUB_PARTY",
+    "HUB_PAYMENT_INSTRUMENT",
+    "HUB_POLICY",
+    "HUB_PRODUCT",
+    "HUB_PROPOSAL",
+    "HUB_QUOTE",
+    "HUB_RISK_OBJECT"
+   ]
+  },
+  {
+   "kind": "satellite_anchor_key_not_staged",
+   "object": "SAT_LOCATION_PROFILE",
+   "detail": "its own central view 34 stages no hash key for HUB_LOCATION, so the satellite cannot be keyed from the view it is built on",
+   "whose_call": "mapper",
+   "view": 34,
+   "anchor_basis": "hub parent (data_7.js)",
+   "hubs_required": [
+    "HUB_LOCATION"
+   ],
+   "hubs_staged": [
+    "HUB_AGREEMENT",
+    "HUB_ASSESSMENT",
+    "HUB_CLAIM",
+    "HUB_COVERAGE",
+    "HUB_DISTRIBUTION_CHANNEL",
+    "HUB_DOCUMENT",
+    "HUB_FINANCIAL_ACCOUNT",
+    "HUB_FINANCIAL_TRANSACTION",
+    "HUB_LOSS_EVENT",
+    "HUB_PARTY",
+    "HUB_PAYMENT_INSTRUMENT",
+    "HUB_POLICY",
+    "HUB_PRODUCT",
+    "HUB_PROPOSAL",
+    "HUB_QUOTE",
+    "HUB_RISK_OBJECT"
+   ]
+  },
+  {
+   "kind": "payload_column_is_also_a_child_key_leg",
+   "object": "SAT_DOCUMENT_CHECKLIST",
+   "detail": "1 column(s) ['REQUIRED_DOCUMENT_TYPE'] are both a child-key leg and a payload attribute. The LEG is kept because it is part of the grain; the payload copy is WITHHELD rather than selected twice.",
+   "whose_call": "modeller",
+   "view": 36
+  },
+  {
+   "kind": "payload_column_is_also_a_child_key_leg",
+   "object": "SAT_POLICY_ENDORSEMENT",
+   "detail": "1 column(s) ['ENDORSEMENT_NUMBER'] are both a child-key leg and a payload attribute. The LEG is kept because it is part of the grain; the payload copy is WITHHELD rather than selected twice.",
+   "whose_call": "modeller",
+   "view": 37
+  },
+  {
+   "kind": "satellite_anchor_key_not_staged",
+   "object": "SAT_COVERAGE_SUBLIMIT_SCHEDULE",
+   "detail": "its own central view 39 stages no hash key for HUB_COVERAGE, so the satellite cannot be keyed from the view it is built on",
+   "whose_call": "mapper",
+   "view": 39,
+   "anchor_basis": "hub parent (data_7.js)",
+   "hubs_required": [
+    "HUB_COVERAGE"
+   ],
+   "hubs_staged": [
+    "HUB_AGREEMENT",
+    "HUB_ASSESSMENT",
+    "HUB_CLAIM",
+    "HUB_DISTRIBUTION_CHANNEL",
+    "HUB_DOCUMENT",
+    "HUB_FINANCIAL_ACCOUNT",
+    "HUB_FINANCIAL_TRANSACTION",
+    "HUB_LOCATION",
+    "HUB_LOSS_EVENT",
+    "HUB_PARTY",
+    "HUB_PAYMENT_INSTRUMENT",
+    "HUB_POLICY",
+    "HUB_PRODUCT",
+    "HUB_PROPOSAL",
+    "HUB_QUOTE",
+    "HUB_RISK_OBJECT"
+   ]
+  },
+  {
+   "kind": "payload_column_is_also_a_child_key_leg",
+   "object": "SAT_LNK_POLICY_PARTY_ROLE",
+   "detail": "1 column(s) ['ROLE_SEQUENCE'] are both a child-key leg and a payload attribute. The LEG is kept because it is part of the grain; the payload copy is WITHHELD rather than selected twice.",
+   "whose_call": "modeller",
+   "view": 39
+  },
+  {
+   "kind": "payload_column_is_also_a_child_key_leg",
+   "object": "SAT_POLICY_INTERMEDIARY_SPLIT",
+   "detail": "1 column(s) ['INTERMEDIARY_REFERENCE'] are both a child-key leg and a payload attribute. The LEG is kept because it is part of the grain; the payload copy is WITHHELD rather than selected twice.",
+   "whose_call": "modeller",
+   "view": 42
+  },
+  {
+   "kind": "payload_column_is_also_a_child_key_leg",
+   "object": "SAT_RISK_OBJECT_INSURABLE_INTEREST",
+   "detail": "1 column(s) ['INTEREST_TYPE'] are both a child-key leg and a payload attribute. The LEG is kept because it is part of the grain; the payload copy is WITHHELD rather than selected twice.",
+   "whose_call": "modeller",
+   "view": 45
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "Product Configuration Parameter (name/value)",
+   "detail": "the map proposes 1 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Parameter Name"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "REF_BANK_BRANCH_IFSC",
+   "detail": "the map proposes 7 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Bank Name",
+    "Branch Contact Number",
+    "Branch Name",
+    "IFSC Code",
+    "MICR Code",
+    "NEFT Clearing Centre Name",
+    "NEFT Enabled Indicator"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "REF_DISEASE_ICD",
+   "detail": "the map proposes 15 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Associated ICD Code",
+    "Associated Procedure Code",
+    "Diagnosis Full Detail Text",
+    "Disease Category",
+    "Disease Name",
+    "ICD Code",
+    "Source Diagnosis Identifier",
+    "Source Disease Identifier",
+    "Source ICD Disease Map Identifier",
+    "Source ICD Master Identifier"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "REF_MEDICAL_CHARGE_HEAD",
+   "detail": "the map proposes 3 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Add To Bill Total Indicator",
+    "Charge Head Code",
+    "Charge Head Name"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "REF_MEDICAL_PROCEDURE",
+   "detail": "the map proposes 9 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Associated ICD Code",
+    "Associated Procedure Code",
+    "Procedure Code",
+    "Procedure Detail Text",
+    "Procedure Name",
+    "Source Procedure Master Identifier"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "REF_ROOM_CATEGORY",
+   "detail": "the map proposes 2 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Room Category Code",
+    "Room Category Name"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_AGREEMENT_PERIOD",
+   "detail": "the map proposes 12 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Effective Date",
+    "Expiry Date",
+    "Round Remark"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_AGREEMENT_PROVIDER_DISCOUNT_LINE (multi-active)",
+   "detail": "the map proposes 21 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Discount Percentage",
+    "Discount Type",
+    "Service Category"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_AGREEMENT_SERVICE_SCOPE (multi-active: one active row per service in the TPA agreement scope)",
+   "detail": "the map proposes 6 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Service Code"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_ASSESSMENT_DIAGNOSIS (medical diagnosis / ICD lines per assessment, multi-active)",
+   "detail": "the map proposes 4 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Diagnosis Description",
+    "Diagnosis Identifier",
+    "ICD Code",
+    "ICD Serial Number"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_ASSESSMENT_FRAUD_INVESTIGATION",
+   "detail": "the map proposes 1 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Suspected Fraud Scenario Reference"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_ASSESSMENT_RISK_RULE_DEFINITION",
+   "detail": "the map proposes 15 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Risk Category Code",
+    "Risk Rule Name",
+    "Risk Sub-Category Code",
+    "Rule Contribution Score",
+    "Rule Developed By User Reference",
+    "Rule Effective From Date",
+    "Rule Effective To Date",
+    "Rule Last Maintained By User Reference",
+    "Rule Last Maintained Timestamp",
+    "Rule Module Identifier",
+    "Rule Trigger Expression",
+    "Rule Trigger Type"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_ASSESSMENT_SCORE_LINE (multi-active)",
+   "detail": "the map proposes 10 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Score Value"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_CHANNEL_BOT_SERVICE_UTILISATION",
+   "detail": "the map proposes 6 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Bot Service Name",
+    "Previous Session Business Reference",
+    "Request Type",
+    "Service Invocation Count",
+    "Session Business Reference",
+    "Utilisation Record Date"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_CHANNEL_DIGITAL_INTEGRATION",
+   "detail": "the map proposes 1 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Submitting User Login Identifier"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_CLAIM_ANOMALY_DETECTION",
+   "detail": "the map proposes 10 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Anomaly Description",
+    "Anomaly Detected Timestamp",
+    "Anomaly Found Indicator",
+    "Anomaly Sub Type Code",
+    "Anomaly Supporting Document URI",
+    "Anomaly Type Code",
+    "Bypass Authorised By User Reference",
+    "Bypass Decision Timestamp",
+    "Bypass Remarks",
+    "Document Class Examined"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_CLAIM_BILL_LINE",
+   "detail": "the map proposes 26 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Bill Head Code",
+    "Bill Head Level 1 Name",
+    "Bill Head Level 2 Name",
+    "Bill Head Level 3 Name",
+    "Line Amount",
+    "Line Amount Per Unit",
+    "Line Claimed Amount",
+    "Line Particular",
+    "Line Particular Lead Term",
+    "Line Particular Profile Term",
+    "Line Payable Indicator",
+    "Line Sequence Number"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_CLAIM_BILL_LINE_ITEM — OCR-captured hospital bill particulars (line items) under a health claim, one active row per line item",
+   "detail": "the map proposes 11 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Bill Head",
+    "Claimed Amount",
+    "Classification Level 1",
+    "Classification Level 2",
+    "Classification Level 3",
+    "Classification Level 5",
+    "Particular Description",
+    "Particular Reference",
+    "Payable Indicator",
+    "Quantity",
+    "Unit Price"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_CLAIM_CONVERSION_EVENT",
+   "detail": "the map proposes 6 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Conversion Date",
+    "Conversion Reference",
+    "Conversion Type Code",
+    "Converted By User Identifier",
+    "Superseded Claim Reference"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_CLAIM_COVER_SECTION_ASSESSMENT",
+   "detail": "the map proposes 23 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Adventure Sports Involvement",
+    "Adverse Medical History Finding",
+    "Assessment Completed Date",
+    "Assessment Parameter Slot 1 Value",
+    "Assessment Parameter Slot 10 Value",
+    "Assessment Parameter Slot 11 Value",
+    "Assessment Parameter Slot 12 Value",
+    "Assessor Comment",
+    "Assessor General Remarks",
+    "Case Management Indicator",
+    "EMI Benefit Day Count",
+    "EMI Benefit Fitness Date"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_CLAIM_DIAGNOSIS (multi-active claim diagnosis lines)",
+   "detail": "the map proposes 3 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Diagnosis Code",
+    "Diagnosis Description"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_CLAIM_DISABILITY_HEAD",
+   "detail": "the map proposes 17 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Approved Days Count",
+    "Disability Description",
+    "Disability Duration",
+    "Disability Percentage",
+    "Fitness Certified Date",
+    "Functional Loss Description",
+    "Injury Date",
+    "Leave Duration",
+    "Leave From Date",
+    "Leave To Date",
+    "Weekly Benefit Amount"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_CLAIM_FOLLOW_UP_CHASE",
+   "detail": "the map proposes 10 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Document Source Stage",
+    "First Reminder Date",
+    "Follow-Up Intimation Date",
+    "Follow-Up Reason",
+    "Follow-Up Reference",
+    "Follow-Up Updated By User Reference",
+    "Orphan Record Reference",
+    "Reply Received Date",
+    "Second Reminder Date"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_CLAIM_HEALTH_BILL_CHARGE (multi-active health claim bill-charge line detail, parented on HUB_CLAIM)",
+   "detail": "the map proposes 11 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Approved Amount",
+    "Bill Charge Line Reference",
+    "Billed Amount",
+    "Charge Type Reference",
+    "Co-Pay Amount",
+    "Disallowance Reason",
+    "Disallowed Amount",
+    "Disallowed Co-Pay Amount",
+    "Room Rent Co-Pay Amount",
+    "Tariff Excess Deduction Amount",
+    "Total Tariff Deduction Amount"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_CLAIM_HEALTH_BILL_CHARGE_BREAKUP (multi-active bill-charge amount breakup, parented on HUB_CLAIM)",
+   "detail": "the map proposes 2 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Bill Amount Breakup Amount"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_CLAIM_HOSPITAL_DAY_LIMIT",
+   "detail": "the map proposes 8 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Assessed Component Value",
+    "Balance Days",
+    "Eligible Amount Per Day",
+    "Total Days"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_CLAIM_OUT_OF_POCKET_BY_PAYER (multi-active)",
+   "detail": "the map proposes 2 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Paid Amount"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_CLAIM_PROCEDURE (multi-active claim procedure lines)",
+   "detail": "the map proposes 2 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Procedure Code",
+    "Procedure Description"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_CLAIM_PROCESS_STEP_LOG",
+   "detail": "the map proposes 10 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Log Type Code",
+    "Next Case Reference",
+    "Process Log Reference",
+    "Process Type Code",
+    "Step Actor User Reference",
+    "Step Actual Start Timestamp",
+    "Step End Timestamp",
+    "Step Start Timestamp",
+    "Step Status Code"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_CLAIM_QUALITY_AUDIT",
+   "detail": "the map proposes 1 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Quality Review Required Indicator"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_CLAIM_REOPEN",
+   "detail": "the map proposes 4 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Reopen Date",
+    "Reopen Reason",
+    "Reopened By User Reference"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_CLAIM_STATUS_TRANSITION",
+   "detail": "the map proposes 4 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Claim Record Version Number",
+    "Previous Claim Status Code",
+    "Transition Actor User Reference",
+    "Workflow Process Name"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_CLAIM_TRANSPORT_LEG",
+   "detail": "the map proposes 17 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Ambulance Type",
+    "Journey Date",
+    "Journey Destination City",
+    "Journey Origin City",
+    "Transport Arrival",
+    "Transport Departure",
+    "Transport Provider Address Text",
+    "Transport Provider Contact Number",
+    "Transport Provider Name",
+    "Transport Provider STD Code"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_anchor_not_staged",
+   "object": "SAT_COMMON_GEO",
+   "detail": "no hash key for HUB_LOCATION is staged on this satellites own view, so the proposal cannot be keyed",
+   "whose_call": "mapper",
+   "view": 34
+  },
+  {
+   "kind": "proposed_satellite_anchor_not_staged",
+   "object": "SAT_COVERAGE_CONDITIONS",
+   "detail": "no hash key for HUB_COVERAGE is staged on this satellites own view, so the proposal cannot be keyed",
+   "whose_call": "mapper",
+   "view": 24
+  },
+  {
+   "kind": "proposed_satellite_anchor_not_staged",
+   "object": "SAT_COVERAGE_LIVES_COUNT",
+   "detail": "no hash key for HUB_COVERAGE is staged on this satellites own view, so the proposal cannot be keyed",
+   "whose_call": "mapper",
+   "view": 28
+  },
+  {
+   "kind": "proposed_satellite_anchor_not_staged",
+   "object": "SAT_COVERAGE_MEMBER_BENEFIT",
+   "detail": "no hash key for HUB_COVERAGE is staged on this satellites own view, so the proposal cannot be keyed",
+   "whose_call": "mapper",
+   "view": 28
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_COVERAGE_PARAMETER",
+   "detail": "the map proposes 2 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Parameter Reference",
+    "Parameter Value"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_COVERAGE_PREMIUM (per-coverage rated premium hanging off HUB_COVERAGE)",
+   "detail": "the map proposes 1 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Base Cover Premium"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_COVERAGE_PREMIUM_RATE_SLAB",
+   "detail": "the map proposes 8 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Age Limit Band",
+    "Line Sequence Number",
+    "Plan Reference",
+    "Premium Applicability Basis",
+    "Rate Effective Date",
+    "Section Reference",
+    "Slab Premium Rate",
+    "Sum Insured Slab Amount"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_COVERAGE_SPECIAL_CONDITION (multi-active free-text special conditions on the coverage)",
+   "detail": "the map proposes 21 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Special Condition Text"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_anchor_not_staged",
+   "object": "SAT_COVERAGE_SUBLIMIT_SCHEDULE",
+   "detail": "no hash key for HUB_COVERAGE is staged on this satellites own view, so the proposal cannot be keyed",
+   "whose_call": "mapper",
+   "view": 39
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_DOCUMENT_INWARD (source-specific document inward-register process attributes on HUB_DOCUMENT)",
+   "detail": "the map proposes 8 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Document Present Indicator",
+    "Hospital Portal Received Indicator",
+    "Hospital Priority Indicator",
+    "Inward Date",
+    "Inward Delay Reason",
+    "Inward Remarks",
+    "Physical Weight",
+    "Priority Indicator"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_anchor_not_staged",
+   "object": "SAT_LOCATION_PROFILE",
+   "detail": "no hash key for HUB_LOCATION is staged on this satellites own view, so the proposal cannot be keyed",
+   "whose_call": "mapper",
+   "view": 34
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_ORG_UNIT_CONTACT",
+   "detail": "the map proposes 6 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Email Address",
+    "Fax Number",
+    "Landline Number"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_PARTY_CONTACT_POINT",
+   "detail": "the map proposes 4 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Contact Person Name"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_PARTY_PAYOUT_PROFILE",
+   "detail": "the map proposes 1 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Short Collection Recovery Rate"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_POLICY_CONTINGENCY_SCHEME",
+   "detail": "the map proposes 2 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Scheme Code",
+    "Scheme Version"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_POLICY_COVERAGE_PARAMETER",
+   "detail": "the map proposes 5 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Parameter Definition Reference",
+    "Parameter Reference",
+    "Parameter Value",
+    "Plan Reference",
+    "Section Reference"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_POLICY_DELIVERY",
+   "detail": "the map proposes 10 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Delivery Recipient Name",
+    "Health Card Dispatch Address Text",
+    "Health Card Dispatch Contact Number",
+    "Health Card Dispatch Contact Person",
+    "Health Card Dispatch Recipient Type",
+    "Health Card Option",
+    "Policy Dispatch Address Text",
+    "Policy Dispatch Contact Number",
+    "Policy Dispatch Contact Person",
+    "Policy Dispatch Recipient Type"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_POLICY_GROUP_DOCUMENT_CONTROL",
+   "detail": "the map proposes 19 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "All Locations Printed Indicator",
+    "Configured Email Subject Used Indicator",
+    "Correspondence Email Body Template",
+    "Cumulative Bonus Schedule Text",
+    "First Page Template Selection",
+    "Health Card Printing Indicator",
+    "Income Tax Certificate Produced Indicator",
+    "Last Page Template Selection",
+    "New Health Card Generation Logic Indicator",
+    "New PDF Format Indicator",
+    "ODTP Premium Breakup Shown Indicator",
+    "Policy Kit Active Indicator"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_POLICY_GROUP_RELATION_ELIGIBILITY",
+   "detail": "the map proposes 19 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Age Eligibility Restriction",
+    "Eligible Lives Count",
+    "Member Relationship Class",
+    "Other Relationship Description",
+    "Relationship Eligible Indicator"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_POLICY_INSTALMENT_FREQUENCY_OPTION (per payment-frequency instalment option)",
+   "detail": "the map proposes 12 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Base Instalment Amount",
+    "Net Instalment Amount",
+    "Total Instalment Amount"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_POLICY_MEMBER_SPECIAL_TERMS",
+   "detail": "the map proposes 1 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Member Special Condition Text"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_POLICY_UW_REFERRAL (policy underwriting referral)",
+   "detail": "the map proposes 1 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Voluntary Referral Indicator"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_PRODUCT_CAPTURE_PARAMETER",
+   "detail": "the map proposes 23 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Alphabetic Only Indicator",
+    "Applicable Cover Code",
+    "Applicable Plan Identifier List",
+    "Applicable Section Identifier",
+    "Display And Validate Cover Scope",
+    "Maximum Value Length",
+    "Member Level Parameter Reference",
+    "Minimum Value Length",
+    "NR Search Field Indicator",
+    "Nil Endorsement Allowed Indicator",
+    "Nil Endorsement Parameter Reference",
+    "Parameter Data Type"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_PRODUCT_ISSUANCE_OUTPUT_RULE",
+   "detail": "the map proposes 6 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Automatic Issuance Email Indicator",
+    "Automatic Issuance SMS Indicator",
+    "Intermediary Email Suppressed Indicator",
+    "Intermediary SMS Suppressed Indicator",
+    "Policy Schedule Produced Indicator",
+    "Policy Schedule Wording Name"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_PRODUCT_PLAN_SI_PARAMETER",
+   "detail": "the map proposes 2 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "SI Parameter Group",
+    "SI Parameter Identifier"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_PRODUCT_RATING_STRUCTURE",
+   "detail": "the map proposes 2 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Maximum Premium Permitted",
+    "Premium Loading Applicable Indicator"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_PROPOSAL_SCRUTINY_LINE (multi-active per-scrutiny lines)",
+   "detail": "the map proposes 1 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Scrutiny Reference"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_PROVIDER_BANKING",
+   "detail": "the map proposes 1 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Beneficiary Name"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_PROVIDER_EMPANELMENT (provider network/empanelment profile)",
+   "detail": "the map proposes 3 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Network Type",
+    "Priority Indicator",
+    "Provider Remarks"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_PROVIDER_INSTANT_PAYMENT_TERMS (IMPS provider settlement scheme)",
+   "detail": "the map proposes 7 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Payment Limit Amount",
+    "Scheme Discount Basis",
+    "Scheme Discount Percentage",
+    "Scheme End Date",
+    "Scheme Start Date",
+    "Tariff Effective From Date",
+    "Tariff Effective To Date"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_PROVIDER_OPERATING_HOURS (multi-active)",
+   "detail": "the map proposes 4 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Operating Hour"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_PROVIDER_TPA_ASSOCIATION",
+   "detail": "the map proposes 1 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "TPA Name"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_QUOTE_PREMIUM_RATE_AGE_BAND",
+   "detail": "the map proposes 9 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Age Band Premium Rate"
+   ]
+  },
+  {
+   "kind": "proposed_satellite_has_no_central_view",
+   "object": "SAT_QUOTE_PREMIUM_RATE_SLAB",
+   "detail": "the map proposes 5 attribute(s) for this satellite but no central view feeds it, so there is nothing to propose them FROM. The proposal is registered, not emitted against a view that does not exist.",
+   "whose_call": "modeller",
+   "attributes": [
+    "Premium Rating Basis",
+    "Rate Applicability Stage",
+    "Rate Record Date",
+    "Rate Source Name",
+    "Sum Insured Slab Amount"
+   ]
+  }
+ ]
+}

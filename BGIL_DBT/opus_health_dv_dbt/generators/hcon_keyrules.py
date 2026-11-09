@@ -72,6 +72,10 @@ RECOGNISED_PROFILE_KEYS = {
     "name_injectivity_note", "spreadsheet_columns", "spreadsheet_columns_note", "undetermined",
     "self_assertion", "matcher_discipline", "instance_labels", "remaining_fan_ins",
     "map_gate_status",
+    # --- v4 only. Added here rather than left to the unknown-field raise, because the raise is
+    # the right behaviour: a profile key no module reads is a directive nobody implemented.
+    "derived_from_profile",   # read by run_hcon4_build.py: re-asserts the inherited-bytes basis
+    "central_view_rule",      # read by hcon4_plan.py: the rule set the grouping implements
 }
 
 

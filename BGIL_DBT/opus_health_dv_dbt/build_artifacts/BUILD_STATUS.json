@@ -1,981 +1,134 @@
 {
- "lob": "opus_health_consolidated_v3",
- "stage": "1",
- "generated_by": "emit_hcon_status.py",
- "numbers_live_here_note": "No document in this project states a count that describes current state. generators/README.md is GENERATED from this file, so no number in the prose can go stale.",
- "input": {
-  "path": "04_column_map.SETTLED_post_stage6_65b.json",
-  "bytes": 6282199,
-  "sha256": "65b71fa88dfd6e43d705682dc3f4b81cf325f8957d08e4cc160e6e22c457cd50",
-  "md5": "cd8e0261eb9761abf8ef72db49532fad",
-  "delta3": {
-   "path": "04_column_map.DELTA3.json",
-   "bytes": 2324865,
-   "md5": "15e31afced7f2d4cf8b7d0889657bf55",
-   "sha256": "ccd4b03df7b346b51e4e3446e6cfffa0954856be4bf7960b42de638982871532",
-   "run_label_assigned_on_read": "opus_health_delta3"
-  }
- },
- "model_file": "data_7.js",
- "model_file_md5": "082b92d7650cf4e192b6e9bb931cdc7e",
- "counts": {
-  "generators": 42,
-  "models_total": 1483,
-  "models_by_layer": {
-   "assertions": 97,
-   "augmented": 101,
-   "reject_log": 435,
-   "stage": 132,
-   "staging": 132,
-   "unpivot": 11,
-   "vault/hub_feeds": 421,
+ "project": "health_consolidated_v4_dv_dbt",
+ "architecture": "central-view (the user's governing rule)",
+ "architecture_note": "GOVERNS",
+ "build_status": "PARTIAL_BY_DECLARATION",
+ "build_status_note": "PARTIAL BY DECLARATION, not by failure: 148 object(s) could not be resolved from the pinned inputs and were REFUSED and registered rather than defaulted. A fallback always produces a row, so it never produces an error; each register entry is the error a fallback would have hidden. Every other object was built.",
+ "models": {
+  "total": 1486,
+  "by_layer": {
+   "assertions": 308,
+   "augmented": 131,
+   "hub_feeds": 636,
+   "stage": 46,
+   "staging": 109,
+   "stitched": 46,
    "vault/hubs": 20,
-   "vault/links": 10,
-   "vault/refs": 1,
-   "vault/satellites": 123
-  },
-  "source_views": 134,
-  "views_with_a_cast": 132,
-  "views_without_a_cast": 2,
-  "key_slots": 430,
-  "key_slots_by_origin": {
-   "map.resolved_key": 133,
-   "legacy_emitted_sql": 297
-  },
-  "key_slots_by_run": {
-   "opus_health_v2": 75,
-   "opus_health_delta3": 58,
-   "opus_health_legacy_v4": 297
-  },
-  "satellite_build_units": 283,
-  "satellite_units_by_track": {
-   "reference": 5,
-   "unratified": 139,
-   "ratified": 139
-  },
-  "satellite_feeders_total": 1113,
-  "satellite_feeders_emitted": 823,
-  "satellite_feeders_refused_no_key": 290,
-  "unpivot_families": 14,
-  "unresolved_total": 930,
-  "unresolved_closed": 380,
-  "unresolved_awaiting_counterparty": 528,
-  "by_design_not_defects": 2,
-  "unresolved_by_kind": {
-   "anchor_not_keyed_on_this_view_in_legacy_sql": 251,
-   "child_key_leg_refused": 276,
-   "legacy_key_not_recoverable": 152,
-   "loader_has_no_feed_in_the_map": 78,
-   "multiple_registries_key_this_view_hub": 110,
-   "payload_collides_with_child_key_leg": 23,
-   "satellite_has_no_anchor": 22,
-   "satellite_home_is_pure_prose": 1,
-   "view_has_no_recoverable_key_at_all": 17
-  },
-  "builder_decisions": 9,
-  "build_directives": 8,
-  "carried_forward_caveats": 5
- },
- "loader_plan": {
-  "rule_token": "ONE_LOADER_PER_VAULT_TABLE_TWO_SOURCES",
-  "declared_shared": 62,
-  "declared_legacy_only": 140,
-  "declared_v2_only": 45,
-  "declared_total": 247,
-  "buildable": 169,
-  "buildable_by_set": {
-   "shared": 62,
-   "legacy_only": 66,
-   "v2_only": 41
-  },
-  "not_buildable_no_feed_in_map": 78,
-  "shared_dual_feed": 25,
-  "shared_single_feed": 0,
-  "shared_single_feed_names": [],
-  "per_source_feed_models_declared": 4,
-  "definition_note": "The 62/140/45 partition reproduces ONLY under this definition: vault object by NAME SHAPE, live scope, REFS EXCLUDED. A DIRECTORY-shape matcher gives 62/141/26, because the two originals file augmented satellites differently -- the name knows what the path does not.",
-  "shared_is_a_file_set_property_note": "'Shared' is a property of the two originals' FILE SETS, not of the map. 62 tables are shared by name; the settled map supplies both runs' columns for 25 of them.",
-  "not_buildable_note": "A loader is built because it HAS A FEED, not because it is in a sibling's file list (s6.1). The 78 declared tables the settled map supplies no column for are DECLARED in the unresolved register, never emitted as empty models -- an empty model would read as a built loader."
- },
- "key_form": {
-  "form_token": "md5(upper('HUB_X|'||<bk>))",
-  "status_token": "RATIFIED",
-  "hash_computed_by_token": "EXPLICIT_SQL_NO_MACRO",
-  "explicit_md5_calls_emitted": 4334,
-  "package_macro_invocations": 0,
-  "packages_yml_written": false,
-  "namespace_scope_token": "SEPARATES_HUBS_NOT_REGISTRIES"
- },
- "hashdiff": {
-  "convention_token": "SAT_<NAME>_HASHDIFF",
-  "status_token": "RATIFIED_BY_COORDINATOR_THIS_RUN",
-  "profile_status_token": "RECOMMENDED_NOT_RATIFIED",
-  "bare_HASHDIFF_occurrences": 0,
-  "suffixed_occurrences": 225,
-  "one_line_switch": "hcon_names.hashdiff() -> return 'HASHDIFF'"
- },
- "normalise": {
-  "occurrences_emitted": 158,
-  "policy_note": "normalise() is UNDEFINED in both originals and in this project. It is emitted here ONLY where it was already present in a v2 key expression carried over verbatim; it is introduced into no new expression. Treated as a pre-existing Snowflake UDF. UNRESOLVED -- see open item normalise-udf."
- },
- "grammar": {
-  "population_note": "unit = one resolved_key block bearing an expression; population = every container of every map row",
-  "population": 1334,
-  "forms": {
-   "nullif_trim_bare": 984,
-   "nullif_concat_namespaced": 234,
-   "md5_normalise_upper": 73,
-   "LNK_composite": 39,
-   "coalesce_lead": 4
-  },
-  "parse_residue": 0,
-  "walk_operator_counts": {
-   "spine[": 0,
-   ">>": 0,
-   "->": 0,
-   "ancestor(": 0,
-   "parent(": 0
-  },
-  "walk_zero_note": "PROVEN, not omitted: the hop-view and resolver layers are empty because every walk operator counts zero over every key-bearing string in the map. Both layers still emit a model-count of 0 and say why."
- },
- "child_key_family": {
-  "fields_read": [
-   "child_key",
-   "child_key_value",
-   "child_key_components",
-   "usage_child_key"
-  ],
-  "never_read": [
-   "key_name",
-   "child_key_vocabulary"
-  ],
-  "never_read_why_note": "key_name holds a HUB business-key NAME and most of its values carry parenthesised prose, so one written into a child key puts prose into emitted SQL. child_key_vocabulary holds a CONVENTION TOKEN; it co-occurs with a real child key on EVERY one of its containers, so it is excluded for WHAT IT HOLDS, not for where it sits. Both populations are counted in build_profile.json map_fields.CORRECTION_field_names.",
-  "cooccurrence": {
-   "(none)": 3178,
-   "child_key+child_key_value": 895,
-   "child_key": 130,
-   "usage_child_key": 34,
-   "child_key_value": 119,
-   "child_key+child_key_value+child_key_components": 188,
-   "child_key_value+child_key_components": 173
-  },
-  "cooccurrence_unit_note": "unit = one dict-valued target/augmentation container; container and row totals are taken from BUILD_STATUS.json and build_profile.json map_shape",
-  "vocabulary_values": {
-   "canonical_source_column_prefix_token": 71,
-   "source_value_column_cover_section_code": 6
-  },
-  "three_state_token": "ABSENT_vs_PRESENT_NULL_vs_STRING_None",
-  "three_state_measured": {
-   "STRING_None_found_on_any_family_field": 0
+   "vault/links": 59,
+   "vault/satellites": 131
   }
  },
- "matcher_discipline": {
-  "rule_token": "SUBSTRING_OR_CHARCLASS_NEVER_WORD_BOUNDARY",
-  "evidence": {
-   "regex_word_boundary_MEMBER_1_8": 0,
-   "substring_MEMBER_1_8": 48,
-   "SELF_substring": 6,
-   "group_total": 54
+ "tree_digest_sha256": "8d89f91a14f0231fe9ff9d545e4483d29f34c182b602dc89a1ec7833a3a8f609",
+ "tree_digest_recipe": "per file: posix-relpath + LF + sha256(bytes); lines sorted bytewise, joined by LF, sha256 of the UTF-8 join",
+ "rule_application": {
+  "stitched_views": 46,
+  "rule_3_exceptions_over_10_tables": 20,
+  "satellites_fed_whole_by_one_view": 131,
+  "satellites_split_across_views": 0,
+  "satellites_split_note": "0 by construction AND re-counted from the emitted SQL by verify_hcon4.py check 1, which reads each satellite's own ref() list rather than trusting the generator.",
+  "hubs_derived_from_views": 20,
+  "hub_feeds": 636,
+  "links_from_one_view_each": 59,
+  "hash_sites": 46,
+  "hash_site_note": "One per central view, and nowhere else. Verified by check 4, which searches every model for an md5( call outside the stage layer."
+ },
+ "map_coverage": {
+  "source_tables_joined": 112,
+  "model_hubs": 20,
+  "model_hubs_keyed": 20,
+  "key_slot_sources": {
+   "pairs": 375,
+   "pairs_with_one_slot": 340,
+   "pairs_with_several_slots": 35,
+   "from_map": 112,
+   "from_legacy_sql": 263
   },
-  "wider_census": {
-   "matcher_note": "SUBSTRING 'MEMBER[1-8]' or 'SELF' in column_name; unit = map row; population = the one source table BJAZ_WS_FAMILY_DTLS_BANDHAN",
-   "group_total_all_satellites": 90,
-   "word_boundary_would_match": 0,
-   "by_satellite": {
-    "SAT_RISK_PERSON_MEMBER": 72,
-    "SAT_LNK_ROLE_NOMINEE_BENEFICIARY": 18
-   },
-   "by_satellite_and_outcome": {
-    "SAT_RISK_PERSON_MEMBER|mapped": 54,
-    "SAT_RISK_PERSON_MEMBER|augmentation_needed": 18,
-    "SAT_LNK_ROLE_NOMINEE_BENEFICIARY|augmentation_needed": 18
-   },
-   "by_attribute": {
-    "SAT_RISK_PERSON_MEMBER|Member Name": 9,
-    "SAT_RISK_PERSON_MEMBER|Relationship To Proposer": 9,
-    "SAT_RISK_PERSON_MEMBER|Date Of Birth": 9,
-    "SAT_RISK_PERSON_MEMBER|Gender": 9,
-    "SAT_RISK_PERSON_MEMBER|Passport Number": 9,
-    "SAT_RISK_PERSON_MEMBER|Pre-Existing Disease Description": 9,
-    "SAT_RISK_PERSON_MEMBER|Member Height": 9,
-    "SAT_RISK_PERSON_MEMBER|Member Weight": 9,
-    "SAT_LNK_ROLE_NOMINEE_BENEFICIARY|Nominee Name": 9,
-    "SAT_LNK_ROLE_NOMINEE_BENEFICIARY|Relationship To Insured": 9
-   },
-   "by_grain": {
-    "SAT_LNK_ROLE_NOMINEE_BENEFICIARY|SINGLE_ACTIVE": 18,
-    "SAT_RISK_PERSON_MEMBER|MULTI_ACTIVE": 72
-   },
-   "remedy_by_satellite": {
-    "SAT_LNK_ROLE_NOMINEE_BENEFICIARY": {
-     "hist": "SCD2",
-     "declared_childkey": "",
-     "grain": "SINGLE_ACTIVE",
-     "blocks": 18,
-     "in_model": true,
-     "remedy_token": "ATTRIBUTE_FAN_IN_NOT_A_CHILD_KEY",
-     "writers_per_attribute": {
-      "Nominee Name": 9,
-      "Relationship To Insured": 9
-     },
-     "note": "SINGLE-ACTIVE: hist carries no 'Multi-Active' and childkey is '' in data_7.js, so this satellite holds ONE ROW PER ANCHOR KEY and has no discriminator to be absent. A declared-grain note here would state something FALSE. The slots are an ATTRIBUTE FAN-IN -- N columns from one view writing one attribute on a single-active target -- and the remedy is a Stage-4 precedence or shred decision, not a child key. The emitted model is single-active (one group-by on the anchor hash key, no _CK column) and no child-key refusal was filed for it."
-    },
-    "SAT_RISK_PERSON_MEMBER": {
-     "hist": "Multi-Active SCD2",
-     "declared_childkey": "Member Sequence",
-     "grain": "MULTI_ACTIVE",
-     "blocks": 72,
-     "in_model": true,
-     "remedy_token": "REFUSE_AND_DECLARE_MISSING_DISCRIMINATOR",
-     "writers_per_attribute": {
-      "Member Name": 9,
-      "Relationship To Proposer": 9,
-      "Date Of Birth": 9,
-      "Gender": 9,
-      "Passport Number": 9,
-      "Pre-Existing Disease Description": 9,
-      "Member Height": 9,
-      "Member Weight": 9
-     },
-     "note": "Multi-Active with a declared childkey, so the absent discriminator IS the defect and refuse-and-declare is the remedy."
-    }
-   },
-   "refuse_and_declare_population": 72,
-   "fan_in_population": 18,
-   "fan_in_gate_visibility_note": "check_collapse groups on (table, satellite, attribute, instance, child_key) and would see this fan-in -- it is ONE table -- but every one of the single-active blocks carries outcome='augmentation_needed', and the gate's population is scope-by-outcome, so it fires on ZERO of them. Scope by presence, never by outcome, inside the gate itself. vault_tools is NOT edited here: it is shared by closed builds.",
-   "declared_scope_54_note": "The profile and declared_unresolved_grain.json both scope the group to 54 = outcome='mapped' on SAT_RISK_PERSON_MEMBER. That scope is CORRECT but NARROWER than the group: 36 further rows sit in the same repeating group on the same source view. CORRECTED: the earlier wording said all 36 share 'the SAME absent Member Sequence discriminator'. That is FALSE for half of them. 18 are on SAT_RISK_PERSON_MEMBER (Multi-Active SCD2, childkey 'Member Sequence') where the discriminator is genuinely absent; 18 are on SAT_LNK_ROLE_NOMINEE_BENEFICIARY, which is SCD2 with childkey='' and therefore has no discriminator to be absent. THE REFUSE-AND-DECLARE POPULATION FOR THIS GROUP IS 72, NOT 90. One slot family, two grains, two remedies -- see remedy_by_satellite.",
-   "correction_provenance": "The '90 blocks over two satellites, declare all 90' framing originated on THIS side. The grain split was raised by the mapping counterparty's Stage 6 agent, which read data_7.js rather than inheriting the claim, and is re-derived here from data_7.js directly: SAT_LNK_ROLE_NOMINEE_BENEFICIARY parent='LNK_PARTY_ROLE' hist='SCD2' childkey=''. THE BUILD WAS ALREADY CORRECT -- the emitted satellite is single-active and 0 of the 291 declared-grain refusals name it -- so this corrects a REPORT, not a model. A report and the artifact it describes are two artifacts (BUILD_RULES.md 1.45)."
-  }
- },
- "legacy_key_archaeology": {
-  "enabled": true,
-  "legacy_models_read": 1330,
-  "nk_declarations": 1821,
-  "composite_rhs_skipped": 472,
-  "view_hub_pairs_recovered": 404,
-  "views_recovered": 117,
-  "pairs_with_multiple_registries": 25,
-  "matcher_note": "unit = one derived_columns line of the form <X>_NK: \"'HUB_Y|' || rhs\" in a health_dv_dbt .sql; bare-identifier rhs only, composites counted and skipped",
-  "profile_claims_nk_declarations": 1822
- },
- "profile_claims": {
-  "agree": 6,
-  "contradicted": [
-   {
-    "claim": "map_shape.rows",
-    "profile": 3677,
-    "measured": 4184
-   },
-   {
-    "claim": "outcomes_post.mapped",
-    "profile": 2572,
-    "measured": 2901
-   },
-   {
-    "claim": "outcomes_post.augmentation_needed",
-    "profile": 1020,
-    "measured": 1198
-   },
-   {
-    "claim": "distinct_tables.union",
-    "profile": 115,
-    "measured": 134
-   },
-   {
-    "claim": "r6_r7.legacy_blocks",
-    "profile": 422,
-    "measured": 428
-   },
-   {
-    "claim": "r6_r7.legacy_blocks_naming_a_leg",
-    "profile": 0,
-    "measured": 428
-   }
-  ],
-  "leg_naming_measured": {
-   "legacy_blocks_naming_a_leg": 428,
-   "child_key_equals_model_declared_childkey_verbatim": 428,
-   "disagreeing": 0,
-   "matcher_note": "unit = (row, container) block on one of the 16 shared multi-active satellites; 'names a leg' = child_key POPULATED; comparison is against data_7.js childkey held WHOLE, not split"
-  }
- },
- "r8": {
-  "fires_on_pairs": 151,
-  "columns": 1425,
-  "precedence_order": [
-   "opus_health_v2",
-   "opus_health_legacy_v4",
-   "opus_health_delta3"
-  ],
-  "artefact": "build_artifacts/reports/r8_precedence_as_built.json",
-  "never_report_note": "'R8 fires on 62 of 62' is TRUE BY CONSTRUCTION of an input set DEFINED as the pairs having writers in TWO OR MORE runs, so a single-run pair is 0 by definition for every run. It is never reported as a measurement. That 62 was measured over TWO runs; this build feeds THREE."
- },
- "collapse": {
-  "legacy_totals_token": "NOT_MEASURABLE",
-  "note": "Stage 6 never ran on the legacy half and check_collapse deliberately skips a multi-active target whose child key is unresolved, leaving 286 blocks unjudged. Every legacy collapse figure is a LOWER BOUND; a zero from that instrument is not a clean bill."
+  "model_reference_satellites": 54,
+  "reference_satellites_addressed": 0,
+  "reference_satellites_note": "data_7.js carries reference satellites and this map's target track names NONE of them, so no vault/refs layer is written. An empty directory would advertise a layer that does not exist; this is the gap, and it is an item for the modeller.",
+  "key_slot_note": "Key slots come from TWO sources -- resolved_key in the map, and the legacy half's forms recovered read-only from health_dv_dbt's emitted SQL. Sweeping only the map reported 5 hubs as keyed nowhere and would have refused 8 satellites and 18 links on a false zero. The correction is recorded because the figure was already reported once before it was caught."
  },
  "unresolved_register": {
-  "canonical": "build_artifacts/hcon_spec.json -> unresolved",
-  "canonical_count": 930,
-  "canonical_unit_note": "unit = ONE refusal record; population = every refusal raised while reading the settled map and the recovered legacy SQL.",
-  "declared_subsets": [
-   {
-    "artefact": "build_artifacts/reports/declared_unresolved_grain_hcon.json",
-    "is_a_subset_of": "build_artifacts/hcon_spec.json -> unresolved",
-    "kinds": [
-     "child_key_leg_refused",
-     "component_value_is_prose_or_empty",
-     "payload_collides_with_child_key_leg",
-     "child_key_leg_name_unrenderable"
-    ],
-    "count": 299,
-    "scope_note": "child-key-grain detail ONLY. It is NOT the whole register, and reading it as one makes the difference look unenumerated."
-   }
-  ],
-  "by_status": {
-   "CLOSED_TERMINAL": 302,
-   "AWAITING_COUNTERPARTY": 528,
-   "DROPPED_FROM_SCOPE": 78,
-   "AWAITING_MODELLER_RATIFICATION": 22
+  "count": 148,
+  "by_kind": {
+   "child_key_leg_unresolved": 38,
+   "link_leg_not_staged_on_its_view": 12,
+   "payload_column_is_also_a_child_key_leg": 14,
+   "payload_withheld_table_not_joinable": 5,
+   "proposed_satellite_anchor_not_staged": 6,
+   "proposed_satellite_has_no_central_view": 61,
+   "satellite_anchor_key_not_staged": 6,
+   "satellite_has_no_renderable_payload_on_its_view": 2,
+   "source_table_grouped_but_never_joined": 3,
+   "undefined_udf_normalise": 1
   },
-  "by_attribution": {
-   "mapper-ratified": 908,
-   "builder": 22
+  "by_whose_call": {
+   "mapper": 72,
+   "modeller": 75,
+   "source owner": 1
   },
-  "closed": 380,
-  "awaiting_counterparty": 528,
-  "by_design_held_separately": 2,
-  "dispositions": {
-   "legacy_key_not_recoverable": {
-    "disposition": "DECLARED_ABSENCE",
-    "status": "CLOSED_TERMINAL",
-    "attribution": "mapper-ratified",
-    "routing": "source"
-   },
-   "view_has_no_recoverable_key_at_all": {
-    "disposition": "DECLARED_ABSENCE",
-    "status": "CLOSED_TERMINAL",
-    "attribution": "mapper-ratified",
-    "routing": "source"
-   },
-   "multiple_registries_key_this_view_hub": {
-    "disposition": "REFUSE_AND_DECLARE",
-    "status": "CLOSED_TERMINAL",
-    "attribution": "mapper-ratified",
-    "routing": "source"
-   },
-   "satellite_has_no_anchor": {
-    "disposition": "REFUSE_AND_DECLARE",
-    "status": "AWAITING_MODELLER_RATIFICATION",
-    "attribution": "builder",
-    "routing": "modeller"
-   },
-   "satellite_home_is_pure_prose": {
-    "disposition": "REFUSE_AND_DECLARE",
-    "status": "AWAITING_COUNTERPARTY",
-    "attribution": "mapper-ratified",
-    "routing": "mapper"
-   },
-   "loader_has_no_feed_in_the_map": {
-    "disposition": "DROPPED_FROM_SCOPE",
-    "status": "DROPPED_FROM_SCOPE",
-    "attribution": "mapper-ratified",
-    "routing": "mapper"
-   },
-   "payload_collides_with_child_key_leg": {
-    "disposition": "CHILD_KEY_WINS",
-    "status": "CLOSED_TERMINAL",
-    "attribution": "mapper-ratified",
-    "routing": "modeller"
-   },
-   "shared_loader_has_one_run_of_feeds": {
-    "disposition": "NOT_A_DEFECT",
-    "status": "BY_DESIGN",
-    "attribution": "mapper-ratified",
-    "routing": "none"
-   },
-   "view_needs_no_cast": {
-    "disposition": "NOT_A_DEFECT",
-    "status": "BY_DESIGN",
-    "attribution": "builder",
-    "routing": "none"
-   },
-   "child_key_leg_refused": {
-    "disposition": "REFUSE_AND_DECLARE",
-    "status": "AWAITING_COUNTERPARTY",
-    "attribution": "mapper-ratified",
-    "routing": "mapper"
-   },
-   "anchor_not_keyed_on_this_view_in_legacy_sql": {
-    "disposition": "REFUSE_AND_DECLARE",
-    "status": "AWAITING_COUNTERPARTY",
-    "attribution": "mapper-ratified",
-    "routing": "mapper"
-   },
-   "component_value_is_prose_or_empty": {
-    "disposition": "REFUSE_AND_DECLARE",
-    "status": "AWAITING_COUNTERPARTY",
-    "attribution": "builder",
-    "routing": "mapper"
-   },
-   "child_key_leg_name_unrenderable": {
-    "disposition": "REFUSE_AND_DECLARE",
-    "status": "AWAITING_COUNTERPARTY",
-    "attribution": "builder",
-    "routing": "mapper"
-   },
-   "link_legs_not_establishable": {
-    "disposition": "REFUSE_AND_DECLARE",
-    "status": "AWAITING_COUNTERPARTY",
-    "attribution": "builder",
-    "routing": "mapper"
-   },
-   "key_slot_name_collision_differing_expression": {
-    "disposition": "REFUSE_AND_DECLARE",
-    "status": "AWAITING_COUNTERPARTY",
-    "attribution": "builder",
-    "routing": "mapper"
-   },
-   "attribute_unrenderable_prose_in_identifier_position": {
-    "disposition": "REFUSE_AND_DECLARE",
-    "status": "AWAITING_COUNTERPARTY",
-    "attribution": "builder",
-    "routing": "mapper"
-   },
-   "resolved_key_without_hub": {
-    "disposition": "REFUSE_AND_DECLARE",
-    "status": "AWAITING_COUNTERPARTY",
-    "attribution": "builder",
-    "routing": "mapper"
-   },
-   "resolved_key_without_source_columns": {
-    "disposition": "REFUSE_AND_DECLARE",
-    "status": "AWAITING_COUNTERPARTY",
-    "attribution": "builder",
-    "routing": "mapper"
-   },
-   "legacy_key_expression_not_an_identifier": {
-    "disposition": "DECLARED_ABSENCE",
-    "status": "CLOSED_TERMINAL",
-    "attribution": "builder",
-    "routing": "source"
-   },
-   "component_not_a_dict": {
-    "disposition": "REFUSE_AND_DECLARE",
-    "status": "AWAITING_COUNTERPARTY",
-    "attribution": "builder",
-    "routing": "mapper"
-   },
-   "component_unnamed_leg": {
-    "disposition": "REFUSE_AND_DECLARE",
-    "status": "AWAITING_COUNTERPARTY",
-    "attribution": "builder",
-    "routing": "mapper"
-   }
-  }
+  "where": "build_artifacts/reports/unresolved_register.json"
  },
- "cross_run_carve_out": {
-  "scope_token": "ALL_SHARED_OBJECTS_WRITTEN_BY_BOTH_RUNS",
-  "objects": [
-   "HUB_ASSESSMENT",
-   "HUB_CASE",
-   "HUB_CLAIM",
-   "HUB_COVERAGE",
-   "HUB_DISTRIBUTION_CHANNEL",
-   "HUB_DOCUMENT",
-   "HUB_LOCATION",
-   "HUB_ORG_UNIT",
-   "HUB_PARTY",
-   "HUB_POLICY",
-   "HUB_PRODUCT",
-   "HUB_PROPOSAL",
-   "HUB_QUOTE",
-   "HUB_RISK_OBJECT",
-   "LNK_PARTY_ROLE",
-   "LNK_POLICY_PARTY"
-  ],
-  "object_count": 16,
-  "derivation_note": "DERIVED from the spec: shared-62 hubs and links whose feeds come from BOTH runs. lnk_policy_party is in the shared 62 and is EXCLUDED because the settled map supplies only v2 feeds for it, so there is no cross-run precedence to annotate.",
-  "mechanism_token": "DECLARED_SOURCE_PRECEDENCE_UNCHANGED",
-  "mechanism_note": "The precedence is DETERMINISTIC (v2 > legacy > delta3, BD6 then BD6b) and is NOT changed by the carve-out. 'Emit both values' was proposed and withdrawn: on a single-active attribute two writers into one row per key is LOAD-ORDER-DEPENDENT and strictly worse than a deterministic precedence. The carve-out is HEADER-ONLY -- it names the subordinate writer and its registry so the loss is COUNTABLE.",
-  "why_not_an_overlap_threshold_note": "A hub-level business-key-column overlap cannot see the hazard AT ANY THRESHOLD. HUB_PARTY's overlap of 3 is IMD_CODE, PART_ID and RM_CODE, ALL intermediary-side; on the member/customer population the overlap is ZERO. The figure is also unstable: collapsing underscores moves it 3 -> 5, and HUB_PARTY is the only object where normalisation moves it.",
-  "why_declare_note": "Chosen on ASYMMETRY: a DECLARED CONFLICT IS RECOVERABLE; A WRONG MERGE IS NOT, AFTER LOAD.",
-  "attribution": "builder-overruled-by-mapper"
- },
- "intra_run_fanin": {
-  "definition_note": "GROUP = (satellite, attribute, source_run), MERGED ACROSS TRACKS. WRITER = one distinct (source view, source column) pair, so the same column read through two containers is ONE writer. UNDISCRIMINATED = no instance AND no redundant_of. SINGLE-ACTIVE = data_7.js hist does not contain 'Multi-Active'. A group counts only with 2+ undiscriminated writers. THE UNIT IS THE WHOLE DIFFERENCE between this figure and a per-build-unit one, which reads 228/999.",
-  "reconciliation_note": "This build measures single-active 180 groups / 825 columns, 6 same-table and 174 cross-table, which REPRODUCES THE MAPPING COUNTERPARTY'S FIGURE EXACTLY. A third figure of 164/765 with 0 same-table was relayed from a different single-active definition; both are recorded and they are NOT reconciled, because the definitions differ and the conclusion -- that essentially the whole surface is CROSS-table -- is the same either way.",
-  "single_active": {
-   "groups": 206,
-   "columns": 894,
-   "same_table_groups": 6,
-   "same_table_columns": 21,
-   "cross_table_groups": 200,
-   "cross_table_columns": 873,
-   "worst_cross_table": [
-    {
-     "satellite": "SAT_POLICY_HEADER",
-     "attribute": "Risk Inception Date",
-     "run": "opus_health_legacy_v4",
-     "undiscriminated_writers": 27,
-     "distinct_tables": 27
-    },
-    {
-     "satellite": "SAT_POLICY_HEADER",
-     "attribute": "Risk Expiry Date",
-     "run": "opus_health_legacy_v4",
-     "undiscriminated_writers": 24,
-     "distinct_tables": 24
-    },
-    {
-     "satellite": "SAT_PARTY_IDENTITY",
-     "attribute": "Party Full Name",
-     "run": "opus_health_legacy_v4",
-     "undiscriminated_writers": 20,
-     "distinct_tables": 20
-    },
-    {
-     "satellite": "SAT_PARTY_IDENTITY",
-     "attribute": "Date Of Birth",
-     "run": "opus_health_legacy_v4",
-     "undiscriminated_writers": 20,
-     "distinct_tables": 20
-    },
-    {
-     "satellite": "SAT_PARTY_IDENTITY",
-     "attribute": "Gender Code",
-     "run": "opus_health_legacy_v4",
-     "undiscriminated_writers": 18,
-     "distinct_tables": 18
-    },
-    {
-     "satellite": "SAT_RISK_PERSON_INSURED",
-     "attribute": "Relationship To Proposer",
-     "run": "opus_health_legacy_v4",
-     "undiscriminated_writers": 18,
-     "distinct_tables": 18
-    },
-    {
-     "satellite": "SAT_LNK_ROLE_NOMINEE_BENEFICIARY",
-     "attribute": "Relationship To Insured",
-     "run": "opus_health_legacy_v4",
-     "undiscriminated_writers": 16,
-     "distinct_tables": 8
-    },
-    {
-     "satellite": "SAT_POLICY_PREMIUM_SUMMARY",
-     "attribute": "Gross Premium",
-     "run": "opus_health_legacy_v4",
-     "undiscriminated_writers": 15,
-     "distinct_tables": 15
-    },
-    {
-     "satellite": "SAT_POLICY_HEADER",
-     "attribute": "Policy Term",
-     "run": "opus_health_legacy_v4",
-     "undiscriminated_writers": 14,
-     "distinct_tables": 14
-    },
-    {
-     "satellite": "SAT_PARTY_IDENTITY",
-     "attribute": "Age",
-     "run": "opus_health_legacy_v4",
-     "undiscriminated_writers": 13,
-     "distinct_tables": 13
-    }
-   ]
+ "verification": {
+  "status": "PASS",
+  "tally": {
+   "PASS": 16,
+   "NOT RUN": 1
   },
-  "multi_active": {
-   "groups": 126,
-   "columns": 909,
-   "same_table_groups": 38,
-   "same_table_columns": 215,
-   "cross_table_groups": 88,
-   "cross_table_columns": 694,
-   "worst_cross_table": [
-    {
-     "satellite": "SAT_POLICY_TAX_HEAD",
-     "attribute": "Tax Amount",
-     "run": "opus_health_delta3",
-     "undiscriminated_writers": 60,
-     "distinct_tables": 3
-    },
-    {
-     "satellite": "SAT_PARTY_PROVIDER_CAPABILITY",
-     "attribute": "Available Indicator",
-     "run": "opus_health_legacy_v4",
-     "undiscriminated_writers": 58,
-     "distinct_tables": 2
-    },
-    {
-     "satellite": "SAT_COVERAGE_MEMBER_BENEFIT",
-     "attribute": "Benefit Sum Insured",
-     "run": "opus_health_legacy_v4",
-     "undiscriminated_writers": 37,
-     "distinct_tables": 5
-    },
-    {
-     "satellite": "SAT_COMMON_CONTACT",
-     "attribute": "Email Address",
-     "run": "opus_health_legacy_v4",
-     "undiscriminated_writers": 32,
-     "distinct_tables": 20
-    },
-    {
-     "satellite": "SAT_RISK_HEALTH_MEMBER_MEDICAL",
-     "attribute": "Disclosed Indicator",
-     "run": "opus_health_legacy_v4",
-     "undiscriminated_writers": 31,
-     "distinct_tables": 7
-    },
-    {
-     "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
-     "attribute": "Amount Applied",
-     "run": "opus_health_delta3",
-     "undiscriminated_writers": 27,
-     "distinct_tables": 4
-    },
-    {
-     "satellite": "SAT_COMMON_CONTACT",
-     "attribute": "Mobile Number",
-     "run": "opus_health_legacy_v4",
-     "undiscriminated_writers": 24,
-     "distinct_tables": 16
-    },
-    {
-     "satellite": "SAT_FINTXN_TAX",
-     "attribute": "Cess Amount",
-     "run": "opus_health_legacy_v4",
-     "undiscriminated_writers": 23,
-     "distinct_tables": 3
-    },
-    {
-     "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
-     "attribute": "Amount Applied",
-     "run": "opus_health_legacy_v4",
-     "undiscriminated_writers": 22,
-     "distinct_tables": 2
-    },
-    {
-     "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
-     "attribute": "Percentage Applied",
-     "run": "opus_health_legacy_v4",
-     "undiscriminated_writers": 19,
-     "distinct_tables": 2
-    }
-   ]
-  },
-  "history_undeclared_in_model": {
-   "groups": 48,
-   "columns": 184,
-   "same_table_groups": 33,
-   "same_table_columns": 152,
-   "cross_table_groups": 15,
-   "cross_table_columns": 32,
-   "worst_cross_table": [
-    {
-     "satellite": "REF_DISEASE_ICD",
-     "attribute": "Disease Name",
-     "run": "opus_health_legacy_v4",
-     "undiscriminated_writers": 3,
-     "distinct_tables": 3
-    },
-    {
-     "satellite": "SAT_CLAIM_BILL_LINE",
-     "attribute": "Bill Head Level 3 Name",
-     "run": "opus_health_v2",
-     "undiscriminated_writers": 3,
-     "distinct_tables": 3
-    },
-    {
-     "satellite": "REF_DISEASE_ICD",
-     "attribute": "Source Disease Identifier",
-     "run": "opus_health_legacy_v4",
-     "undiscriminated_writers": 2,
-     "distinct_tables": 2
-    },
-    {
-     "satellite": "REF_DISEASE_ICD",
-     "attribute": "Disease Category",
-     "run": "opus_health_legacy_v4",
-     "undiscriminated_writers": 2,
-     "distinct_tables": 2
-    },
-    {
-     "satellite": "REF_DISEASE_ICD",
-     "attribute": "ICD Code",
-     "run": "opus_health_legacy_v4",
-     "undiscriminated_writers": 2,
-     "distinct_tables": 2
-    },
-    {
-     "satellite": "REF_MEDICAL_PROCEDURE",
-     "attribute": "Source Procedure Master Identifier",
-     "run": "opus_health_legacy_v4",
-     "undiscriminated_writers": 2,
-     "distinct_tables": 2
-    },
-    {
-     "satellite": "REF_MEDICAL_PROCEDURE",
-     "attribute": "Procedure Code",
-     "run": "opus_health_legacy_v4",
-     "undiscriminated_writers": 2,
-     "distinct_tables": 2
-    },
-    {
-     "satellite": "REF_MEDICAL_PROCEDURE",
-     "attribute": "Procedure Name",
-     "run": "opus_health_legacy_v4",
-     "undiscriminated_writers": 2,
-     "distinct_tables": 2
-    },
-    {
-     "satellite": "SAT_CLAIM_BILL_LINE",
-     "attribute": "Line Amount",
-     "run": "opus_health_v2",
-     "undiscriminated_writers": 2,
-     "distinct_tables": 2
-    },
-    {
-     "satellite": "SAT_CLAIM_BILL_LINE",
-     "attribute": "Line Amount Per Unit",
-     "run": "opus_health_v2",
-     "undiscriminated_writers": 2,
-     "distinct_tables": 2
-    }
-   ]
-  },
-  "three_buckets_note": "THREE buckets, not two. A satellite data_7.js does not declare has NO declared history; that is a third state and not a synonym for single-active. Counting it as single-active moved this figure from 180 groups to 228 -- a classification that was fabricated by a dictionary default.",
-  "check_collapse_blind_spot_note": "check_collapse groups on (table, satellite, attribute, instance, child_key), so it can only flag writers from the SAME table. N writers spread across N different tables produce ZERO violations there. Any previously quoted collapse figure therefore BOUNDS THE SAME-TABLE SUBSET and is not a measurement of the collapse surface; the cross-table population is the larger one and was invisible to that gate on both sides.",
-  "severity_note": "THE LARGER NON-DETERMINISM, and NO decision taken so far addresses it. Refusing a subordinate RUN cannot touch writers of the SAME run. It is DECLARED in every affected satellite header, at both scopes, and measured by a load-time assertion.",
-  "predicate_note": "ARBITRARY only among UNDISCRIMINATED writers -- no instance AND no redundant_of. On SAT_PARTY_IDENTITY.'Party Full Name' legacy: 95 writers, 75 separated by a resolved instance, 0 redundant_of, 20 genuinely undiscriminated over 20 distinct tables. A predicate over all 95 would have reported 75 CORRECT rows as defects on a new check's first run."
+  "where": "build_artifacts/reports/verification.json",
+  "four_outcomes_note": "Each check reports PASS, FAIL, NOT RUN or DID NOT COMPLETE with the population it ran over. A PASS over an empty population is downgraded to NOT RUN, because a zero from a probe that looked in the wrong place is indistinguishable from a clean result."
  },
- "load_time_assertions": {
-  "executed_token": "NEVER_EXECUTED",
-  "executed_note": "dbt is out of scope for this build, so every assertion is EMITTED AND UNRUN. A zero from an unrun assertion is an ABSENCE OF MEASUREMENT, not a clean result.",
-  "total": 97,
-  "cross_run_collision": 14,
-  "intra_run_arbitrary": 82,
-  "index": "models/assertions/assertion_index.sql",
-  "cross_run_reading_note": "0 => no business-key VALUE collided across the two runs' disjoint registries, so the precedence never fired. This is the ONLY self-sufficient answer. >0 => the VALUES collided, which does NOT prove they denote the same ENTITY, so >0 ESCALATES rather than resolves.",
-  "intra_run_reading_note": "0 rows => every undiscriminated same-run writer agreed on every key. >0 => those are the values this build picked ARBITRARILY.",
-  "first_case_note": "SAT_PARTY_IDENTITY.'Party Full Name' -- 95 legacy writers against 10 v2; 20 of the 95 undiscriminated.",
-  "attribution": "builder"
+ "other_builds_unchanged": {
+  "check": "ABSOLUTE -- no other build changed",
+  "status": "PASS",
+  "population": 22357,
+  "detail": "every file in 22 sibling project(s) plus vault_tools was checked for a modification time at or after this project's own oldest file (22357 files scanned). Content digests are also recorded now, so a later run can compare bytes as well -- but on THIS run mtime is the only evidence that exists, because no pre-work baseline was captured.",
+  "evidence": []
  },
- "artefacts": {
-  "spec": "build_artifacts/hcon_spec.json",
-  "assertions": "models/assertions/",
-  "unresolved_grain": "build_artifacts/reports/declared_unresolved_grain_hcon.json",
-  "hub_registries": "build_artifacts/reports/hub_registries.json",
-  "r8_as_built": "build_artifacts/reports/r8_precedence_as_built.json",
-  "write_manifest": "build_artifacts/write_manifest.jsonl"
- },
- "digests": {
-  "models_tree_sha256": "9a76e91ecc5f16e5c43938bfb51add4bb6cc1e4a8eb58723e0072b869d2bd5b6",
-  "models_files": 1483,
-  "models_bytes": 4608619,
-  "generators_tree_sha256": "e981365d74c65034756339c3bc4f160b3c75a63b3212e8f1426c5a6845e41a14",
-  "generators_files": 42,
-  "combining_method_note": "per file 'posix-relpath + LF + sha256(file bytes)'; lines sorted bytewise; joined with LF; sha256 of the UTF-8 encoding of that join. Validated against partner_dv_dbt = d130c4bb... before use."
- },
- "read_only_guard": {
-  "mode_token": "ZERO_WRITES_BOTH_ORIGINALS",
-  "verified": {
-   "health_dv_dbt": {
-    "tree_digest_sha256": "7b13f9f24914de4bdc0e8a37a453ac1463cfe5dc24b3eb02e1b07534b8d4b384",
-    "files": 1703,
-    "bytes": 3516171
-   },
-   "opus_health_v2_dv_dbt": {
-    "tree_digest_sha256": "bb7a3a765c7e3fbe75dd783653c18519a29bbf4d2704668a84f2ec84d4248a86",
-    "files": 365,
-    "bytes": 3040144
-   },
-   "health_consolidated_dv_dbt": {
-    "tree_digest_sha256": "4aaab1586480be68eb34b62f32c4df4fcb1ac1d60e1bd27f9ca1cf3e176f54d7",
-    "files": 1351,
-    "bytes": 31598284
-   }
-  },
-  "manifest": {
-   "records": 1487,
-   "distinct_paths": 1487,
-   "processes": 9,
-   "outside": []
-  }
- },
- "by_design_not_defects": [
+ "corrections": [
   {
-   "kind": "view_needs_no_cast",
-   "satellite": null,
-   "view": "BJAZ_HM_DOCUMENT_TYPES",
-   "leg": null,
-   "detail": "every column of BJAZ_HM_DOCUMENT_TYPES is unconsumed -- no key slot and no satellite payload reads it -- so no layer-1 cast is emitted. A view gets a cast because it NEEDS one, not because it is in the map (s6.1).",
-   "disposition": "NOT_A_DEFECT",
-   "status": "BY_DESIGN",
-   "attribution": "builder",
-   "routing": "none",
-   "disposition_note": "No column of the view is consumed by any key slot or satellite payload, so no layer-1 cast is needed (s6.1). No action."
-  },
-  {
-   "kind": "view_needs_no_cast",
-   "satellite": null,
-   "view": "BJAZ_HM_STATUS_MASTER",
-   "leg": null,
-   "detail": "every column of BJAZ_HM_STATUS_MASTER is unconsumed -- no key slot and no satellite payload reads it -- so no layer-1 cast is emitted. A view gets a cast because it NEEDS one, not because it is in the map (s6.1).",
-   "disposition": "NOT_A_DEFECT",
-   "status": "BY_DESIGN",
-   "attribution": "builder",
-   "routing": "none",
-   "disposition_note": "No column of the view is consumed by any key slot or satellite payload, so no layer-1 cast is needed (s6.1). No action."
+   "id": "hub-key-census-read-one-of-two-sources",
+   "what_was_reported": "5 model hubs keyed nowhere in the map, refusing 8 satellites and 18 links",
+   "superseded_counts": {
+    "hubs_reported_unkeyed": 5,
+    "satellites_refused_on_that_basis": 8,
+    "links_refused_on_that_basis": 18
+   },
+   "hubs_named": [
+    "HUB_AGREEMENT",
+    "HUB_FINANCIAL_ACCOUNT",
+    "HUB_LOSS_EVENT",
+    "HUB_PAYMENT_INSTRUMENT",
+    "HUB_REINSURANCE_TREATY"
+   ],
+   "why_it_was_wrong": "Key slots come from TWO sources: resolved_key in the map, which the profile measures as present on zero legacy rows, and the legacy half's forms recovered read-only from health_dv_dbt's emitted SQL. The first pass swept only the map. All five hubs are keyed on the legacy half.",
+   "corrected_figure_lives_in": "map_coverage.model_hubs_keyed, this file",
+   "class": "a zero from a probe that looked in one of two places, which is indistinguishable from a clean result",
+   "fixed_in": "hcon4_plan.key_slots / hub_key_tables, which now sweep both sources and raise if the legacy recovery fails rather than silently refusing"
   }
  ],
- "decisions": [
+ "cross_build_facts_cited_in_prose": {
+  "sibling_orphan_stage_models": 104,
+  "sibling_duplicate_alias_models": 30,
+  "sibling_unbalanced_literal_models": 235,
+  "sibling_lost_blocks_on_field_spelling": 1099,
+  "note": "Figures from earlier builds in this estate, recorded here so the handback and the model headers can cite them rather than typing them into prose. They describe OTHER builds and are not state of this one."
+ },
+ "known_open_items": [
   {
-   "id": "BD1-hashdiff-name",
-   "attribution": "mapper-ratified",
-   "decision": "Hashdiff column is <SAT>_HASHDIFF, not a bare HASHDIFF.",
-   "why": "The two originals disagree and s7 cannot decide between two equally-entitled siblings: legacy writes a bare HASHDIFF and never a suffixed one, v2 the exact reverse -- counts taken from build_profile.json sibling.hashdiff_evidence. A bare name collides the moment ONE model computes hashdiffs for more than one satellite, which is what a multi-feed consolidated stage does. s12 already records the bare form as the OPUS spelling implicated in the shared-vault divergence debt.",
-   "costs": "The estate gains a third project using the suffixed form, so a future shared loader spanning this project and legacy must translate one name. Nothing is loaded, so the change costs nothing TODAY; it costs a translation LATER.",
-   "overrule_with": "hcon_names.hashdiff() -> return 'HASHDIFF'",
-   "profile_status": "profile records RECOMMENDED_NOT_RATIFIED; ratified by the coordinator this run and recorded here because a decision taken in a message and not written down is a decision nobody can overrule."
+   "item": "BUILD_RULES.md s6 contradicts the governing rule",
+   "detail": "s6 calls its per-source-table architecture 'Invariant across every build' and mandates one cast per mapped view, one wide stage per view, and satellites unioned over all feeders. Under the central-view rule a satellite has ONE feeder by construction. Both cannot hold. This build did NOT edit s6 -- a build does not rewrite the law it is judged by.",
+   "whose_call": "the user"
   },
   {
-   "id": "BD2-legacy-key-archaeology",
-   "attribution": "mapper-ratified",
-   "accepted_note": "ACCEPTED by the mapping counterparty and retained, labelled UNVALIDATABLE-AGAINST-THE-BUNDLE.",
-   "decision": "Legacy hub key expressions are recovered from health_dv_dbt's EMITTED SQL (read-only), because the legacy half of the map carries zero resolved_key.",
-   "why": "Open item R4-builder, proposed_default: 'the build is the authority, not the map'. Without this, EVERY row of the legacy half has no hub key and every shared loader loses its legacy feed -- which would silently convert a consolidation into a v2-only build. Rows per run are taken from build_profile.json map_shape.by_source_run and the loader partition from build_profile.json layer_plan_one_loader.",
-   "costs": "The recovered expression is what legacy's generator EMITTED, not what any map declares, so it cannot be validated against the bundle. The legacy HASH VALUES are NOT reproduced (legacy hashes inside automate_dv macros whose algorithm is INFERRED_NOT_DOCUMENTED); only the BUSINESS KEY EXPRESSION is carried over, re-hashed in the canonical explicit form. Legacy's loaded keys and this project's keys are therefore NOT comparable, which is harmless only because this is a greenfield third project.",
-   "overrule_with": "hcon_keyrules.LEGACY_ARCHAEOLOGY_ENABLED = False  (legacy feeds then go to UNRESOLVED and every shared loader becomes v2-single-feed)"
+   "item": "normalise() is undefined",
+   "detail": "It appears verbatim inside map-supplied content-hash expressions and is defined nowhere in this project or in either original. The expressions are not rewritten, because a tidied key is a different key.",
+   "whose_call": "source owner"
   },
   {
-   "id": "BD3-no-datatype-catalogue",
-   "attribution": "builder",
-   "decision": "Layer-1 casts every source column to varchar.",
-   "why": "The pinned bundle contains NO datatype catalogue -- ten files, none a schema. v2's staging carries cast(... as date)/(... as number) because v2's bundle had one. Inventing a type from a column name is a fabricated datum.",
-   "costs": "Every staged column is a string, so downstream date and numeric semantics are lost at layer 1 and any arithmetic must cast again. Hashing is unaffected (every hash operand is cast to varchar anyway).",
-   "overrule_with": "gen_hcon_staging.TYPE_FOR_COLUMN -- supply a catalogue and return a type"
-  },
-  {
-   "id": "BD4-model-layout",
-   "attribution": "builder",
-   "decision": "Models are laid out as v2 does -- models/vault/{hubs,hub_feeds,links,satellites,refs}, models/augmented, models/{staging,stage,unpivot,reject_log} -- NOT under models/automate_dv/.",
-   "why": "This project declares NO packages and invokes no automate_dv macro (build directive 6). A directory named automate_dv would assert a dependency that does not exist.",
-   "costs": "STATED PLAINLY: vault_tools/check_vault_alignment.py globs models/automate_dv/*/satellites/*.sql and therefore reaches ZERO files in this layout. That gate's satellite comparison is VACUOUS here and is reported as NOT RUN, never as PASS. check_hcon_payload_naming.py was written to cover the payload-naming half against BOTH originals. Choosing the automate_dv path instead would re-enable the gate at the price of a directory name that lies.",
-   "overrule_with": "gen_hcon_vault.VAULT_DIR = 'automate_dv/standard'"
-  },
-  {
-   "id": "BD5-source-per-run",
-   "attribution": "builder",
-   "decision": "Each run gets its own dbt source name: source('opus_health_legacy_v4', T) and source('opus_health_v2', T).",
-   "why": "The two runs share NO table name at all -- per-run table counts and their zero overlap are taken from build_profile.json map_shape -- but they are two different landing areas. One source name would assert they land together.",
-   "costs": "Two source blocks to configure before this project can run. dbt is out of scope here, so nothing resolves them in this build.",
-   "overrule_with": "gen_hcon_staging.SOURCE_NAME_FOR_RUN -- return one constant"
-  },
-  {
-   "id": "BD6-r8-precedence-order",
-   "decision": "Where both runs write one attribute, the declared precedence is V2 FIRST, then legacy: coalesce(v2_value, legacy_value).",
-   "why": "v2 is the closed, settled half (profile legacy_half_status.v2_half_token = SETTLED, no Stage-9 blockers) while EVERY pre-stage-6.5 blocker and EVERY target_validity and handoff_outcome_contract finding came from the legacy half, as recorded in build_profile.json open_items. Neither run is declared authoritative ANYWHERE in the bundle, so this is a builder call and not a reading of the map.",
-   "costs": "WHERE LEGACY IS RIGHT AND V2 IS WRONG, THIS PICKS THE WRONG VALUE. The size of the exposure is taken from BUILD_STATUS.json r8 and build_profile.json r8_source_precedence. It is a VALUE choice, never a key change and never RECORD_SOURCE in a key, so it cannot alter grain and is reversible by reload.",
-   "overrule_with": "hcon_keyrules.R8_PRECEDENCE = ('opus_health_legacy_v4', 'opus_health_v2')",
-   "attribution": "builder-overruled-by-mapper",
-   "overruled_note": "The mapping counterparty overruled the SILENCE, not the precedence. The mechanism stays deterministic v2 > legacy; what changed is that on every shared object written by BOTH runs the subordinate writer and its registry are NAMED in the satellite header, and a load-time assertion counts whether the precedence ever fires at all. An earlier form of the overrule asked for both values to be emitted and was withdrawn: two writers into one row per key is load-order-dependent and strictly worse than a deterministic choice."
-  },
-  {
-   "id": "BD7-refuse-not-coin",
-   "attribution": "mapper-ratified",
-   "decision": "A child-key leg that is NAMED but whose value is absent or of the wrong kind is REFUSED, and the satellite is built WITHOUT that leg, with the refusal in its header and in the unresolved-grain register.",
-   "why": "Build directive 3, and s5.7: the map is not corrected here. The THREE legacy sub-populations -- nothing-at-all, leg-named-but-no-value, and leg-named-with-a-value-of-the-wrong-kind -- are counted in BUILD_STATUS.json and in reports/declared_unresolved_grain_hcon.json. None of the three yields a discriminator without inventing one.",
-   "costs": "Those satellites LOSE GRAIN: rows that differ only in the refused leg collapse onto one hash key. The collapse is DECLARED and countable rather than hidden, which is the only property available here -- the alternative is a fabricated discriminator that no gate can see.",
-   "overrule_with": "hcon_keyrules.REFUSE_UNRESOLVED_LEGS = False (and then every collapsed row is a silent data loss)"
-  },
-  {
-   "id": "BD8-ordinal-legs-are-not-hub-grade",
-   "attribution": "builder",
-   "decision": "A renumbering-ordinal leg is built when the map supplies its value, and its instability is stated in the satellite header; it is never synthesised.",
-   "why": "The unstable legs are named in build_profile.json renumbering_ordinals: Contact Priority Order, Coverage Sequence, Role Sequence, Active Sequence Number. Each changes when a sibling row is added or removed, so none is hub-grade -- a renumbering ordinal breaks a child key exactly as it breaks a hub key.",
-   "costs": "A source renumbering rewrites history on the affected satellites. Declared in the header so the instability is visible before load, not after.",
-   "overrule_with": "hcon_keyrules.ORDINAL_LEGS_ALLOWED = False (those legs then refuse)"
-  },
-  {
-   "id": "BD6b-delta3-ranked-last",
-   "attribution": "builder",
-   "decision": "The third run, opus_health_delta3, is ranked LAST in the declared precedence: coalesce(v2_value, legacy_value, delta3_value).",
-   "why": "MEASURED, not preferred. Delta 3 co-writes 79 of the 594 (satellite, attribute) pairs in the merged map -- 34 with legacy alone, 33 with both, 12 with v2 alone -- so the rank FIRES and is a real value choice. BD6 ranked v2 above legacy because v2 is the SETTLED half, NOT because it is newer; delta 3's settledness is established NOWHERE in its bundle, so there is no basis on BD6's own stated principle to rank it above either existing run. Ranking it first would change the chosen value on all 79 pairs the 115 build already emits, including Party Full Name, Date Of Birth and Identification Number -- a change this consolidation was instructed not to introduce.",
-   "costs": "WHERE DELTA 3 IS RIGHT AND THE EXISTING WINNER IS WRONG, THIS PICKS THE WRONG VALUE, on those 79 pairs. It is a VALUE choice, never a key change and never RECORD_SOURCE in a key, so it cannot alter grain and is reversible by reload. Delta 3's OWN 40 pairs, which no other run writes, are unaffected by the rank.",
-   "overrule_with": "hcon_keyrules.R8_PRECEDENCE -- move 'opus_health_delta3' earlier in the tuple (first = delta 3 wins every shared attribute)"
+   "item": "the central-view rule is written nowhere in the repository",
+   "detail": "It was implemented once, in gen 1's 43 stitched views, and never written down -- which is why every build after gen 1 drifted away from it. It is now recorded verbatim in build_profile.json -> central_view_rule.",
+   "whose_call": "the user"
   }
- ],
- "directives": [
-  {
-   "n": 1,
-   "bundle_item": "coordinator decision 2 and its refinement",
-   "implemented_in": "hcon_names.hash_expr / hcon_names.namespaced_bk",
-   "status": "IMPLEMENTED"
-  },
-  {
-   "n": 2,
-   "bundle_item": "R8 / CROSSRUN_SHARED_ATTRIBUTES.json",
-   "implemented_in": "hcon_keyrules.r8_precedence_for + gen_hcon_vault (dual-feed loader)",
-   "status": "IMPLEMENTED"
-  },
-  {
-   "n": 3,
-   "bundle_item": "withdrawn R6 instruction plus R6_childkey_value_kind.json",
-   "implemented_in": "hcon_keyrules.read_child_key + hcon_keyrules.relabel_discount_item_code",
-   "status": "IMPLEMENTED"
-  },
-  {
-   "n": 4,
-   "bundle_item": "R7 plus data_7.js",
-   "implemented_in": "hcon_keyrules.read_child_key (leg arity PER ROW from the component array)",
-   "status": "IMPLEMENTED"
-  },
-  {
-   "n": 5,
-   "bundle_item": "the five s9.8 blocks in the two originals",
-   "implemented_in": "hcon_keyrules.carried_forward_caveat + gen_hcon_vault header emission",
-   "status": "IMPLEMENTED"
-  },
-  {
-   "n": 6,
-   "bundle_item": "legacy packages.yml plus absent dbt_packages",
-   "implemented_in": "gen_hcon_vault / all generators: no packages.yml is written and no macro is invoked; check_hcon_internal asserts zero package references",
-   "status": "IMPLEMENTED"
-  },
-  {
-   "n": 7,
-   "bundle_item": "s5.3, s5.5 and v2's satellite headers",
-   "implemented_in": "hcon_keyrules.null_safe_concat + hcon_keyrules.guarded_hashdiff",
-   "status": "IMPLEMENTED"
-  },
-  {
-   "n": 8,
-   "bundle_item": "normalise() in v2's expressions",
-   "implemented_in": "hcon_keyrules.normalise_policy -- RAISED, NOT RESOLVED. v2's 31 content-hash expressions are emitted VERBATIM (they already contain normalise()); normalise() is introduced into NO new expression, and every emitting model says so in its header.",
-   "status": "IMPLEMENTED_AS_RAISED"
-  }
- ],
- "layers_built": {
-  "declared_by_profile": [
-   "layer-1 casts",
-   "wide stage",
-   "hub feed",
-   "hubs",
-   "links",
-   "satellites",
-   "augmented satellites",
-   "unpivot",
-   "reject log"
-  ],
-  "bespoke_declared": [
-   "dual_feed_satellite_loader",
-   "declared_unresolved_grain_register"
-  ],
-  "empty_with_a_proven_zero": [
-   "walk-only casts (gen_hcon_hopviews)",
-   "ancestor resolvers (gen_hcon_resolvers)"
-  ]
- }
+ ]
 }
