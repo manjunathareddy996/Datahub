@@ -10,13 +10,11 @@
 -- KYC: 2 KYC feed(s) added; converted automate_dv.sat -> sat_multi_source (same payload,
 -- grain and hashdiff). Each KYC source supplies only its own columns via src_column_map.
 
--- OCR: stg2_sat_bjaz_t_kyc_ocr__party_individual_demographics is NOT loaded -- BJAZ_T_KYC_DETAILS has no OCR_ID, so its rows cannot
--- resolve to part_id yet. Re-add once the OCR join is confirmed.
-
 {%- set yaml_metadata -%}
 source_model:
   - 'stg2_party_individual_demographics'
   - 'stg2_sat_bjaz_t_ckyc_personal_dtls__party_individual_demographics'
+  - 'stg2_sat_bjaz_t_kyc_ocr__party_individual_demographics'
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'ANNUALHOUSEHOLDINCOME'
@@ -37,6 +35,7 @@ src_extra_columns:
 src_record_source_map:
   stg2_party_individual_demographics: 'OPUS_PARTNER'
   stg2_sat_bjaz_t_ckyc_personal_dtls__party_individual_demographics: 'OPUS_PARTNER'
+  stg2_sat_bjaz_t_kyc_ocr__party_individual_demographics: 'OPUS_PARTNER'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
@@ -51,5 +50,6 @@ src_record_source_map:
                     src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
                         'stg2_party_individual_demographics': ['ANNUALHOUSEHOLDINCOME', 'ANNUALINCOME', 'DESIGNATION', 'EDUCATIONALQUALIFICATION', 'FATHERNAME', 'MARITALSTATUS', 'NUMBEROFCHILDREN', 'OCCUPATIONCODE', 'OCCUPATIONDESCRIPTION', 'SPOUSENAME'],
-                        'stg2_sat_bjaz_t_ckyc_personal_dtls__party_individual_demographics': ['FATHERNAME', 'MARITALSTATUS', 'OCCUPATIONCODE']
+                        'stg2_sat_bjaz_t_ckyc_personal_dtls__party_individual_demographics': ['FATHERNAME', 'MARITALSTATUS', 'OCCUPATIONCODE'],
+                        'stg2_sat_bjaz_t_kyc_ocr__party_individual_demographics': ['FATHERNAME']
                     }) }}
