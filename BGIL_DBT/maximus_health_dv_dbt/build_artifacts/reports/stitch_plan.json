@@ -1,0 +1,2487 @@
+{
+ "rule": "1. we create a central view from source tables (by joining them , max upto 10). The join are selected so that it can feed sat as a whole (one or moew). That is we do not split sat across these views. Restriction of 10 can be broken if a sat needs more than source tables to build. If a view as less source tables join, we add more tables to it efficiently so that new sats can be built.",
+ "table_limit": 10,
+ "views": [
+  {
+   "ordinal": 1,
+   "name": "v01_case",
+   "stitch_model": "stitch_v01_case",
+   "stage_model": "stg2_v01_case",
+   "tables": [
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_FOLLOWUP_ATTRIBUTES_PIVOT_VW"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_CASE_WORKFLOW_TASK"
+   ],
+   "links": [],
+   "link_pairs": [],
+   "anchor_hubs": [
+    "HUB_CASE"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 2,
+   "name": "v02_claim",
+   "stitch_model": "stitch_v02_claim",
+   "stage_model": "stg2_v02_claim",
+   "tables": [
+    "MAXI_HLTH_CLM_VW_DATA_AUTHORIZATION_REMARKS_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_COPAY_DETAILS_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_LIST_OF_COVERS_COVER_SET_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_LIST_OF_COVERS_ENTITY_HEADS",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_LIST_OF_COVERS_ENTITY_HEADS_ENTITY_GRID_ROWS_ROW_ATTRIBUTES_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_LIST_OF_COVERS_ENTITY_HEADS_ENTITY_GRID_ROWS_ROW_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_FOLLOW_UP_REPORT_ATTRIBUTES_PIVOT_VW"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_CLAIM_ASSESSMENT_SUMMARY",
+    "SAT_AUG_CLAIM_BENEFIT_HEAD",
+    "SAT_AUG_CLAIM_FRAUD",
+    "SAT_AUG_CLAIM_HEADER",
+    "SAT_AUG_CLAIM_HEALTH_DETAIL",
+    "SAT_AUG_CLAIM_PA_DETAIL",
+    "SAT_AUG_CLAIM_PROVIDER_BILLING",
+    "SAT_AUG_CLAIM_QUALITY_AUDIT",
+    "SAT_AUG_CLAIM_RECOVERY_SALVAGE",
+    "SAT_AUG_CLAIM_TPA_INTERACTION",
+    "SAT_AUG_DOCUMENT_DEFINITION",
+    "SAT_AUG_POLICY_FOLLOW_UP_LOG",
+    "SAT_AUG_PROVIDER_TARIFF",
+    "SAT_CLAIM_ASSESSMENT_SUMMARY",
+    "SAT_CLAIM_BENEFIT_HEAD",
+    "SAT_CLAIM_HEALTH_DETAIL",
+    "SAT_CLAIM_NETWORK_VERIFICATION",
+    "SAT_CLAIM_PA_DETAIL",
+    "SAT_CLAIM_PROVIDER_BILLING",
+    "SAT_CLAIM_REPUDIATION",
+    "SAT_CLAIM_TPA_INTERACTION",
+    "SAT_LOSS_EVENT_DETAIL",
+    "SAT_POLICY_CLAUSE_ATTACHED",
+    "SAT_PROVIDER_TARIFF"
+   ],
+   "links": [
+    "LNK_CLAIM_COVERAGE",
+    "LNK_CLAIM_LOSS_EVENT"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_CLAIM_COVERAGE",
+     "table": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_COPAY_DETAILS_ATTRIBUTES_PIVOT_VW",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(spine[FOREIGN_KEY -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL].CLAIM_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_COVERAGE": {
+       "expr": "'COV:' || nullif(trim(COVER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_CLAIM_COVERAGE",
+     "table": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_LIST_OF_COVERS_COVER_SET_ATTRIBUTE_PIVOT_VW",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(spine[FOREIGN_KEY -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL].CLAIM_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_COVERAGE": {
+       "expr": "'COV:' || nullif(trim(COVER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_CLAIM_LOSS_EVENT",
+     "table": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_LIST_OF_COVERS_COVER_SET_ATTRIBUTE_PIVOT_VW",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(spine[FOREIGN_KEY -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL].CLAIM_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_LOSS_EVENT": {
+       "expr": "'CLM-LOSS:' || nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_LIST_OF_COVERS_COVER_SET_ATTRIBUTE -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_LIST_OF_COVERS -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL].CLAIM_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_CLAIM",
+    "HUB_DOCUMENT",
+    "HUB_LOSS_EVENT",
+    "HUB_PARTY",
+    "HUB_POLICY"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 3,
+   "name": "v03_claim",
+   "stitch_model": "stitch_v03_claim",
+   "stage_model": "stg2_v03_claim",
+   "tables": [
+    "MAXI_HLTH_CLM_VW_DATA_AUTHORIZATION_REMARKS",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_NOTES_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_QUERY_DETAILS_ROWS_COLUMNS_CHILD_ROWS_ROWS_COLUMNS_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_REQUIREMENTS_ROWS_COLUMNS_CHILD_ROWS_ROWS_COLUMNS_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_POLICY_HISTORY_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_POLICY_CLAIM_HISTORY_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_REQUIREMENT_DETAILS_ROWS_CHILD_ROWS_ROWS_COLUMNS_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_REQUIREMENT_DETAILS_ROWS_CHILD_ROWS_ROWS_COLUMNS_PIVOT_VW"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_CLAIM_NOTE",
+    "SAT_AUG_CLAIM_PRIOR_POLICY_HISTORY",
+    "SAT_CLAIM_COMMUNICATION",
+    "SAT_CLAIM_EVIDENCE",
+    "SAT_CLAIM_NOTE",
+    "SAT_DOCUMENT_CHECKLIST"
+   ],
+   "links": [],
+   "link_pairs": [],
+   "anchor_hubs": [
+    "HUB_CLAIM",
+    "HUB_DOCUMENT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 4,
+   "name": "v04_claim",
+   "stitch_model": "stitch_v04_claim",
+   "stage_model": "stg2_v04_claim",
+   "tables": [
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE_ATTRIBUTES_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_PARTYDETAILS_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_RELATION_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_POLICY_HISTORY_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_PENAL_INTEREST_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_PENAL_INTEREST_PIVOT_VW"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_CLAIM_SETTLEMENT",
+    "SAT_AUG_FINTXN_TAX",
+    "SAT_AUG_LNK_CLAIM_PARTY_ROLE",
+    "SAT_CLAIM_DEDUCTION_WAIVER",
+    "SAT_CLAIM_FNOL",
+    "SAT_CLAIM_FRAUD",
+    "SAT_CLAIM_HEADER",
+    "SAT_CLAIM_INVESTIGATION_FINDING",
+    "SAT_CLAIM_QUALITY_AUDIT",
+    "SAT_CLAIM_RECOVERY_SALVAGE",
+    "SAT_CLAIM_SETTLEMENT",
+    "SAT_LOCATION_PROFILE",
+    "SAT_POLICY_PREMIUM_SETTLEMENT"
+   ],
+   "links": [
+    "LNK_CLAIM_PARTY",
+    "LNK_CLAIM_PAYMENT_INSTRUMENT",
+    "LNK_CLAIM_POLICY",
+    "LNK_FINTXN_CLAIM",
+    "LNK_FINTXN_INSTRUMENT",
+    "LNK_FINTXN_PARTY",
+    "LNK_PARTY_PAYMENT_INSTRUMENT",
+    "LNK_POLICY_COVERAGE",
+    "LNK_POLICY_ORG_UNIT",
+    "LNK_POLICY_PRODUCT",
+    "LNK_PRODUCT_COVERAGE",
+    "LNK_PROPOSAL_POLICY",
+    "LNK_PROPOSAL_PRODUCT"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_CLAIM_POLICY",
+     "table": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "CLAIM_NUMBER",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      },
+      "HUB_POLICY": {
+       "expr": "POL_POLICY_NUMBER",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_CLAIM_POLICY",
+     "table": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(spine[FOREIGN_KEY -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL].CLAIM_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE_ATTRIBUTES -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL].POL_POLICY_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_POLICY_COVERAGE",
+     "table": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+     "legs": {
+      "HUB_COVERAGE": {
+       "expr": "'COV:' || nullif(trim(COVER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL].POL_POLICY_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_POLICY_ORG_UNIT",
+     "table": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+     "legs": {
+      "HUB_ORG_UNIT": {
+       "expr": "BRANCH_CODE1",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL].POL_POLICY_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_POLICY_PRODUCT",
+     "table": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL].POL_POLICY_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PRODUCT": {
+       "expr": "PRODUCT_CODE",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_PRODUCT_COVERAGE",
+     "table": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+     "legs": {
+      "HUB_COVERAGE": {
+       "expr": "'COV:' || nullif(trim(COVER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PRODUCT": {
+       "expr": "PRODUCT_CODE",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_PROPOSAL_POLICY",
+     "table": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL].POL_POLICY_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PROPOSAL": {
+       "expr": "PROPOSAL_NUMBER",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_PROPOSAL_PRODUCT",
+     "table": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+     "legs": {
+      "HUB_PRODUCT": {
+       "expr": "PRODUCT_CODE",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      },
+      "HUB_PROPOSAL": {
+       "expr": "PROPOSAL_NUMBER",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_CLAIM_PARTY",
+     "table": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_PARTYDETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(spine[FOREIGN_KEY -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL].CLAIM_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PARTY": {
+       "expr": "md5(normalise(nullif(trim(coalesce(PAN_NUMBER,'') || '|' || coalesce(ACCOUNT_NUMBER,'') || '|' || coalesce(MOBILE_NO,'') || '|' || coalesce(EMAIL_ID,'')), '|||')))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_CLAIM_PAYMENT_INSTRUMENT",
+     "table": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_PARTYDETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(spine[FOREIGN_KEY -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL].CLAIM_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PAYMENT_INSTRUMENT": {
+       "expr": "md5(normalise(nullif(trim(coalesce(ACCOUNT_NUMBER,'') || '|' || coalesce(IFSC_CODE,'')), '|')))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_FINTXN_CLAIM",
+     "table": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_PARTYDETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(spine[FOREIGN_KEY -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL].CLAIM_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_FINANCIAL_TRANSACTION": {
+       "expr": "md5(normalise(nullif(trim('CLAIM-PAYMENT|' || coalesce(nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_PARTYDETAILS -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL].CLAIM_NUMBER),''),'') || '|' || coalesce(ACCOUNT_NUMBER,'')), 'CLAIM-PAYMENT||')))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_FINTXN_INSTRUMENT",
+     "table": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_PARTYDETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_FINANCIAL_TRANSACTION": {
+       "expr": "md5(normalise(nullif(trim('CLAIM-PAYMENT|' || coalesce(nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_PARTYDETAILS -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL].CLAIM_NUMBER),''),'') || '|' || coalesce(ACCOUNT_NUMBER,'')), 'CLAIM-PAYMENT||')))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PAYMENT_INSTRUMENT": {
+       "expr": "md5(normalise(nullif(trim(coalesce(ACCOUNT_NUMBER,'') || '|' || coalesce(IFSC_CODE,'')), '|')))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_FINTXN_PARTY",
+     "table": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_PARTYDETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_FINANCIAL_TRANSACTION": {
+       "expr": "md5(normalise(nullif(trim('CLAIM-PAYMENT|' || coalesce(nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_PARTYDETAILS -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL].CLAIM_NUMBER),''),'') || '|' || coalesce(ACCOUNT_NUMBER,'')), 'CLAIM-PAYMENT||')))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PARTY": {
+       "expr": "md5(normalise(nullif(trim(coalesce(PAN_NUMBER,'') || '|' || coalesce(ACCOUNT_NUMBER,'') || '|' || coalesce(MOBILE_NO,'') || '|' || coalesce(EMAIL_ID,'')), '|||')))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_PARTY_PAYMENT_INSTRUMENT",
+     "table": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_PARTYDETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_PARTY": {
+       "expr": "md5(normalise(nullif(trim(coalesce(PAN_NUMBER,'') || '|' || coalesce(ACCOUNT_NUMBER,'') || '|' || coalesce(MOBILE_NO,'') || '|' || coalesce(EMAIL_ID,'')), '|||')))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PAYMENT_INSTRUMENT": {
+       "expr": "md5(normalise(nullif(trim(coalesce(ACCOUNT_NUMBER,'') || '|' || coalesce(IFSC_CODE,'')), '|')))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_CLAIM_PARTY",
+     "table": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_RELATION_ATTRIBUTE_PIVOT_VW",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(spine[FOREIGN_KEY -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL].CLAIM_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PARTY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_RELATION_ATTRIBUTE -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS] >> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_PARTY.PARTY_CODE),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_CLAIM_PAYMENT_INSTRUMENT",
+     "table": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_RELATION_ATTRIBUTE_PIVOT_VW",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(spine[FOREIGN_KEY -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL].CLAIM_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PAYMENT_INSTRUMENT": {
+       "expr": "md5(normalise(nullif(trim(coalesce(ACCOUNT_NUMBER,'') || '|' || coalesce(IFSC_CODE,'')), '|')))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_FINTXN_CLAIM",
+     "table": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_RELATION_ATTRIBUTE_PIVOT_VW",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(spine[FOREIGN_KEY -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL].CLAIM_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_FINANCIAL_TRANSACTION": {
+       "expr": "md5(normalise(nullif(trim('CLAIM-PAYMENT|' || coalesce(nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_RELATION_ATTRIBUTE -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL].CLAIM_NUMBER),''),'') || '|' || coalesce(ACCOUNT_NUMBER,'')), 'CLAIM-PAYMENT||')))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_FINTXN_INSTRUMENT",
+     "table": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_RELATION_ATTRIBUTE_PIVOT_VW",
+     "legs": {
+      "HUB_FINANCIAL_TRANSACTION": {
+       "expr": "md5(normalise(nullif(trim('CLAIM-PAYMENT|' || coalesce(nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_RELATION_ATTRIBUTE -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL].CLAIM_NUMBER),''),'') || '|' || coalesce(ACCOUNT_NUMBER,'')), 'CLAIM-PAYMENT||')))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PAYMENT_INSTRUMENT": {
+       "expr": "md5(normalise(nullif(trim(coalesce(ACCOUNT_NUMBER,'') || '|' || coalesce(IFSC_CODE,'')), '|')))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_FINTXN_PARTY",
+     "table": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_RELATION_ATTRIBUTE_PIVOT_VW",
+     "legs": {
+      "HUB_FINANCIAL_TRANSACTION": {
+       "expr": "md5(normalise(nullif(trim('CLAIM-PAYMENT|' || coalesce(nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_RELATION_ATTRIBUTE -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL].CLAIM_NUMBER),''),'') || '|' || coalesce(ACCOUNT_NUMBER,'')), 'CLAIM-PAYMENT||')))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PARTY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_RELATION_ATTRIBUTE -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS] >> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_PARTY.PARTY_CODE),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_PARTY_PAYMENT_INSTRUMENT",
+     "table": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_RELATION_ATTRIBUTE_PIVOT_VW",
+     "legs": {
+      "HUB_PARTY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_RELATION_ATTRIBUTE -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS] >> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_PARTY.PARTY_CODE),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PAYMENT_INSTRUMENT": {
+       "expr": "md5(normalise(nullif(trim(coalesce(ACCOUNT_NUMBER,'') || '|' || coalesce(IFSC_CODE,'')), '|')))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_CLAIM",
+    "HUB_FINANCIAL_TRANSACTION",
+    "HUB_LOCATION",
+    "HUB_PARTY",
+    "HUB_POLICY"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 5,
+   "name": "v05_claim",
+   "stitch_model": "stitch_v05_claim",
+   "stage_model": "stg2_v05_claim",
+   "tables": [
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMTRANSITION_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_PAYMENT_PAYMENT_CYCLE_PAYMENT_CYCLE_DETAILS_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_RESERVE_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_RESERVE_HISTORY_ATTRIBUTES_PIVOT_VW"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_CLAIM_STATUS_TRANSITION",
+    "SAT_CLAIM_PAYMENT_TRANCHE",
+    "SAT_CLAIM_RESERVE"
+   ],
+   "links": [
+    "LNK_CLAIM_COVERAGE"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_CLAIM_COVERAGE",
+     "table": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_RESERVE_ATTRIBUTES_PIVOT_VW",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(spine[FOREIGN_KEY -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL].CLAIM_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_COVERAGE": {
+       "expr": "'COV:' || nullif(trim(IMPACTED_COVER_CODE),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_CLAIM_COVERAGE",
+     "table": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_RESERVE_HISTORY_ATTRIBUTES_PIVOT_VW",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(spine[FOREIGN_KEY -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL].CLAIM_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_COVERAGE": {
+       "expr": "'COV:' || nullif(trim(IMPACTED_COVER_CODE),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_CLAIM"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 6,
+   "name": "v06_coverage",
+   "stitch_model": "stitch_v06_coverage",
+   "stage_model": "stg2_v06_coverage",
+   "tables": [
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_PREVIOUSINSURANCEDETAILS_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_POLICY_CLAIM_HISTORY_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA",
+    "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBER_DETAILS_TABS_POLICY_AND_CLAIM_HISTORY"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_ASSESSMENT_HEADER",
+    "SAT_ASSESSMENT_MEDICAL",
+    "SAT_AUG_COMMON_MONETARY_CONTEXT",
+    "SAT_AUG_COVERAGE_CONDITIONS",
+    "SAT_AUG_COVERAGE_DEFINITION",
+    "SAT_AUG_COVERAGE_INDEMNITY_RULE",
+    "SAT_AUG_COVERAGE_LIMITS",
+    "SAT_AUG_POLICY_COVERAGE_RISK_BENEFIT",
+    "SAT_AUG_PRODUCT_TERMS",
+    "SAT_AUG_RISK_HEALTH_WELLNESS",
+    "SAT_COMMON_BUSINESS_AUDIT",
+    "SAT_COVERAGE_CONDITIONS",
+    "SAT_COVERAGE_LIMITS",
+    "SAT_COVERAGE_SUBLIMIT_SCHEDULE",
+    "SAT_POLICY_CERTIFICATE",
+    "SAT_POLICY_PORTABILITY_MIGRATION",
+    "SAT_PRODUCT_DEFINITION",
+    "SAT_PRODUCT_TERMS",
+    "SAT_PROPOSAL_HEADER",
+    "SAT_PROPOSAL_QUESTIONNAIRE",
+    "SAT_PROPOSAL_UNDERWRITING",
+    "SAT_RISK_HEALTH_MEMBER_COVERAGE"
+   ],
+   "links": [
+    "LNK_FINTXN_PARTY",
+    "LNK_FINTXN_POLICY",
+    "LNK_PARTY_LOCATION",
+    "LNK_POLICY_CHANNEL",
+    "LNK_POLICY_COVERAGE",
+    "LNK_POLICY_COVERAGE_RISK",
+    "LNK_POLICY_LOCATION",
+    "LNK_POLICY_PARTY",
+    "LNK_POLICY_PRODUCT",
+    "LNK_POLICY_RISK_OBJECT",
+    "LNK_PRODUCT_COVERAGE",
+    "LNK_PROPOSAL_PARTY",
+    "LNK_PROPOSAL_POLICY",
+    "LNK_PROPOSAL_PRODUCT",
+    "LNK_PROPOSAL_RISK_OBJECT",
+    "LNK_QUOTE_PRODUCT",
+    "LNK_QUOTE_PROPOSAL",
+    "LNK_RISK_OBJECT_LOCATION",
+    "LNK_RISK_OBJECT_PARTY"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_FINTXN_PARTY",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES_PIVOT_VW",
+     "legs": {
+      "HUB_FINANCIAL_TRANSACTION": {
+       "expr": "'FINTXN:COVER-PREMIUM:' || ('COV:' || coalesce( nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'') ,'PROPOSAL:' || nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].PROPOSAL_NUMBER),'') ) || ':' || coalesce(MEMBER_CODE,'') || ':' || coalesce(COVER_CODE,''))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PARTY": {
+       "expr": "coalesce(nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS] >> MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY.PARTY_CODE),''),nullif(trim(MEMBER_CODE),''))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_FINTXN_POLICY",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES_PIVOT_VW",
+     "legs": {
+      "HUB_FINANCIAL_TRANSACTION": {
+       "expr": "'FINTXN:COVER-PREMIUM:' || ('COV:' || coalesce( nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'') ,'PROPOSAL:' || nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].PROPOSAL_NUMBER),'') ) || ':' || coalesce(MEMBER_CODE,'') || ':' || coalesce(COVER_CODE,''))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "coalesce( nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'') ,'PROPOSAL:' || nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].PROPOSAL_NUMBER),'') )",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_PARTY_LOCATION",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES_PIVOT_VW",
+     "legs": {
+      "HUB_LOCATION": {
+       "expr": "'LOC:MEMBER_RESIDENTIAL:' || md5(normalise(nullif(trim(coalesce(COMPLETE_HOMERESIDENTIAL_ADDRESS,'') || '|' || coalesce(PIN_CODE,'')), '|')))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PARTY": {
+       "expr": "coalesce(nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS] >> MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY.PARTY_CODE),''),nullif(trim(MEMBER_CODE),''))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_POLICY_COVERAGE",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES_PIVOT_VW",
+     "legs": {
+      "HUB_COVERAGE": {
+       "expr": "'COV:' || nullif(trim(COVER_CODE),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "coalesce( nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'') ,'PROPOSAL:' || nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].PROPOSAL_NUMBER),'') )",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_POLICY_COVERAGE_RISK",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES_PIVOT_VW",
+     "legs": {
+      "HUB_COVERAGE": {
+       "expr": "'COV:' || nullif(trim(COVER_CODE),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "coalesce( nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'') ,'PROPOSAL:' || nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].PROPOSAL_NUMBER),'') )",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "'MEMBER:' || coalesce(nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS] >> MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY.PARTY_CODE),''),nullif(trim(MEMBER_CODE),''))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_POLICY_LOCATION",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES_PIVOT_VW",
+     "legs": {
+      "HUB_LOCATION": {
+       "expr": "'LOC:MEMBER_RESIDENTIAL:' || md5(normalise(nullif(trim(coalesce(COMPLETE_HOMERESIDENTIAL_ADDRESS,'') || '|' || coalesce(PIN_CODE,'')), '|')))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "coalesce( nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'') ,'PROPOSAL:' || nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].PROPOSAL_NUMBER),'') )",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_POLICY_PARTY",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES_PIVOT_VW",
+     "legs": {
+      "HUB_PARTY": {
+       "expr": "coalesce(nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS] >> MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY.PARTY_CODE),''),nullif(trim(MEMBER_CODE),''))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "coalesce( nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'') ,'PROPOSAL:' || nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].PROPOSAL_NUMBER),'') )",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_POLICY_PRODUCT",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES_PIVOT_VW",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "coalesce( nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'') ,'PROPOSAL:' || nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].PROPOSAL_NUMBER),'') )",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PRODUCT": {
+       "expr": "PLAN_CODE",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_POLICY_RISK_OBJECT",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES_PIVOT_VW",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "coalesce( nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'') ,'PROPOSAL:' || nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].PROPOSAL_NUMBER),'') )",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "'MEMBER:' || coalesce(nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS] >> MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY.PARTY_CODE),''),nullif(trim(MEMBER_CODE),''))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_PRODUCT_COVERAGE",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES_PIVOT_VW",
+     "legs": {
+      "HUB_COVERAGE": {
+       "expr": "'COV:' || nullif(trim(COVER_CODE),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PRODUCT": {
+       "expr": "PLAN_CODE",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_PROPOSAL_PARTY",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES_PIVOT_VW",
+     "legs": {
+      "HUB_PARTY": {
+       "expr": "coalesce(nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS] >> MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY.PARTY_CODE),''),nullif(trim(MEMBER_CODE),''))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].PROPOSAL_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_PROPOSAL_POLICY",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES_PIVOT_VW",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "coalesce( nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'') ,'PROPOSAL:' || nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].PROPOSAL_NUMBER),'') )",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].PROPOSAL_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_PROPOSAL_PRODUCT",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES_PIVOT_VW",
+     "legs": {
+      "HUB_PRODUCT": {
+       "expr": "PLAN_CODE",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      },
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].PROPOSAL_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_PROPOSAL_RISK_OBJECT",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES_PIVOT_VW",
+     "legs": {
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].PROPOSAL_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "'MEMBER:' || coalesce(nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS] >> MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY.PARTY_CODE),''),nullif(trim(MEMBER_CODE),''))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_RISK_OBJECT_LOCATION",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES_PIVOT_VW",
+     "legs": {
+      "HUB_LOCATION": {
+       "expr": "'LOC:MEMBER_RESIDENTIAL:' || md5(normalise(nullif(trim(coalesce(COMPLETE_HOMERESIDENTIAL_ADDRESS,'') || '|' || coalesce(PIN_CODE,'')), '|')))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "'MEMBER:' || coalesce(nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS] >> MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY.PARTY_CODE),''),nullif(trim(MEMBER_CODE),''))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_RISK_OBJECT_PARTY",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES_PIVOT_VW",
+     "legs": {
+      "HUB_PARTY": {
+       "expr": "coalesce(nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS] >> MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY.PARTY_CODE),''),nullif(trim(MEMBER_CODE),''))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "'MEMBER:' || coalesce(nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS] >> MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY.PARTY_CODE),''),nullif(trim(MEMBER_CODE),''))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_POLICY_CHANNEL",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_DISTRIBUTION_CHANNEL": {
+       "expr": "'AZPARTNER:' || nullif(trim(AZ_PARTNER_ID),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_POLICY_COVERAGE_RISK",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_COVERAGE": {
+       "expr": "'COV:' || 'BASIC'",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "'MEMBER:' || nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS] >> MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY.PARTY_CODE),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "augmentation resolved_key.legs for this link"
+    },
+    {
+     "link": "LNK_POLICY_COVERAGE_RISK",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_COVERAGE": {
+       "expr": "'COV:' || 'COMPREHENSIVE'",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "'MEMBER:' || nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS] >> MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY.PARTY_CODE),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "augmentation resolved_key.legs for this link"
+    },
+    {
+     "link": "LNK_POLICY_COVERAGE_RISK",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_COVERAGE": {
+       "expr": "'COV:' || 'ENHANCED'",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "'MEMBER:' || nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS] >> MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY.PARTY_CODE),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "augmentation resolved_key.legs for this link"
+    },
+    {
+     "link": "LNK_POLICY_COVERAGE_RISK",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_COVERAGE": {
+       "expr": "'COV:' || 'INTERNATIONAL'",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "'MEMBER:' || nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS] >> MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY.PARTY_CODE),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "augmentation resolved_key.legs for this link"
+    },
+    {
+     "link": "LNK_POLICY_COVERAGE_RISK",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_COVERAGE": {
+       "expr": "'COV:' || 'INTERNATIONAL_ENHANCED'",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "'MEMBER:' || nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS] >> MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY.PARTY_CODE),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "augmentation resolved_key.legs for this link"
+    },
+    {
+     "link": "LNK_POLICY_COVERAGE_RISK",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_COVERAGE": {
+       "expr": "'COV:' || 'DOUBLE_SUM_INSURED'",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "'MEMBER:' || nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS] >> MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY.PARTY_CODE),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "augmentation resolved_key.legs for this link"
+    },
+    {
+     "link": "LNK_POLICY_COVERAGE_RISK",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_COVERAGE": {
+       "expr": "nullif('COV:' || coalesce(nullif(trim(PRODUCT_CODE),''),'') || '#' || coalesce(nullif(trim(PLAN),''),'') || '#' || coalesce(nullif(trim(SUB_PLAN),''),''), 'COV:##')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "'MEMBER:' || nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS] >> MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY.PARTY_CODE),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "augmentation resolved_key.legs for this link"
+    },
+    {
+     "link": "LNK_POLICY_COVERAGE_RISK",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_COVERAGE": {
+       "expr": "'COV:' || 'CLAIM_MULTIPLIER'",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "'MEMBER:' || nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS] >> MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY.PARTY_CODE),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "augmentation resolved_key.legs for this link"
+    },
+    {
+     "link": "LNK_POLICY_COVERAGE_RISK",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_COVERAGE": {
+       "expr": "'COV:' || 'DEDUCTIBLE'",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "'MEMBER:' || nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS] >> MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY.PARTY_CODE),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "augmentation resolved_key.legs for this link"
+    },
+    {
+     "link": "LNK_POLICY_COVERAGE_RISK",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_COVERAGE": {
+       "expr": "'COV:' || 'INSTA_SHIELD'",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "'MEMBER:' || nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS] >> MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY.PARTY_CODE),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "augmentation resolved_key.legs for this link"
+    },
+    {
+     "link": "LNK_POLICY_PRODUCT",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PRODUCT": {
+       "expr": "PRODUCT_CODE",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_PROPOSAL_POLICY",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].PROPOSAL_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_PROPOSAL_PRODUCT",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_PRODUCT": {
+       "expr": "PRODUCT_CODE",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      },
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].PROPOSAL_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_QUOTE_PRODUCT",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_PRODUCT": {
+       "expr": "PRODUCT_CODE",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      },
+      "HUB_QUOTE": {
+       "expr": "CALCULATOR_URN_NUMBER",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_QUOTE_PROPOSAL",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].PROPOSAL_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_QUOTE": {
+       "expr": "CALCULATOR_URN_NUMBER",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_ASSESSMENT",
+    "HUB_COVERAGE",
+    "HUB_FINANCIAL_TRANSACTION",
+    "HUB_POLICY",
+    "HUB_PRODUCT",
+    "HUB_PROPOSAL",
+    "HUB_RISK_OBJECT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 7,
+   "name": "v07_document",
+   "stitch_model": "stitch_v07_document",
+   "stage_model": "stg2_v07_document",
+   "tables": [
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_DOCUMENTS_DOCUMENT_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_QUERY_DETAILS_ROWS_COLUMNS_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_REQUIREMENTS_ROWS_COLUMNS_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_COMMUNICATION_DETAILS_ADDITION_TAB_MAIL",
+    "MAXI_HLTH_UWR_VW_DATA_COMMUNICATION_DETAILS_ADDITION_TAB_SMS",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_REQUIREMENT_DETAILS_ROWS_CHILD_ROWS_ROWS_COLUMNS_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_REQUIREMENT_DETAILS_ROWS_COLUMNS_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_REQUIREMENT_DETAILS_ROWS_CHILD_ROWS_ROWS_COLUMNS_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_REQUIREMENT_DETAILS_ROWS_COLUMNS_PIVOT_VW"
+   ],
+   "over_limit": true,
+   "satellites": [
+    "SAT_AUG_DOCUMENT_CHECKLIST",
+    "SAT_AUG_DOCUMENT_EMAIL_CONTENT",
+    "SAT_DOCUMENT_DEFINITION",
+    "SAT_DOCUMENT_EMAIL_CONTENT"
+   ],
+   "links": [],
+   "link_pairs": [],
+   "anchor_hubs": [
+    "HUB_DOCUMENT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 8,
+   "name": "v08_financial_transaction",
+   "stitch_model": "stitch_v08_financial_transaction",
+   "stage_model": "stg2_v08_financial_transaction",
+   "tables": [
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_PAYMENT_CLAIM_PAYMENT_DETAIL_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_VIEW_COLLECTIONS"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_FINTXN_CLAIM_PAYMENT",
+    "SAT_AUG_FINTXN_HEADER",
+    "SAT_AUG_FIN_RECEIPT",
+    "SAT_FINTXN_ACCOUNTING",
+    "SAT_FINTXN_HEADER"
+   ],
+   "links": [
+    "LNK_FINTXN_INSTRUMENT",
+    "LNK_FINTXN_POLICY",
+    "LNK_POLICY_PAYMENT_INSTRUMENT"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_FINTXN_INSTRUMENT",
+     "table": "MAXI_HLTH_UWR_VW_DATA_VIEW_COLLECTIONS",
+     "legs": {
+      "HUB_FINANCIAL_TRANSACTION": {
+       "expr": "'UWR_COLLECTION:' || nullif(trim(COLLECTION_PAYMENT_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PAYMENT_INSTRUMENT": {
+       "expr": "'CHQ:' || nullif(trim(coalesce(upper(trim(DRAWEE_BANK_NAME)),'') || '#' || coalesce(trim(CHQ_INS_NUMBER),'')), '#')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_FINTXN_POLICY",
+     "table": "MAXI_HLTH_UWR_VW_DATA_VIEW_COLLECTIONS",
+     "legs": {
+      "HUB_FINANCIAL_TRANSACTION": {
+       "expr": "'UWR_COLLECTION:' || nullif(trim(COLLECTION_PAYMENT_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "POLICY_QUOTATION_DEBIT_NOTE_NO",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_POLICY_PAYMENT_INSTRUMENT",
+     "table": "MAXI_HLTH_UWR_VW_DATA_VIEW_COLLECTIONS",
+     "legs": {
+      "HUB_PAYMENT_INSTRUMENT": {
+       "expr": "'CHQ:' || nullif(trim(coalesce(upper(trim(DRAWEE_BANK_NAME)),'') || '#' || coalesce(trim(CHQ_INS_NUMBER),'')), '#')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "POLICY_QUOTATION_DEBIT_NOTE_NO",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_FINANCIAL_TRANSACTION"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 9,
+   "name": "v09_financial_transaction",
+   "stitch_model": "stitch_v09_financial_transaction",
+   "stage_model": "stg2_v09_financial_transaction",
+   "tables": [
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_LIST_OF_COVERS_COVER_SET_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBER_DETAILS_TAB_GRADED_SI_DETAILS",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBER_RIDER_DETAILS",
+    "MAXI_HLTH_UWR_VW_DATA_PREMIUM_CALCULATION_DETAILS",
+    "MAXI_HLTH_UWR_VW_DATA_RECEIPT_DETAILS_LIST",
+    "MAXI_HLTH_UWR_VW_DATA_VIEW_COLLECTIONS"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_COMMON_MONETARY_CONTEXT",
+    "SAT_COVERAGE_DEFINITION",
+    "SAT_FIN_RECEIPT",
+    "SAT_POLICY_BONUS_TRACKING"
+   ],
+   "links": [],
+   "link_pairs": [],
+   "anchor_hubs": [
+    "HUB_COVERAGE",
+    "HUB_FINANCIAL_TRANSACTION",
+    "HUB_POLICY"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 10,
+   "name": "v10_party",
+   "stitch_model": "stitch_v10_party",
+   "stage_model": "stg2_v10_party",
+   "tables": [
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_PARTYDETAILS_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_PAYMENT_CLAIM_PAYMENT_DETAIL_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_LIST_OF_COVERS_ENTITY_HEADS_ENTITY_GRID_ROWS_ROW_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_PARTY",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_RELATION_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY_PARTY_DETAILS_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_PAYMENT_INFO_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_RELATIONS_PARTY",
+    "MAXI_HLTH_UWR_VW_DATA_RELATIONS_PARTY_PARTY_DETAILS_PIVOT_VW"
+   ],
+   "over_limit": true,
+   "satellites": [
+    "SAT_AUG_COMMON_ADDRESS",
+    "SAT_AUG_COMMON_COMMUNICATION_PREFERENCE",
+    "SAT_AUG_PARTY_BANKING",
+    "SAT_AUG_PARTY_CONSENT_MANDATE",
+    "SAT_AUG_PARTY_CONTACT_ADDRESS_LINK",
+    "SAT_AUG_PARTY_DIGITAL_IDENTITY",
+    "SAT_AUG_PARTY_EMPLOYMENT",
+    "SAT_AUG_PARTY_FRAUD_PROFILE",
+    "SAT_AUG_PARTY_GROUP_SCHEME",
+    "SAT_AUG_PARTY_HIERARCHY",
+    "SAT_AUG_PARTY_IDENTIFICATION",
+    "SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS",
+    "SAT_AUG_PARTY_KYC",
+    "SAT_AUG_PARTY_LEGAL_PANEL",
+    "SAT_AUG_PARTY_ONBOARDING_JOURNEY",
+    "SAT_AUG_PARTY_ORGANISATION_PROFILE",
+    "SAT_AUG_PARTY_PAYOUT_PROFILE",
+    "SAT_AUG_PARTY_PREFERENCE_PROFILE",
+    "SAT_AUG_PARTY_RELATIONSHIP_PROFILE",
+    "SAT_COMMON_CLASSIFICATION",
+    "SAT_COMMON_COMMUNICATION_PREFERENCE",
+    "SAT_COMMON_CONSENT",
+    "SAT_COMMON_GEO",
+    "SAT_FINTXN_CLAIM_PAYMENT",
+    "SAT_FINTXN_TAX",
+    "SAT_LNK_PARTY_ROLE_CORE",
+    "SAT_LNK_ROLE_AGENT",
+    "SAT_LNK_ROLE_CUSTOMER",
+    "SAT_LNK_ROLE_EMPLOYEE",
+    "SAT_LNK_ROLE_PROVIDER",
+    "SAT_PARTY_AGENT_LICENCE_LINE",
+    "SAT_PARTY_AML_SCREENING",
+    "SAT_PARTY_BANKING",
+    "SAT_PARTY_EMPLOYMENT",
+    "SAT_PARTY_FRAUD_PROFILE",
+    "SAT_PARTY_HEALTH_PROFILE",
+    "SAT_PARTY_HIERARCHY",
+    "SAT_PARTY_IDENTIFICATION",
+    "SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS",
+    "SAT_PARTY_KYC",
+    "SAT_PARTY_LEGAL_PANEL",
+    "SAT_PARTY_ORGANISATION_PROFILE",
+    "SAT_PARTY_ORG_DIRECTORS",
+    "SAT_PARTY_PAYOUT_PROFILE",
+    "SAT_PARTY_PROVIDER_CAPABILITY",
+    "SAT_PROVIDER_QUALITY"
+   ],
+   "links": [
+    "LNK_ORG_UNIT_LOCATION",
+    "LNK_PARTY_LOCATION",
+    "LNK_PARTY_ORG_UNIT",
+    "LNK_QUOTE_PARTY",
+    "LNK_QUOTE_PRODUCT"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_ORG_UNIT_LOCATION",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY_PARTY_DETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_LOCATION": {
+       "expr": "'LOC:' || nullif(trim(LOCATION_CODE),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_ORG_UNIT": {
+       "expr": "nullif(trim(BRANCH),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_PARTY_LOCATION",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY_PARTY_DETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_LOCATION": {
+       "expr": "'LOC:' || nullif(trim(LOCATION_CODE),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PARTY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY_PARTY_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY].PARTY_CODE),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_PARTY_ORG_UNIT",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY_PARTY_DETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_ORG_UNIT": {
+       "expr": "nullif(trim(BRANCH),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PARTY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY_PARTY_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY].PARTY_CODE),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_QUOTE_PARTY",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY_PARTY_DETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_PARTY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY_PARTY_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY].PARTY_CODE),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_QUOTE": {
+       "expr": "CALCULATOR_URN_NUMBER",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_QUOTE_PRODUCT",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY_PARTY_DETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_PRODUCT": {
+       "expr": "PRODUCT_CODE",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      },
+      "HUB_QUOTE": {
+       "expr": "CALCULATOR_URN_NUMBER",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_FINANCIAL_TRANSACTION",
+    "HUB_LOCATION",
+    "HUB_PARTY"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 11,
+   "name": "v11_party",
+   "stitch_model": "stitch_v11_party",
+   "stage_model": "stg2_v11_party",
+   "tables": [
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_ADJUST_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_PARTYDETAILS_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_PARTY",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_RELATION_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_PAYMENT_INFO_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_RELATIONS_PARTY_PARTY_DETAILS_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_VIEW_COLLECTIONS",
+    "MAXI_HLTH_UWR_VW_DATA_VIEW_COLLECTIONS_ADDITIONAL_DETAILS_PIVOT_VW"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_COMMON_CONTACT",
+    "SAT_AUG_PARTY_BENEFICIARY_LINE",
+    "SAT_AUG_PRODUCT_DEFINITION",
+    "SAT_CHANNEL_DEFINITION",
+    "SAT_FINTXN_PREMIUM",
+    "SAT_INSTRUMENT_DEFINITION",
+    "SAT_LNK_CLAIM_PARTY_ROLE",
+    "SAT_PARTY_DIGITAL_IDENTITY",
+    "SAT_PARTY_ONBOARDING_JOURNEY",
+    "SAT_PARTY_RELATIONSHIP_PROFILE"
+   ],
+   "links": [
+    "LNK_PARTY_ORG_UNIT",
+    "LNK_POLICY_LOCATION",
+    "LNK_POLICY_PAYMENT_INSTRUMENT",
+    "LNK_QUOTE_PARTY",
+    "LNK_QUOTE_PRODUCT"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_PARTY_ORG_UNIT",
+     "table": "MAXI_HLTH_UWR_VW_DATA_RELATIONS_PARTY_PARTY_DETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_ORG_UNIT": {
+       "expr": "nullif(trim(BRANCH),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PARTY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_RELATIONS_PARTY_PARTY_DETAILS -> MAXI_HLTH_UWR_VW_DATA_RELATIONS_PARTY].PARTY_CODE),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_QUOTE_PARTY",
+     "table": "MAXI_HLTH_UWR_VW_DATA_RELATIONS_PARTY_PARTY_DETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_PARTY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_RELATIONS_PARTY_PARTY_DETAILS -> MAXI_HLTH_UWR_VW_DATA_RELATIONS_PARTY].PARTY_CODE),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_QUOTE": {
+       "expr": "CALCULATOR_URN_NUMBER",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_QUOTE_PRODUCT",
+     "table": "MAXI_HLTH_UWR_VW_DATA_RELATIONS_PARTY_PARTY_DETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_PRODUCT": {
+       "expr": "PRODUCT_CODE",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      },
+      "HUB_QUOTE": {
+       "expr": "CALCULATOR_URN_NUMBER",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_POLICY_LOCATION",
+     "table": "MAXI_HLTH_UWR_VW_DATA_VIEW_COLLECTIONS_ADDITIONAL_DETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_LOCATION": {
+       "expr": "'LOC:' || md5(normalise(nullif(trim(coalesce(CITY_NAME,'')), '')))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "CHILD_POLICY",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_POLICY_PAYMENT_INSTRUMENT",
+     "table": "MAXI_HLTH_UWR_VW_DATA_VIEW_COLLECTIONS_ADDITIONAL_DETAILS_PIVOT_VW",
+     "legs": {
+      "HUB_PAYMENT_INSTRUMENT": {
+       "expr": "'UWR_COLL_INSTR:' || md5(normalise(nullif(trim(coalesce(CARD_NUMBERLAST_4_DIGITS,'') || '#' || coalesce(CARD_TYPE,'') || '#' || coalesce(ISSUING_BANK,'') || '#' || coalesce(IFSC_CODE,'') || '#' || coalesce(PAYER_BANK_ACCOUNT_NO,'') || '#' || coalesce(MICR_CODE,'')), '#####')))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "CHILD_POLICY",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_CLAIM",
+    "HUB_DISTRIBUTION_CHANNEL",
+    "HUB_FINANCIAL_TRANSACTION",
+    "HUB_PARTY",
+    "HUB_PAYMENT_INSTRUMENT",
+    "HUB_PRODUCT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 12,
+   "name": "v12_party",
+   "stitch_model": "stitch_v12_party",
+   "stage_model": "stg2_v12_party",
+   "tables": [
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_PARTYDETAILS_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_PAYMENT_CLAIM_PAYMENT_DETAIL_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_PARTY_CONTACT_DETAILS",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_RELATION_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY_CONTACT_DETAILS",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY_PARTY_DETAILS_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_PAYMENT_INFO_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_PROPOSER_ADDRESS_CONTACT_DETAILS",
+    "MAXI_HLTH_UWR_VW_DATA_RELATIONS_PARTY_CONTACT_DETAILS",
+    "MAXI_HLTH_UWR_VW_DATA_RELATIONS_PARTY_PARTY_DETAILS_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_VIEW_COLLECTIONS_ADDITIONAL_DETAILS_PIVOT_VW"
+   ],
+   "over_limit": true,
+   "satellites": [
+    "SAT_AUG_INSTRUMENT_DEFINITION",
+    "SAT_AUG_PARTY_FINANCIAL_PROFILE",
+    "SAT_AUG_PARTY_HEALTH_PROFILE",
+    "SAT_COMMON_ADDRESS",
+    "SAT_PARTY_CONTACT_ADDRESS_LINK",
+    "SAT_PARTY_FINANCIAL_PROFILE",
+    "SAT_PARTY_GROUP_CENSUS"
+   ],
+   "links": [
+    "LNK_PARTY_LOCATION"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_PARTY_LOCATION",
+     "table": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_PARTY_CONTACT_DETAILS",
+     "legs": {
+      "HUB_LOCATION": {
+       "expr": "md5(normalise(nullif(trim(coalesce(ADDRESS_LINE1,'') || '#' || coalesce(ADDRESS_LINE2,'') || '#' || coalesce(ADDRESS_LINE3,'') || '#' || coalesce(CITY_CODE,'') || '#' || coalesce(STATE_CODE,'') || '#' || coalesce(PIN_CODE,'') || '#' || coalesce(COUNTRY_CODE,'')), '######')))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PARTY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_PARTY].PARTY_CODE),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_PARTY_LOCATION",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY_CONTACT_DETAILS",
+     "legs": {
+      "HUB_LOCATION": {
+       "expr": "md5(normalise(nullif(trim(coalesce(ADDRESS_LINE1,'') || '#' || coalesce(ADDRESS_LINE2,'') || '#' || coalesce(ADDRESS_LINE3,'') || '#' || coalesce(CITY_CODE,'') || '#' || coalesce(STATE_CODE,'') || '#' || coalesce(PIN_CODE,'') || '#' || coalesce(COUNTRY_CODE,'')), '######')))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PARTY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY].PARTY_CODE),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_PARTY_LOCATION",
+     "table": "MAXI_HLTH_UWR_VW_DATA_PROPOSER_ADDRESS_CONTACT_DETAILS",
+     "legs": {
+      "HUB_LOCATION": {
+       "expr": "md5(normalise(nullif(trim(coalesce(ADDRESS_LINE1,'') || '#' || coalesce(ADDRESS_LINE2,'') || '#' || coalesce(ADDRESS_LINE3,'') || '#' || coalesce(CITY_CODE,'') || '#' || coalesce(STATE_CODE,'') || '#' || coalesce(PIN_CODE,'') || '#' || coalesce(COUNTRY_CODE,'')), '######')))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PARTY": {
+       "expr": "'UWR-PROPOSER:' || nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_PROPOSER_ADDRESS -> MAXI_HLTH_UWR_VW_DATA].PROPOSAL_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_PARTY_LOCATION",
+     "table": "MAXI_HLTH_UWR_VW_DATA_RELATIONS_PARTY_CONTACT_DETAILS",
+     "legs": {
+      "HUB_LOCATION": {
+       "expr": "md5(normalise(nullif(trim(coalesce(ADDRESS_LINE1,'') || '#' || coalesce(ADDRESS_LINE2,'') || '#' || coalesce(ADDRESS_LINE3,'') || '#' || coalesce(CITY_CODE,'') || '#' || coalesce(STATE_CODE,'') || '#' || coalesce(PIN_CODE,'') || '#' || coalesce(COUNTRY_CODE,'')), '######')))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PARTY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_RELATIONS_PARTY].PARTY_CODE),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_LOCATION",
+    "HUB_PARTY",
+    "HUB_PAYMENT_INSTRUMENT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 13,
+   "name": "v13_party",
+   "stitch_model": "stitch_v13_party",
+   "stage_model": "stg2_v13_party",
+   "tables": [
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_ADJUST_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_PARTYDETAILS_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_PAYMENT_CLAIM_PAYMENT_DETAIL_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_PARTY_CONTACT_DETAILS",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_RELATION_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY_CONTACT_DETAILS",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY_PARTY_DETAILS_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_PAYMENT_INFO_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_PROPOSER_ADDRESS_CONTACT_DETAILS",
+    "MAXI_HLTH_UWR_VW_DATA_RELATIONS_PARTY_CONTACT_DETAILS",
+    "MAXI_HLTH_UWR_VW_DATA_RELATIONS_PARTY_PARTY_DETAILS_PIVOT_VW"
+   ],
+   "over_limit": true,
+   "satellites": [
+    "SAT_COMMON_CONTACT"
+   ],
+   "links": [],
+   "link_pairs": [],
+   "anchor_hubs": [
+    "HUB_PARTY"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 14,
+   "name": "v14_party",
+   "stitch_model": "stitch_v14_party",
+   "stage_model": "stg2_v14_party",
+   "tables": [
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_ADJUST_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_PAYMENT_CLAIM_PAYMENT_DETAIL_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_PARTY",
+    "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY_PARTY_DETAILS_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBER_DETAILS_TAB_MEMBER_DATA",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBER_RIDER_DETAILS",
+    "MAXI_HLTH_UWR_VW_DATA_PAYMENT_INFO_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_RELATIONS_PARTY",
+    "MAXI_HLTH_UWR_VW_DATA_RELATIONS_PARTY_PARTY_DETAILS_PIVOT_VW"
+   ],
+   "over_limit": true,
+   "satellites": [
+    "SAT_PARTY_IDENTITY"
+   ],
+   "links": [],
+   "link_pairs": [],
+   "anchor_hubs": [
+    "HUB_PARTY"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 15,
+   "name": "v15_policy",
+   "stitch_model": "stitch_v15_policy",
+   "stage_model": "stg2_v15_policy",
+   "tables": [
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_CLM_VW_DATA_POLICY_CLAIM_HISTORY_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA",
+    "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBER_DETAILS_TABS_POLICY_AND_CLAIM_HISTORY",
+    "MAXI_HLTH_UWR_VW_DATA_PAYMENT_INFO_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_POLICY_PAYMENT_CYCLE_DETAILS_PAYMENT_CYCLE_DETAILS_PAYMENT_CYCLE_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_PREMIUM_CALCULATION_DETAILS"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_ACCOUNT_BALANCE",
+    "SAT_ACCOUNT_DEFINITION",
+    "SAT_ASSESSMENT_FRAUD_INVESTIGATION",
+    "SAT_AUG_ACCOUNT_DEFINITION",
+    "SAT_AUG_PARTY_POLICY_HISTORY",
+    "SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED",
+    "SAT_AUG_POLICY_HEADER",
+    "SAT_AUG_POLICY_INSTALMENT_SCHEDULE",
+    "SAT_AUG_POLICY_PORTABILITY_MIGRATION",
+    "SAT_AUG_POLICY_PREMIUM_HEAD",
+    "SAT_AUG_RISK_HEALTH_MEMBER_COVERAGE",
+    "SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL",
+    "SAT_LNK_ROLE_NOMINEE_BENEFICIARY",
+    "SAT_ORG_UNIT_DEFINITION",
+    "SAT_PARTY_CLAIM_HISTORY",
+    "SAT_PARTY_KYC_REFERENCE",
+    "SAT_PARTY_POLICY_HISTORY",
+    "SAT_POLICY_CLASSIFICATION",
+    "SAT_POLICY_GROUP",
+    "SAT_POLICY_HEADER",
+    "SAT_POLICY_INSTALMENT_SCHEDULE",
+    "SAT_POLICY_PREMIUM_SUMMARY",
+    "SAT_POLICY_TAX_BREAKUP",
+    "SAT_PRODUCT_UW_RULE"
+   ],
+   "links": [
+    "LNK_FINTXN_PARTY",
+    "LNK_FINTXN_POLICY",
+    "LNK_ORG_UNIT_LOCATION",
+    "LNK_POLICY_COVERAGE",
+    "LNK_POLICY_LOCATION",
+    "LNK_POLICY_ORG_UNIT",
+    "LNK_POLICY_PARTY",
+    "LNK_POLICY_PRODUCT",
+    "LNK_PROPOSAL_POLICY",
+    "LNK_PROPOSAL_PRODUCT"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_POLICY_ORG_UNIT",
+     "table": "MAXI_HLTH_UWR_VW_DATA",
+     "legs": {
+      "HUB_ORG_UNIT": {
+       "expr": "POLICY_BRANCH",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      },
+      "HUB_POLICY": {
+       "expr": "POLICY_NUMBER",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_POLICY_PRODUCT",
+     "table": "MAXI_HLTH_UWR_VW_DATA",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "POLICY_NUMBER",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      },
+      "HUB_PRODUCT": {
+       "expr": "PRODUCT_CODE",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_PROPOSAL_POLICY",
+     "table": "MAXI_HLTH_UWR_VW_DATA",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "POLICY_NUMBER",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      },
+      "HUB_PROPOSAL": {
+       "expr": "PROPOSAL_NUMBER",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_PROPOSAL_PRODUCT",
+     "table": "MAXI_HLTH_UWR_VW_DATA",
+     "legs": {
+      "HUB_PRODUCT": {
+       "expr": "PRODUCT_CODE",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      },
+      "HUB_PROPOSAL": {
+       "expr": "PROPOSAL_NUMBER",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_POLICY_PRODUCT",
+     "table": "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE -> MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE -> MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE -> MAXI_HLTH_UWR_VW_DATA].PRODUCT_CODE),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_PROPOSAL_POLICY",
+     "table": "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE -> MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE -> MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE -> MAXI_HLTH_UWR_VW_DATA].PROPOSAL_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_PROPOSAL_PRODUCT",
+     "table": "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+     "legs": {
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE -> MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE -> MAXI_HLTH_UWR_VW_DATA].PRODUCT_CODE),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE -> MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE -> MAXI_HLTH_UWR_VW_DATA].PROPOSAL_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_ORG_UNIT_LOCATION",
+     "table": "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+     "legs": {
+      "HUB_LOCATION": {
+       "expr": "'LOC:' || nullif(trim(LOCATION_CODE),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_ORG_UNIT": {
+       "expr": "BRANCH_CODE",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_POLICY_LOCATION",
+     "table": "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+     "legs": {
+      "HUB_LOCATION": {
+       "expr": "'LOC:' || nullif(trim(LOCATION_CODE),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_POLICY_ORG_UNIT",
+     "table": "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+     "legs": {
+      "HUB_ORG_UNIT": {
+       "expr": "BRANCH_CODE",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_POLICY_PRODUCT",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_MULTISET_ATTRIBUTE_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_MULTISET_ATTRIBUTE -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_MULTISET_ATTRIBUTE_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_MULTISET_ATTRIBUTE -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].PRODUCT_CODE),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_PROPOSAL_POLICY",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_MULTISET_ATTRIBUTE_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_MULTISET_ATTRIBUTE -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_MULTISET_ATTRIBUTE_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_MULTISET_ATTRIBUTE -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].PROPOSAL_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_PROPOSAL_PRODUCT",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+     "legs": {
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_MULTISET_ATTRIBUTE_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_MULTISET_ATTRIBUTE -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].PRODUCT_CODE),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_MULTISET_ATTRIBUTE_ATTRIBUTES -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_MULTISET_ATTRIBUTE -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].PROPOSAL_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_PROPOSAL_PRODUCT",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBER_DETAILS_TABS_POLICY_AND_CLAIM_HISTORY",
+     "legs": {
+      "HUB_PRODUCT": {
+       "expr": "PRODUCT_CODE",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      },
+      "HUB_PROPOSAL": {
+       "expr": "VIEW_PROPOSAL_NUMBER",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_FINTXN_PARTY",
+     "table": "MAXI_HLTH_UWR_VW_DATA_PAYMENT_INFO_PIVOT_VW",
+     "legs": {
+      "HUB_FINANCIAL_TRANSACTION": {
+       "expr": "md5(normalise(nullif(trim('PREMIUM-COLLECTION|' || coalesce(nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_PAYMENT_INFO -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),''),'') || '|' || coalesce(ACCOUNT_NUMBER,'')), 'PREMIUM-COLLECTION||')))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PARTY": {
+       "expr": "coalesce('PARTNER_CUST:' || nullif(trim(PARTNER_CUST_ID),'') ,'PAYER:' || md5(normalise(nullif(trim(coalesce(NAME_OF_THE_PREMIUM_PAYER,'') || '|' || coalesce(ACCOUNT_NUMBER,'')), '|'))))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_FINTXN_POLICY",
+     "table": "MAXI_HLTH_UWR_VW_DATA_PAYMENT_INFO_PIVOT_VW",
+     "legs": {
+      "HUB_FINANCIAL_TRANSACTION": {
+       "expr": "md5(normalise(nullif(trim('PREMIUM-COLLECTION|' || coalesce(nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_PAYMENT_INFO -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),''),'') || '|' || coalesce(ACCOUNT_NUMBER,'')), 'PREMIUM-COLLECTION||')))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_PAYMENT_INFO -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_POLICY_PARTY",
+     "table": "MAXI_HLTH_UWR_VW_DATA_PAYMENT_INFO_PIVOT_VW",
+     "legs": {
+      "HUB_PARTY": {
+       "expr": "coalesce('PARTNER_CUST:' || nullif(trim(PARTNER_CUST_ID),'') ,'PAYER:' || md5(normalise(nullif(trim(coalesce(NAME_OF_THE_PREMIUM_PAYER,'') || '|' || coalesce(ACCOUNT_NUMBER,'')), '|'))))",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_PAYMENT_INFO -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    },
+    {
+     "link": "LNK_POLICY_COVERAGE",
+     "table": "MAXI_HLTH_UWR_VW_DATA_PREMIUM_CALCULATION_DETAILS",
+     "legs": {
+      "HUB_COVERAGE": {
+       "expr": "'COV:' || nullif(trim(COVER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_ASSESSMENT",
+    "HUB_FINANCIAL_ACCOUNT",
+    "HUB_ORG_UNIT",
+    "HUB_PARTY",
+    "HUB_POLICY",
+    "HUB_PRODUCT",
+    "HUB_RISK_OBJECT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 16,
+   "name": "v16_policy",
+   "stitch_model": "stitch_v16_policy",
+   "stage_model": "stg2_v16_policy",
+   "tables": [
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL",
+    "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_ENDORSEMENT_DETAILS",
+    "MAXI_HLTH_UWR_VW_DATA_ENDORSEMENT_HISTORY_REPORT",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_PPC_PACKAGE_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_PAYMENT_INFO_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_RELATIONS",
+    "MAXI_HLTH_UWR_VW_DATA_RELATIONS_PARTY"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_ASSESSMENT_RISK_SCORING",
+    "SAT_AUG_ASSESSMENT_HEADER",
+    "SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE",
+    "SAT_AUG_PARTY_IDENTITY",
+    "SAT_AUG_POLICY_ENDORSEMENT",
+    "SAT_AUG_POLICY_GROUP",
+    "SAT_AUG_POLICY_LIFECYCLE",
+    "SAT_AUG_POLICY_TERMS",
+    "SAT_AUG_PROPOSAL_HEADER",
+    "SAT_AUG_RISK_HEALTH_MEMBER_PPC_PACKAGE",
+    "SAT_COMMON_LIFECYCLE",
+    "SAT_COMMON_STATUS",
+    "SAT_LEAD_ATTRIBUTION",
+    "SAT_LNK_POLICY_PARTY_ROLE",
+    "SAT_LNK_ROLE_POSP",
+    "SAT_PARTY_CONSENT_MANDATE",
+    "SAT_PARTY_GROUP_HOUSEHOLD",
+    "SAT_POLICY_CANCELLATION",
+    "SAT_POLICY_DOC_CHECKLIST",
+    "SAT_POLICY_ENDORSEMENT",
+    "SAT_POLICY_EXCESS_STRUCTURE",
+    "SAT_POLICY_INTERMEDIARY_SPLIT",
+    "SAT_POLICY_LIFECYCLE",
+    "SAT_POLICY_REFUND_DETAIL",
+    "SAT_POLICY_RENEWAL",
+    "SAT_POLICY_SUM_INSURED_BREAKUP",
+    "SAT_POLICY_TAX_HEAD",
+    "SAT_POLICY_TENURE_SCHEDULE",
+    "SAT_POLICY_TERMS",
+    "SAT_PRODUCT_RATING_STRUCTURE",
+    "SAT_RISK_HEALTH_PED_WAITING",
+    "SAT_RISK_HEALTH_WELLNESS",
+    "SAT_RISK_OBJECT_CORE",
+    "SAT_RISK_PET"
+   ],
+   "links": [],
+   "link_pairs": [],
+   "anchor_hubs": [
+    "HUB_ASSESSMENT",
+    "HUB_COVERAGE",
+    "HUB_PARTY",
+    "HUB_POLICY",
+    "HUB_PRODUCT",
+    "HUB_PROPOSAL",
+    "HUB_RISK_OBJECT"
+   ],
+   "absorbed_by_rule_4": [
+    [
+     "SAT_AUG_RISK_HEALTH_MEMBER_PPC_PACKAGE"
+    ]
+   ]
+  },
+  {
+   "ordinal": 17,
+   "name": "v17_policy",
+   "stitch_model": "stitch_v17_policy",
+   "stage_model": "stg2_v17_policy",
+   "tables": [
+    "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEDICALRATING_DECISIONS_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEDICALRATING_EXCLUSIONS_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_PREMIUM_CALCULATION_DETAILS"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_ASSESSMENT_UNDERWRITING",
+    "SAT_AUG_RISK_PERSON_INSURED",
+    "SAT_COVERAGE_MEMBER_BENEFIT",
+    "SAT_POLICY_COVERAGE_SCHEDULE",
+    "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+    "SAT_POLICY_PREMIUM_HEAD",
+    "SAT_PROPOSAL_DECLARATIONS",
+    "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+    "SAT_RISK_PERSON_INSURED"
+   ],
+   "links": [
+    "LNK_POLICY_COVERAGE"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_POLICY_COVERAGE",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_BENEFITS",
+     "legs": {
+      "HUB_COVERAGE": {
+       "expr": "'COV:' || nullif(trim(BENEFIT_CODE),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "coalesce( nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'') ,'PROPOSAL:' || nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].PROPOSAL_NUMBER),'') )",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_ASSESSMENT",
+    "HUB_COVERAGE",
+    "HUB_POLICY",
+    "HUB_PROPOSAL",
+    "HUB_RISK_OBJECT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 18,
+   "name": "v18_proposal",
+   "stitch_model": "stitch_v18_proposal",
+   "stage_model": "stg2_v18_proposal",
+   "tables": [
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_ADDITIONAL_TEST_PIVOT_VW",
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEDICALRATING_DECISIONS_PIVOT_VW"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_PROPOSAL_MEDICAL_SCHEDULING"
+   ],
+   "links": [
+    "LNK_PROPOSAL_POLICY"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_PROPOSAL_POLICY",
+     "table": "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEDICALRATING_DECISIONS_PIVOT_VW",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEDICALRATING_DECISIONS -> MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEDICALRATING -> MAXI_HLTH_UWR_VW_DATA_MEMBERS -> MAXI_HLTH_UWR_VW_DATA].POLICY_NUMBER),'')",
+       "verdict": "null_on_blank_row",
+       "dv": null
+      },
+      "HUB_PROPOSAL": {
+       "expr": "FOREIGN_KEY",
+       "verdict": "empty_on_blank_row",
+       "dv": ""
+      }
+     },
+     "evidence": "every leg's key resolves once, instance-free, on this table"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_PROPOSAL"
+   ],
+   "absorbed_by_rule_4": []
+  }
+ ],
+ "census": {
+  "views": 18,
+  "satellites": 215,
+  "views_over_limit": 5,
+  "link_only_views": 0,
+  "feeding_tables": 74,
+  "link_pairs": 94
+ }
+}

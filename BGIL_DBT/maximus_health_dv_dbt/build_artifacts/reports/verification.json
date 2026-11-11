@@ -1,0 +1,184 @@
+{
+ "tally": {
+  "PASS": 18,
+  "FAIL": 1
+ },
+ "checks": [
+  {
+   "check": "layout: models only in the partner/travel directory set",
+   "status": "PASS",
+   "population": 666,
+   "detail": {
+    "unexpected": [],
+    "missing": []
+   }
+  },
+  {
+   "check": "every hub/link/sat is an automate_dv macro; every stage is stage()",
+   "status": "PASS",
+   "population": 499,
+   "detail": {
+    "offenders": []
+   }
+  },
+  {
+   "check": "no hash KEY written by hand: every key is hashed by stage()",
+   "status": "PASS",
+   "population": 666,
+   "detail": {
+    "offenders": [],
+    "md5_inside_map_content_hash_business_keys": 212
+   }
+  },
+  {
+   "check": "packages.yml declares automate_dv + dbt_utils at the pinned ranges",
+   "status": "PASS",
+   "population": 2,
+   "detail": {}
+  },
+  {
+   "check": "refs and sources resolve; no orphan model",
+   "status": "PASS",
+   "population": 666,
+   "detail": {
+    "dangling": [],
+    "bad_sources": [],
+    "orphans": []
+   }
+  },
+  {
+   "check": "yaml_metadata blocks are in the generated grammar, no Jinja inside",
+   "status": "PASS",
+   "population": 499,
+   "detail": {
+    "offenders": []
+   }
+  },
+  {
+   "check": "vault contract: every src_* column is produced by every source stage",
+   "status": "PASS",
+   "population": 366,
+   "detail": {
+    "offenders": []
+   }
+  },
+  {
+   "check": "stage contract: every stage column comes from its central view",
+   "status": "PASS",
+   "population": 1979,
+   "detail": {
+    "offenders": []
+   }
+  },
+  {
+   "check": "view contract: every qualified column is on the model its alias binds",
+   "status": "PASS",
+   "population": 810,
+   "detail": {
+    "offenders": [],
+    "n": 0
+   }
+  },
+  {
+   "check": "central-view rule: whole satellites, <=10 feeding tables or rule 3",
+   "status": "PASS",
+   "population": 215,
+   "detail": {
+    "offenders": []
+   }
+  },
+  {
+   "check": "no spine notation, LNK() or display form survives into SQL",
+   "status": "PASS",
+   "population": 666,
+   "detail": {
+    "offenders": [],
+    "normalise_calls_carried_verbatim": 210
+   }
+  },
+  {
+   "check": "every model under Snowflake's 1 MB statement limit once compiled",
+   "status": "PASS",
+   "population": 666,
+   "detail": {
+    "largest_compiled_estimate": 581477,
+    "offenders": [],
+    "why": "Snowflake rejects a statement over 1 MB; a ref() compiles to a fully qualified name, estimated at 64 bytes"
+   }
+  },
+  {
+   "check": "every mapped satellite row lands, is refused with a reason, or is a declared dedup",
+   "status": "PASS",
+   "population": 1826,
+   "detail": {
+    "accounted": {
+     "dropped: redundant_of another mapped column": 111,
+     "landed in its satellite": 1658,
+     "refused and registered": 57
+    },
+    "unaccounted": [],
+    "n_unaccounted": 0
+   }
+  },
+  {
+   "check": "ABSOLUTE: no file outside this project changed",
+   "status": "PASS",
+   "population": 25781,
+   "detail": {
+    "files_compared": 25781,
+    "added": [],
+    "removed": [],
+    "modified": [],
+    "n_added": 0,
+    "n_removed": 0,
+    "n_modified": 0
+   }
+  },
+  {
+   "check": "shared gate: check_internal",
+   "status": "PASS",
+   "population": 1,
+   "detail": {
+    "tail": "models                        : 666   (maximus_health_v4_dv_dbt)\n  PASS -- refs resolve, every declared source column is emitted, names unique.\n"
+   }
+  },
+  {
+   "check": "shared gate: check_patterns",
+   "status": "PASS",
+   "population": 1,
+   "detail": {
+    "tail": "files scanned                 : 9\n  PASS -- no control bytes, every statically-known pattern compiles.\n"
+   }
+  },
+  {
+   "check": "shared gate: check_prose_counts",
+   "status": "PASS",
+   "population": 1,
+   "detail": {
+    "tail": "prose files scanned           : 2\n  PASS -- every quantity in current-state prose is sourced or absent.\n"
+   }
+  },
+  {
+   "check": "shared gate: check_prose_shape",
+   "status": "PASS",
+   "population": 1,
+   "detail": {
+    "tail": "models examined               : 666   (population)\n  PASS -- no identifier-position token contains a space.\n"
+   }
+  },
+  {
+   "check": "shared gate: check_vault_alignment (vs health_consolidated_v5_dv_dbt)",
+   "status": "FAIL",
+   "population": 1,
+   "detail": {
+    "findings": {
+     "1. payload column is not the canonical rendering": 19,
+     "2. grain differs from the sibling": 9,
+     "2. src_cdk differs from the sibling": 9,
+     "5. alias selected more than once in one select": 71,
+     "6. mapped column reaches no satellite": 24
+    }
+   }
+  }
+ ]
+}

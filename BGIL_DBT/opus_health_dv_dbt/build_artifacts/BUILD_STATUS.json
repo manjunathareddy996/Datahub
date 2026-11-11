@@ -1,134 +1,125 @@
 {
- "project": "health_consolidated_v4_dv_dbt",
- "architecture": "central-view (the user's governing rule)",
- "architecture_note": "GOVERNS",
+ "project": "health_consolidated_v5_dv_dbt",
+ "macro_library": "automate_dv (every hub, link and satellite is a macro call; every hash is computed by automate_dv.stage())",
+ "structure": "partner_dv_dbt / travel_dv_dbt layout, exactly",
+ "architecture": "central views (the user's governing rule) -> automate_dv.stage() -> hub() / link() / sat() / ma_sat()",
  "build_status": "PARTIAL_BY_DECLARATION",
- "build_status_note": "PARTIAL BY DECLARATION, not by failure: 148 object(s) could not be resolved from the pinned inputs and were REFUSED and registered rather than defaulted. A fallback always produces a row, so it never produces an error; each register entry is the error a fallback would have hidden. Every other object was built.",
+ "build_status_note": "Every object resolvable from the pinned inputs was built. What was not is REFUSED and registered with whose call it is -- a fallback always produces a row, so it never produces an error.",
  "models": {
-  "total": 1486,
+  "total": 699,
   "by_layer": {
-   "assertions": 308,
-   "augmented": 131,
-   "hub_feeds": 636,
-   "stage": 46,
-   "staging": 109,
-   "stitched": 46,
-   "vault/hubs": 20,
-   "vault/links": 59,
-   "vault/satellites": 131
+   "automate_dv/augmented/satellites": 95,
+   "automate_dv/augmented/staging": 95,
+   "automate_dv/standard/hubs": 20,
+   "automate_dv/standard/links": 55,
+   "automate_dv/standard/satellites": 125,
+   "automate_dv/standard/staging": 159,
+   "automate_dv/standard/stitched": 34,
+   "staging/health": 116
   }
  },
- "tree_digest_sha256": "8d89f91a14f0231fe9ff9d545e4483d29f34c182b602dc89a1ec7833a3a8f609",
+ "tree_digest_sha256": "36827e61ac6115c385d982c4a04a93fe3de31a077e21f145d2dfde8336590172",
  "tree_digest_recipe": "per file: posix-relpath + LF + sha256(bytes); lines sorted bytewise, joined by LF, sha256 of the UTF-8 join",
- "rule_application": {
-  "stitched_views": 46,
-  "rule_3_exceptions_over_10_tables": 20,
-  "satellites_fed_whole_by_one_view": 131,
-  "satellites_split_across_views": 0,
-  "satellites_split_note": "0 by construction AND re-counted from the emitted SQL by verify_hcon4.py check 1, which reads each satellite's own ref() list rather than trusting the generator.",
-  "hubs_derived_from_views": 20,
-  "hub_feeds": 636,
-  "links_from_one_view_each": 59,
-  "hash_sites": 46,
-  "hash_site_note": "One per central view, and nowhere else. Verified by check 4, which searches every model for an md5( call outside the stage layer."
- },
- "map_coverage": {
-  "source_tables_joined": 112,
-  "model_hubs": 20,
-  "model_hubs_keyed": 20,
-  "key_slot_sources": {
-   "pairs": 375,
-   "pairs_with_one_slot": 340,
-   "pairs_with_several_slots": 35,
-   "from_map": 112,
-   "from_legacy_sql": 263
-  },
-  "model_reference_satellites": 54,
-  "reference_satellites_addressed": 0,
-  "reference_satellites_note": "data_7.js carries reference satellites and this map's target track names NONE of them, so no vault/refs layer is written. An empty directory would advertise a layer that does not exist; this is the gap, and it is an item for the modeller.",
-  "key_slot_note": "Key slots come from TWO sources -- resolved_key in the map, and the legacy half's forms recovered read-only from health_dv_dbt's emitted SQL. Sweeping only the map reported 5 hubs as keyed nowhere and would have refused 8 satellites and 18 links on a false zero. The correction is recorded because the figure was already reported once before it was caught."
+ "central_views": {
+  "views": 34,
+  "satellites": 220,
+  "views_over_limit": 15,
+  "link_only_views": 0,
+  "tables_on_views": 116,
+  "link_pairs": 307
  },
  "unresolved_register": {
-  "count": 148,
+  "count": 1250,
   "by_kind": {
-   "child_key_leg_unresolved": 38,
-   "link_leg_not_staged_on_its_view": 12,
-   "payload_column_is_also_a_child_key_leg": 14,
-   "payload_withheld_table_not_joinable": 5,
-   "proposed_satellite_anchor_not_staged": 6,
-   "proposed_satellite_has_no_central_view": 61,
-   "satellite_anchor_key_not_staged": 6,
-   "satellite_has_no_renderable_payload_on_its_view": 2,
-   "source_table_grouped_but_never_joined": 3,
-   "undefined_udf_normalise": 1
+   "augmentation_on_unbuildable_link": 40,
+   "augmentation_without_anchor": 144,
+   "augmentation_without_target_name": 88,
+   "child_key_unresolved": 278,
+   "key_not_emittable": 87,
+   "key_unresolved": 613
   },
   "by_whose_call": {
-   "mapper": 72,
-   "modeller": 75,
-   "source owner": 1
+   "mapper": 1169,
+   "source owner": 81
   },
   "where": "build_artifacts/reports/unresolved_register.json"
  },
  "verification": {
-  "status": "PASS",
   "tally": {
-   "PASS": 16,
-   "NOT RUN": 1
+   "PASS": 18,
+   "FAIL": 1
   },
-  "where": "build_artifacts/reports/verification.json",
-  "four_outcomes_note": "Each check reports PASS, FAIL, NOT RUN or DID NOT COMPLETE with the population it ran over. A PASS over an empty population is downgraded to NOT RUN, because a zero from a probe that looked in the wrong place is indistinguishable from a clean result."
+  "where": "build_artifacts/reports/verification.json"
+ },
+ "shared_gates": {
+  "check_internal": "PASS",
+  "check_patterns": "PASS",
+  "check_prose_counts": "PASS",
+  "check_prose_shape": "PASS",
+  "check_vault_alignment": {
+   "sibling": "health_dv_dbt (the gen-1 automate_dv health build)",
+   "exit": 1,
+   "findings": {
+    "1. payload column is not the canonical rendering": 69,
+    "2. grain differs from the sibling": 3,
+    "2. src_cdk differs from the sibling": 8,
+    "2. src_pk differs from the sibling": 58,
+    "4. hub key names differ from the sibling": 20,
+    "5. alias selected more than once in one select": 1188,
+    "6. mapped column reaches no satellite": 91
+   },
+   "mapped_columns_reaching_a_satellite": {
+    "reached": 463,
+    "of": 554
+   },
+   "note": "This gate reported every satellite as unreachable on the previous health build (wrong directory layout). On this build it reaches all of them."
+  }
+ },
+ "shared_gate_triage": {
+  "5. alias selected more than once in one select": {
+   "gate_count_reproduced": 1188,
+   "explained": 1188,
+   "unexplained": [],
+   "n_unexplained": 0,
+   "aliases_repeated_within_one_real_select": 0,
+   "cause": "Each central view ends with its last union branch followed by the final windowed select. The gate splits on 'union all' only, so those two selects fall in one block and every payload column -- aliased once in each -- is counted as repeated. Parsed select by select, no alias repeats."
+  },
+  "1. and 6. mapped column reaches no satellite": {
+   "pairs_the_gate_reports_missing": 91,
+   "explained_by_refusal_kind": {
+    "key_unresolved": 83,
+    "redundant_of dedup": 5,
+    "key_not_emittable": 4
+   },
+   "unexplained": [],
+   "n_unexplained": 0,
+   "cause": "Every one of these pairs had ALL of its map rows refused (key unresolved, key calls the undefined normalise(), ...) and registered with whose call it is; none is a landed value under a different name. The shared gate records known gaps only in vault_tools/accepted_uncovered.txt, which this build may not edit."
+  },
+  "2. src_pk differs from the sibling": {
+   "cause": "health_dv_dbt names satellite keys *_HK while its hubs and links use *_HKEY -- the split partner_dv_dbt's README records as the defect that broke 14 health hubs. This build uses *_HKEY everywhere, as partner and travel do."
+  },
+  "2. grain / src_cdk differs from the sibling": {
+   "cause": "data_7.js governs grain. health_dv_dbt was built against an earlier model; where data_7.js declares a satellite multi-active or declares more child-key legs, this build follows data_7.js."
+  },
+  "4. hub key names differ from the sibling": {
+   "cause": "the hub business-key column is <HUB>_BK here, PARENT_BK in health_dv_dbt, partner_dv_dbt and travel_dv_dbt. One view-level stage carries several hubs, so one PARENT_BK column cannot serve them all. This is the one naming deviation from the reference projects.",
+   "alternative": "one stage per (view, hub) naming the key PARENT_BK",
+   "alternative_cost_extra_stage_models": 165,
+   "whose_call": "the user"
+  }
  },
  "other_builds_unchanged": {
-  "check": "ABSOLUTE -- no other build changed",
+  "check": "ABSOLUTE: no file outside this project changed",
   "status": "PASS",
-  "population": 22357,
-  "detail": "every file in 22 sibling project(s) plus vault_tools was checked for a modification time at or after this project's own oldest file (22357 files scanned). Content digests are also recorded now, so a later run can compare bytes as well -- but on THIS run mtime is the only evidence that exists, because no pre-work baseline was captured.",
-  "evidence": []
- },
- "corrections": [
-  {
-   "id": "hub-key-census-read-one-of-two-sources",
-   "what_was_reported": "5 model hubs keyed nowhere in the map, refusing 8 satellites and 18 links",
-   "superseded_counts": {
-    "hubs_reported_unkeyed": 5,
-    "satellites_refused_on_that_basis": 8,
-    "links_refused_on_that_basis": 18
-   },
-   "hubs_named": [
-    "HUB_AGREEMENT",
-    "HUB_FINANCIAL_ACCOUNT",
-    "HUB_LOSS_EVENT",
-    "HUB_PAYMENT_INSTRUMENT",
-    "HUB_REINSURANCE_TREATY"
-   ],
-   "why_it_was_wrong": "Key slots come from TWO sources: resolved_key in the map, which the profile measures as present on zero legacy rows, and the legacy half's forms recovered read-only from health_dv_dbt's emitted SQL. The first pass swept only the map. All five hubs are keyed on the legacy half.",
-   "corrected_figure_lives_in": "map_coverage.model_hubs_keyed, this file",
-   "class": "a zero from a probe that looked in one of two places, which is indistinguishable from a clean result",
-   "fixed_in": "hcon4_plan.key_slots / hub_key_tables, which now sweep both sources and raise if the legacy recovery fails rather than silently refusing"
+  "population": 25074,
+  "detail": {
+   "files_compared": 25074,
+   "added": [],
+   "removed": [],
+   "modified": [],
+   "n_added": 0,
+   "n_removed": 0,
+   "n_modified": 0
   }
- ],
- "cross_build_facts_cited_in_prose": {
-  "sibling_orphan_stage_models": 104,
-  "sibling_duplicate_alias_models": 30,
-  "sibling_unbalanced_literal_models": 235,
-  "sibling_lost_blocks_on_field_spelling": 1099,
-  "note": "Figures from earlier builds in this estate, recorded here so the handback and the model headers can cite them rather than typing them into prose. They describe OTHER builds and are not state of this one."
- },
- "known_open_items": [
-  {
-   "item": "BUILD_RULES.md s6 contradicts the governing rule",
-   "detail": "s6 calls its per-source-table architecture 'Invariant across every build' and mandates one cast per mapped view, one wide stage per view, and satellites unioned over all feeders. Under the central-view rule a satellite has ONE feeder by construction. Both cannot hold. This build did NOT edit s6 -- a build does not rewrite the law it is judged by.",
-   "whose_call": "the user"
-  },
-  {
-   "item": "normalise() is undefined",
-   "detail": "It appears verbatim inside map-supplied content-hash expressions and is defined nowhere in this project or in either original. The expressions are not rewritten, because a tidied key is a different key.",
-   "whose_call": "source owner"
-  },
-  {
-   "item": "the central-view rule is written nowhere in the repository",
-   "detail": "It was implemented once, in gen 1's 43 stitched views, and never written down -- which is why every build after gen 1 drifted away from it. It is now recorded verbatim in build_profile.json -> central_view_rule.",
-   "whose_call": "the user"
-  }
- ]
+ }
 }

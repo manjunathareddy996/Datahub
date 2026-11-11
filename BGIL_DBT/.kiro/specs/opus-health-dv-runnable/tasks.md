@@ -230,7 +230,7 @@ template source is `BGIL_DBT\opus_partner_dv_dbt\`.
     - Report any staging model or referenced source that fails either check
     - _Requirements: 3.2, 4.2_
 
-- [ ] 12. Add the missing per-satellite stitches (revisit first-pass views)
+- [x] 12. Add the missing per-satellite stitches (revisit first-pass views)
   - The first pass reshaped each view for its filename satellite only. Per design "One
     stitch per satellite", revisit each already-reshaped view in batches of roughly ten:
     1. Read `stage_NN_*` and list every `SAT_*_HASHDIFF` it hashes with each payload list
@@ -250,42 +250,42 @@ template source is `BGIL_DBT\opus_partner_dv_dbt\`.
   - Only `stitch_35` is excluded from this task (open follow-up, see 8.1). `stitch_10` and
     `stitch_43` are satellite-feeding (misnamed, see 5.2 / 9.2) and are included; they have
     no first pass, so reshape them from the git HEAD original, one stitch per satellite
-  - [ ] 12.1 Pilot: per-satellite stitches for `stitch_01`
+  - [x] 12.1 Pilot: per-satellite stitches for `stitch_01`
     - Apply steps 1-4 to `stitch_01_policy__policy_header` (all satellites hashed by
       `stage_01_policy`), proving the procedure before the batches
     - Confirm the primary file `stitch_01_policy__policy_header.sql` carries only
       `sat_policy_header` payload and that each new file's `hub_keys` match the central view
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 4.2_
 
-  - [~] 12.2 Batch `stitch_00`, `stitch_02`–`stitch_10`
+  - [x] 12.2 Batch `stitch_00`, `stitch_02`–`stitch_10`
     - Apply steps 1-4 to each view (note `stitch_01` done in 12.1)
     - `stitch_10_policy__lnk_role_nominee_beneficiary` has no first pass: reshape from the
       git HEAD original, one stitch per satellite (feeds `SAT_LNK_ROLE_NOMINEE_BENEFICIARY`)
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 4.2_
 
-  - [~] 12.3 Batch `stitch_11`–`stitch_19`
+  - [x] 12.3 Batch `stitch_11`–`stitch_19`
     - Apply steps 1-4 to each view
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 4.2_
 
-  - [~] 12.4 Batch `stitch_30`–`stitch_34`, `stitch_36`–`stitch_39`
+  - [x] 12.4 Batch `stitch_30`–`stitch_34`, `stitch_36`–`stitch_39`
     - Apply steps 1-4 to each view; `stitch_35` is excluded (open follow-up, see 8.1)
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 4.2_
 
-  - [~] 12.5 Batch `stitch_40`–`stitch_45`
+  - [x] 12.5 Batch `stitch_40`–`stitch_45`
     - Apply steps 1-4 to each view
     - `stitch_43_policy__lnk_party_role_core` has no first pass: reshape from the git HEAD
       original, one stitch per satellite (`SAT_LNK_PARTY_ROLE_CORE` and
       `SAT_PARTY_CLAIM_HISTORY`)
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 4.2_
 
-- [~] 13. Checkpoint — per-satellite stitch set is complete and consistent
+- [x] 13. Checkpoint — per-satellite stitch set is complete and consistent
   - Static inspection only: for every stage_NN model, confirm each hashed satellite has a
     per-satellite stitch (except `stitch_35`), no stitch carries
     another satellite's payload, and all files call `stitch_incremental_hcon`
   - Ensure inspection passes, ask the user if questions arise
   - _Requirements: 3.1, 3.2, 3.3, 3.4, 4.2_
 
-- [~] 10. Checkpoint — static inspection and user-run dbt checklist
+- [x] 10. Checkpoint — static inspection and user-run dbt checklist
   - dbt is **not installed** in the agent environment, so `dbt deps`, `dbt parse`, and
     `dbt compile` are performed by the **user**; the agent does not run or claim them
   - Agent performs static inspection of the reshaped `stitched/` models and the macro:
@@ -302,7 +302,7 @@ template source is `BGIL_DBT\opus_partner_dv_dbt\`.
     questions arise
   - _Requirements: 3.1, 3.2, 3.3, 3.4, 4.2, 4.3_
 
-- [~] 11. Compile the follow-up findings document
+- [x] 11. Compile the follow-up findings document
   - Author a single findings doc (e.g. `FOLLOWUP_FINDINGS_HEALTH.md` in the project root)
     gathering, not patching. Items to record:
     - **Resolved** — hub-key derivation is **preserved** by `stitch_incremental_hcon`

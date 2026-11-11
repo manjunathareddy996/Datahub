@@ -1,0 +1,42 @@
+-- automate_dv.stage() for SAT_AUG_CLAIM_FOLLOW_UP_CHASE, read off central view stitch_v06_claim.
+-- The key is NULL wherever this satellite has no payload: automate_dv.sat() takes
+-- no filter, and a NULL key is the one row it is guaranteed to skip.
+{{ config(materialized='view') }}
+
+{%- set yaml_metadata -%}
+source_model: 'stitch_v06_claim'
+hashed_columns:
+  CLAIM_HKEY: 'CLAIM_NK'
+  HASHDIFF:
+    is_hashdiff: true
+    columns:
+      - 'DOCUMENT_SOURCE_STAGE'
+      - 'FIRST_REMINDER_DATE'
+      - 'FOLLOW_UP_INTIMATION_DATE'
+      - 'FOLLOW_UP_REASON'
+      - 'FOLLOW_UP_REFERENCE'
+      - 'FOLLOW_UP_UPDATED_BY_USER_REFERENCE'
+      - 'ORPHAN_RECORD_REFERENCE'
+      - 'REPLY_RECEIVED_DATE'
+      - 'SECOND_REMINDER_DATE'
+derived_columns:
+  CLAIM_NK: "case when coalesce(AUG_CLAIM_FOLLOW_UP_CHASE__DOCUMENT_SOURCE_STAGE, AUG_CLAIM_FOLLOW_UP_CHASE__FIRST_REMINDER_DATE, AUG_CLAIM_FOLLOW_UP_CHASE__FOLLOW_UP_INTIMATION_DATE, AUG_CLAIM_FOLLOW_UP_CHASE__FOLLOW_UP_REASON, AUG_CLAIM_FOLLOW_UP_CHASE__FOLLOW_UP_REFERENCE, AUG_CLAIM_FOLLOW_UP_CHASE__FOLLOW_UP_UPDATED_BY_USER_REFERENCE, AUG_CLAIM_FOLLOW_UP_CHASE__ORPHAN_RECORD_REFERENCE, AUG_CLAIM_FOLLOW_UP_CHASE__REPLY_RECEIVED_DATE, AUG_CLAIM_FOLLOW_UP_CHASE__SECOND_REMINDER_DATE) is not null then 'HUB_CLAIM|' || CLAIM_BK end"
+  DOCUMENT_SOURCE_STAGE: 'AUG_CLAIM_FOLLOW_UP_CHASE__DOCUMENT_SOURCE_STAGE'
+  FIRST_REMINDER_DATE: 'AUG_CLAIM_FOLLOW_UP_CHASE__FIRST_REMINDER_DATE'
+  FOLLOW_UP_INTIMATION_DATE: 'AUG_CLAIM_FOLLOW_UP_CHASE__FOLLOW_UP_INTIMATION_DATE'
+  FOLLOW_UP_REASON: 'AUG_CLAIM_FOLLOW_UP_CHASE__FOLLOW_UP_REASON'
+  FOLLOW_UP_REFERENCE: 'AUG_CLAIM_FOLLOW_UP_CHASE__FOLLOW_UP_REFERENCE'
+  FOLLOW_UP_UPDATED_BY_USER_REFERENCE: 'AUG_CLAIM_FOLLOW_UP_CHASE__FOLLOW_UP_UPDATED_BY_USER_REFERENCE'
+  ORPHAN_RECORD_REFERENCE: 'AUG_CLAIM_FOLLOW_UP_CHASE__ORPHAN_RECORD_REFERENCE'
+  REPLY_RECEIVED_DATE: 'AUG_CLAIM_FOLLOW_UP_CHASE__REPLY_RECEIVED_DATE'
+  SECOND_REMINDER_DATE: 'AUG_CLAIM_FOLLOW_UP_CHASE__SECOND_REMINDER_DATE'
+  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  RECORD_SOURCE: '!stitch_v06_claim'
+{%- endset -%}
+
+{% set metadata_dict = fromyaml(yaml_metadata) %}
+
+{{ automate_dv.stage(include_source_columns=false,
+                      source_model=metadata_dict['source_model'],
+                      hashed_columns=metadata_dict['hashed_columns'],
+                      derived_columns=metadata_dict['derived_columns']) }}

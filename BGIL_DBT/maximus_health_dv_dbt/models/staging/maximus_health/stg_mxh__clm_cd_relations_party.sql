@@ -1,0 +1,44 @@
+-- Staging for source view MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_PARTY. Every column trimmed varchar, including the shred keys
+-- KEY_HASH / PARENT_KEY_HASH / FOREIGN_KEY that the central views join on.
+with source as (
+
+    select
+        nullif(trim(to_varchar("INC_JOB_CREATED_AT")), '') as inc_job_created_at,
+        nullif(trim(to_varchar("INC_JOB_ID")), '') as inc_job_id,
+        nullif(trim(to_varchar("FILE_NAME")), '') as file_name,
+        nullif(trim(to_varchar("FILE_TIMESTAMP")), '') as file_timestamp,
+        nullif(trim(to_varchar("FOREIGN_KEY")), '') as foreign_key,
+        nullif(trim(to_varchar("ROOT_HASH")), '') as root_hash,
+        nullif(trim(to_varchar("PARENT_KEY_HASH")), '') as parent_key_hash,
+        nullif(trim(to_varchar("PARENT_RECORD_HASH")), '') as parent_record_hash,
+        nullif(trim(to_varchar("BUSINESS_NAME")), '') as business_name,
+        nullif(trim(to_varchar("CITIZENSHIP_ID")), '') as citizenship_id,
+        nullif(trim(to_varchar("COMPANY")), '') as company,
+        nullif(trim(to_varchar("CONTACT_DETAILS")), '') as contact_details,
+        nullif(trim(to_varchar("DATEOF_BIRTH")), '') as dateof_birth,
+        nullif(trim(to_varchar("EFFECTIVE_DATE")), '') as effective_date,
+        nullif(trim(to_varchar("FIRST_NAME")), '') as first_name,
+        nullif(trim(to_varchar("INDV_OR_ORG")), '') as indv_or_org,
+        nullif(trim(to_varchar("INITIAL")), '') as initial,
+        nullif(trim(to_varchar("LAST_NAME")), '') as last_name,
+        nullif(trim(to_varchar("MIDDLE_NAME")), '') as middle_name,
+        nullif(trim(to_varchar("NATIONALITY")), '') as nationality,
+        nullif(trim(to_varchar("OCCUPATION")), '') as occupation,
+        nullif(trim(to_varchar("OTHER_NAME")), '') as other_name,
+        nullif(trim(to_varchar("PARENT_PARTY_CODE")), '') as parent_party_code,
+        nullif(trim(to_varchar("PARTY_CODE")), '') as party_code,
+        nullif(trim(to_varchar("PARTY_DETAILS")), '') as party_details,
+        nullif(trim(to_varchar("SEX")), '') as sex,
+        nullif(trim(to_varchar("STAKEHOLDER")), '') as stakeholder,
+        nullif(trim(to_varchar("KEY_HASH")), '') as key_hash,
+        nullif(trim(to_varchar("RECORD_HASH")), '') as record_hash,
+        nullif(trim(to_varchar("PARTY")), '') as party,
+        nullif(trim(to_varchar("REC_REFRESH_AT")), '') as rec_refresh_at,
+        nullif(trim(to_varchar("REC_REFRESHED_BY")), '') as rec_refreshed_by,
+        nullif(trim(to_varchar("PARENT_TABLE_NAME")), '') as parent_table_name,
+        nullif(trim(to_varchar("STAKEHOLDER_ROLE")), '') as stakeholder_role
+    from {{ source('maximus_raw', 'MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_RELATIONS_PARTY') }}
+
+)
+
+select * from source

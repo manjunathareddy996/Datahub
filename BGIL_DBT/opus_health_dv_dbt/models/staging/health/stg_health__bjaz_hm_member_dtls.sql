@@ -1,0 +1,62 @@
+-- Staging for source table BJAZ_HM_MEMBER_DTLS (run opus_health_legacy_v4). Every column is trimmed varchar: the pinned
+-- inputs carry no datatype catalogue for this half, so no type is inferred.
+with source as (
+
+    select
+        nullif(trim(to_varchar("ADDRESS")), '') as address,
+        nullif(trim(to_varchar("ADD_ENDORSEMENT_NO")), '') as add_endorsement_no,
+        nullif(trim(to_varchar("AGE")), '') as age,
+        nullif(trim(to_varchar("ASSIGNEE_NAME")), '') as assignee_name,
+        nullif(trim(to_varchar("BANK_AC_NO")), '') as bank_ac_no,
+        nullif(trim(to_varchar("BANK_NAME")), '') as bank_name,
+        nullif(trim(to_varchar("BONUS_SI")), '') as bonus_si,
+        nullif(trim(to_varchar("CITY")), '') as city,
+        nullif(trim(to_varchar("CLAIM_COUNT")), '') as claim_count,
+        nullif(trim(to_varchar("CONTRACT_ID")), '') as contract_id,
+        nullif(trim(to_varchar("CO_EMPNUMBER")), '') as co_empnumber,
+        nullif(trim(to_varchar("CTNY_MASTER_CONTRACT_ID")), '') as ctny_master_contract_id,
+        nullif(trim(to_varchar("CUMM_BONUS")), '') as cumm_bonus,
+        nullif(trim(to_varchar("CUMM_BONUS_PER")), '') as cumm_bonus_per,
+        nullif(trim(to_varchar("DEL_ENDORSEMENT_NO")), '') as del_endorsement_no,
+        nullif(trim(to_varchar("DESIGNATION")), '') as designation,
+        nullif(trim(to_varchar("DOB")), '') as dob,
+        nullif(trim(to_varchar("EMAIL_ID")), '') as email_id,
+        nullif(trim(to_varchar("EMPLOYEE_LOCATION")), '') as employee_location,
+        nullif(trim(to_varchar("ENDORSEMENT_DATE")), '') as endorsement_date,
+        nullif(trim(to_varchar("ENDORSEMENT_NO")), '') as endorsement_no,
+        nullif(trim(to_varchar("GENDER")), '') as gender,
+        nullif(trim(to_varchar("GRADE")), '') as grade,
+        nullif(trim(to_varchar("GROSS_INCOME")), '') as gross_income,
+        nullif(trim(to_varchar("HAT_EMPCODE")), '') as hat_empcode,
+        nullif(trim(to_varchar("HC_NO_OF_DAYS")), '') as hc_no_of_days,
+        nullif(trim(to_varchar("ID_CARD_NO")), '') as id_card_no,
+        nullif(trim(to_varchar("LOAD_AMT")), '') as load_amt,
+        nullif(trim(to_varchar("LOAD_RATE")), '') as load_rate,
+        nullif(trim(to_varchar("MEMBER_FLAG")), '') as member_flag,
+        nullif(trim(to_varchar("MEMBER_ID")), '') as member_id,
+        nullif(trim(to_varchar("MEMBER_NAME")), '') as member_name,
+        nullif(trim(to_varchar("MEMBER_STATUS")), '') as member_status,
+        nullif(trim(to_varchar("MICR_CODE")), '') as micr_code,
+        nullif(trim(to_varchar("MONTHLY_SALARY")), '') as monthly_salary,
+        nullif(trim(to_varchar("OCCUPATION")), '') as occupation,
+        nullif(trim(to_varchar("OLD_MEMBER_NO")), '') as old_member_no,
+        nullif(trim(to_varchar("PARTNER_ID")), '') as partner_id,
+        nullif(trim(to_varchar("PHONE_NO")), '') as phone_no,
+        nullif(trim(to_varchar("PIN")), '') as pin,
+        nullif(trim(to_varchar("PLAN_NAME")), '') as plan_name,
+        nullif(trim(to_varchar("POLICY_REF")), '') as policy_ref,
+        nullif(trim(to_varchar("PREMIUM")), '') as premium,
+        nullif(trim(to_varchar("PRODUCT_CODE")), '') as product_code,
+        nullif(trim(to_varchar("REFUND_PREMIUM")), '') as refund_premium,
+        nullif(trim(to_varchar("RELATION")), '') as relation,
+        nullif(trim(to_varchar("RISK_CLASS")), '') as risk_class,
+        nullif(trim(to_varchar("STATE")), '') as state,
+        nullif(trim(to_varchar("SUMINSURED")), '') as suminsured,
+        nullif(trim(to_varchar("TERM_END_DATE")), '') as term_end_date,
+        nullif(trim(to_varchar("TERM_START_DATE")), '') as term_start_date,
+        nullif(trim(to_varchar("VIP_FLG")), '') as vip_flg
+    from {{ source('health_raw', 'BJAZ_HM_MEMBER_DTLS') }}
+
+)
+
+select * from source

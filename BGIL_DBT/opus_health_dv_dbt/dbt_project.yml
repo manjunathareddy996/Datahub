@@ -1,61 +1,44 @@
-name: 'opus_health_dv_dbt'
+name: 'health_consolidated_v5_dv'
 version: '1.0.0'
+config-version: 2
 
-profile: 'opus_health_dbt'
+profile: 'health_consolidated_v5_dv'
 
 model-paths: ["models"]
-analysis-paths: ["analyses"]
-test-paths: ["tests"]
-seed-paths: ["seeds"]
 macro-paths: ["macros"]
-snapshot-paths: ["snapshots"]
 
-target-path: "target"
 clean-targets:
   - "target"
   - "dbt_packages"
 
 vars:
-  health_raw_database: BAGIC_PROD_MIRROR_DB
-  health_raw_schema: OPUS_GG_DWHSTAGE
-  health_test_raw_database: BAGIC_PREPROD_CURATED_DB
-  health_test_raw_schema: UTILS
-
+  health_raw_database: RAW
+  health_raw_schema: HEALTH
 
 models:
-  opus_health_dv_dbt:
-    +pre-hook:
-      - "{% if target.name == 'dev' %}INSERT INTO BAGIC_PREPROD_CURATED_DB.UTILS.MAXI_RAW_DBT_MODEL_RUN_LOG (model_name, status, run_id, run_start_timestamp, materialization, schema_name, target_table) SELECT '{{ this.name }}', 'RUNNING', '{{ invocation_id }}', '{{ run_started_at }}'::TIMESTAMP_NTZ, '{{ config.get(\"materialized\", \"view\") }}', '{{ this.schema }}', '{{ this.database }}.{{ this.schema }}.{{ this.name }}'{% endif %}"
-    +post-hook:
-      - "{% if target.name == 'dev' %}UPDATE BAGIC_PREPROD_CURATED_DB.UTILS.MAXI_RAW_DBT_MODEL_RUN_LOG SET status = 'SUCCESS' WHERE model_name = '{{ this.name }}' AND run_id = '{{ invocation_id }}' AND status = 'RUNNING'{% endif %}"
+  health_consolidated_v5_dv:
     staging:
-      +materialized: view
-      +tags: ["stg1"]
-    stitched:
-      +materialized: view
-      +tags: ["stitch"]
-    stage:
-      +materialized: view
-      +tags: ["stage"]
-    hub_feeds:
-      +materialized: view
-      +tags: ["hub_feed"]
-    vault:
-      hubs:
-        +materialized: incremental
-        +tags: ["hub"]
-        +on_schema_change: append_new_columns
-      links:
-        +materialized: incremental
-        +tags: ["lnk"]
-        +on_schema_change: append_new_columns
-      satellites:
-        +materialized: incremental
-        +tags: ["sat"]
-        +on_schema_change: append_new_columns
-    augmented:
-      +materialized: view
-      +tags: ["aug"]
-    assertions:
-      +materialized: view
-      +tags: ["assertion"]
+      health:
+        +materialized: view
+        +schema: stg_health
+    automate_dv:
+      standard:
+        +schema: std_automate_dv_health
+        stitched:
+          +materialized: view
+        staging:
+          +materialized: view
+        hubs:
+          +materialized: incremental
+        links:
+          +materialized: incremental
+        satellites:
+          +materialized: incremental
+        references:
+          +materialized: view
+      augmented:
+        +schema: aug_automate_dv_health
+        staging:
+          +materialized: view
+        satellites:
+          +materialized: incremental

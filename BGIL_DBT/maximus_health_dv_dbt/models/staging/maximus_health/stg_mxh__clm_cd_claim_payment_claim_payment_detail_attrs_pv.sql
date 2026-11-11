@@ -1,0 +1,63 @@
+-- Staging for source view MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_PAYMENT_CLAIM_PAYMENT_DETAIL_ATTRIBUTES_PIVOT_VW. Every column trimmed varchar, including the shred keys
+-- KEY_HASH / PARENT_KEY_HASH / FOREIGN_KEY that the central views join on.
+with source as (
+
+    select
+        nullif(trim(to_varchar("FOREIGN_KEY")), '') as foreign_key,
+        nullif(trim(to_varchar("PARENT_RECORD_HASH")), '') as parent_record_hash,
+        nullif(trim(to_varchar("PARENT_KEY_HASH")), '') as parent_key_hash,
+        nullif(trim(to_varchar("KEY_HASH")), '') as key_hash,
+        nullif(trim(to_varchar("INC_JOB_CREATED_AT")), '') as inc_job_created_at,
+        nullif(trim(to_varchar("REC_REFRESH_AT")), '') as rec_refresh_at,
+        nullif(trim(to_varchar("ACCOUNT_NUMBER")), '') as account_number,
+        nullif(trim(to_varchar("ACCOUNT_TYPE")), '') as account_type,
+        nullif(trim(to_varchar("ADDRESS_LINE_1")), '') as address_line_1,
+        nullif(trim(to_varchar("ADDRESS_LINE_2")), '') as address_line_2,
+        nullif(trim(to_varchar("ADDRESS_LINE_3")), '') as address_line_3,
+        nullif(trim(to_varchar("ADDRESS_SAME_AS_POLICY_HOLDER")), '') as address_same_as_policy_holder,
+        nullif(trim(to_varchar("APPROVED_BY_")), '') as approved_by_,
+        nullif(trim(to_varchar("APPROVED_DATE")), '') as approved_date,
+        nullif(trim(to_varchar("BANK_CITY")), '') as bank_city,
+        nullif(trim(to_varchar("BANK_DETAILS1")), '') as bank_details1,
+        nullif(trim(to_varchar("BANK_NAME")), '') as bank_name,
+        nullif(trim(to_varchar("BRANCH_NAME1")), '') as branch_name1,
+        nullif(trim(to_varchar("CHEQUE_DD_RELEASE_DATE")), '') as cheque_dd_release_date,
+        nullif(trim(to_varchar("CHEQUE_SERVICING_STATE")), '') as cheque_servicing_state,
+        nullif(trim(to_varchar("DDCHEQUE_REFERENCE")), '') as ddcheque_reference,
+        nullif(trim(to_varchar("EMAIL_ID")), '') as email_id,
+        nullif(trim(to_varchar("EMIRATESSTATEP")), '') as emiratesstatep,
+        nullif(trim(to_varchar("END_DATE")), '') as end_date,
+        nullif(trim(to_varchar("FIXED_PAYMENT")), '') as fixed_payment,
+        nullif(trim(to_varchar("GST_AMOUNT")), '') as gst_amount,
+        nullif(trim(to_varchar("IFSC_CODE")), '') as ifsc_code,
+        nullif(trim(to_varchar("IMPACTED_COVER")), '') as impacted_cover,
+        nullif(trim(to_varchar("INOUT")), '') as inout,
+        nullif(trim(to_varchar("INVOLVING_PARTY")), '') as involving_party,
+        nullif(trim(to_varchar("MOBILE_NUMBER")), '') as mobile_number,
+        nullif(trim(to_varchar("NEFT_STATUS")), '') as neft_status,
+        nullif(trim(to_varchar("PAN_NO")), '') as pan_no,
+        nullif(trim(to_varchar("PAYBLE_AT")), '') as payble_at,
+        nullif(trim(to_varchar("PAYEE_ADDRESS")), '') as payee_address,
+        nullif(trim(to_varchar("PAYMENT_AMOUNT")), '') as payment_amount,
+        nullif(trim(to_varchar("PAYMENT_APPROVED_DATE")), '') as payment_approved_date,
+        nullif(trim(to_varchar("PAYMENT_DATE1")), '') as payment_date1,
+        nullif(trim(to_varchar("PAYMENT_PURPOSE")), '') as payment_purpose,
+        nullif(trim(to_varchar("PERCENTAGE_FOR_PAYMENT")), '') as percentage_for_payment,
+        nullif(trim(to_varchar("PINCODE1")), '') as pincode1,
+        nullif(trim(to_varchar("REFERENCE_NO")), '') as reference_no,
+        nullif(trim(to_varchar("REIMBURSEMENT_PREFERENCES")), '') as reimbursement_preferences,
+        nullif(trim(to_varchar("ROLE")), '') as role,
+        nullif(trim(to_varchar("START_DATE")), '') as start_date,
+        nullif(trim(to_varchar("STATUS")), '') as status,
+        nullif(trim(to_varchar("STATUSES")), '') as statuses,
+        nullif(trim(to_varchar("STATUS_CODE")), '') as status_code,
+        nullif(trim(to_varchar("TDS_1")), '') as tds_1,
+        nullif(trim(to_varchar("TYPE_OF_BENEFICIARY")), '') as type_of_beneficiary,
+        nullif(trim(to_varchar("TYPE_OF_PAYMENT")), '') as type_of_payment,
+        nullif(trim(to_varchar("UTR_DATE")), '') as utr_date,
+        nullif(trim(to_varchar("UTR_NUMBER")), '') as utr_number
+    from {{ source('maximus_raw', 'MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIM_PAYMENT_CLAIM_PAYMENT_DETAIL_ATTRIBUTES_PIVOT_VW') }}
+
+)
+
+select * from source

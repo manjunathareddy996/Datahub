@@ -1,0 +1,62 @@
+-- Staging for source view MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_LIST_OF_COVERS_COVER_SET_ATTRIBUTE_PIVOT_VW. Every column trimmed varchar, including the shred keys
+-- KEY_HASH / PARENT_KEY_HASH / FOREIGN_KEY that the central views join on.
+with source as (
+
+    select
+        nullif(trim(to_varchar("FOREIGN_KEY")), '') as foreign_key,
+        nullif(trim(to_varchar("PARENT_RECORD_HASH")), '') as parent_record_hash,
+        nullif(trim(to_varchar("PARENT_KEY_HASH")), '') as parent_key_hash,
+        nullif(trim(to_varchar("KEY_HASH")), '') as key_hash,
+        nullif(trim(to_varchar("INC_JOB_CREATED_AT")), '') as inc_job_created_at,
+        nullif(trim(to_varchar("REC_REFRESH_AT")), '') as rec_refresh_at,
+        nullif(trim(to_varchar("APPROVED_AMOUNT")), '') as approved_amount,
+        nullif(trim(to_varchar("ASST_REPRODUCTIVE_PRO_TECH")), '') as asst_reproductive_pro_tech,
+        nullif(trim(to_varchar("AYUSH_TREATEMENT")), '') as ayush_treatement,
+        nullif(trim(to_varchar("A_PREGNANCIES_ENDING_IN_SPONTANEOUS_ABORTION_OR_THERAPEUTIC_ABORTION")), '') as a_pregnancies_ending_in_spontaneous_abortion_or_therapeutic_abortion,
+        nullif(trim(to_varchar("BALANCE_SUM_INSURED")), '') as balance_sum_insured,
+        nullif(trim(to_varchar("BMI")), '') as bmi,
+        nullif(trim(to_varchar("CAUSE_OF_DEATH")), '') as cause_of_death,
+        nullif(trim(to_varchar("COVER")), '') as cover,
+        nullif(trim(to_varchar("COVERAGE_NSBP")), '') as coverage_nsbp,
+        nullif(trim(to_varchar("COVER_NAME")), '') as cover_name,
+        nullif(trim(to_varchar("CRITICAL_ILLNESS_CATEGORY")), '') as critical_illness_category,
+        nullif(trim(to_varchar("CRITICAL_ILLNESS_DETAILS")), '') as critical_illness_details,
+        nullif(trim(to_varchar("DATE_OF_INJURY")), '') as date_of_injury,
+        nullif(trim(to_varchar("DISABILITY_DESCRIPTION")), '') as disability_description,
+        nullif(trim(to_varchar("DURATION_OF_DISABLMENT")), '') as duration_of_disablment,
+        nullif(trim(to_varchar("DURATION_OF_LEAVE")), '') as duration_of_leave,
+        nullif(trim(to_varchar("ELIGIBLE_DAYS_FOR_BENEFIT")), '') as eligible_days_for_benefit,
+        nullif(trim(to_varchar("EXPECTED_AMOUNT")), '') as expected_amount,
+        nullif(trim(to_varchar("FITNESS_DATE")), '') as fitness_date,
+        nullif(trim(to_varchar("G_GRAVIDA_ANY_PREGNANCY_REGARDLESS_OF_DURATION")), '') as g_gravida_any_pregnancy_regardless_of_duration,
+        nullif(trim(to_varchar("LAST_PAID_EMI_DATE")), '') as last_paid_emi_date,
+        nullif(trim(to_varchar("LEAVE_PERIOD_FROM")), '') as leave_period_from,
+        nullif(trim(to_varchar("LEAVE_PERIOD_TO")), '') as leave_period_to,
+        nullif(trim(to_varchar("L_NUMBER_OF_CURRENT_LIVING_CHILDREN")), '') as l_number_of_current_living_children,
+        nullif(trim(to_varchar("MATERNITY_EXPENSE_MHC")), '') as maternity_expense_mhc,
+        nullif(trim(to_varchar("MATERNITY_EXPENSE_SURR")), '') as maternity_expense_surr,
+        nullif(trim(to_varchar("MEMBER_DISABILITY")), '') as member_disability,
+        nullif(trim(to_varchar("MODE_OF_TRANSPORTATION")), '') as mode_of_transportation,
+        nullif(trim(to_varchar("MODE_OF_TREATMENT")), '') as mode_of_treatment,
+        nullif(trim(to_varchar("NO_OF_SITTINGS")), '') as no_of_sittings,
+        nullif(trim(to_varchar("NO_OF_SURGEON_OPINION_TAKEN")), '') as no_of_surgeon_opinion_taken,
+        nullif(trim(to_varchar("OTHERS")), '') as others,
+        nullif(trim(to_varchar("OUTSTANDING_LOAN_AMOUNT")), '') as outstanding_loan_amount,
+        nullif(trim(to_varchar("OUT_PATIENT_EXPENSES")), '') as out_patient_expenses,
+        nullif(trim(to_varchar("PERCENTAGE_OF_SI_PAYBLE")), '') as percentage_of_si_payble,
+        nullif(trim(to_varchar("PERCENTAGE_PAYABLE")), '') as percentage_payable,
+        nullif(trim(to_varchar("PER_SITTING_CHARGES")), '') as per_sitting_charges,
+        nullif(trim(to_varchar("PHYSIOTHERAPY_CHARGES")), '') as physiotherapy_charges,
+        nullif(trim(to_varchar("PROCEDURE_NAME_MHC")), '') as procedure_name_mhc,
+        nullif(trim(to_varchar("PROVIDER_ADDRESS")), '') as provider_address,
+        nullif(trim(to_varchar("P_NUMBER_OF_PRETERM_INFANTS_BORN_AFTER_20_WEEKS_AND_BEFORE_37_WEEKS")), '') as p_number_of_preterm_infants_born_after_20_weeks_and_before_37_weeks,
+        nullif(trim(to_varchar("SERVICE_PROVIDER")), '') as service_provider,
+        nullif(trim(to_varchar("TYPE_OF_DISABILITY")), '') as type_of_disability,
+        nullif(trim(to_varchar("TYPE_OF_DISABILITY_NSBP_IPTT")), '') as type_of_disability_nsbp_iptt,
+        nullif(trim(to_varchar("TYPE_OF_HOSPITAIZATIONS")), '') as type_of_hospitaizations,
+        nullif(trim(to_varchar("TYPE_SEVERE_COMORBIDITIES")), '') as type_severe_comorbidities
+    from {{ source('maximus_raw', 'MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_LIST_OF_COVERS_COVER_SET_ATTRIBUTE_PIVOT_VW') }}
+
+)
+
+select * from source

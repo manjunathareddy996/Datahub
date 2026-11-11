@@ -1,0 +1,62 @@
+-- Staging for source view MAXI_HLTH_UWR_VW_DATA. Every column trimmed varchar, including the shred keys
+-- KEY_HASH / PARENT_KEY_HASH / FOREIGN_KEY that the central views join on.
+with source as (
+
+    select
+        nullif(trim(to_varchar("INC_JOB_CREATED_AT")), '') as inc_job_created_at,
+        nullif(trim(to_varchar("INC_JOB_ID")), '') as inc_job_id,
+        nullif(trim(to_varchar("FILE_NAME")), '') as file_name,
+        nullif(trim(to_varchar("FILE_TIMESTAMP")), '') as file_timestamp,
+        nullif(trim(to_varchar("FOREIGN_KEY")), '') as foreign_key,
+        nullif(trim(to_varchar("ROOT_HASH")), '') as root_hash,
+        nullif(trim(to_varchar("BASE_CURRENCY")), '') as base_currency,
+        nullif(trim(to_varchar("BASIC_DETAIL_ATTRIBUTE")), '') as basic_detail_attribute,
+        nullif(trim(to_varchar("COMMUNICATIONDETAILS")), '') as communicationdetails,
+        nullif(trim(to_varchar("COMMUNICATION_DETAILS_ADDITION_TAB")), '') as communication_details_addition_tab,
+        nullif(trim(to_varchar("DOCUMENTDETAILS")), '') as documentdetails,
+        nullif(trim(to_varchar("ENDORSEMENT_DETAILS")), '') as endorsement_details,
+        nullif(trim(to_varchar("ENDORSEMENT_HISTORY_REPORT")), '') as endorsement_history_report,
+        nullif(trim(to_varchar("FOLLOW_UPDETAILS")), '') as follow_updetails,
+        nullif(trim(to_varchar("MEDICAL_STATUS")), '') as medical_status,
+        nullif(trim(to_varchar("MEMBER_DETAILS_TAB")), '') as member_details_tab,
+        nullif(trim(to_varchar("MEMBER_DETAILS_TABS")), '') as member_details_tabs,
+        nullif(trim(to_varchar("MEMBER_RIDER_DETAILS")), '') as member_rider_details,
+        nullif(trim(to_varchar("MEMBERS")), '') as members,
+        nullif(trim(to_varchar("NOTESDETAILS")), '') as notesdetails,
+        nullif(trim(to_varchar("PAYMENT_INFO")), '') as payment_info,
+        nullif(trim(to_varchar("POLICY_BRANCH")), '') as policy_branch,
+        nullif(trim(to_varchar("POLICY_EXPIRY_DATE")), '') as policy_expiry_date,
+        nullif(trim(to_varchar("POLICY_INCEPTION_DATE")), '') as policy_inception_date,
+        nullif(trim(to_varchar("POLICY_NUMBER")), '') as policy_number,
+        nullif(trim(to_varchar("POLICY_PAYMENT_CYCLE_DETAILS")), '') as policy_payment_cycle_details,
+        nullif(trim(to_varchar("POLICY_STATUS")), '') as policy_status,
+        nullif(trim(to_varchar("POLICY_SUB_STATUS")), '') as policy_sub_status,
+        nullif(trim(to_varchar("POLICY_TERM")), '') as policy_term,
+        nullif(trim(to_varchar("POLICY_TERM_UNIT")), '') as policy_term_unit,
+        nullif(trim(to_varchar("PREMIUM_CALCULATION_DETAILS")), '') as premium_calculation_details,
+        nullif(trim(to_varchar("PREMIUM_CURRENCY")), '') as premium_currency,
+        nullif(trim(to_varchar("PREMIUM_DEPOSIT_MODE")), '') as premium_deposit_mode,
+        nullif(trim(to_varchar("PREMIUM_DETAILS")), '') as premium_details,
+        nullif(trim(to_varchar("PREMIUM_FREQUENCY")), '') as premium_frequency,
+        nullif(trim(to_varchar("PRODUCT_CODE")), '') as product_code,
+        nullif(trim(to_varchar("PRODUCT_NAME")), '') as product_name,
+        nullif(trim(to_varchar("PROPOSAL_NUMBER")), '') as proposal_number,
+        nullif(trim(to_varchar("PROPOSER_ADDRESS")), '') as proposer_address,
+        nullif(trim(to_varchar("RECEIPT_DETAILS_LIST")), '') as receipt_details_list,
+        nullif(trim(to_varchar("RELATIONS")), '') as relations,
+        nullif(trim(to_varchar("RENEWALDETAILS")), '') as renewaldetails,
+        nullif(trim(to_varchar("REQUIREMENT_DETAILS")), '') as requirement_details,
+        nullif(trim(to_varchar("USER_CODE")), '') as user_code,
+        nullif(trim(to_varchar("VIEW_COLLECTIONS")), '') as view_collections,
+        nullif(trim(to_varchar("VIEW_COLLECTIONS_ADDITIONAL_DETAILS")), '') as view_collections_additional_details,
+        nullif(trim(to_varchar("KEY_HASH")), '') as key_hash,
+        nullif(trim(to_varchar("RECORD_HASH")), '') as record_hash,
+        nullif(trim(to_varchar("DATA")), '') as data,
+        nullif(trim(to_varchar("REC_REFRESH_AT")), '') as rec_refresh_at,
+        nullif(trim(to_varchar("REC_REFRESHED_BY")), '') as rec_refreshed_by,
+        nullif(trim(to_varchar("PARENT_TABLE_NAME")), '') as parent_table_name
+    from {{ source('maximus_raw', 'MAXI_HLTH_UWR_VW_DATA') }}
+
+)
+
+select * from source

@@ -1,0 +1,44 @@
+-- automate_dv.stage() for SAT_AUG_CLAIM_HEADER, read off central view stitch_v05_claim.
+-- The key is NULL wherever this satellite has no payload: automate_dv.sat() takes
+-- no filter, and a NULL key is the one row it is guaranteed to skip.
+{{ config(materialized='view') }}
+
+{%- set yaml_metadata -%}
+source_model: 'stitch_v05_claim'
+hashed_columns:
+  CLAIM_HKEY: 'CLAIM_NK'
+  HASHDIFF:
+    is_hashdiff: true
+    columns:
+      - 'CLAIM_CLOSED_INDICATOR'
+      - 'CLOSED_BY_USER_REFERENCE'
+      - 'CLOSURE_APPROVAL_DATE'
+      - 'EXTERNAL_CLAIM_REFERENCE'
+      - 'INWARD_REGISTRATION_REFERENCE'
+      - 'OMNI_INWARD_REFERENCE'
+      - 'ORPHAN_CLAIM_NUMBER'
+      - 'ORPHAN_INTIMATION_DATE'
+      - 'ORPHAN_REMARK'
+      - 'REPORTED_CLAIM_AMOUNT'
+derived_columns:
+  CLAIM_NK: "case when coalesce(AUG_CLAIM_HEADER__CLAIM_CLOSED_INDICATOR, AUG_CLAIM_HEADER__CLOSED_BY_USER_REFERENCE, AUG_CLAIM_HEADER__CLOSURE_APPROVAL_DATE, AUG_CLAIM_HEADER__EXTERNAL_CLAIM_REFERENCE, AUG_CLAIM_HEADER__INWARD_REGISTRATION_REFERENCE, AUG_CLAIM_HEADER__OMNI_INWARD_REFERENCE, AUG_CLAIM_HEADER__ORPHAN_CLAIM_NUMBER, AUG_CLAIM_HEADER__ORPHAN_INTIMATION_DATE, AUG_CLAIM_HEADER__ORPHAN_REMARK, AUG_CLAIM_HEADER__REPORTED_CLAIM_AMOUNT) is not null then 'HUB_CLAIM|' || CLAIM_BK end"
+  CLAIM_CLOSED_INDICATOR: 'AUG_CLAIM_HEADER__CLAIM_CLOSED_INDICATOR'
+  CLOSED_BY_USER_REFERENCE: 'AUG_CLAIM_HEADER__CLOSED_BY_USER_REFERENCE'
+  CLOSURE_APPROVAL_DATE: 'AUG_CLAIM_HEADER__CLOSURE_APPROVAL_DATE'
+  EXTERNAL_CLAIM_REFERENCE: 'AUG_CLAIM_HEADER__EXTERNAL_CLAIM_REFERENCE'
+  INWARD_REGISTRATION_REFERENCE: 'AUG_CLAIM_HEADER__INWARD_REGISTRATION_REFERENCE'
+  OMNI_INWARD_REFERENCE: 'AUG_CLAIM_HEADER__OMNI_INWARD_REFERENCE'
+  ORPHAN_CLAIM_NUMBER: 'AUG_CLAIM_HEADER__ORPHAN_CLAIM_NUMBER'
+  ORPHAN_INTIMATION_DATE: 'AUG_CLAIM_HEADER__ORPHAN_INTIMATION_DATE'
+  ORPHAN_REMARK: 'AUG_CLAIM_HEADER__ORPHAN_REMARK'
+  REPORTED_CLAIM_AMOUNT: 'AUG_CLAIM_HEADER__REPORTED_CLAIM_AMOUNT'
+  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  RECORD_SOURCE: '!stitch_v05_claim'
+{%- endset -%}
+
+{% set metadata_dict = fromyaml(yaml_metadata) %}
+
+{{ automate_dv.stage(include_source_columns=false,
+                      source_model=metadata_dict['source_model'],
+                      hashed_columns=metadata_dict['hashed_columns'],
+                      derived_columns=metadata_dict['derived_columns']) }}

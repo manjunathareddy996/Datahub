@@ -1,0 +1,22 @@
+{
+ "check_internal": {
+  "exit": 0,
+  "tail": "models                        : 699   (health_consolidated_v5_dv_dbt)\n  PASS -- refs resolve, every declared source column is emitted, names unique.\n"
+ },
+ "check_patterns": {
+  "exit": 0,
+  "tail": "files scanned                 : 9\n  PASS -- no control bytes, every statically-known pattern compiles.\n"
+ },
+ "check_prose_counts": {
+  "exit": 0,
+  "tail": "prose files scanned           : 2\n  PASS -- every quantity in current-state prose is sourced or absent.\n"
+ },
+ "check_prose_shape": {
+  "exit": 0,
+  "tail": "models examined               : 699   (population)\n  PASS -- no identifier-position token contains a space.\n"
+ },
+ "check_vault_alignment": {
+  "exit": 1,
+  "tail": "canonical satellites          : 365\nsibling satellites            : 124   (health_dv_dbt)\nthis project's satellites     : 220   (health_consolidated_v5_dv_dbt)\nsibling naming convention     : UPPER_SNAKE   {'UPPER_SNAKE': 429, 'squashed': 18}\nmapped columns reaching a sat  : 463 of 554   (83.6%)\ndead data paths (report-only)  : 1188   -- attribute declared on a payload, cast-null in every feeder\n        SAT_AUG_ACCOUNT_BALANCE.ASSIGNMENT_AMOUNT\n        SAT_AUG_ACCOUNT_BALANCE.EMI_AMOUNT\n        SAT_AUG_ACCOUNT_DEFINITION.BANK_CUSTOMER_IDENTIFIER\n        SAT_AUG_ACCOUNT_DEFINITION.BANK_CUSTOMER_REFERENCE\n        SAT_AUG_ACCOUNT_DEFINITION.BRANCH_ADDRESS\n        ... and 1183 more\n\n  FAIL 1. payload column is not the canonical rendering: 69\n        SAT_ASSESSMENT_MEDICAL.Abnormality Indicator -> expected 'ABNORMALITY_INDICATOR'\n        SAT_ASSESSMENT_MEDICAL.Recommended Exclusion -> expected 'RECOMMENDED_EXCLUSION'\n        SAT_COMMON_ADDRESS.Address Line 3 -> expected 'ADDRESS_LINE_3'\n        SAT_COMMON_ADDRESS.Country Code -> expected 'COUNTRY_CODE'\n        SAT_COMMON_ADDRESS.District -> expected 'DISTRICT'\n        ... and 64 more\n  FAIL 2. grain differs from the sibling: 3\n        SAT_CLAIM_BILL_DIGITISATION: sibling sat vs ours ma_sat\n        SAT_PARTY_DIGITAL_IDENTITY: sibling sat vs ours ma_sat\n        SAT_POLICY_REFUND_DETAIL: sibling sat vs ours ma_sat\n  FAIL 2. src_cdk differs from the sibling: 8\n        SAT_CLAIM_BILL_DIGITISATION: [] vs ['ACTIVE_SEQUENCE_NUMBER_CK']\n        SAT_CLAIM_COMMUNICATION: ['COMMUNICATION_DATE_CK'] vs ['COMMUNICATION_DATE_CK', 'SEQUENCE_CK']\n        SAT_FINTXN_COMMISSION: ['COMMISSION_TYPE_CK'] vs ['COMMISSION_TYPE_CK', 'INTERMEDIARY_REFERENCE_CK']\n        SAT_LNK_POLICY_PARTY_ROLE: ['PARTY_ROLE_TYPE'] vs ['PARTY_ROLE_TYPE_CK', 'ROLE_SEQUENCE_CK']\n        SAT_PARTY_DIGITAL_IDENTITY: [] vs ['ACTIVE_SEQUENCE_NUMBER_CK']\n        ... and 3 more\n  FAIL 2. src_pk differs from the sibling: 58\n        SAT_ACCOUNT_BALANCE: FINANCIAL_ACCOUNT_HK vs FINANCIAL_ACCOUNT_HKEY\n        SAT_AGREEMENT_COMMERCIAL_TERMS: AGREEMENT_HK vs AGREEMENT_HKEY\n        SAT_AGREEMENT_SLA: AGREEMENT_HK vs AGREEMENT_HKEY\n        SAT_CASE_HEADER: CASE_HK vs CASE_HKEY\n        SAT_CLAIM_BENEFIT_HEAD: CLAIM_HK vs CLAIM_HKEY\n        ... and 53 more\n  FAIL 4. hub key names differ from the sibling: 20\n        hub_agreement: ('AGREEMENT_HKEY', 'PARENT_BK') vs ('AGREEMENT_HKEY', 'AGREEMENT_BK')\n        hub_assessment: ('ASSESSMENT_HKEY', 'PARENT_BK') vs ('ASSESSMENT_HKEY', 'ASSESSMENT_BK')\n        hub_case: ('CASE_HKEY', 'PARENT_BK') vs ('CASE_HKEY', 'CASE_BK')\n        hub_claim: ('CLAIM_HKEY', 'PARENT_BK') vs ('CLAIM_HKEY', 'CLAIM_BK')\n        hub_coverage: ('COVERAGE_HKEY', 'PARENT_BK') vs ('COVERAGE_HKEY', 'COVERAGE_BK')\n        ... and 15 more\n  FAIL 5. alias selected more than once in one select: 1188\n        stitch_v01_agreement.sql: AGREEMENT_COMMERCIAL_TERMS__CREDIT_PERIOD\n        stitch_v01_agreement.sql: AGREEMENT_COMMERCIAL_TERMS__PAYMENT_TERMS\n        stitch_v01_agreement.sql: AGREEMENT_DEFINITION__AGREEMENT_CATEGORY\n        stitch_v01_agreement.sql: AGREEMENT_DEFINITION__AGREEMENT_NAME\n        stitch_v01_agreement.sql: AGREEMENT_DEFINITION__AGREEMENT_STATUS\n        ... and 1183 more\n  FAIL 6. mapped column reaches no satellite: 91\n        SAT_ASSESSMENT_MEDICAL.ABNORMALITY_INDICATOR\n        SAT_ASSESSMENT_MEDICAL.RECOMMENDED_EXCLUSION\n        SAT_COMMON_ADDRESS.ADDRESS_LINE_3\n        SAT_COMMON_ADDRESS.COUNTRY_CODE\n        SAT_COMMON_ADDRESS.DISTRICT\n        ... and 86 more\n"
+ }
+}

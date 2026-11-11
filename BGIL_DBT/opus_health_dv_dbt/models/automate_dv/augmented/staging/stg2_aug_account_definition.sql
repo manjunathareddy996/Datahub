@@ -1,0 +1,32 @@
+-- automate_dv.stage() for SAT_AUG_ACCOUNT_DEFINITION, read off central view stitch_v13_financial_account.
+-- The key is NULL wherever this satellite has no payload: automate_dv.sat() takes
+-- no filter, and a NULL key is the one row it is guaranteed to skip.
+{{ config(materialized='view') }}
+
+{%- set yaml_metadata -%}
+source_model: 'stitch_v13_financial_account'
+hashed_columns:
+  FINANCIAL_ACCOUNT_HKEY: 'FINANCIAL_ACCOUNT_NK'
+  HASHDIFF:
+    is_hashdiff: true
+    columns:
+      - 'BANK_CUSTOMER_IDENTIFIER'
+      - 'BANK_CUSTOMER_REFERENCE'
+      - 'BRANCH_ADDRESS'
+      - 'LOAN_TENURE'
+derived_columns:
+  FINANCIAL_ACCOUNT_NK: "case when coalesce(AUG_ACCOUNT_DEFINITION__BANK_CUSTOMER_IDENTIFIER, AUG_ACCOUNT_DEFINITION__BANK_CUSTOMER_REFERENCE, AUG_ACCOUNT_DEFINITION__BRANCH_ADDRESS, AUG_ACCOUNT_DEFINITION__LOAN_TENURE) is not null then 'HUB_FINANCIAL_ACCOUNT|' || FINANCIAL_ACCOUNT_BK end"
+  BANK_CUSTOMER_IDENTIFIER: 'AUG_ACCOUNT_DEFINITION__BANK_CUSTOMER_IDENTIFIER'
+  BANK_CUSTOMER_REFERENCE: 'AUG_ACCOUNT_DEFINITION__BANK_CUSTOMER_REFERENCE'
+  BRANCH_ADDRESS: 'AUG_ACCOUNT_DEFINITION__BRANCH_ADDRESS'
+  LOAN_TENURE: 'AUG_ACCOUNT_DEFINITION__LOAN_TENURE'
+  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  RECORD_SOURCE: '!stitch_v13_financial_account'
+{%- endset -%}
+
+{% set metadata_dict = fromyaml(yaml_metadata) %}
+
+{{ automate_dv.stage(include_source_columns=false,
+                      source_model=metadata_dict['source_model'],
+                      hashed_columns=metadata_dict['hashed_columns'],
+                      derived_columns=metadata_dict['derived_columns']) }}

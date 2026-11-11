@@ -1,0 +1,63 @@
+-- Staging for source table BJAZ_BANDHAN_MEDI_CLAM (run opus_health_legacy_v4). Every column is trimmed varchar: the pinned
+-- inputs carry no datatype catalogue for this half, so no type is inferred.
+with source as (
+
+    select
+        nullif(trim(to_varchar("AADHAAR_NUMBER")), '') as aadhaar_number,
+        nullif(trim(to_varchar("ACCOUNT_NUMBER")), '') as account_number,
+        nullif(trim(to_varchar("AGE")), '') as age,
+        nullif(trim(to_varchar("BUSINESS_TYPE")), '') as business_type,
+        nullif(trim(to_varchar("CONTRACT_ID")), '') as contract_id,
+        nullif(trim(to_varchar("CUSTOMER_ID")), '') as customer_id,
+        nullif(trim(to_varchar("CUSTOMER_NAME")), '') as customer_name,
+        nullif(trim(to_varchar("DOB")), '') as dob,
+        nullif(trim(to_varchar("FIRST_NAME")), '') as first_name,
+        nullif(trim(to_varchar("GENDER")), '') as gender,
+        nullif(trim(to_varchar("GROSS_PREMINUM")), '') as gross_preminum,
+        nullif(trim(to_varchar("GST_REG_NO")), '') as gst_reg_no,
+        nullif(trim(to_varchar("IMD_CODE")), '') as imd_code,
+        nullif(trim(to_varchar("ISSUANCE_SOURCE")), '') as issuance_source,
+        nullif(trim(to_varchar("LAST_NAME")), '') as last_name,
+        nullif(trim(to_varchar("LG_CODE")), '') as lg_code,
+        nullif(trim(to_varchar("LG_NAME")), '') as lg_name,
+        nullif(trim(to_varchar("LOCATION_CODE")), '') as location_code,
+        nullif(trim(to_varchar("MIDDLE_NAME")), '') as middle_name,
+        nullif(trim(to_varchar("MOBILE")), '') as mobile,
+        nullif(trim(to_varchar("M_ADDRESS_LINE_1")), '') as m_address_line_1,
+        nullif(trim(to_varchar("M_ADDRESS_LINE_2")), '') as m_address_line_2,
+        nullif(trim(to_varchar("M_CITY")), '') as m_city,
+        nullif(trim(to_varchar("M_EMAIL")), '') as m_email,
+        nullif(trim(to_varchar("M_MOBILE")), '') as m_mobile,
+        nullif(trim(to_varchar("M_PINCODE")), '') as m_pincode,
+        nullif(trim(to_varchar("M_STATE")), '') as m_state,
+        nullif(trim(to_varchar("NOMINEE_NAME")), '') as nominee_name,
+        nullif(trim(to_varchar("NOMINEE_RELATION")), '') as nominee_relation,
+        nullif(trim(to_varchar("NO_OF_YEARS")), '') as no_of_years,
+        nullif(trim(to_varchar("NUMBER_OF_DAYS")), '') as number_of_days,
+        nullif(trim(to_varchar("PAN_NO")), '') as pan_no,
+        nullif(trim(to_varchar("PARAM_REF")), '') as param_ref,
+        nullif(trim(to_varchar("PARTNER_ID")), '') as partner_id,
+        nullif(trim(to_varchar("PARTNER_TYPE")), '') as partner_type,
+        nullif(trim(to_varchar("PER_DAY_BENIFIT")), '') as per_day_benifit,
+        nullif(trim(to_varchar("PLAN_ID")), '') as plan_id,
+        nullif(trim(to_varchar("POLICY_REF")), '') as policy_ref,
+        nullif(trim(to_varchar("PREEXISTING_DISEASE")), '') as preexisting_disease,
+        nullif(trim(to_varchar("PRODUCT_CODE")), '') as product_code,
+        nullif(trim(to_varchar("P_ADDRESS_LINE_1")), '') as p_address_line_1,
+        nullif(trim(to_varchar("P_ADDRESS_LINE_2")), '') as p_address_line_2,
+        nullif(trim(to_varchar("P_CITY")), '') as p_city,
+        nullif(trim(to_varchar("P_EMAIL")), '') as p_email,
+        nullif(trim(to_varchar("P_PINCODE")), '') as p_pincode,
+        nullif(trim(to_varchar("P_STATE")), '') as p_state,
+        nullif(trim(to_varchar("RECEIPT_NO")), '') as receipt_no,
+        nullif(trim(to_varchar("REFERENCE_ID")), '') as reference_id,
+        nullif(trim(to_varchar("SCRUTINY_NO")), '') as scrutiny_no,
+        nullif(trim(to_varchar("SUBIMD_CODE")), '') as subimd_code,
+        nullif(trim(to_varchar("TERM_END_DATE")), '') as term_end_date,
+        nullif(trim(to_varchar("TERM_START_DATE")), '') as term_start_date,
+        nullif(trim(to_varchar("UW_REMARK")), '') as uw_remark
+    from {{ source('health_raw', 'BJAZ_BANDHAN_MEDI_CLAM') }}
+
+)
+
+select * from source

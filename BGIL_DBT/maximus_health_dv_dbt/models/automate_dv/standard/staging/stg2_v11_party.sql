@@ -1,0 +1,60 @@
+-- automate_dv.stage() over central view stitch_v11_party: every hub key and link key the view
+-- carries. Hubs and links read THIS model -- they come from the view (rules 5, 6).
+{{ config(materialized='view') }}
+
+{%- set yaml_metadata -%}
+source_model: 'stitch_v11_party'
+hashed_columns:
+  CLAIM_HKEY: 'CLAIM_NK'
+  DISTRIBUTION_CHANNEL_HKEY: 'DISTRIBUTION_CHANNEL_NK'
+  FINANCIAL_TRANSACTION_HKEY: 'FINANCIAL_TRANSACTION_NK'
+  LOCATION_HKEY: 'LOCATION_NK'
+  ORG_UNIT_HKEY: 'ORG_UNIT_NK'
+  PARTY_HKEY: 'PARTY_NK'
+  PAYMENT_INSTRUMENT_HKEY: 'PAYMENT_INSTRUMENT_NK'
+  POLICY_HKEY: 'POLICY_NK'
+  PRODUCT_HKEY: 'PRODUCT_NK'
+  QUOTE_HKEY: 'QUOTE_NK'
+  CLAIM_PARTY_HKEY: 'CLAIM_PARTY_NK'
+  PARTY_ORG_UNIT_HKEY: 'PARTY_ORG_UNIT_NK'
+  POLICY_LOCATION_HKEY: 'POLICY_LOCATION_NK'
+  POLICY_PAYMENT_INSTRUMENT_HKEY: 'POLICY_PAYMENT_INSTRUMENT_NK'
+  QUOTE_PARTY_HKEY: 'QUOTE_PARTY_NK'
+  QUOTE_PRODUCT_HKEY: 'QUOTE_PRODUCT_NK'
+derived_columns:
+  CLAIM_BK: 'CLAIM_BK'
+  CLAIM_NK: "'HUB_CLAIM|' || CLAIM_BK"
+  DISTRIBUTION_CHANNEL_BK: 'DISTRIBUTION_CHANNEL_BK'
+  DISTRIBUTION_CHANNEL_NK: "'HUB_DISTRIBUTION_CHANNEL|' || DISTRIBUTION_CHANNEL_BK"
+  FINANCIAL_TRANSACTION_BK: 'FINANCIAL_TRANSACTION_BK'
+  FINANCIAL_TRANSACTION_NK: "'HUB_FINANCIAL_TRANSACTION|' || FINANCIAL_TRANSACTION_BK"
+  LOCATION_BK: 'LOCATION_BK'
+  LOCATION_NK: "'HUB_LOCATION|' || LOCATION_BK"
+  ORG_UNIT_BK: 'ORG_UNIT_BK'
+  ORG_UNIT_NK: "'HUB_ORG_UNIT|' || ORG_UNIT_BK"
+  PARTY_BK: 'PARTY_BK'
+  PARTY_NK: "'HUB_PARTY|' || PARTY_BK"
+  PAYMENT_INSTRUMENT_BK: 'PAYMENT_INSTRUMENT_BK'
+  PAYMENT_INSTRUMENT_NK: "'HUB_PAYMENT_INSTRUMENT|' || PAYMENT_INSTRUMENT_BK"
+  POLICY_BK: 'POLICY_BK'
+  POLICY_NK: "'HUB_POLICY|' || POLICY_BK"
+  PRODUCT_BK: 'PRODUCT_BK'
+  PRODUCT_NK: "'HUB_PRODUCT|' || PRODUCT_BK"
+  QUOTE_BK: 'QUOTE_BK'
+  QUOTE_NK: "'HUB_QUOTE|' || QUOTE_BK"
+  CLAIM_PARTY_NK: "case when __LNK_CLAIM_PARTY = 1 then 'LNK_CLAIM_PARTY|' || CLAIM_BK || '|' || PARTY_BK end"
+  PARTY_ORG_UNIT_NK: "case when __LNK_PARTY_ORG_UNIT = 1 then 'LNK_PARTY_ORG_UNIT|' || ORG_UNIT_BK || '|' || PARTY_BK end"
+  POLICY_LOCATION_NK: "case when __LNK_POLICY_LOCATION = 1 then 'LNK_POLICY_LOCATION|' || LOCATION_BK || '|' || POLICY_BK end"
+  POLICY_PAYMENT_INSTRUMENT_NK: "case when __LNK_POLICY_PAYMENT_INSTRUMENT = 1 then 'LNK_POLICY_PAYMENT_INSTRUMENT|' || PAYMENT_INSTRUMENT_BK || '|' || POLICY_BK end"
+  QUOTE_PARTY_NK: "case when __LNK_QUOTE_PARTY = 1 then 'LNK_QUOTE_PARTY|' || PARTY_BK || '|' || QUOTE_BK end"
+  QUOTE_PRODUCT_NK: "case when __LNK_QUOTE_PRODUCT = 1 then 'LNK_QUOTE_PRODUCT|' || PRODUCT_BK || '|' || QUOTE_BK end"
+  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  RECORD_SOURCE: '!stitch_v11_party'
+{%- endset -%}
+
+{% set metadata_dict = fromyaml(yaml_metadata) %}
+
+{{ automate_dv.stage(include_source_columns=false,
+                      source_model=metadata_dict['source_model'],
+                      hashed_columns=metadata_dict['hashed_columns'],
+                      derived_columns=metadata_dict['derived_columns']) }}

@@ -1,0 +1,37 @@
+-- automate_dv.stage() for SAT_ASSESSMENT_UNDERWRITING, read off central view stitch_v17_policy.
+-- The key is NULL wherever this satellite has no payload: sat() takes no filter, and it skips a NULL key.
+{{ config(materialized='view') }}
+
+{%- set yaml_metadata -%}
+source_model: 'stitch_v17_policy'
+hashed_columns:
+  ASSESSMENT_HKEY: 'ASSESSMENT_NK'
+  HASHDIFF:
+    is_hashdiff: true
+    columns:
+      - 'ACCEPTANCE_DECISION'
+      - 'DEVIATION_JUSTIFICATION'
+      - 'REFERRAL_INDICATOR'
+      - 'REINSURANCE_REFERRAL_INDICATOR'
+      - 'RISK_GRADE'
+      - 'SPECIAL_CONDITIONS_RECOMMENDED'
+      - 'UNDERWRITING_REMARKS'
+derived_columns:
+  ASSESSMENT_NK: "case when coalesce(ASSESSMENT_UNDERWRITING__ACCEPTANCE_DECISION, ASSESSMENT_UNDERWRITING__DEVIATION_JUSTIFICATION, ASSESSMENT_UNDERWRITING__REFERRAL_INDICATOR, ASSESSMENT_UNDERWRITING__REINSURANCE_REFERRAL_INDICATOR, ASSESSMENT_UNDERWRITING__RISK_GRADE, ASSESSMENT_UNDERWRITING__SPECIAL_CONDITIONS_RECOMMENDED, ASSESSMENT_UNDERWRITING__UNDERWRITING_REMARKS) is not null then 'HUB_ASSESSMENT|' || ASSESSMENT_BK end"
+  ACCEPTANCE_DECISION: 'ASSESSMENT_UNDERWRITING__ACCEPTANCE_DECISION'
+  DEVIATION_JUSTIFICATION: 'ASSESSMENT_UNDERWRITING__DEVIATION_JUSTIFICATION'
+  REFERRAL_INDICATOR: 'ASSESSMENT_UNDERWRITING__REFERRAL_INDICATOR'
+  REINSURANCE_REFERRAL_INDICATOR: 'ASSESSMENT_UNDERWRITING__REINSURANCE_REFERRAL_INDICATOR'
+  RISK_GRADE: 'ASSESSMENT_UNDERWRITING__RISK_GRADE'
+  SPECIAL_CONDITIONS_RECOMMENDED: 'ASSESSMENT_UNDERWRITING__SPECIAL_CONDITIONS_RECOMMENDED'
+  UNDERWRITING_REMARKS: 'ASSESSMENT_UNDERWRITING__UNDERWRITING_REMARKS'
+  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  RECORD_SOURCE: '!stitch_v17_policy'
+{%- endset -%}
+
+{% set metadata_dict = fromyaml(yaml_metadata) %}
+
+{{ automate_dv.stage(include_source_columns=false,
+                      source_model=metadata_dict['source_model'],
+                      hashed_columns=metadata_dict['hashed_columns'],
+                      derived_columns=metadata_dict['derived_columns']) }}

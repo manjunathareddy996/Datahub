@@ -1,0 +1,62 @@
+-- Staging for source view MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW. Every column trimmed varchar, including the shred keys
+-- KEY_HASH / PARENT_KEY_HASH / FOREIGN_KEY that the central views join on.
+with source as (
+
+    select
+        nullif(trim(to_varchar("FOREIGN_KEY")), '') as foreign_key,
+        nullif(trim(to_varchar("PARENT_RECORD_HASH")), '') as parent_record_hash,
+        nullif(trim(to_varchar("PARENT_KEY_HASH")), '') as parent_key_hash,
+        nullif(trim(to_varchar("KEY_HASH")), '') as key_hash,
+        nullif(trim(to_varchar("INC_JOB_CREATED_AT")), '') as inc_job_created_at,
+        nullif(trim(to_varchar("REC_REFRESH_AT")), '') as rec_refresh_at,
+        nullif(trim(to_varchar("AUDIT_REASON")), '') as audit_reason,
+        nullif(trim(to_varchar("AUDIT_REMARK")), '') as audit_remark,
+        nullif(trim(to_varchar("AUDIT_USER_NAME")), '') as audit_user_name,
+        nullif(trim(to_varchar("CLAIM_STATUS")), '') as claim_status,
+        nullif(trim(to_varchar("CLAUSE_CODE")), '') as clause_code,
+        nullif(trim(to_varchar("CLAUSE_DESCRIPTION")), '') as clause_description,
+        nullif(trim(to_varchar("CPT_CODE")), '') as cpt_code,
+        nullif(trim(to_varchar("CPT_CODE_DESCRIPTION")), '') as cpt_code_description,
+        nullif(trim(to_varchar("CPT_DESCRIPTION")), '') as cpt_description,
+        nullif(trim(to_varchar("CREATED_BY")), '') as created_by,
+        nullif(trim(to_varchar("CREATED_DATE")), '') as created_date,
+        nullif(trim(to_varchar("DATE")), '') as date,
+        nullif(trim(to_varchar("DENIAL_CODE")), '') as denial_code,
+        nullif(trim(to_varchar("DENIAL_DECISION")), '') as denial_decision,
+        nullif(trim(to_varchar("DENIAL_DESCRIPTION")), '') as denial_description,
+        nullif(trim(to_varchar("DIAGNOSIS")), '') as diagnosis,
+        nullif(trim(to_varchar("DIAGNOSIS_TYPE")), '') as diagnosis_type,
+        nullif(trim(to_varchar("DURATION_IN_MONTHS")), '') as duration_in_months,
+        nullif(trim(to_varchar("FIELD_TO_BE_CORRECTED")), '') as field_to_be_corrected,
+        nullif(trim(to_varchar("FINANCIAL_LEAKAGES")), '') as financial_leakages,
+        nullif(trim(to_varchar("ICD_CODE")), '') as icd_code,
+        nullif(trim(to_varchar("ICD_DESCRIPTION")), '') as icd_description,
+        nullif(trim(to_varchar("ICD_RANGE_DESCRIPTION")), '') as icd_range_description,
+        nullif(trim(to_varchar("ICD_RANGE_DESCRIPTION_LEVEL_2")), '') as icd_range_description_level_2,
+        nullif(trim(to_varchar("INVESTATION_ID")), '') as investation_id,
+        nullif(trim(to_varchar("INVESTIGATION_REMARKS")), '') as investigation_remarks,
+        nullif(trim(to_varchar("LEVEL")), '') as level,
+        nullif(trim(to_varchar("NO_OF_DAYS_DELAYED_SETTLEMENT")), '') as no_of_days_delayed_settlement,
+        nullif(trim(to_varchar("PENAL_INTEREST")), '') as penal_interest,
+        nullif(trim(to_varchar("PENAL_INTEREST_AMOUNT")), '') as penal_interest_amount,
+        nullif(trim(to_varchar("REASON")), '') as reason,
+        nullif(trim(to_varchar("REMARKS")), '') as remarks,
+        nullif(trim(to_varchar("REMOVE_ERROR")), '') as remove_error,
+        nullif(trim(to_varchar("REPUDIATION_REMARKS")), '') as repudiation_remarks,
+        nullif(trim(to_varchar("STATUS")), '') as status,
+        nullif(trim(to_varchar("SUBTYPE_OF_ERROR")), '') as subtype_of_error,
+        nullif(trim(to_varchar("SYSTEM_DATE")), '') as system_date,
+        nullif(trim(to_varchar("TIME")), '') as time,
+        nullif(trim(to_varchar("TIME_OF_UPDATED")), '') as time_of_updated,
+        nullif(trim(to_varchar("TO_BE_PAID")), '') as to_be_paid,
+        nullif(trim(to_varchar("TRANSITION_TYPE")), '') as transition_type,
+        nullif(trim(to_varchar("TYPE_OF_ERROR")), '') as type_of_error,
+        nullif(trim(to_varchar("TYPE_OF_TREATMENT")), '') as type_of_treatment,
+        nullif(trim(to_varchar("USERNAME_CODE")), '') as username_code,
+        nullif(trim(to_varchar("VALIDATION_FOR_PAYOUT")), '') as validation_for_payout,
+        nullif(trim(to_varchar("_COVERSERVICEPACKAGEBENEFIT")), '') as _coverservicepackagebenefit
+    from {{ source('maximus_raw', 'MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW') }}
+
+)
+
+select * from source
