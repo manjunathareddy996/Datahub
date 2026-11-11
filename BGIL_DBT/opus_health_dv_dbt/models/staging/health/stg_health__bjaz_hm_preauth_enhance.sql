@@ -8,6 +8,7 @@ with source as (
         nullif(trim(to_varchar("ENHANCE_REQUEST")), '') as enhance_request,
         nullif(trim(to_varchar("EXPECTED_DOD")), '') as expected_dod,
         nullif(trim(to_varchar("HOSP_ID")), '') as hosp_id,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("OMNI_INWARD_NO")), '') as omni_inward_no,
         nullif(trim(to_varchar("PATIENT_ID_CARD")), '') as patient_id_card,
         nullif(trim(to_varchar("TRANS_AMOUNT")), '') as trans_amount

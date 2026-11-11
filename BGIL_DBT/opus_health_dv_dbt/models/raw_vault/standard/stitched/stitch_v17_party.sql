@@ -1,0 +1,576 @@
+{{ config(materialized='view') }}
+-- CENTRAL VIEW v17_party -- the layer the governing central-view rule is about.
+-- Tables merged, in source precedence (v2, then legacy, then delta 3):
+--   BJAZ_HM_MEMBER_HLTH_DTLS (opus_health_v2)
+--   BA_HCP_PORT_WORDINGS (opus_health_legacy_v4)
+--   BA_HCP_PROD_8439_CLH_LOADER (opus_health_legacy_v4)
+--   BJAZ_EC_MEM_DTLS_EXTN (opus_health_legacy_v4)
+--   BJAZ_GPG_POL_DTLS (opus_health_legacy_v4)
+--   BJAZ_HCF_MEMBER_DTLS (opus_health_legacy_v4)
+--   BJAZ_HG_POL_DTLS (opus_health_legacy_v4)
+--   BJAZ_HLT_ENSURE_MEM_DTLS (opus_health_legacy_v4)
+--   BJAZ_SH_MEM_DTLS_EXTN (opus_health_legacy_v4)
+--   BJAZ_GMC_BASES_EXTN (opus_health_delta3)
+--   BJAZ_POLICY_BASES_EXTN (opus_health_delta3)
+-- Satellites fed WHOLE from this view (rule 2):
+--   SAT_AUG_POLICY_PORTABILITY_MIGRATION
+--   SAT_LNK_ROLE_EMPLOYEE
+-- Links whose legs come from one source row on this view (rule 6):
+--   LNK_ASSESSMENT_PARTY
+--   LNK_CHANNEL_ORG_UNIT
+--   LNK_PARTY_CHANNEL
+--   LNK_PARTY_ORG_UNIT
+--   LNK_POLICY_CESSION
+--   LNK_POLICY_CHANNEL
+--   LNK_POLICY_ORG_UNIT
+--   LNK_POLICY_PARTY
+--   LNK_POLICY_PRODUCT
+--   LNK_TREATY_PARTY
+--   LNK_TREATY_PRODUCT
+-- OVER the table limit by rule 3: one satellite on this view needs every table above.
+-- No hash is computed here. Hashing happens once, in automate_dv.stage() downstream.
+-- Consumer view over parts: stitch_aug_policy_portability_migration, stitch_lnk_role_employee__employee, stitch_lk_policy_channel__v17, stitch_lk_assessment_party__v17, stitch_lk_channel_org_unit__v17, stitch_lk_party_channel__v17, stitch_lk_party_org_unit__v17, stitch_lk_policy_cession__v17, stitch_lk_policy_org_unit__v17, stitch_lk_policy_party__v17, stitch_lk_policy_product__v17, stitch_lk_treaty_party__v17, stitch_lk_treaty_product__v17, stitch_lk_party_role__v17
+
+select
+    cast(null as varchar) as ASSESSMENT_BK,
+    cast(null as varchar) as DISTRIBUTION_CHANNEL_BK,
+    cast(null as varchar) as ORG_UNIT_BK,
+    cast(null as varchar) as PARTY_BK,
+    policy_bk as POLICY_BK,
+    cast(null as varchar) as PRODUCT_BK,
+    cast(null as varchar) as REINSURANCE_TREATY_BK,
+    cast(null as varchar) as ROLE_TYPE_CODE,
+    cast(null as int) as __LNK_ASSESSMENT_PARTY,
+    cast(null as int) as __LNK_CHANNEL_ORG_UNIT,
+    cast(null as int) as __LNK_PARTY_CHANNEL,
+    cast(null as int) as __LNK_PARTY_ORG_UNIT,
+    cast(null as int) as __LNK_POLICY_CESSION,
+    cast(null as int) as __LNK_POLICY_CHANNEL,
+    cast(null as int) as __LNK_POLICY_ORG_UNIT,
+    cast(null as int) as __LNK_POLICY_PARTY,
+    cast(null as int) as __LNK_POLICY_PRODUCT,
+    cast(null as int) as __LNK_TREATY_PARTY,
+    cast(null as int) as __LNK_TREATY_PRODUCT,
+    aug_policy_portability_migration__first_original_policy_reference as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_ORIGINAL_POLICY_REFERENCE,
+    aug_policy_portability_migration__first_policy_inception_date as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_INCEPTION_DATE,
+    aug_policy_portability_migration__first_policy_number as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_NUMBER,
+    aug_policy_portability_migration__first_policy_reference as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_REFERENCE,
+    aug_policy_portability_migration__originating_policy_number as AUG_POLICY_PORTABILITY_MIGRATION__ORIGINATING_POLICY_NUMBER,
+    aug_policy_portability_migration__portability_reason as AUG_POLICY_PORTABILITY_MIGRATION__PORTABILITY_REASON,
+    aug_policy_portability_migration__ported_cumulative_bonus_amount as AUG_POLICY_PORTABILITY_MIGRATION__PORTED_CUMULATIVE_BONUS_AMOUNT,
+    aug_policy_portability_migration__previous_insurer_branch_address as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_INSURER_BRANCH_ADDRESS,
+    aug_policy_portability_migration__previous_policy_deductible as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DEDUCTIBLE,
+    aug_policy_portability_migration__previous_policy_detail as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DETAIL,
+    aug_policy_portability_migration__previous_policy_expiry_date as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_EXPIRY_DATE,
+    aug_policy_portability_migration__previous_policy_inception_date as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_INCEPTION_DATE,
+    aug_policy_portability_migration__previous_policy_start_date as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_START_DATE,
+    cast(null as varchar) as LNK_ROLE_EMPLOYEE__ROLE_TYPE_CK,
+    cast(null as varchar) as LNK_ROLE_EMPLOYEE__EMPLOYEE_CODE
+from {{ ref('stitch_aug_policy_portability_migration') }}
+
+union all
+
+select
+    cast(null as varchar) as ASSESSMENT_BK,
+    cast(null as varchar) as DISTRIBUTION_CHANNEL_BK,
+    cast(null as varchar) as ORG_UNIT_BK,
+    party_bk as PARTY_BK,
+    cast(null as varchar) as POLICY_BK,
+    cast(null as varchar) as PRODUCT_BK,
+    cast(null as varchar) as REINSURANCE_TREATY_BK,
+    cast(null as varchar) as ROLE_TYPE_CODE,
+    cast(null as int) as __LNK_ASSESSMENT_PARTY,
+    cast(null as int) as __LNK_CHANNEL_ORG_UNIT,
+    cast(null as int) as __LNK_PARTY_CHANNEL,
+    cast(null as int) as __LNK_PARTY_ORG_UNIT,
+    cast(null as int) as __LNK_POLICY_CESSION,
+    cast(null as int) as __LNK_POLICY_CHANNEL,
+    cast(null as int) as __LNK_POLICY_ORG_UNIT,
+    cast(null as int) as __LNK_POLICY_PARTY,
+    cast(null as int) as __LNK_POLICY_PRODUCT,
+    cast(null as int) as __LNK_TREATY_PARTY,
+    cast(null as int) as __LNK_TREATY_PRODUCT,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_ORIGINAL_POLICY_REFERENCE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_INCEPTION_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_NUMBER,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_REFERENCE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__ORIGINATING_POLICY_NUMBER,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PORTABILITY_REASON,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PORTED_CUMULATIVE_BONUS_AMOUNT,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_INSURER_BRANCH_ADDRESS,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DEDUCTIBLE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DETAIL,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_EXPIRY_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_INCEPTION_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_START_DATE,
+    lnk_role_employee__role_type_ck as LNK_ROLE_EMPLOYEE__ROLE_TYPE_CK,
+    lnk_role_employee__employee_code as LNK_ROLE_EMPLOYEE__EMPLOYEE_CODE
+from {{ ref('stitch_lnk_role_employee__employee') }}
+
+union all
+
+select
+    cast(null as varchar) as ASSESSMENT_BK,
+    distribution_channel_bk as DISTRIBUTION_CHANNEL_BK,
+    cast(null as varchar) as ORG_UNIT_BK,
+    cast(null as varchar) as PARTY_BK,
+    policy_bk as POLICY_BK,
+    cast(null as varchar) as PRODUCT_BK,
+    cast(null as varchar) as REINSURANCE_TREATY_BK,
+    cast(null as varchar) as ROLE_TYPE_CODE,
+    cast(null as int) as __LNK_ASSESSMENT_PARTY,
+    cast(null as int) as __LNK_CHANNEL_ORG_UNIT,
+    cast(null as int) as __LNK_PARTY_CHANNEL,
+    cast(null as int) as __LNK_PARTY_ORG_UNIT,
+    cast(null as int) as __LNK_POLICY_CESSION,
+    1 as __LNK_POLICY_CHANNEL,
+    cast(null as int) as __LNK_POLICY_ORG_UNIT,
+    cast(null as int) as __LNK_POLICY_PARTY,
+    cast(null as int) as __LNK_POLICY_PRODUCT,
+    cast(null as int) as __LNK_TREATY_PARTY,
+    cast(null as int) as __LNK_TREATY_PRODUCT,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_ORIGINAL_POLICY_REFERENCE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_INCEPTION_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_NUMBER,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_REFERENCE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__ORIGINATING_POLICY_NUMBER,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PORTABILITY_REASON,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PORTED_CUMULATIVE_BONUS_AMOUNT,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_INSURER_BRANCH_ADDRESS,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DEDUCTIBLE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DETAIL,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_EXPIRY_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_INCEPTION_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_START_DATE,
+    cast(null as varchar) as LNK_ROLE_EMPLOYEE__ROLE_TYPE_CK,
+    cast(null as varchar) as LNK_ROLE_EMPLOYEE__EMPLOYEE_CODE
+from {{ ref('stitch_lk_policy_channel__v17') }}
+
+union all
+
+select
+    assessment_bk as ASSESSMENT_BK,
+    cast(null as varchar) as DISTRIBUTION_CHANNEL_BK,
+    cast(null as varchar) as ORG_UNIT_BK,
+    party_bk as PARTY_BK,
+    cast(null as varchar) as POLICY_BK,
+    cast(null as varchar) as PRODUCT_BK,
+    cast(null as varchar) as REINSURANCE_TREATY_BK,
+    cast(null as varchar) as ROLE_TYPE_CODE,
+    1 as __LNK_ASSESSMENT_PARTY,
+    cast(null as int) as __LNK_CHANNEL_ORG_UNIT,
+    cast(null as int) as __LNK_PARTY_CHANNEL,
+    cast(null as int) as __LNK_PARTY_ORG_UNIT,
+    cast(null as int) as __LNK_POLICY_CESSION,
+    cast(null as int) as __LNK_POLICY_CHANNEL,
+    cast(null as int) as __LNK_POLICY_ORG_UNIT,
+    cast(null as int) as __LNK_POLICY_PARTY,
+    cast(null as int) as __LNK_POLICY_PRODUCT,
+    cast(null as int) as __LNK_TREATY_PARTY,
+    cast(null as int) as __LNK_TREATY_PRODUCT,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_ORIGINAL_POLICY_REFERENCE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_INCEPTION_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_NUMBER,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_REFERENCE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__ORIGINATING_POLICY_NUMBER,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PORTABILITY_REASON,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PORTED_CUMULATIVE_BONUS_AMOUNT,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_INSURER_BRANCH_ADDRESS,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DEDUCTIBLE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DETAIL,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_EXPIRY_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_INCEPTION_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_START_DATE,
+    cast(null as varchar) as LNK_ROLE_EMPLOYEE__ROLE_TYPE_CK,
+    cast(null as varchar) as LNK_ROLE_EMPLOYEE__EMPLOYEE_CODE
+from {{ ref('stitch_lk_assessment_party__v17') }}
+
+union all
+
+select
+    cast(null as varchar) as ASSESSMENT_BK,
+    distribution_channel_bk as DISTRIBUTION_CHANNEL_BK,
+    org_unit_bk as ORG_UNIT_BK,
+    cast(null as varchar) as PARTY_BK,
+    cast(null as varchar) as POLICY_BK,
+    cast(null as varchar) as PRODUCT_BK,
+    cast(null as varchar) as REINSURANCE_TREATY_BK,
+    cast(null as varchar) as ROLE_TYPE_CODE,
+    cast(null as int) as __LNK_ASSESSMENT_PARTY,
+    1 as __LNK_CHANNEL_ORG_UNIT,
+    cast(null as int) as __LNK_PARTY_CHANNEL,
+    cast(null as int) as __LNK_PARTY_ORG_UNIT,
+    cast(null as int) as __LNK_POLICY_CESSION,
+    cast(null as int) as __LNK_POLICY_CHANNEL,
+    cast(null as int) as __LNK_POLICY_ORG_UNIT,
+    cast(null as int) as __LNK_POLICY_PARTY,
+    cast(null as int) as __LNK_POLICY_PRODUCT,
+    cast(null as int) as __LNK_TREATY_PARTY,
+    cast(null as int) as __LNK_TREATY_PRODUCT,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_ORIGINAL_POLICY_REFERENCE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_INCEPTION_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_NUMBER,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_REFERENCE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__ORIGINATING_POLICY_NUMBER,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PORTABILITY_REASON,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PORTED_CUMULATIVE_BONUS_AMOUNT,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_INSURER_BRANCH_ADDRESS,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DEDUCTIBLE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DETAIL,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_EXPIRY_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_INCEPTION_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_START_DATE,
+    cast(null as varchar) as LNK_ROLE_EMPLOYEE__ROLE_TYPE_CK,
+    cast(null as varchar) as LNK_ROLE_EMPLOYEE__EMPLOYEE_CODE
+from {{ ref('stitch_lk_channel_org_unit__v17') }}
+
+union all
+
+select
+    cast(null as varchar) as ASSESSMENT_BK,
+    distribution_channel_bk as DISTRIBUTION_CHANNEL_BK,
+    cast(null as varchar) as ORG_UNIT_BK,
+    party_bk as PARTY_BK,
+    cast(null as varchar) as POLICY_BK,
+    cast(null as varchar) as PRODUCT_BK,
+    cast(null as varchar) as REINSURANCE_TREATY_BK,
+    cast(null as varchar) as ROLE_TYPE_CODE,
+    cast(null as int) as __LNK_ASSESSMENT_PARTY,
+    cast(null as int) as __LNK_CHANNEL_ORG_UNIT,
+    1 as __LNK_PARTY_CHANNEL,
+    cast(null as int) as __LNK_PARTY_ORG_UNIT,
+    cast(null as int) as __LNK_POLICY_CESSION,
+    cast(null as int) as __LNK_POLICY_CHANNEL,
+    cast(null as int) as __LNK_POLICY_ORG_UNIT,
+    cast(null as int) as __LNK_POLICY_PARTY,
+    cast(null as int) as __LNK_POLICY_PRODUCT,
+    cast(null as int) as __LNK_TREATY_PARTY,
+    cast(null as int) as __LNK_TREATY_PRODUCT,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_ORIGINAL_POLICY_REFERENCE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_INCEPTION_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_NUMBER,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_REFERENCE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__ORIGINATING_POLICY_NUMBER,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PORTABILITY_REASON,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PORTED_CUMULATIVE_BONUS_AMOUNT,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_INSURER_BRANCH_ADDRESS,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DEDUCTIBLE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DETAIL,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_EXPIRY_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_INCEPTION_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_START_DATE,
+    cast(null as varchar) as LNK_ROLE_EMPLOYEE__ROLE_TYPE_CK,
+    cast(null as varchar) as LNK_ROLE_EMPLOYEE__EMPLOYEE_CODE
+from {{ ref('stitch_lk_party_channel__v17') }}
+
+union all
+
+select
+    cast(null as varchar) as ASSESSMENT_BK,
+    cast(null as varchar) as DISTRIBUTION_CHANNEL_BK,
+    org_unit_bk as ORG_UNIT_BK,
+    party_bk as PARTY_BK,
+    cast(null as varchar) as POLICY_BK,
+    cast(null as varchar) as PRODUCT_BK,
+    cast(null as varchar) as REINSURANCE_TREATY_BK,
+    cast(null as varchar) as ROLE_TYPE_CODE,
+    cast(null as int) as __LNK_ASSESSMENT_PARTY,
+    cast(null as int) as __LNK_CHANNEL_ORG_UNIT,
+    cast(null as int) as __LNK_PARTY_CHANNEL,
+    1 as __LNK_PARTY_ORG_UNIT,
+    cast(null as int) as __LNK_POLICY_CESSION,
+    cast(null as int) as __LNK_POLICY_CHANNEL,
+    cast(null as int) as __LNK_POLICY_ORG_UNIT,
+    cast(null as int) as __LNK_POLICY_PARTY,
+    cast(null as int) as __LNK_POLICY_PRODUCT,
+    cast(null as int) as __LNK_TREATY_PARTY,
+    cast(null as int) as __LNK_TREATY_PRODUCT,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_ORIGINAL_POLICY_REFERENCE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_INCEPTION_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_NUMBER,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_REFERENCE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__ORIGINATING_POLICY_NUMBER,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PORTABILITY_REASON,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PORTED_CUMULATIVE_BONUS_AMOUNT,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_INSURER_BRANCH_ADDRESS,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DEDUCTIBLE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DETAIL,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_EXPIRY_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_INCEPTION_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_START_DATE,
+    cast(null as varchar) as LNK_ROLE_EMPLOYEE__ROLE_TYPE_CK,
+    cast(null as varchar) as LNK_ROLE_EMPLOYEE__EMPLOYEE_CODE
+from {{ ref('stitch_lk_party_org_unit__v17') }}
+
+union all
+
+select
+    cast(null as varchar) as ASSESSMENT_BK,
+    cast(null as varchar) as DISTRIBUTION_CHANNEL_BK,
+    cast(null as varchar) as ORG_UNIT_BK,
+    cast(null as varchar) as PARTY_BK,
+    policy_bk as POLICY_BK,
+    cast(null as varchar) as PRODUCT_BK,
+    reinsurance_treaty_bk as REINSURANCE_TREATY_BK,
+    cast(null as varchar) as ROLE_TYPE_CODE,
+    cast(null as int) as __LNK_ASSESSMENT_PARTY,
+    cast(null as int) as __LNK_CHANNEL_ORG_UNIT,
+    cast(null as int) as __LNK_PARTY_CHANNEL,
+    cast(null as int) as __LNK_PARTY_ORG_UNIT,
+    1 as __LNK_POLICY_CESSION,
+    cast(null as int) as __LNK_POLICY_CHANNEL,
+    cast(null as int) as __LNK_POLICY_ORG_UNIT,
+    cast(null as int) as __LNK_POLICY_PARTY,
+    cast(null as int) as __LNK_POLICY_PRODUCT,
+    cast(null as int) as __LNK_TREATY_PARTY,
+    cast(null as int) as __LNK_TREATY_PRODUCT,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_ORIGINAL_POLICY_REFERENCE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_INCEPTION_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_NUMBER,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_REFERENCE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__ORIGINATING_POLICY_NUMBER,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PORTABILITY_REASON,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PORTED_CUMULATIVE_BONUS_AMOUNT,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_INSURER_BRANCH_ADDRESS,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DEDUCTIBLE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DETAIL,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_EXPIRY_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_INCEPTION_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_START_DATE,
+    cast(null as varchar) as LNK_ROLE_EMPLOYEE__ROLE_TYPE_CK,
+    cast(null as varchar) as LNK_ROLE_EMPLOYEE__EMPLOYEE_CODE
+from {{ ref('stitch_lk_policy_cession__v17') }}
+
+union all
+
+select
+    cast(null as varchar) as ASSESSMENT_BK,
+    cast(null as varchar) as DISTRIBUTION_CHANNEL_BK,
+    org_unit_bk as ORG_UNIT_BK,
+    cast(null as varchar) as PARTY_BK,
+    policy_bk as POLICY_BK,
+    cast(null as varchar) as PRODUCT_BK,
+    cast(null as varchar) as REINSURANCE_TREATY_BK,
+    cast(null as varchar) as ROLE_TYPE_CODE,
+    cast(null as int) as __LNK_ASSESSMENT_PARTY,
+    cast(null as int) as __LNK_CHANNEL_ORG_UNIT,
+    cast(null as int) as __LNK_PARTY_CHANNEL,
+    cast(null as int) as __LNK_PARTY_ORG_UNIT,
+    cast(null as int) as __LNK_POLICY_CESSION,
+    cast(null as int) as __LNK_POLICY_CHANNEL,
+    1 as __LNK_POLICY_ORG_UNIT,
+    cast(null as int) as __LNK_POLICY_PARTY,
+    cast(null as int) as __LNK_POLICY_PRODUCT,
+    cast(null as int) as __LNK_TREATY_PARTY,
+    cast(null as int) as __LNK_TREATY_PRODUCT,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_ORIGINAL_POLICY_REFERENCE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_INCEPTION_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_NUMBER,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_REFERENCE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__ORIGINATING_POLICY_NUMBER,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PORTABILITY_REASON,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PORTED_CUMULATIVE_BONUS_AMOUNT,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_INSURER_BRANCH_ADDRESS,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DEDUCTIBLE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DETAIL,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_EXPIRY_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_INCEPTION_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_START_DATE,
+    cast(null as varchar) as LNK_ROLE_EMPLOYEE__ROLE_TYPE_CK,
+    cast(null as varchar) as LNK_ROLE_EMPLOYEE__EMPLOYEE_CODE
+from {{ ref('stitch_lk_policy_org_unit__v17') }}
+
+union all
+
+select
+    cast(null as varchar) as ASSESSMENT_BK,
+    cast(null as varchar) as DISTRIBUTION_CHANNEL_BK,
+    cast(null as varchar) as ORG_UNIT_BK,
+    party_bk as PARTY_BK,
+    policy_bk as POLICY_BK,
+    cast(null as varchar) as PRODUCT_BK,
+    cast(null as varchar) as REINSURANCE_TREATY_BK,
+    cast(null as varchar) as ROLE_TYPE_CODE,
+    cast(null as int) as __LNK_ASSESSMENT_PARTY,
+    cast(null as int) as __LNK_CHANNEL_ORG_UNIT,
+    cast(null as int) as __LNK_PARTY_CHANNEL,
+    cast(null as int) as __LNK_PARTY_ORG_UNIT,
+    cast(null as int) as __LNK_POLICY_CESSION,
+    cast(null as int) as __LNK_POLICY_CHANNEL,
+    cast(null as int) as __LNK_POLICY_ORG_UNIT,
+    1 as __LNK_POLICY_PARTY,
+    cast(null as int) as __LNK_POLICY_PRODUCT,
+    cast(null as int) as __LNK_TREATY_PARTY,
+    cast(null as int) as __LNK_TREATY_PRODUCT,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_ORIGINAL_POLICY_REFERENCE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_INCEPTION_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_NUMBER,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_REFERENCE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__ORIGINATING_POLICY_NUMBER,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PORTABILITY_REASON,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PORTED_CUMULATIVE_BONUS_AMOUNT,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_INSURER_BRANCH_ADDRESS,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DEDUCTIBLE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DETAIL,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_EXPIRY_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_INCEPTION_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_START_DATE,
+    cast(null as varchar) as LNK_ROLE_EMPLOYEE__ROLE_TYPE_CK,
+    cast(null as varchar) as LNK_ROLE_EMPLOYEE__EMPLOYEE_CODE
+from {{ ref('stitch_lk_policy_party__v17') }}
+
+union all
+
+select
+    cast(null as varchar) as ASSESSMENT_BK,
+    cast(null as varchar) as DISTRIBUTION_CHANNEL_BK,
+    cast(null as varchar) as ORG_UNIT_BK,
+    cast(null as varchar) as PARTY_BK,
+    policy_bk as POLICY_BK,
+    product_bk as PRODUCT_BK,
+    cast(null as varchar) as REINSURANCE_TREATY_BK,
+    cast(null as varchar) as ROLE_TYPE_CODE,
+    cast(null as int) as __LNK_ASSESSMENT_PARTY,
+    cast(null as int) as __LNK_CHANNEL_ORG_UNIT,
+    cast(null as int) as __LNK_PARTY_CHANNEL,
+    cast(null as int) as __LNK_PARTY_ORG_UNIT,
+    cast(null as int) as __LNK_POLICY_CESSION,
+    cast(null as int) as __LNK_POLICY_CHANNEL,
+    cast(null as int) as __LNK_POLICY_ORG_UNIT,
+    cast(null as int) as __LNK_POLICY_PARTY,
+    1 as __LNK_POLICY_PRODUCT,
+    cast(null as int) as __LNK_TREATY_PARTY,
+    cast(null as int) as __LNK_TREATY_PRODUCT,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_ORIGINAL_POLICY_REFERENCE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_INCEPTION_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_NUMBER,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_REFERENCE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__ORIGINATING_POLICY_NUMBER,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PORTABILITY_REASON,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PORTED_CUMULATIVE_BONUS_AMOUNT,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_INSURER_BRANCH_ADDRESS,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DEDUCTIBLE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DETAIL,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_EXPIRY_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_INCEPTION_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_START_DATE,
+    cast(null as varchar) as LNK_ROLE_EMPLOYEE__ROLE_TYPE_CK,
+    cast(null as varchar) as LNK_ROLE_EMPLOYEE__EMPLOYEE_CODE
+from {{ ref('stitch_lk_policy_product__v17') }}
+
+union all
+
+select
+    cast(null as varchar) as ASSESSMENT_BK,
+    cast(null as varchar) as DISTRIBUTION_CHANNEL_BK,
+    cast(null as varchar) as ORG_UNIT_BK,
+    party_bk as PARTY_BK,
+    cast(null as varchar) as POLICY_BK,
+    cast(null as varchar) as PRODUCT_BK,
+    reinsurance_treaty_bk as REINSURANCE_TREATY_BK,
+    cast(null as varchar) as ROLE_TYPE_CODE,
+    cast(null as int) as __LNK_ASSESSMENT_PARTY,
+    cast(null as int) as __LNK_CHANNEL_ORG_UNIT,
+    cast(null as int) as __LNK_PARTY_CHANNEL,
+    cast(null as int) as __LNK_PARTY_ORG_UNIT,
+    cast(null as int) as __LNK_POLICY_CESSION,
+    cast(null as int) as __LNK_POLICY_CHANNEL,
+    cast(null as int) as __LNK_POLICY_ORG_UNIT,
+    cast(null as int) as __LNK_POLICY_PARTY,
+    cast(null as int) as __LNK_POLICY_PRODUCT,
+    1 as __LNK_TREATY_PARTY,
+    cast(null as int) as __LNK_TREATY_PRODUCT,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_ORIGINAL_POLICY_REFERENCE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_INCEPTION_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_NUMBER,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_REFERENCE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__ORIGINATING_POLICY_NUMBER,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PORTABILITY_REASON,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PORTED_CUMULATIVE_BONUS_AMOUNT,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_INSURER_BRANCH_ADDRESS,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DEDUCTIBLE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DETAIL,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_EXPIRY_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_INCEPTION_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_START_DATE,
+    cast(null as varchar) as LNK_ROLE_EMPLOYEE__ROLE_TYPE_CK,
+    cast(null as varchar) as LNK_ROLE_EMPLOYEE__EMPLOYEE_CODE
+from {{ ref('stitch_lk_treaty_party__v17') }}
+
+union all
+
+select
+    cast(null as varchar) as ASSESSMENT_BK,
+    cast(null as varchar) as DISTRIBUTION_CHANNEL_BK,
+    cast(null as varchar) as ORG_UNIT_BK,
+    cast(null as varchar) as PARTY_BK,
+    cast(null as varchar) as POLICY_BK,
+    product_bk as PRODUCT_BK,
+    reinsurance_treaty_bk as REINSURANCE_TREATY_BK,
+    cast(null as varchar) as ROLE_TYPE_CODE,
+    cast(null as int) as __LNK_ASSESSMENT_PARTY,
+    cast(null as int) as __LNK_CHANNEL_ORG_UNIT,
+    cast(null as int) as __LNK_PARTY_CHANNEL,
+    cast(null as int) as __LNK_PARTY_ORG_UNIT,
+    cast(null as int) as __LNK_POLICY_CESSION,
+    cast(null as int) as __LNK_POLICY_CHANNEL,
+    cast(null as int) as __LNK_POLICY_ORG_UNIT,
+    cast(null as int) as __LNK_POLICY_PARTY,
+    cast(null as int) as __LNK_POLICY_PRODUCT,
+    cast(null as int) as __LNK_TREATY_PARTY,
+    1 as __LNK_TREATY_PRODUCT,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_ORIGINAL_POLICY_REFERENCE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_INCEPTION_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_NUMBER,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_REFERENCE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__ORIGINATING_POLICY_NUMBER,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PORTABILITY_REASON,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PORTED_CUMULATIVE_BONUS_AMOUNT,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_INSURER_BRANCH_ADDRESS,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DEDUCTIBLE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DETAIL,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_EXPIRY_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_INCEPTION_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_START_DATE,
+    cast(null as varchar) as LNK_ROLE_EMPLOYEE__ROLE_TYPE_CK,
+    cast(null as varchar) as LNK_ROLE_EMPLOYEE__EMPLOYEE_CODE
+from {{ ref('stitch_lk_treaty_product__v17') }}
+
+union all
+
+select
+    cast(null as varchar) as ASSESSMENT_BK,
+    cast(null as varchar) as DISTRIBUTION_CHANNEL_BK,
+    cast(null as varchar) as ORG_UNIT_BK,
+    party_bk as PARTY_BK,
+    cast(null as varchar) as POLICY_BK,
+    cast(null as varchar) as PRODUCT_BK,
+    cast(null as varchar) as REINSURANCE_TREATY_BK,
+    role_type_code as ROLE_TYPE_CODE,
+    cast(null as int) as __LNK_ASSESSMENT_PARTY,
+    cast(null as int) as __LNK_CHANNEL_ORG_UNIT,
+    cast(null as int) as __LNK_PARTY_CHANNEL,
+    cast(null as int) as __LNK_PARTY_ORG_UNIT,
+    cast(null as int) as __LNK_POLICY_CESSION,
+    cast(null as int) as __LNK_POLICY_CHANNEL,
+    cast(null as int) as __LNK_POLICY_ORG_UNIT,
+    cast(null as int) as __LNK_POLICY_PARTY,
+    cast(null as int) as __LNK_POLICY_PRODUCT,
+    cast(null as int) as __LNK_TREATY_PARTY,
+    cast(null as int) as __LNK_TREATY_PRODUCT,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_ORIGINAL_POLICY_REFERENCE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_INCEPTION_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_NUMBER,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__FIRST_POLICY_REFERENCE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__ORIGINATING_POLICY_NUMBER,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PORTABILITY_REASON,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PORTED_CUMULATIVE_BONUS_AMOUNT,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_INSURER_BRANCH_ADDRESS,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DEDUCTIBLE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_DETAIL,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_EXPIRY_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_INCEPTION_DATE,
+    cast(null as varchar) as AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_START_DATE,
+    cast(null as varchar) as LNK_ROLE_EMPLOYEE__ROLE_TYPE_CK,
+    cast(null as varchar) as LNK_ROLE_EMPLOYEE__EMPLOYEE_CODE
+from {{ ref('stitch_lk_party_role__v17') }}

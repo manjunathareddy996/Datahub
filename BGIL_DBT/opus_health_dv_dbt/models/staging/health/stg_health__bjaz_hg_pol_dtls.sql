@@ -40,6 +40,7 @@ with source as (
         nullif(trim(to_varchar("FIRST_NAME")), '') as first_name,
         nullif(trim(to_varchar("GROSS_PREMIUM")), '') as gross_premium,
         nullif(trim(to_varchar("IGST_AMT")), '') as igst_amt,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("IND_NATIONAL_CARD_HOLDERS")), '') as ind_national_card_holders,
         nullif(trim(to_varchar("LAST_NAME")), '') as last_name,
         nullif(trim(to_varchar("MAILING_PINCODE")), '') as mailing_pincode,

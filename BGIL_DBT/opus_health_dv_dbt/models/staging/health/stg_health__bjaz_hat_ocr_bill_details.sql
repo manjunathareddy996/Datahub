@@ -7,6 +7,7 @@ with source as (
         nullif(trim(to_varchar("CASE_ID")), '') as case_id,
         nullif(trim(to_varchar("CLAIMED_AMOUNT")), '') as claimed_amount,
         nullif(trim(to_varchar("I3_PARTICULAR_ID")), '') as i3_particular_id,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("INWARD_NO")), '') as inward_no,
         nullif(trim(to_varchar("IS_PAYBLE")), '') as is_payble,
         nullif(trim(to_varchar("LEVEL1")), '') as level1,

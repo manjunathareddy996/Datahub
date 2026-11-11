@@ -22,6 +22,7 @@ with source as (
         nullif(trim(to_varchar("FINAL_PREMIUM")), '') as final_premium,
         nullif(trim(to_varchar("FIRST_POLICY_REF")), '') as first_policy_ref,
         nullif(trim(to_varchar("GROUP_DISCOUNT")), '') as group_discount,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("INSERTED_BY")), '') as inserted_by,
         nullif(trim(to_varchar("INSTALLMENT_NO")), '') as installment_no,
         nullif(trim(to_varchar("INSTALLMENT_OPTION_YN")), '') as installment_option_yn,

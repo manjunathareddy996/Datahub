@@ -18,6 +18,7 @@ with source as (
         nullif(trim(to_varchar("CITY")), '') as city,
         nullif(trim(to_varchar("EMAIL")), '') as email,
         nullif(trim(to_varchar("FAX")), '') as fax,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("ITC_EMAIL_ID")), '') as itc_email_id,
         nullif(trim(to_varchar("NEAREST_DM_BRANCH")), '') as nearest_dm_branch,
         nullif(trim(to_varchar("PARENT_BRANCH_CODE")), '') as parent_branch_code,

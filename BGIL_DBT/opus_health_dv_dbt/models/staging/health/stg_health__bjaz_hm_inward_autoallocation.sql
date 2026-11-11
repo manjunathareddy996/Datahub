@@ -10,6 +10,7 @@ with source as (
         nullif(trim(to_varchar("BUCKET_STATUS")), '') as bucket_status,
         nullif(trim(to_varchar("CASHLESS_IN_NO")), '') as cashless_in_no,
         nullif(trim(to_varchar("CLAIM_ID")), '') as claim_id,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("OMNI_INWARD_NO")), '') as omni_inward_no
     from {{ source('health_raw', 'BJAZ_HM_INWARD_AUTOALLOCATION') }}
 

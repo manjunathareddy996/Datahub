@@ -31,6 +31,7 @@ with source as (
         nullif(trim(to_varchar("IGST_AMT")), '') as igst_amt,
         nullif(trim(to_varchar("IMD_CODE")), '') as imd_code,
         nullif(trim(to_varchar("IMD_NAME")), '') as imd_name,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("KKC")), '') as kkc,
         nullif(trim(to_varchar("LMS_NO")), '') as lms_no,
         nullif(trim(to_varchar("LONG_TERM_DISCOUNT")), '') as long_term_discount,

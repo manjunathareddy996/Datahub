@@ -16,6 +16,7 @@ with source as (
         nullif(trim(to_varchar("IMD_BACKDATE_VALYN")), '') as imd_backdate_valyn,
         nullif(trim(to_varchar("IMD_CODE")), '') as imd_code,
         nullif(trim(to_varchar("IMD_VALIDATE")), '') as imd_validate,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("ISACTIVE")), '') as isactive,
         nullif(trim(to_varchar("ISRENEW")), '') as isrenew,
         nullif(trim(to_varchar("LOADER_YN")), '') as loader_yn,

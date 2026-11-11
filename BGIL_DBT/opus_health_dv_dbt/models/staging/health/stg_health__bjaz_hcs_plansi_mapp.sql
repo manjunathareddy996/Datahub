@@ -7,6 +7,7 @@ with source as (
         nullif(trim(to_varchar("DONOR_SI")), '') as donor_si,
         nullif(trim(to_varchar("EFFECTIVE_DT")), '') as effective_dt,
         nullif(trim(to_varchar("HOSP_SI")), '') as hosp_si,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("IS_APPLICABLE")), '') as is_applicable,
         nullif(trim(to_varchar("MATERNITY_SI")), '') as maternity_si,
         nullif(trim(to_varchar("OPD_SI")), '') as opd_si,

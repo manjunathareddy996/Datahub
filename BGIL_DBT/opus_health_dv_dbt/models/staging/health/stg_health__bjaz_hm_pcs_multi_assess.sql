@@ -6,6 +6,7 @@ with source as (
         nullif(trim(to_varchar("CLAIM_ID")), '') as claim_id,
         nullif(trim(to_varchar("CLID_HPMS")), '') as clid_hpms,
         nullif(trim(to_varchar("DOCASESS_ID")), '') as docasess_id,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("MEDICAL_MGMT_DATE")), '') as medical_mgmt_date,
         nullif(trim(to_varchar("MEDICAL_MGMT_TYPE")), '') as medical_mgmt_type,
         nullif(trim(to_varchar("PCS_ID")), '') as pcs_id,

@@ -9,6 +9,7 @@ with source as (
         nullif(trim(to_varchar("FINAL_PREMIUM")), '') as final_premium,
         nullif(trim(to_varchar("HAN_NUMBER")), '') as han_number,
         nullif(trim(to_varchar("IGST_AMT")), '') as igst_amt,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("PLAN_ID")), '') as plan_id,
         nullif(trim(to_varchar("PLAN_PREMIUM")), '') as plan_premium,
         nullif(trim(to_varchar("POLICY_PERIOD")), '') as policy_period,

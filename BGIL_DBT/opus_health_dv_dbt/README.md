@@ -43,9 +43,11 @@ Snowflake RAW.HEALTH (source tables)
         │
 models/staging/health/stg_health__*.sql   -- 1:1 casts, one view per source table a central view reads
         ▼
-models/automate_dv/standard/
-  stitched/stitch_v<NN>_*.sql             -- THE CENTRAL VIEWS (the governing rule, below). Plain SQL,
-        │                                    no hashing.
+models/raw_vault/standard/
+  stitched/stitch_v<NN>_*.sql             -- THE CENTRAL VIEWS (the governing rule, below). Thin
+        │                                    consumer views that union all the parts below. No hashing.
+  stitched/stitch_<sat>, stitch_<sat>__<literal>, stitch_lk_<link>__v<NN>
+        │                                 -- the parts: one stitch_incremental macro call each
   staging/stg2_v<NN>_*.sql                -- automate_dv.stage() per central view: every hub key and
         │                                    link key on that view
   staging/stg2_<satellite>.sql            -- automate_dv.stage() per satellite: its pk, payload,
@@ -53,7 +55,7 @@ models/automate_dv/standard/
         ▼
   hubs/*.sql · links/*.sql · satellites/*.sql
                                           -- hub() / link() / sat() / ma_sat() calls
-models/automate_dv/augmented/{staging,satellites}
+models/raw_vault/augmented/{staging,satellites}
                                           -- the augmentation track (SAT_AUG_*), same mechanics,
                                              read off the same central views
 ```
@@ -75,9 +77,10 @@ Where each part of the rule is applied:
   an anchor hub. Every rule is re-asserted against the finished plan.
 - **Joining**: each table contributes branches carrying its hub business keys and the satellite
   attributes it feeds. Each satellite attribute is then merged across the view's tables on that
-  satellite's own key, with `FIRST_VALUE … IGNORE NULLS` in source precedence (v2, then legacy,
-  then delta 3). This keyed merge cannot fan out the way a multi-way FULL OUTER JOIN does, and it
-  keeps every link pair at the grain of the source row that carries both legs.
+  satellite's own key, by the `stitch_incremental` macro, with `coalesce_rules` in source precedence (v2, then
+  legacy, then delta 3). Each `stitch_vNN_*` is a consumer view over the parts (`stitch_<sat>`,
+  `stitch_<sat>__<literal>`, `stitch_lk_<link>__vNN`), so it cannot fan out the way a multi-way
+  FULL OUTER JOIN does.
 - **Hubs and links come from the views.** Each hub's and link's `source_model` list contains only
   view-level stages.
 
@@ -108,9 +111,9 @@ shared_gate_triage`. Which one to use is the user's call.
 health_consolidated_v5_dv_dbt/
   models/
     staging/health/             1:1 casts + _health__sources.yml
-    automate_dv/
+    raw_vault/
       standard/
-        stitched/               the central views
+        stitched/               the central views (consumer views) and their stitch_incremental parts
         staging/                stage() per view and per satellite
         hubs/
         links/

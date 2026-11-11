@@ -19,6 +19,7 @@ with source as (
         nullif(trim(to_varchar("CORPORATE_NAME")), '') as corporate_name,
         nullif(trim(to_varchar("DEDUCTION_AMOUNT")), '') as deduction_amount,
         nullif(trim(to_varchar("EMPLOYEE_ID")), '') as employee_id,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("INSURANCE_COMPANY")), '') as insurance_company,
         nullif(trim(to_varchar("IRDA_ID")), '') as irda_id,
         nullif(trim(to_varchar("IS_DOCUMENT_RECEIVED")), '') as is_document_received,

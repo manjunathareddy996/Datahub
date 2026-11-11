@@ -5,6 +5,7 @@ with source as (
     select
         nullif(trim(to_varchar("COVER_CODE")), '') as cover_code,
         nullif(trim(to_varchar("DISPLAY_CVR_VALIDATE")), '') as display_cvr_validate,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("ISALPHA")), '') as isalpha,
         nullif(trim(to_varchar("IS_NRSEARCH")), '') as is_nrsearch,
         nullif(trim(to_varchar("IS_POST_UPDATEYN")), '') as is_post_updateyn,

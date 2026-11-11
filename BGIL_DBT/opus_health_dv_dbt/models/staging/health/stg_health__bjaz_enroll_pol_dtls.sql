@@ -29,6 +29,7 @@ with source as (
         nullif(trim(to_varchar("HAT_REF_NO")), '') as hat_ref_no,
         nullif(trim(to_varchar("IMD_CODE")), '') as imd_code,
         nullif(trim(to_varchar("IMD_NAME")), '') as imd_name,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("INLOWS_YN")), '') as inlows_yn,
         nullif(trim(to_varchar("ISSUANCEWITHDATA_YN")), '') as issuancewithdata_yn,
         nullif(trim(to_varchar("METERNITYBENIFITAVIL")), '') as meternitybenifitavil,

@@ -52,6 +52,7 @@ with source as (
         nullif(trim(to_varchar("HPR_DISCLAIMER7")), '') as hpr_disclaimer7,
         nullif(trim(to_varchar("HPR_DISCLAIMER8")), '') as hpr_disclaimer8,
         nullif(trim(to_varchar("HPR_DISCLAIMER9")), '') as hpr_disclaimer9,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("INDUSTRY_PROFILE")), '') as industry_profile,
         nullif(trim(to_varchar("INDUSTRY_PROFILE_GPG")), '') as industry_profile_gpg,
         nullif(trim(to_varchar("INDUSTRY_TYPE")), '') as industry_type,

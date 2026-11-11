@@ -12,6 +12,7 @@ with source as (
         nullif(trim(to_varchar("AGE_66_70")), '') as age_66_70,
         nullif(trim(to_varchar("AGE_71_75")), '') as age_71_75,
         nullif(trim(to_varchar("AGE_76_80")), '') as age_76_80,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("PPP_TYPE")), '') as ppp_type,
         nullif(trim(to_varchar("PREMIUM_TYPE")), '') as premium_type,
         nullif(trim(to_varchar("QUOTE_NO")), '') as quote_no,

@@ -12,6 +12,7 @@ with source as (
         nullif(trim(to_varchar("HLTH_TIPS")), '') as hlth_tips,
         nullif(trim(to_varchar("ICD_ID")), '') as icd_id,
         nullif(trim(to_varchar("ICD_SNO")), '') as icd_sno,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("MEDICAL_MGMT_DATE")), '') as medical_mgmt_date,
         nullif(trim(to_varchar("MEDICAL_MGMT_TYPE")), '') as medical_mgmt_type,
         nullif(trim(to_varchar("PACKAGE_CHARGE")), '') as package_charge,

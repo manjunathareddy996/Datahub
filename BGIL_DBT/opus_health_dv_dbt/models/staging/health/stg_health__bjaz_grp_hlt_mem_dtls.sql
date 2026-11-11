@@ -6,6 +6,7 @@ with source as (
         nullif(trim(to_varchar("AGE_RESTRICTION")), '') as age_restriction,
         nullif(trim(to_varchar("COUNT")), '') as count,
         nullif(trim(to_varchar("COVERAGE")), '') as coverage,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("MEMBER")), '') as member,
         nullif(trim(to_varchar("PRODUCT")), '') as product,
         nullif(trim(to_varchar("QUOTE_NO")), '') as quote_no,

@@ -8,6 +8,7 @@ with source as (
         nullif(trim(to_varchar("CLID_HPMS")), '') as clid_hpms,
         nullif(trim(to_varchar("CLOSE_DATE")), '') as close_date,
         nullif(trim(to_varchar("CLOSE_STATUS")), '') as close_status,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("UPDATED_BY")), '') as updated_by,
         nullif(trim(to_varchar("UPDATED_ON")), '') as updated_on
     from {{ source('health_raw', 'BJAZ_HM_CLAIM_CLOSE') }}

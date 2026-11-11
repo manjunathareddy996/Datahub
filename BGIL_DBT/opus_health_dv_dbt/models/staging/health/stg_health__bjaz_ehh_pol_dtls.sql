@@ -18,6 +18,7 @@ with source as (
         nullif(trim(to_varchar("GROSS_PREMIUM2")), '') as gross_premium2,
         nullif(trim(to_varchar("GROSS_PREMIUM3")), '') as gross_premium3,
         nullif(trim(to_varchar("GSTIN_NO")), '') as gstin_no,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("LAST_NAME")), '') as last_name,
         nullif(trim(to_varchar("MAIN_AGENT_CODE")), '') as main_agent_code,
         nullif(trim(to_varchar("MIDDLE_NAME")), '') as middle_name,

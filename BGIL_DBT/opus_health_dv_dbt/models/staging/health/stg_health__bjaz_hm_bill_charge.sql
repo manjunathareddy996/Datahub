@@ -16,6 +16,7 @@ with source as (
         nullif(trim(to_varchar("CLID_HPMS")), '') as clid_hpms,
         nullif(trim(to_varchar("DISALLOW_AMT")), '') as disallow_amt,
         nullif(trim(to_varchar("DISALLOW_REASON")), '') as disallow_reason,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("ROOM_RENT_COPAY")), '') as room_rent_copay,
         nullif(trim(to_varchar("TARIFF_DED_TOTAL")), '') as tariff_ded_total,
         nullif(trim(to_varchar("TARIFF_EXCESS_DED")), '') as tariff_excess_ded

@@ -4,6 +4,7 @@ with source as (
 
     select
         nullif(trim(to_varchar("CASHLESS_IN_ID")), '') as cashless_in_id,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("OMNI_INWARD_NO")), '') as omni_inward_no,
         nullif(trim(to_varchar("REDIRECT_FLAG")), '') as redirect_flag
     from {{ source('health_raw', 'BJAZ_HM_INWARD_OMNI_MAPPING') }}

@@ -16,6 +16,7 @@ with source as (
         nullif(trim(to_varchar("GROSS_PREMINUM")), '') as gross_preminum,
         nullif(trim(to_varchar("GST_REG_NO")), '') as gst_reg_no,
         nullif(trim(to_varchar("IMD_CODE")), '') as imd_code,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("ISSUANCE_SOURCE")), '') as issuance_source,
         nullif(trim(to_varchar("LAST_NAME")), '') as last_name,
         nullif(trim(to_varchar("LG_CODE")), '') as lg_code,

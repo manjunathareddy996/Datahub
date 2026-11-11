@@ -1,0 +1,11 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.3, pytest-9.2.0, pluggy-1.7.0 -- C:\Users\tanma\AppData\Local\Programs\Python\Python313\python.exe
+hypothesis profile 'default'
+rootdir: d:\Projects\BAGIC\Datahub\BGIL_DBT\opus_health_dv_dbt
+plugins: hypothesis-6.170.15
+collecting ... collected 2 items
+
+scripts/tests/test_p06_key_parts.py::test_key_parts_survive_composite_key PASSED [ 50%]
+scripts/tests/test_p06_key_parts.py::test_link_legs_recoverable PASSED   [100%]
+
+============================== 2 passed in 1.40s ==============================

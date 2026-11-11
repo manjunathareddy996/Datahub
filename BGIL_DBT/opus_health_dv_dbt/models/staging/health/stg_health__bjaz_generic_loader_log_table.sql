@@ -16,6 +16,7 @@ with source as (
         nullif(trim(to_varchar("EMPSTATUS")), '') as empstatus,
         nullif(trim(to_varchar("FAX")), '') as fax,
         nullif(trim(to_varchar("FIRSTNAME")), '') as firstname,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("INTERMEDIARY")), '') as intermediary,
         nullif(trim(to_varchar("LOCATIONCODE")), '') as locationcode,
         nullif(trim(to_varchar("MARITALSTATUS")), '') as maritalstatus,

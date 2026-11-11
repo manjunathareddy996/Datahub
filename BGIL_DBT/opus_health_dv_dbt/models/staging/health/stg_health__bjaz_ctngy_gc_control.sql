@@ -25,6 +25,7 @@ with source as (
         nullif(trim(to_varchar("GC_ISSUANCE_HAT_REFERED_YN")), '') as gc_issuance_hat_refered_yn,
         nullif(trim(to_varchar("HIDE_PREMIUM_BREAKUP")), '') as hide_premium_breakup,
         nullif(trim(to_varchar("HIDE_PREMIUM_TABLE")), '') as hide_premium_table,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("ISACTIVE")), '') as isactive,
         nullif(trim(to_varchar("ISRENEW")), '') as isrenew,
         nullif(trim(to_varchar("IT_CERT")), '') as it_cert,

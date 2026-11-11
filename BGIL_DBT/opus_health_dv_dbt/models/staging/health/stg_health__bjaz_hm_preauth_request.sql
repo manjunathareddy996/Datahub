@@ -36,6 +36,7 @@ with source as (
         nullif(trim(to_varchar("ICD_CODE")), '') as icd_code,
         nullif(trim(to_varchar("ICU_STAY")), '') as icu_stay,
         nullif(trim(to_varchar("ILLNESS_NATURE")), '') as illness_nature,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("INJURY_DATE")), '') as injury_date,
         nullif(trim(to_varchar("INJURY_DISEASE")), '') as injury_disease,
         nullif(trim(to_varchar("INJURY_OCCUR")), '') as injury_occur,

@@ -36,6 +36,7 @@ with source as (
         nullif(trim(to_varchar("HYPERLIPIDEMIA_LOAD")), '') as hyperlipidemia_load,
         nullif(trim(to_varchar("HYPERLIPIDE_FLAG")), '') as hyperlipide_flag,
         nullif(trim(to_varchar("HYPERTENS_LOAD")), '') as hypertens_load,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("INSURED_NAME")), '') as insured_name,
         nullif(trim(to_varchar("LOADING_REASON")), '') as loading_reason,
         nullif(trim(to_varchar("LOADSUM_AMT")), '') as loadsum_amt,

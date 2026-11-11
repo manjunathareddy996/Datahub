@@ -15,6 +15,7 @@ with source as (
         nullif(trim(to_varchar("EMAIL_ID_3")), '') as email_id_3,
         nullif(trim(to_varchar("HO_ENABLED_DATE")), '') as ho_enabled_date,
         nullif(trim(to_varchar("HO_ENABLED_USER")), '') as ho_enabled_user,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("INTERMEDIARY_ID")), '') as intermediary_id,
         nullif(trim(to_varchar("MANDATE_ADDRESS")), '') as mandate_address,
         nullif(trim(to_varchar("MOBILE_NO")), '') as mobile_no,

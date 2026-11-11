@@ -9,6 +9,7 @@ with source as (
         nullif(trim(to_varchar("ENDT_NO")), '') as endt_no,
         nullif(trim(to_varchar("ENDT_TYPE")), '') as endt_type,
         nullif(trim(to_varchar("FAMILY_COVERED")), '') as family_covered,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("PER_FAMILY_PRM")), '') as per_family_prm,
         nullif(trim(to_varchar("POLICY_REF")), '') as policy_ref,
         nullif(trim(to_varchar("TOT_FAMILY_PRM")), '') as tot_family_prm

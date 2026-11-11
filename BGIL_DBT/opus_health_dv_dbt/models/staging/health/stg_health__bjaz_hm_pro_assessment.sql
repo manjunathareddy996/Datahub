@@ -11,6 +11,7 @@ with source as (
         nullif(trim(to_varchar("CLID_HPMS")), '') as clid_hpms,
         nullif(trim(to_varchar("CLOSER_LETDATE")), '') as closer_letdate,
         nullif(trim(to_varchar("FINAL_DIAGNOSIS")), '') as final_diagnosis,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("PREMIUM_COLLECT")), '') as premium_collect,
         nullif(trim(to_varchar("REPUDI_DATE")), '') as repudi_date,
         nullif(trim(to_varchar("REPUDI_REMARK")), '') as repudi_remark,

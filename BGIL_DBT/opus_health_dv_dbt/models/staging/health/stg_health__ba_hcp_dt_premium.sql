@@ -45,6 +45,7 @@ with source as (
         nullif(trim(to_varchar("GOOD_HEALTH_DISC_AMT")), '') as good_health_disc_amt,
         nullif(trim(to_varchar("GOOD_HEALTH_DISC_RATE")), '') as good_health_disc_rate,
         nullif(trim(to_varchar("HCP_SEQNO")), '') as hcp_seqno,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("INST_BASE_AMT")), '') as inst_base_amt,
         nullif(trim(to_varchar("INST_BASE_HALF_YR_AMT")), '') as inst_base_half_yr_amt,
         nullif(trim(to_varchar("INST_BASE_MONTHLY_AMT")), '') as inst_base_monthly_amt,

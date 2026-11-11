@@ -5,6 +5,7 @@ with source as (
     select
         nullif(trim(to_varchar("CLID")), '') as clid,
         nullif(trim(to_varchar("HOSP_ID")), '') as hosp_id,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("OMNI_INWARD_NO")), '') as omni_inward_no,
         nullif(trim(to_varchar("PATIENT_ID_CARD")), '') as patient_id_card,
         nullif(trim(to_varchar("QUERY_REF_ID")), '') as query_ref_id,

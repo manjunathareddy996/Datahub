@@ -7,6 +7,7 @@ with source as (
         nullif(trim(to_varchar("CONTRACT_ID")), '') as contract_id,
         nullif(trim(to_varchar("COVERNOTE_DATE")), '') as covernote_date,
         nullif(trim(to_varchar("COVERNOTE_NO")), '') as covernote_no,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("MEDICAL_EXPENSES")), '') as medical_expenses,
         nullif(trim(to_varchar("NOMINEE_NAME")), '') as nominee_name,
         nullif(trim(to_varchar("NOMINEE_RELATION")), '') as nominee_relation,

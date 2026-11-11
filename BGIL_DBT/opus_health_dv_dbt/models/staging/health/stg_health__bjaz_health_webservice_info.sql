@@ -33,6 +33,7 @@ with source as (
         nullif(trim(to_varchar("GRID_OD")), '') as grid_od,
         nullif(trim(to_varchar("GROSS_PREMIUM")), '') as gross_premium,
         nullif(trim(to_varchar("IMD_CODE")), '') as imd_code,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("INSTRUMENT_AMT")), '') as instrument_amt,
         nullif(trim(to_varchar("INSTR_DATE")), '') as instr_date,
         nullif(trim(to_varchar("INSTR_NUMBER")), '') as instr_number,

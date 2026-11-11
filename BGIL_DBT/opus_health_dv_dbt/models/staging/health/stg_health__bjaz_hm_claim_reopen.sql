@@ -5,6 +5,7 @@ with source as (
     select
         nullif(trim(to_varchar("CLAIM_ID")), '') as claim_id,
         nullif(trim(to_varchar("CLID_HPMS")), '') as clid_hpms,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("REOPEN_DATE")), '') as reopen_date,
         nullif(trim(to_varchar("REOPEN_REMARK")), '') as reopen_remark,
         nullif(trim(to_varchar("UPDATED_BY")), '') as updated_by,

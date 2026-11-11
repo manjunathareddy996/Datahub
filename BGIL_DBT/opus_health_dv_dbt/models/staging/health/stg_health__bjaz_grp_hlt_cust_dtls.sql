@@ -10,6 +10,7 @@ with source as (
         nullif(trim(to_varchar("CONTACT_PERSON")), '') as contact_person,
         nullif(trim(to_varchar("E_MAIL_ID")), '') as e_mail_id,
         nullif(trim(to_varchar("FIRST_NAME")), '') as first_name,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("INSTITITION")), '') as institition,
         nullif(trim(to_varchar("LAST_NAME")), '') as last_name,
         nullif(trim(to_varchar("MIDDLE_NAME")), '') as middle_name,

@@ -28,6 +28,7 @@ with source as (
         nullif(trim(to_varchar("GROUP_NAME")), '') as group_name,
         nullif(trim(to_varchar("ICD_CODE")), '') as icd_code,
         nullif(trim(to_varchar("ID_CARD_NO")), '') as id_card_no,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("INSURCO_CLAIM_NO")), '') as insurco_claim_no,
         nullif(trim(to_varchar("INSURCO_POLICY_NO")), '') as insurco_policy_no,
         nullif(trim(to_varchar("LDR_PID")), '') as ldr_pid,

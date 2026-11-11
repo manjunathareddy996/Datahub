@@ -4,6 +4,7 @@ with source as (
 
     select
         nullif(trim(to_varchar("CLAIM_ID")), '') as claim_id,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("QUERY_REMARK")), '') as query_remark
     from {{ source('health_raw', 'BJAZ_HM_QUERY_REMARK') }}
 

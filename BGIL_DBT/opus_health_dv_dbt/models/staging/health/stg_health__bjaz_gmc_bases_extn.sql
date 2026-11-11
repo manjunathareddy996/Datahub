@@ -11,6 +11,7 @@ with source as (
         nullif(trim(to_varchar("family_includes")), '') as family_includes,
         nullif(trim(to_varchar("first_policy_ref")), '') as first_policy_ref,
         nullif(trim(to_varchar("inception_date")), '') as inception_date,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("members_per_family")), '') as members_per_family,
         nullif(trim(to_varchar("parents_si_limit")), '') as parents_si_limit,
         nullif(trim(to_varchar("previous_version")), '') as previous_version,

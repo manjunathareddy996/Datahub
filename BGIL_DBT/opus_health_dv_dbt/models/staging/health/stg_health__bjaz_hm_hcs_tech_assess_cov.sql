@@ -46,6 +46,7 @@ with source as (
         nullif(trim(to_varchar("ICD_CODE")), '') as icd_code,
         nullif(trim(to_varchar("ICD_DESCRI")), '') as icd_descri,
         nullif(trim(to_varchar("ID_CARD_NO")), '') as id_card_no,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("INWARD_ID")), '') as inward_id,
         nullif(trim(to_varchar("LAST_CONSULT_DATE")), '') as last_consult_date,
         nullif(trim(to_varchar("LAST_EMI_PAID_DATE")), '') as last_emi_paid_date,

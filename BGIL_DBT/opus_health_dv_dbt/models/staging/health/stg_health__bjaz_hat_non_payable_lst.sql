@@ -4,6 +4,7 @@ with source as (
 
     select
         nullif(trim(to_varchar("BILLHEAD")), '') as billhead,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("NON_PAY_AMT_PERUNIT")), '') as non_pay_amt_perunit,
         nullif(trim(to_varchar("NON_PAY_CASE_ID")), '') as non_pay_case_id,
         nullif(trim(to_varchar("NON_PAY_CLAIMED_AMOUNT")), '') as non_pay_claimed_amount,

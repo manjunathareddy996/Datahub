@@ -6,6 +6,7 @@ with source as (
         nullif(trim(to_varchar("ACTUAL_START_ON")), '') as actual_start_on,
         nullif(trim(to_varchar("CLAIM_ID")), '') as claim_id,
         nullif(trim(to_varchar("END_ON")), '') as end_on,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("LOG_ID")), '') as log_id,
         nullif(trim(to_varchar("LOG_TYPE")), '') as log_type,
         nullif(trim(to_varchar("NEXT_CASE")), '') as next_case,

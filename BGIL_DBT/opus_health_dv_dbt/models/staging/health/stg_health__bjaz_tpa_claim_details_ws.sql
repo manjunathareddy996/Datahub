@@ -63,6 +63,7 @@ with source as (
         nullif(trim(to_varchar("HOSPITAL_STATE")), '') as hospital_state,
         nullif(trim(to_varchar("ICUCHARGES")), '') as icucharges,
         nullif(trim(to_varchar("IMAGING_STUDIES_CHARGES")), '') as imaging_studies_charges,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("INSURANCE_COMPANY")), '') as insurance_company,
         nullif(trim(to_varchar("INSURED_DISC_DATE")), '') as insured_disc_date,
         nullif(trim(to_varchar("INSURED_FINAL_REMINDER_DATE")), '') as insured_final_reminder_date,

@@ -4,6 +4,7 @@ with source as (
 
     select
         nullif(trim(to_varchar("CASE_ID")), '') as case_id,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("INWARD_NO")), '') as inward_no,
         nullif(trim(to_varchar("NAME")), '') as name,
         nullif(trim(to_varchar("TOTAL")), '') as total

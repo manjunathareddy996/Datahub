@@ -30,6 +30,7 @@ with source as (
         nullif(trim(to_varchar("HYPERTENSION_YN")), '') as hypertension_yn,
         nullif(trim(to_varchar("ILLNESS_DURATION")), '') as illness_duration,
         nullif(trim(to_varchar("INCEPTION_DATE")), '') as inception_date,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("MEDICAL_CHECKUP")), '') as medical_checkup,
         nullif(trim(to_varchar("MEDICAL_REPORT")), '') as medical_report,
         nullif(trim(to_varchar("MEMBER_NO")), '') as member_no,

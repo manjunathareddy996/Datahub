@@ -8,6 +8,7 @@ with source as (
         nullif(trim(to_varchar("COVER_CODE")), '') as cover_code,
         nullif(trim(to_varchar("COVER_NO")), '') as cover_no,
         nullif(trim(to_varchar("COVER_PREM")), '') as cover_prem,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("PARTITION_NO")), '') as partition_no,
         nullif(trim(to_varchar("PLAN_ID")), '') as plan_id,
         nullif(trim(to_varchar("SCHEME_CODE")), '') as scheme_code,

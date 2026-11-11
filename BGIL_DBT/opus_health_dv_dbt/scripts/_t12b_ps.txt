@@ -1,0 +1,4 @@
+
+Image Name                     PID Session Name        Session#    Mem Usage
+========================= ======== ================ =========== ============
+python.exe                   12588 Console                    1      1,396 K

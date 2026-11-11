@@ -5,6 +5,7 @@ with source as (
     select
         nullif(trim(to_varchar("CONTRACT_ID")), '') as contract_id,
         nullif(trim(to_varchar("HCP_SEQNO")), '') as hcp_seqno,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("MEMBER_NAME")), '') as member_name,
         nullif(trim(to_varchar("MEM_ADD_FLAG")), '') as mem_add_flag,
         nullif(trim(to_varchar("MEM_STATUS")), '') as mem_status,

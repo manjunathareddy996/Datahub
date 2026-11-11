@@ -13,6 +13,7 @@ with source as (
         nullif(trim(to_varchar("BY_PASS_REMARKS_UPDATED_ON")), '') as by_pass_remarks_updated_on,
         nullif(trim(to_varchar("CLAIM_NO")), '') as claim_no,
         nullif(trim(to_varchar("DOC_CLASS")), '') as doc_class,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("IS_ANOMALY_FOUND")), '') as is_anomaly_found
     from {{ source('health_raw', 'BJAZ_BFHL_DTLS') }}
 

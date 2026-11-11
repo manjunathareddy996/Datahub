@@ -22,6 +22,7 @@ with source as (
         nullif(trim(to_varchar("FMAL_CVRPRNT")), '') as fmal_cvrprnt,
         nullif(trim(to_varchar("FMAL_CVRPRNT_YN")), '') as fmal_cvrprnt_yn,
         nullif(trim(to_varchar("INCEPTION_WINPRD")), '') as inception_winprd,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("LOCK_IN_PERIOD")), '') as lock_in_period,
         nullif(trim(to_varchar("MAL_CVRINLW")), '') as mal_cvrinlw,
         nullif(trim(to_varchar("MAL_CVRINLW_YN")), '') as mal_cvrinlw_yn,

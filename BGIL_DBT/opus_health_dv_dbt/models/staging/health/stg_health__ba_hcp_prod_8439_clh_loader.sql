@@ -4,6 +4,7 @@ with source as (
 
     select
         nullif(trim(to_varchar("GSTIN_UIN")), '') as gstin_uin,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("MD_BMI")), '') as md_bmi,
         nullif(trim(to_varchar("MD_CHOLESTEROL_DISORDERS")), '') as md_cholesterol_disorders,
         nullif(trim(to_varchar("MD_DATE_OF_BIRTH")), '') as md_date_of_birth,

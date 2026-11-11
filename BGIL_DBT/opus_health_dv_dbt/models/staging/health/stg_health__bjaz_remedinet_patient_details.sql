@@ -15,6 +15,7 @@ with source as (
         nullif(trim(to_varchar("FAX_NO")), '') as fax_no,
         nullif(trim(to_varchar("FIRST_NAME")), '') as first_name,
         nullif(trim(to_varchar("GENDER")), '') as gender,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("LAST_NAME")), '') as last_name,
         nullif(trim(to_varchar("MARITAL_STATUS_NAME")), '') as marital_status_name,
         nullif(trim(to_varchar("MEMBER_NO")), '') as member_no,

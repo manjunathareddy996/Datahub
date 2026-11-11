@@ -3,6 +3,7 @@
 with source as (
 
     select
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("maternity_benefit")), '') as maternity_benefit,
         nullif(trim(to_varchar("one_waiting_period")), '') as one_waiting_period,
         nullif(trim(to_varchar("pre_existing_dis")), '') as pre_existing_dis,

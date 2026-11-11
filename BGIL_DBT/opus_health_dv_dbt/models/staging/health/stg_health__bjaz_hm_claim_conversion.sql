@@ -7,6 +7,7 @@ with source as (
         nullif(trim(to_varchar("CONVERT_DATE")), '') as convert_date,
         nullif(trim(to_varchar("CONV_ID")), '') as conv_id,
         nullif(trim(to_varchar("CONV_TYPE")), '') as conv_type,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("PREV_CLAIM_ID")), '') as prev_claim_id,
         nullif(trim(to_varchar("UPDATED_BY")), '') as updated_by,
         nullif(trim(to_varchar("UPDATED_ON")), '') as updated_on

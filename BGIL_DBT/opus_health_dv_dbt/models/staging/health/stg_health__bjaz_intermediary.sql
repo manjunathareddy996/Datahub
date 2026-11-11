@@ -11,6 +11,7 @@ with source as (
         nullif(trim(to_varchar("GST_NO")), '') as gst_no,
         nullif(trim(to_varchar("GST_STATUS")), '') as gst_status,
         nullif(trim(to_varchar("IMDFLAG")), '') as imdflag,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("INTERMEDIARY_BAND")), '') as intermediary_band,
         nullif(trim(to_varchar("INTERMEDIARY_GROUP")), '') as intermediary_group,
         nullif(trim(to_varchar("INTERMEDIARY_ID")), '') as intermediary_id,

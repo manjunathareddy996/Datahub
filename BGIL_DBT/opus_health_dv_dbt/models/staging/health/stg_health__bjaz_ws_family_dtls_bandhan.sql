@@ -4,6 +4,7 @@ with source as (
 
     select
         nullif(trim(to_varchar("FAMILYCOMBINATION")), '') as familycombination,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("MEMBER1DOB")), '') as member1dob,
         nullif(trim(to_varchar("MEMBER1GENDER")), '') as member1gender,
         nullif(trim(to_varchar("MEMBER1HEIGHT")), '') as member1height,

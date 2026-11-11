@@ -51,4 +51,4 @@ models.
 - **Links that repeat a hub** (party–party, policy–policy and similar) aren't built: key
   co-occurrence on a row can't say which leg is which.
 - **Reference satellites**: `data_7.js` declares them, and this map targets none, so
-  `models/automate_dv/standard/references/` is empty, as it is in partner and travel.
+  `models/raw_vault/standard/references/` is empty, as it is in partner and travel.

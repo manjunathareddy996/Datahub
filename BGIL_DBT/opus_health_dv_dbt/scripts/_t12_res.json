@@ -1,0 +1,15 @@
+{
+ "dbt_path": null,
+ "dbt_module": {
+  "rc": 1,
+  "out": "C:\\Users\\tanma\\AppData\\Local\\Programs\\Python\\Python313\\python.exe: No module named dbt\n"
+ },
+ "dbt_spec": "None",
+ "snowflake_env_var_names": [],
+ "snow_cli": null,
+ "snowsql": null,
+ "pytest": {
+  "rc": 1,
+  "tail": "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\nscripts\\convert_stitches.py:292: in parse\n    body, final = _find_sections(text)\n                  ^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\ntext = \"{{ config(materialized='view') }}\\n-- CENTRAL VIEW v01_agreement -- the layer the governing central-view rule is abou...,\\n    cast(null as varchar) as PROVIDER_TARIFF__SERVICE_DESCRIPTION\\nfrom {{ ref('stitch_lk_party_channel__v01') }}\\n\"\n\n    def _find_sections(text: str) -> tuple[str, str]:\n        \"\"\"Return (merged CTE body, final select text).\"\"\"\n        m = re.search(r\"with\\s+merged\\s+as\\s*\\(\", text, re.I)\n        if not m:\n>           raise ParseError(\"missing 'with merged as (' CTE\")\nE           convert_stitches.ParseError: missing 'with merged as (' CTE\n\nscripts\\convert_stitches.py:194: ParseError\n_________________________ test_real_stitch_in_memory __________________________\n\n    @pytest.mark.skipif(not REAL.exists(), reason=\"original stitches not present\")\n    def test_real_stitch_in_memory():\n        t = REAL.read_text(encoding=\"utf-8\")\n>       p = c.parse(t, REAL.name)\n            ^^^^^^^^^^^^^^^^^^^^^\n\nscripts\\tests\\test_convert_render.py:134: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\nscripts\\convert_stitches.py:292: in parse\n    body, final = _find_sections(text)\n                  ^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\ntext = \"{{ config(materialized='view') }}\\n-- CENTRAL VIEW v22_policy -- the layer the governing central-view rule is about.\\..._classification_value as POLICY_CLASSIFICATION__CLASSIFICATION_VALUE\\nfrom {{ ref('stitch_policy_classification') }}\\n\"\n\n    def _find_sections(text: str) -> tuple[str, str]:\n        \"\"\"Return (merged CTE body, final select text).\"\"\"\n        m = re.search(r\"with\\s+merged\\s+as\\s*\\(\", text, re.I)\n        if not m:\n>           raise ParseError(\"missing 'with merged as (' CTE\")\nE           convert_stitches.ParseError: missing 'with merged as (' CTE\n\nscripts\\convert_stitches.py:194: ParseError\n=========================== short test summary info ===========================\nFAILED scripts/tests/test_convert_classify.py::test_all_originals_classify_with_consistent_keys\nFAILED scripts/tests/test_convert_parse.py::test_all_originals_parse - conver...\nFAILED scripts/tests/test_convert_render.py::test_real_stitch_in_memory - con...\n3 failed, 108 passed in 88.41s (0:01:28)\n"
+ }
+}

@@ -34,6 +34,7 @@ with source as (
         nullif(trim(to_varchar("IMPS_PAYMENT_LMT")), '') as imps_payment_lmt,
         nullif(trim(to_varchar("IMPS_TARIF_FRM")), '') as imps_tarif_frm,
         nullif(trim(to_varchar("IMPS_TARIF_TO")), '') as imps_tarif_to,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("NETWORK_TYPE")), '') as network_type,
         nullif(trim(to_varchar("PARTNER_ID")), '') as partner_id,
         nullif(trim(to_varchar("PAYMENT_MODE")), '') as payment_mode,

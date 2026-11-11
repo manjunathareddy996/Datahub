@@ -1,0 +1,53 @@
+﻿[PASS] yaml_valid
+       all 3 files parse
+[PASS] profile_name
+       profile 'opus_health_dbt' found in profiles.yml
+[PASS] configured_folders
+       12/12 configured folders exist
+[PASS] macros_equal_partner
+       8 macro files compared
+[PASS] packages_yml
+       packages.yml byte-equal to Partner
+       local path dbt_packages/dbt_utils: ok
+       local path dbt_packages/automate_dv: ok
+[PASS] vendored_packages_equal_partner
+       dbt_utils: 217 files compared, missing=0, extra=0, differ=0
+       automate_dv: 133 files compared, missing=0, extra=0, differ=0
+[PASS] gitignore_entries
+       4 entries; required present; none match dbt_packages
+[PASS] vendored_not_git_ignored
+       350 vendored files checked, 0 ignored
+[PASS] reference_sweep
+       1943 ref() checked (1331 in depends_on comments), 0 unresolved
+       254 stage source_model checked, 0 unresolved
+       consumer map: 0 missing column uses, 0 multi-satellite stages
+       report: scripts/reference_sweep.json
+[PASS] macro_part_structure
+       612 macro parts checked, 0 problems
+[PASS] jinja_balanced
+       646 stitched files checked, 0 unbalanced
+[PASS] source_tags
+       1517 source_tags in 612 parts, 0 problems
+[PASS] legacy_tokens
+       646 stitched files scanned, 0 misplaced tokens
+[PASS] consumer_view_columns
+       34 consumer views, 34 compared with HEAD originals, 0 without original, 0 differ
+[PASS] stg_inc_job_updated_at_count
+       116/116 stg_health__* models contain 'as inc_job_updated_at'
+[PASS] watermark_precheck
+       612 parts, 1331 source refs, 0 problems
+       varchar inc_job_updated_at models read by parts: 12
+       parts reading a varchar watermark: 99
+       varchar model: stg_health__ba_ccp_sub_mater_dtls
+       varchar model: stg_health__bjaz_policy_bases_extn
+       varchar model: stg_health__bjaz_policy_summary
+       varchar model: stg_health__bjaz_risk_identifiers_master
+       varchar model: stg_health__bjaz_risk_trans_dtls
+       varchar model: stg_health__bjaz_starpkg_cov_prem_mst
+       varchar model: stg_health__bjaz_starpkg_cover_dtls
+       varchar model: stg_health__bjaz_starpkg_cover_mst
+       varchar model: stg_health__bjaz_starpkg_pol_dtls
+       varchar model: stg_health__bjaz_versions_extn
+       varchar model: stg_health__ocp_interested_parties
+       varchar model: stg_health__ocp_policy_covers
+OVERALL: PASS

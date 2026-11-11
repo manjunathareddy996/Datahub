@@ -11,6 +11,7 @@ with source as (
         nullif(trim(to_varchar("FIRST_POLICY_NUMBER")), '') as first_policy_number,
         nullif(trim(to_varchar("FIRST_POL_INCEPTION_DATE")), '') as first_pol_inception_date,
         nullif(trim(to_varchar("GENDER")), '') as gender,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("MEMBER_NO")), '') as member_no,
         nullif(trim(to_varchar("NAME")), '') as name,
         nullif(trim(to_varchar("NOMINEE_RLTN")), '') as nominee_rltn,

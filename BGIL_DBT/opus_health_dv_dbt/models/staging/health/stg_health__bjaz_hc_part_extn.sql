@@ -16,6 +16,7 @@ with source as (
         nullif(trim(to_varchar("HOSPITAL")), '') as hospital,
         nullif(trim(to_varchar("HOSPITAL_DETAIL")), '') as hospital_detail,
         nullif(trim(to_varchar("INCEPTION_DATE")), '') as inception_date,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("LOAD_AMT")), '') as load_amt,
         nullif(trim(to_varchar("LOAD_RATE")), '') as load_rate,
         nullif(trim(to_varchar("MEMBER_NAME")), '') as member_name,

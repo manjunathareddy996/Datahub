@@ -8,6 +8,7 @@ with source as (
         nullif(trim(to_varchar("FAMILY_FLOATER")), '') as family_floater,
         nullif(trim(to_varchar("FF_DTLS_ONLY")), '') as ff_dtls_only,
         nullif(trim(to_varchar("HEALTH_PRODUCT")), '') as health_product,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("NO_OF_MEMBERS")), '') as no_of_members,
         nullif(trim(to_varchar("PARENT_FLAG")), '') as parent_flag,
         nullif(trim(to_varchar("PARTNER_ID")), '') as partner_id,

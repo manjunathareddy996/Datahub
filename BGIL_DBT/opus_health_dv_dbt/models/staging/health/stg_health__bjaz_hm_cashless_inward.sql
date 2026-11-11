@@ -8,6 +8,7 @@ with source as (
         nullif(trim(to_varchar("CASHLESS_IN_NO")), '') as cashless_in_no,
         nullif(trim(to_varchar("CLAIM_ID")), '') as claim_id,
         nullif(trim(to_varchar("HOSPITAL_ID")), '') as hospital_id,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("INWARD_REMARK")), '') as inward_remark,
         nullif(trim(to_varchar("INWARD_STATUS")), '') as inward_status,
         nullif(trim(to_varchar("PATIENT_NAME")), '') as patient_name,

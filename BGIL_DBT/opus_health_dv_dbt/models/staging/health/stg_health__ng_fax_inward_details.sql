@@ -11,6 +11,7 @@ with source as (
         nullif(trim(to_varchar("FAXCREATEDDATE")), '') as faxcreateddate,
         nullif(trim(to_varchar("FAX_NO")), '') as fax_no,
         nullif(trim(to_varchar("IMAGENAME")), '') as imagename,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("INWARDNO")), '') as inwardno
     from {{ source('health_raw', 'NG_FAX_INWARD_DETAILS') }}
 

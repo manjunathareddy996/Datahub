@@ -8,6 +8,7 @@ with source as (
         nullif(trim(to_varchar("chatbot_name")), '') as chatbot_name,
         nullif(trim(to_varchar("cust_name")), '') as cust_name,
         nullif(trim(to_varchar("date_generated")), '') as date_generated,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("pincode")), '') as pincode,
         nullif(trim(to_varchar("prev_reference_no")), '') as prev_reference_no,
         nullif(trim(to_varchar("product_code")), '') as product_code,

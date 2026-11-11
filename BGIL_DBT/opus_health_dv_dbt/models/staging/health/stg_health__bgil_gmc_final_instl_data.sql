@@ -16,6 +16,7 @@ with source as (
         nullif(trim(to_varchar("FINAL_PAYABLE")), '') as final_payable,
         nullif(trim(to_varchar("GRADE_BUCKET")), '') as grade_bucket,
         nullif(trim(to_varchar("GRADE_CODE")), '') as grade_code,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("INSTALLMENTS")), '') as installments,
         nullif(trim(to_varchar("POLICY_EXPIRY_DATE")), '') as policy_expiry_date,
         nullif(trim(to_varchar("POLICY_NO")), '') as policy_no,

@@ -9,6 +9,7 @@ with source as (
         nullif(trim(to_varchar("EMAIL")), '') as email,
         nullif(trim(to_varchar("GENDER")), '') as gender,
         nullif(trim(to_varchar("INCEPTION_DATE")), '') as inception_date,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("MEM_NAME")), '') as mem_name,
         nullif(trim(to_varchar("PARTNER_ID")), '') as partner_id,
         nullif(trim(to_varchar("POL_VERSION_NO")), '') as pol_version_no,

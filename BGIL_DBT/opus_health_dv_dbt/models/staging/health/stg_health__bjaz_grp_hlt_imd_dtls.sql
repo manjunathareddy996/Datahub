@@ -5,6 +5,7 @@ with source as (
     select
         nullif(trim(to_varchar("IMD_CODE")), '') as imd_code,
         nullif(trim(to_varchar("IMD_NAME")), '') as imd_name,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("PRODUCT")), '') as product,
         nullif(trim(to_varchar("QUOTE_NO")), '') as quote_no,
         nullif(trim(to_varchar("QUOTE_SUB_NO")), '') as quote_sub_no,

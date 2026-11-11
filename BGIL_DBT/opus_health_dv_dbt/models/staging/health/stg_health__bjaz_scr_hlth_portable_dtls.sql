@@ -4,6 +4,7 @@ with source as (
 
     select
         nullif(trim(to_varchar("AGE")), '') as age,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("INSURED_DOB")), '') as insured_dob,
         nullif(trim(to_varchar("INSURED_GENDER")), '') as insured_gender,
         nullif(trim(to_varchar("INSURED_NAME")), '') as insured_name,

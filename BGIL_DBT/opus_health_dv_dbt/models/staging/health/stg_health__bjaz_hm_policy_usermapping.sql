@@ -3,6 +3,7 @@
 with source as (
 
     select
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("LOGINNAME")), '') as loginname,
         nullif(trim(to_varchar("POLICY_REF")), '') as policy_ref
     from {{ source('health_raw', 'BJAZ_HM_POLICY_USERMAPPING') }}

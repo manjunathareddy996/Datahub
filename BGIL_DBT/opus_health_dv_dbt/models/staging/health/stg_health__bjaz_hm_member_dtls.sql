@@ -30,6 +30,7 @@ with source as (
         nullif(trim(to_varchar("HAT_EMPCODE")), '') as hat_empcode,
         nullif(trim(to_varchar("HC_NO_OF_DAYS")), '') as hc_no_of_days,
         nullif(trim(to_varchar("ID_CARD_NO")), '') as id_card_no,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("LOAD_AMT")), '') as load_amt,
         nullif(trim(to_varchar("LOAD_RATE")), '') as load_rate,
         nullif(trim(to_varchar("MEMBER_FLAG")), '') as member_flag,

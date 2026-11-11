@@ -1,0 +1,68 @@
+{
+  "task": "12.2",
+  "project": "BGIL_DBT/opus_health_dv_dbt",
+  "checks_ran": [
+    {
+      "name": "offline_checker",
+      "command": "python scripts/check_health_project.py --json",
+      "result": "passed",
+      "exit_code": 0,
+      "summary": "ok=true. YAML valid (3 files); profile opus_health_dbt found; 12/12 configured folders exist (missing=[]); 8 macros byte-equal to Partner; packages.yml byte-equal; vendored dbt_utils (217 files) and automate_dv (133 files) equal Partner; .gitignore entries ok; 350 vendored files not git-ignored; reference sweep 1943 ref() and 254 source_model checked, 0 unresolved, 0 missing column uses, 0 multi-satellite stages; 612 macro parts, 0 structure problems; 646 stitched files, 0 unbalanced Jinja; 1517 source_tags, 0 problems; 0 misplaced legacy tokens; 34 consumer views compared with HEAD originals, 0 column differences; 116/116 stg_health__* models contain 'as inc_job_updated_at'; watermark precheck 0 problems (12 varchar inc_job_updated_at models read by 99 parts).",
+      "errors": []
+    },
+    {
+      "name": "pytest_scripts_tests",
+      "command": "python -m pytest scripts/tests -q",
+      "result": "passed",
+      "exit_code": 0,
+      "summary": "111 passed in 97.75s (0 failed, 0 skipped)",
+      "errors": [],
+      "note": "Previous run: 108 passed, 3 failed. The 3 tests (test_convert_classify::test_all_originals_classify_with_consistent_keys, test_convert_parse::test_all_originals_parse, test_convert_render::test_real_stitch_in_memory) read the original stitch_v*.sql from the working tree, which task 10.1 rewrote into consumer views. They now load the 34 originals from git HEAD (models/automate_dv/... with fallback to models/raw_vault/standard/stitched) via scripts/tests/git_originals.py and skip if those originals are unavailable. No change was made to convert_stitches.py or any model file."
+    }
+  ],
+  "checks_blocked": [
+    {
+      "name": "dbt_parse",
+      "command": "dbt parse --profiles-dir .",
+      "result": "blocked",
+      "reason": "dbt is not installed. 'dbt' is not on PATH and 'python -m dbt' reports No module named 'dbt' (Python 3.13)."
+    },
+    {
+      "name": "dbt_compile",
+      "command": "dbt compile --select tag:stitch tag:stg1 --vars '{from_date: \"1900-01-01\", to_date: \"2099-01-01\"}' --profiles-dir .",
+      "result": "blocked",
+      "reason": "dbt is not installed. Snowflake credentials are also unavailable: no SNOWFLAKE* environment variables, no snow or snowsql CLI on PATH, and profiles.yml holds placeholders only. dbt compile also needs warehouse access to resolve stage columns, so it cannot run offline."
+    }
+  ],
+  "dbt_available": false,
+  "snowflake_credentials_available": false,
+  "dbt_error_split": {
+    "scaffolding_stitched_staging_errors": [],
+    "out_of_scope_errors": [],
+    "note": "No dbt run was possible, so no dbt parse or compile errors were observed. Zero here means unchecked, not clean. Offline results stand in for the scaffolding, stitched and staging files. Out-of-scope models were not compiled."
+  },
+  "frozen_file_check": {
+    "task": "12.3",
+    "requirements": ["5.5", "6.1", "6.2"],
+    "baseline": "scripts/baseline_manifest.json",
+    "pytest": {
+      "command": "python -m pytest scripts/tests/test_p15_frozen.py -q",
+      "result": "passed",
+      "summary": "4 passed in 0.74s"
+    },
+    "git_status": {
+      "command": "git status --porcelain --untracked-files=all (repo root)",
+      "generators_changes": 0,
+      "build_artifacts_changes": 0,
+      "opus_partner_dv_dbt_changes": 0,
+      "other_bgil_dbt_project_changes": 0,
+      "outside_health_project_changes": 0,
+      "note": "Entries outside the Health project were 17 untracked scratch output files (.txt/.xml) left by earlier tasks at the repo root, Datahub/scripts and Datahub/scripts/tests. They were not feature changes to tracked files and have been deleted."
+    },
+    "result": "passed"
+  },
+  "not_run_by_design": ["dbt run", "dbt deps", "any Snowflake write"],
+  "follow_ups": [
+    "Run dbt parse and dbt compile on a machine with dbt-snowflake and Snowflake access before release."
+  ]
+}

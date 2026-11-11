@@ -1,0 +1,9 @@
+{
+  "sql_comments_quoting_automate_dv_path": [],
+  "note": "Scan of models/**/*.sql for 'automate_dv/' found no hits; remaining 'automate_dv.' strings are package macro calls, not paths.",
+  "still_emitting_old_layout": [
+    "generators/ (v5_emit.py, v5_verify.py, v5_status.py: docstrings and ALLOWED_DIRS use automate_dv/...)",
+    "build_profile.json (structure_reference text)",
+    "build_artifacts/ (not edited, out of scope)"
+  ]
+}

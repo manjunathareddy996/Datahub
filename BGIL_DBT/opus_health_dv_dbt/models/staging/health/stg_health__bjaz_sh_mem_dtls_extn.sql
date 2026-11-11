@@ -26,6 +26,7 @@ with source as (
         nullif(trim(to_varchar("GROSS_INCOME")), '') as gross_income,
         nullif(trim(to_varchar("HYPERTENSION_YN")), '') as hypertension_yn,
         nullif(trim(to_varchar("INCEPTION_DATE")), '') as inception_date,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("LOAD_AMT")), '') as load_amt,
         nullif(trim(to_varchar("LOAD_RATE")), '') as load_rate,
         nullif(trim(to_varchar("MEDICAL_CHECKUP")), '') as medical_checkup,

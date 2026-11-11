@@ -5,6 +5,7 @@ with source as (
     select
         nullif(trim(to_varchar("CLAIM_ID")), '') as claim_id,
         nullif(trim(to_varchar("CLAIM_STATUS")), '') as claim_status,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("PREV_CLAIM_STATUS")), '') as prev_claim_status,
         nullif(trim(to_varchar("PROCESS_NAME")), '') as process_name,
         nullif(trim(to_varchar("UPDATED_BY")), '') as updated_by,

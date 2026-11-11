@@ -12,6 +12,7 @@ with source as (
         nullif(trim(to_varchar("GROUP_DISCOUNT")), '') as group_discount,
         nullif(trim(to_varchar("IMD_CODE")), '') as imd_code,
         nullif(trim(to_varchar("IMD_NAME")), '') as imd_name,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("MEMBER_NAME")), '') as member_name,
         nullif(trim(to_varchar("PARTNER_ID")), '') as partner_id,
         nullif(trim(to_varchar("POLICY_END_DATE")), '') as policy_end_date,

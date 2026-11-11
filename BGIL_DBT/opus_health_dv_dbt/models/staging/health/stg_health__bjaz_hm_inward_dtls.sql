@@ -22,6 +22,7 @@ with source as (
         nullif(trim(to_varchar("HOSP_PORTAL_FLAG")), '') as hosp_portal_flag,
         nullif(trim(to_varchar("HOSP_PRIORITY_FLAG")), '') as hosp_priority_flag,
         nullif(trim(to_varchar("ID_CARD_NO")), '') as id_card_no,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("INSURED_CONTACT_NO")), '') as insured_contact_no,
         nullif(trim(to_varchar("INSURED_EMAIL_ID")), '') as insured_email_id,
         nullif(trim(to_varchar("INWARD_DATE")), '') as inward_date,

@@ -19,6 +19,7 @@ with source as (
         nullif(trim(to_varchar("DC_STATE")), '') as dc_state,
         nullif(trim(to_varchar("DC_TELENO")), '') as dc_teleno,
         nullif(trim(to_varchar("HI_CONTROL_NUMBER")), '') as hi_control_number,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("MEMBER_NAME")), '') as member_name,
         nullif(trim(to_varchar("MEM_SEQNO")), '') as mem_seqno,
         nullif(trim(to_varchar("PAY_TYPE")), '') as pay_type,

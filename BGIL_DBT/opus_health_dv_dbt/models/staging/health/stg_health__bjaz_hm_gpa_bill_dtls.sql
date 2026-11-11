@@ -56,6 +56,7 @@ with source as (
         nullif(trim(to_varchar("HOSP_NORMAL_ROOM_AMT")), '') as hosp_normal_room_amt,
         nullif(trim(to_varchar("HOSP_NORM_ELGIAMT")), '') as hosp_norm_elgiamt,
         nullif(trim(to_varchar("HOSP_NORM_ROOM")), '') as hosp_norm_room,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("MED_APPROVED_AMT")), '') as med_approved_amt,
         nullif(trim(to_varchar("MED_BILL_AMT")), '') as med_bill_amt,
         nullif(trim(to_varchar("MED_DISABLE_DATE")), '') as med_disable_date,

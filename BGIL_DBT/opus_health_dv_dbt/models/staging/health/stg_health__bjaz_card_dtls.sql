@@ -20,6 +20,7 @@ with source as (
         nullif(trim(to_varchar("EXPIRY_DATE")), '') as expiry_date,
         nullif(trim(to_varchar("FLOATER_OR_NOT")), '') as floater_or_not,
         nullif(trim(to_varchar("GENDER")), '') as gender,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("MEMBER_NAME")), '') as member_name,
         nullif(trim(to_varchar("MEMBER_TYPE")), '') as member_type,
         nullif(trim(to_varchar("PARTNER_ID")), '') as partner_id,

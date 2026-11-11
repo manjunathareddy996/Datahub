@@ -73,6 +73,7 @@ with source as (
         nullif(trim(to_varchar("HOTA")), '') as hota,
         nullif(trim(to_varchar("ICD10")), '') as icd10,
         nullif(trim(to_varchar("INCUBATOR")), '') as incubator,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("INFECTIOUSDISEASE")), '') as infectiousdisease,
         nullif(trim(to_varchar("INFECTNCTRL")), '') as infectnctrl,
         nullif(trim(to_varchar("IPHS")), '') as iphs,

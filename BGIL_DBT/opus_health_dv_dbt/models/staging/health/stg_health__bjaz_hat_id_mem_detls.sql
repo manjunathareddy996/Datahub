@@ -22,6 +22,7 @@ with source as (
         nullif(trim(to_varchar("HYPERTENTION")), '') as hypertention,
         nullif(trim(to_varchar("ID_CARD_NO")), '') as id_card_no,
         nullif(trim(to_varchar("IHD")), '') as ihd,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("JOIN_DATE")), '') as join_date,
         nullif(trim(to_varchar("LAST_NAME")), '') as last_name,
         nullif(trim(to_varchar("MARRIAGE_DATE")), '') as marriage_date,

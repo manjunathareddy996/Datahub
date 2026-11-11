@@ -80,6 +80,7 @@ with source as (
         nullif(trim(to_varchar("ID_CARD")), '') as id_card,
         nullif(trim(to_varchar("IMD_CODE")), '') as imd_code,
         nullif(trim(to_varchar("IMPLANT_CHARGES")), '') as implant_charges,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("INSURED")), '') as insured,
         nullif(trim(to_varchar("INSURED_DISALLOWED_AMT")), '') as insured_disallowed_amt,
         nullif(trim(to_varchar("INSURED_DISALLOW_AMT_REASON")), '') as insured_disallow_amt_reason,

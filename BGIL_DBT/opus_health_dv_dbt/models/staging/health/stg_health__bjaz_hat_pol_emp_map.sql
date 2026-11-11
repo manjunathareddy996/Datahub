@@ -7,6 +7,7 @@ with source as (
         nullif(trim(to_varchar("DISCLAIMER_INDICATOR")), '') as disclaimer_indicator,
         nullif(trim(to_varchar("EFFECTIVE_DATE")), '') as effective_date,
         nullif(trim(to_varchar("EMP_CODE")), '') as emp_code,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("MAIL_INDICATOR")), '') as mail_indicator,
         nullif(trim(to_varchar("POLICY_NO")), '') as policy_no,
         nullif(trim(to_varchar("STATUS")), '') as status

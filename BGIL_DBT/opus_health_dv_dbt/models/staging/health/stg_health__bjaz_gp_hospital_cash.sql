@@ -15,6 +15,7 @@ with source as (
         nullif(trim(to_varchar("GROSS_PREMIUM")), '') as gross_premium,
         nullif(trim(to_varchar("HEIGHT")), '') as height,
         nullif(trim(to_varchar("IMD_CODE")), '') as imd_code,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("KGC_PROPOSAL_NUMBER")), '') as kgc_proposal_number,
         nullif(trim(to_varchar("MASTER_POLICY_NO")), '') as master_policy_no,
         nullif(trim(to_varchar("NOMINEE_NAME")), '') as nominee_name,

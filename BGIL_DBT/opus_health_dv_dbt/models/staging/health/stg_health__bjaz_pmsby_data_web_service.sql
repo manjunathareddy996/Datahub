@@ -23,6 +23,7 @@ with source as (
         nullif(trim(to_varchar("ENTRY_DATE")), '') as entry_date,
         nullif(trim(to_varchar("GENDER")), '') as gender,
         nullif(trim(to_varchar("IMD_CODE")), '') as imd_code,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("ISSUED_DATE")), '') as issued_date,
         nullif(trim(to_varchar("MOBILENO")), '') as mobileno,
         nullif(trim(to_varchar("NOMINEEAGE")), '') as nomineeage,

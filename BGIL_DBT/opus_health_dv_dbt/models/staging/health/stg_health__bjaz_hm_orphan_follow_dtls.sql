@@ -8,6 +8,7 @@ with source as (
         nullif(trim(to_varchar("FIR_REM_DATE")), '') as fir_rem_date,
         nullif(trim(to_varchar("FOLLOWUP_ID")), '') as followup_id,
         nullif(trim(to_varchar("FOLLOWUP_REASON")), '') as followup_reason,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("INTIMATION_DATE")), '') as intimation_date,
         nullif(trim(to_varchar("ORPHAN_ID")), '') as orphan_id,
         nullif(trim(to_varchar("REPLY_DATE")), '') as reply_date,

@@ -23,6 +23,7 @@ with source as (
         nullif(trim(to_varchar("ELIGIBLE_ROOM_RENT")), '') as eligible_room_rent,
         nullif(trim(to_varchar("GRADE")), '') as grade,
         nullif(trim(to_varchar("HOS_BILL_NO")), '') as hos_bill_no,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("IP_NO")), '') as ip_no,
         nullif(trim(to_varchar("OCR_BILL_NO")), '') as ocr_bill_no,
         nullif(trim(to_varchar("REF_BILL_ID")), '') as ref_bill_id,

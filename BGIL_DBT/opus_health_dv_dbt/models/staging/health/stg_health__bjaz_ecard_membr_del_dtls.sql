@@ -5,6 +5,7 @@ with source as (
     select
         nullif(trim(to_varchar("EMP_CODE")), '') as emp_code,
         nullif(trim(to_varchar("EMP_NEME")), '') as emp_neme,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("NATRL_REASON")), '') as natrl_reason,
         nullif(trim(to_varchar("QUOTE_REF")), '') as quote_ref,
         nullif(trim(to_varchar("RELATION")), '') as relation

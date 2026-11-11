@@ -63,6 +63,7 @@ with source as (
         nullif(trim(to_varchar("HOSPITAL_GRADE")), '') as hospital_grade,
         nullif(trim(to_varchar("ICU_BEDS")), '') as icu_beds,
         nullif(trim(to_varchar("IFSC_CODE_NEFT")), '') as ifsc_code_neft,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
         nullif(trim(to_varchar("INHOUSE_PHARMACY")), '') as inhouse_pharmacy,
         nullif(trim(to_varchar("INITIATED_BY")), '') as initiated_by,
         nullif(trim(to_varchar("INS_DEPT_CONTACT1")), '') as ins_dept_contact1,
