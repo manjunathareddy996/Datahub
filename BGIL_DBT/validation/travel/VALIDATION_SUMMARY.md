@@ -73,7 +73,7 @@ nothing recorded.
 | DM-T1_OPUS | 60 | 20 | 20 | 20 | 0 | 0 | 0 | 60 | pending |
 | DM-T1_MAXIMUS | 229 | 77 | 76 | 76 | 0 | 0 | 0 | 229 | pending |
 | DM-T2_OPUS | 60 | 20 | 20 | 20 | 31 | 29 | 0 | 0 | FAIL |
-| DM-T2_MAXIMUS | 229 | 77 | 76 | 76 | 0 | 0 | 0 | 229 | pending |
+| DM-T2_MAXIMUS | 229 | 77 | 76 | 76 | 122 | 107 | 0 | 0 | FAIL |
 | DM-AG1–AG3 | — | — | — | — | — | — | — | — | NA |
 
 ---
@@ -89,6 +89,26 @@ Notes
   - 10 hubs where null / length / collision = 0 but the recompute fails on
     100% of rows: the query recomputes `'OPUS_' || PARENT_BK`, while the
     models hash `'HUB_<NAME>|' || PARENT_BK`.
+- DM-T2_MAXIMUS satellites (run 2026-11-12, raw export in
+  `DM-T/results/DM-T2_MAXIMUS_SATS_SUMMARY_2026-11-12.csv`): 209 satellite
+  sections, 118 pass and 91 fail, recorded exactly as the query returned them.
+  The fails are:
+  - 83 satellites with 0 rows in scope;
+  - 8 satellites not run, because the vault table was created by another
+    project with a different shape: 62, 174, 175, 176 (no `PARTY_ROLE_HKEY`),
+    67 (no `PARTY_LOCATION_HKEY`), 68 and 74 (HASHDIFF named
+    `HASHDIFF_AUG_*`), and 107 (table missing).
+
+- DM-T2_MAXIMUS hubs and links (sections 1–20, raw export in
+  `DM-T/results/DM-T2_MAXIMUS_HUBS_LINKS_SUMMARY_2026-11-12.csv`): 4 pass
+  (all 4 links), 16 fail. The fails are:
+  - section 1: all 442 columns are BINARY, but Snowflake reports no length
+    for BINARY;
+  - all 15 hubs: null / length / collision = 0, but the recompute fails on
+    100% of rows. The query recomputes `'MAXIMUS_' || PARENT_BK`, while the
+    models hash `'HUB_<NAME>|' || PARENT_BK`.
+
+  File total: 122 pass, 107 fail.
 - Validation SQL + DOCX are regenerable from
   `BGIL_DBT/validation/tools/gen_dm_{k,a,h,r,t}_travel.py`. The DM-AG family
   (aggregate / cross-check rollups) is not yet planned for travel — shown as

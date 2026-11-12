@@ -47,9 +47,12 @@ def verdict(r):
     result, failing = r["RESULT"], r["FAILING_ROWS"]
     if no == 1:
         listed = re.findall(r"\b([A-Z0-9_]+\.[A-Z0-9_]+) (\w+)", r["REMARKS"])
-        if listed and all(t == "BINARY" for _, t in listed):
+        all_binary = (listed and all(t == "BINARY" for _, t in listed)) or \
+            "reported as data_type BINARY" in r["REMARKS"]  # condensed export
+        if all_binary:
+            flagged = len(listed) if listed else failing
             return result, failing, (
-                f"columns checked={rows}; flagged={len(listed)}. Every flagged column is BINARY: "
+                f"columns checked={rows}; flagged={flagged}. Every flagged column is BINARY: "
                 "Snowflake INFORMATION_SCHEMA.COLUMNS reports no length for BINARY, so the "
                 "16-byte test cannot pass here. Byte length is checked per table by "
                 "wrong_length_hkey.")
@@ -103,6 +106,14 @@ def main():
     docx = DMT / f"DM-T2_{project}.docx"
     rows = {int(r["SECTION_NO"]): r for r in csv.DictReader(open(csv_path, newline=""))}
     out = {no: verdict(r) for no, r in rows.items()}
+    # Sections the summary query left out because the vault table lacks a
+    # column they read: they could not run, so they are recorded as Fail.
+    sys.path.insert(0, str(HERE))
+    from build_dm_t2_travel_consolidated import SKIP  # noqa: E402
+    lo, hi = min(rows), max(rows)
+    for no, why in SKIP.get(project, {}).items():
+        if lo <= no <= hi and no not in out:
+            out[no] = ("Fail", "", f"Not run: {why}.")
 
     with zipfile.ZipFile(docx) as z:
         xml = z.read("word/document.xml").decode()
@@ -114,13 +125,18 @@ def main():
         mm = re.match(rf"^(\d+)\.\s+{project}\s+\u2014", t)
         if mm:
             heads.append((int(mm.group(1)), m.start()))
-    assert [n for n, _ in heads] == sorted(rows), "docx sections do not match the CSV"
+    nums = [n for n, _ in heads]
+    assert nums == list(range(1, len(nums) + 1)), "docx section numbering has gaps"
+    assert set(out) <= set(nums), f"results for sections not in the docx: {sorted(set(out) - set(nums))}"
     parts, cur = [], 0
     for i, (no, start) in enumerate(heads):
         end = heads[i + 1][1] if i + 1 < len(heads) else len(xml)
         parts.append(xml[cur:start])
-        res, fail, rem = out[no]
-        parts.append(fill_section(xml[start:end], dict(zip(LABELS, (res, fail, rem)))))
+        if no in out:  # sections without a result (e.g. hubs not run yet) stay as they are
+            res, fail, rem = out[no]
+            parts.append(fill_section(xml[start:end], dict(zip(LABELS, (res, fail, rem)))))
+        else:
+            parts.append(xml[start:end])
         cur = end
     parts.append(xml[cur:])
     xml = "".join(parts)
