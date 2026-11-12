@@ -52,7 +52,7 @@ def tag_sql(path, write=True):
     text = path.read_text()
     heads = list(SQL_HEAD.finditer(text))
     if not heads:
-        return 0, 0
+        return 0, {"M1": 0, "M2": 0, "M3": 0}
     buckets = member_buckets(len(heads))
     out = []
     cur = 0

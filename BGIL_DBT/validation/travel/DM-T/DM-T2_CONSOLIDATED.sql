@@ -316,11 +316,11 @@ select 2 as section_no, 'OPUS' as project, 'M1' as member,
                count_if(AGREEMENT_HKEY is not null and PARENT_BK is not null and AGREEMENT_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select AGREEMENT_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_AGREEMENT where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RATE_MASTER') group by AGREEMENT_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_AGREEMENT where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BA_TRV_PLAN_MST', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_TRAVEL_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_TRAVEL_BJAZ_TRV_RATE_MASTER', 'OPUS_BJAZ_TRV_RATE_MASTER') group by AGREEMENT_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_AGREEMENT
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RATE_MASTER')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BA_TRV_PLAN_MST', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_TRAVEL_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_TRAVEL_BJAZ_TRV_RATE_MASTER', 'OPUS_BJAZ_TRV_RATE_MASTER')
   )
 
 union all
@@ -347,11 +347,11 @@ select 3 as section_no, 'OPUS' as project, 'M1' as member,
                count_if(ASSESSMENT_HKEY is not null and PARENT_BK is not null and ASSESSMENT_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select ASSESSMENT_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ASSESSMENT where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA') group by ASSESSMENT_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ASSESSMENT where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA') group by ASSESSMENT_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ASSESSMENT
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA')
   )
 
 union all
@@ -378,11 +378,11 @@ select 4 as section_no, 'OPUS' as project, 'M1' as member,
                count_if(COVERAGE_HKEY is not null and PARENT_BK is not null and COVERAGE_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select COVERAGE_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_COVERAGE where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST') group by COVERAGE_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_COVERAGE where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_TRAVEL_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_RIDER_RATE_MAST', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST') group by COVERAGE_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_COVERAGE
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_TRAVEL_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_RIDER_RATE_MAST', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST')
   )
 
 union all
@@ -409,11 +409,11 @@ select 5 as section_no, 'OPUS' as project, 'M1' as member,
                count_if(DISTRIBUTION_CHANNEL_HKEY is not null and PARENT_BK is not null and DISTRIBUTION_CHANNEL_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select DISTRIBUTION_CHANNEL_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DISTRIBUTION_CHANNEL where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE') group by DISTRIBUTION_CHANNEL_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DISTRIBUTION_CHANNEL where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE') group by DISTRIBUTION_CHANNEL_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DISTRIBUTION_CHANNEL
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
   )
 
 union all
@@ -440,11 +440,11 @@ select 6 as section_no, 'OPUS' as project, 'M1' as member,
                count_if(FINANCIAL_ACCOUNT_HKEY is not null and PARENT_BK is not null and FINANCIAL_ACCOUNT_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select FINANCIAL_ACCOUNT_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_ACCOUNT where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA') group by FINANCIAL_ACCOUNT_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_ACCOUNT where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA') group by FINANCIAL_ACCOUNT_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_ACCOUNT
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA')
   )
 
 union all
@@ -471,11 +471,11 @@ select 7 as section_no, 'OPUS' as project, 'M1' as member,
                count_if(FINANCIAL_TRANSACTION_HKEY is not null and PARENT_BK is not null and FINANCIAL_TRANSACTION_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select FINANCIAL_TRANSACTION_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE') group by FINANCIAL_TRANSACTION_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE') group by FINANCIAL_TRANSACTION_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
   )
 
 union all
@@ -502,11 +502,11 @@ select 8 as section_no, 'OPUS' as project, 'M1' as member,
                count_if(LOCATION_HKEY is not null and PARENT_BK is not null and LOCATION_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select LOCATION_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE') group by LOCATION_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE') group by LOCATION_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
   )
 
 union all
@@ -533,11 +533,11 @@ select 9 as section_no, 'OPUS' as project, 'M1' as member,
                count_if(ORG_UNIT_HKEY is not null and PARENT_BK is not null and ORG_UNIT_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select ORG_UNIT_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ORG_UNIT where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE') group by ORG_UNIT_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ORG_UNIT where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE') group by ORG_UNIT_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ORG_UNIT
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
   )
 
 union all
@@ -564,11 +564,11 @@ select 10 as section_no, 'OPUS' as project, 'M1' as member,
                count_if(PARTY_HKEY is not null and PARENT_BK is not null and PARTY_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select PARTY_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE') group by PARTY_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BA_TRV_PLAN_MST', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE') group by PARTY_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BA_TRV_PLAN_MST', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
   )
 
 union all
@@ -595,11 +595,11 @@ select 11 as section_no, 'OPUS' as project, 'M1' as member,
                count_if(POLICY_HKEY is not null and PARENT_BK is not null and POLICY_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select POLICY_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RIDER_DTLS') group by POLICY_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_TRAVEL_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_DTLS') group by POLICY_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RIDER_DTLS')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_TRAVEL_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_DTLS')
   )
 
 union all
@@ -626,11 +626,11 @@ select 12 as section_no, 'OPUS' as project, 'M1' as member,
                count_if(PRODUCT_HKEY is not null and PARENT_BK is not null and PRODUCT_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select PRODUCT_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PRODUCT where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RATE_MASTER') group by PRODUCT_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PRODUCT where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BA_TRV_PLAN_MST', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_TRAVEL_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_TRAVEL_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_TRAVEL_BJAZ_TRV_RATE_MASTER', 'OPUS_BJAZ_TRV_RATE_MASTER') group by PRODUCT_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PRODUCT
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RATE_MASTER')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BA_TRV_PLAN_MST', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_TRAVEL_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_TRAVEL_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_TRAVEL_BJAZ_TRV_RATE_MASTER', 'OPUS_BJAZ_TRV_RATE_MASTER')
   )
 
 union all
@@ -657,11 +657,11 @@ select 13 as section_no, 'OPUS' as project, 'M1' as member,
                count_if(PROPOSAL_HKEY is not null and PARENT_BK is not null and PROPOSAL_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select PROPOSAL_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PROPOSAL where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_DETLS_EXTN') group by PROPOSAL_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PROPOSAL where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_DETLS_EXTN') group by PROPOSAL_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PROPOSAL
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_DETLS_EXTN')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_DETLS_EXTN')
   )
 
 union all
@@ -688,11 +688,11 @@ select 14 as section_no, 'OPUS' as project, 'M1' as member,
                count_if(QUOTE_HKEY is not null and PARENT_BK is not null and QUOTE_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select QUOTE_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS') group by QUOTE_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS') group by QUOTE_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS')
   )
 
 union all
@@ -719,11 +719,11 @@ select 15 as section_no, 'OPUS' as project, 'M1' as member,
                count_if(RISK_OBJECT_HKEY is not null and PARENT_BK is not null and RISK_OBJECT_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select RISK_OBJECT_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE') group by RISK_OBJECT_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE') group by RISK_OBJECT_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
   )
 
 union all
@@ -750,7 +750,7 @@ select 16 as section_no, 'OPUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_COMMUNICATION_PREFERENCE
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA')
   )
 
 union all
@@ -777,7 +777,7 @@ select 17 as section_no, 'OPUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_DEFINITION
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_PLAN')
   )
 
 union all
@@ -804,7 +804,7 @@ select 18 as section_no, 'OPUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_LIMITS
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_PLAN')
   )
 
 union all
@@ -831,7 +831,7 @@ select 19 as section_no, 'OPUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_RATING
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_RIDER_RATE_MAST', 'OPUS_BJAZ_TRV_RIDER_DTLS')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_RIDER_RATE_MAST', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST', 'OPUS_TRAVEL_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_DTLS')
   )
 
 union all
@@ -858,7 +858,7 @@ select 20 as section_no, 'OPUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_PREMIUM
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
   )
 
 union all
@@ -885,7 +885,7 @@ select 21 as section_no, 'OPUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_PARTY_ROLE_CORE
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
   )
 
 union all
@@ -912,7 +912,7 @@ select 22 as section_no, 'OPUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_CUSTOMER
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA')
   )
 
 union all
@@ -939,7 +939,7 @@ select 23 as section_no, 'OPUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_BANKING
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA')
   )
 
 union all
@@ -966,7 +966,7 @@ select 24 as section_no, 'OPUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_EMPLOYMENT
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
   )
 
 union all
@@ -993,7 +993,7 @@ select 25 as section_no, 'OPUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PRODUCT_TERMS
-         where RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_RATE_MASTER', 'OPUS_BJAZ_TRV_PLAN')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_PLAN_MST', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_TRAVEL_BJAZ_TRV_RATE_MASTER', 'OPUS_BJAZ_TRV_RATE_MASTER', 'OPUS_TRAVEL_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_PLAN')
   )
 
 union all
@@ -1020,7 +1020,7 @@ select 26 as section_no, 'OPUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_INSURED
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA')
   )
 
 union all
@@ -1047,7 +1047,7 @@ select 27 as section_no, 'OPUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_TRAVEL
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA')
   )
 
 union all
@@ -1074,7 +1074,7 @@ select 28 as section_no, 'OPUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADDRESS
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
   )
 
 union all
@@ -1101,7 +1101,7 @@ select 29 as section_no, 'OPUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CLASSIFICATION
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA')
   )
 
 union all
@@ -1128,7 +1128,7 @@ select 30 as section_no, 'OPUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
   )
 
 union all
@@ -1155,7 +1155,7 @@ select 31 as section_no, 'OPUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_CONDITIONS
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_PLAN')
   )
 
 union all
@@ -1182,7 +1182,7 @@ select 32 as section_no, 'OPUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_DEFINITION
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_TRAVEL_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA')
   )
 
 union all
@@ -1209,7 +1209,7 @@ select 33 as section_no, 'OPUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_LIMITS
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_TRAVEL_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_RIDER_RATE_MAST', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST')
   )
 
 union all
@@ -1236,7 +1236,7 @@ select 34 as section_no, 'OPUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_COMMISSION
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA')
   )
 
 union all
@@ -1263,7 +1263,7 @@ select 35 as section_no, 'OPUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_HEADER
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
   )
 
 union all
@@ -1290,7 +1290,7 @@ select 36 as section_no, 'OPUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_PREMIUM
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
   )
 
 union all
@@ -1317,7 +1317,7 @@ select 37 as section_no, 'OPUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_TAX
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
   )
 
 union all
@@ -1344,7 +1344,7 @@ select 38 as section_no, 'OPUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_CHARGE_RATE
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
   )
 
 union all
@@ -1371,7 +1371,7 @@ select 39 as section_no, 'OPUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_RECEIPT
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA')
   )
 
 union all
@@ -1398,7 +1398,7 @@ select 40 as section_no, 'OPUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
   )
 
 union all
@@ -1425,7 +1425,7 @@ select 41 as section_no, 'OPUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_ORG_UNIT_DEFINITION
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS')
   )
 
 union all
@@ -1452,7 +1452,7 @@ select 42 as section_no, 'OPUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_EMPLOYMENT
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
   )
 
 union all
@@ -1479,7 +1479,7 @@ select 43 as section_no, 'OPUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA')
   )
 
 union all
@@ -1506,7 +1506,7 @@ select 44 as section_no, 'OPUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
   )
 
 union all
@@ -1533,7 +1533,7 @@ select 45 as section_no, 'OPUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
   )
 
 union all
@@ -1560,7 +1560,7 @@ select 46 as section_no, 'OPUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
   )
 
 union all
@@ -1587,7 +1587,7 @@ select 47 as section_no, 'OPUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
   )
 
 union all
@@ -1614,7 +1614,7 @@ select 48 as section_no, 'OPUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RIDER_DTLS')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_TRAVEL_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_DTLS')
   )
 
 union all
@@ -1641,7 +1641,7 @@ select 49 as section_no, 'OPUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_TERMS
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
   )
 
 union all
@@ -1668,7 +1668,7 @@ select 50 as section_no, 'OPUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_LOADER_DATA')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BA_TRV_PLAN_MST', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA')
   )
 
 union all
@@ -1695,7 +1695,7 @@ select 51 as section_no, 'OPUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_RATING_FACTOR
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_RATE_MASTER', 'OPUS_BJAZ_TRV_RATE_MASTER')
   )
 
 union all
@@ -1722,7 +1722,7 @@ select 52 as section_no, 'OPUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_RATING_STRUCTURE
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_RATE_MASTER', 'OPUS_BJAZ_TRV_RATE_MASTER')
   )
 
 union all
@@ -1749,7 +1749,7 @@ select 53 as section_no, 'OPUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_TERMS
-         where RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_PLAN')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_PLAN_MST', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_TRAVEL_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_PLAN')
   )
 
 union all
@@ -1776,7 +1776,7 @@ select 54 as section_no, 'OPUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PROPOSAL_UNDERWRITING
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS')
   )
 
 union all
@@ -1803,7 +1803,7 @@ select 55 as section_no, 'OPUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_QUOTE_HEADER
-         where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_DATA_POLICY_DTLS')
   )
 
 union all
@@ -1830,7 +1830,7 @@ select 56 as section_no, 'OPUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_MOTOR_DRIVER
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
   )
 
 union all
@@ -1857,7 +1857,7 @@ select 57 as section_no, 'OPUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_MOTOR_VEHICLE
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
   )
 
 union all
@@ -1884,7 +1884,7 @@ select 58 as section_no, 'OPUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_OBJECT_CORE
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
   )
 
 union all
@@ -1911,7 +1911,7 @@ select 59 as section_no, 'OPUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_INSURED
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA')
   )
 
 union all
@@ -1938,7 +1938,7 @@ select 60 as section_no, 'OPUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_TRAVEL
-         where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
+         where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
   )
 
 union all
@@ -1988,11 +1988,11 @@ select 2 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(ASSESSMENT_HKEY is not null and PARENT_BK is not null and ASSESSMENT_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select ASSESSMENT_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ASSESSMENT where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW') group by ASSESSMENT_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ASSESSMENT where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW') group by ASSESSMENT_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ASSESSMENT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -2019,11 +2019,11 @@ select 3 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(CLAIM_HKEY is not null and PARENT_BK is not null and CLAIM_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select CLAIM_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW') group by CLAIM_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW') group by CLAIM_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -2050,11 +2050,11 @@ select 4 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(COVERAGE_HKEY is not null and PARENT_BK is not null and COVERAGE_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select COVERAGE_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_COVERAGE where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW') group by COVERAGE_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_COVERAGE where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW') group by COVERAGE_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_COVERAGE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -2081,11 +2081,11 @@ select 5 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(DISTRIBUTION_CHANNEL_HKEY is not null and PARENT_BK is not null and DISTRIBUTION_CHANNEL_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select DISTRIBUTION_CHANNEL_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DISTRIBUTION_CHANNEL where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW') group by DISTRIBUTION_CHANNEL_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DISTRIBUTION_CHANNEL where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW') group by DISTRIBUTION_CHANNEL_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DISTRIBUTION_CHANNEL
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -2112,11 +2112,11 @@ select 6 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(DOCUMENT_HKEY is not null and PARENT_BK is not null and DOCUMENT_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select DOCUMENT_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DOCUMENT where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_DOCUMENT_DETAIL', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_DOCUMENT_DETAIL', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST') group by DOCUMENT_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DOCUMENT where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_DOCUMENT_DETAIL', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_DOCUMENT_DETAIL', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_DOCUMENT_DETAIL', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_DOCUMENT_DETAIL', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST') group by DOCUMENT_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DOCUMENT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_DOCUMENT_DETAIL', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_DOCUMENT_DETAIL', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_DOCUMENT_DETAIL', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_DOCUMENT_DETAIL', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_DOCUMENT_DETAIL', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_DOCUMENT_DETAIL', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST')
   )
 
 union all
@@ -2143,11 +2143,11 @@ select 7 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(FINANCIAL_TRANSACTION_HKEY is not null and PARENT_BK is not null and FINANCIAL_TRANSACTION_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select FINANCIAL_TRANSACTION_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS') group by FINANCIAL_TRANSACTION_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS') group by FINANCIAL_TRANSACTION_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS')
   )
 
 union all
@@ -2174,11 +2174,11 @@ select 8 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(LOCATION_HKEY is not null and PARENT_BK is not null and LOCATION_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select LOCATION_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST') group by LOCATION_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST') group by LOCATION_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST')
   )
 
 union all
@@ -2205,11 +2205,11 @@ select 9 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(LOSS_EVENT_HKEY is not null and PARENT_BK is not null and LOSS_EVENT_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select LOSS_EVENT_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOSS_EVENT where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW') group by LOSS_EVENT_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOSS_EVENT where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW') group by LOSS_EVENT_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOSS_EVENT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -2236,11 +2236,11 @@ select 10 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(ORG_UNIT_HKEY is not null and PARENT_BK is not null and ORG_UNIT_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select ORG_UNIT_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ORG_UNIT where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW') group by ORG_UNIT_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ORG_UNIT where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW') group by ORG_UNIT_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ORG_UNIT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -2267,11 +2267,11 @@ select 11 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(PARTY_HKEY is not null and PARENT_BK is not null and PARTY_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select PARTY_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW') group by PARTY_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW') group by PARTY_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -2298,11 +2298,11 @@ select 12 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(PAYMENT_INSTRUMENT_HKEY is not null and PARENT_BK is not null and PAYMENT_INSTRUMENT_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select PAYMENT_INSTRUMENT_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PAYMENT_INSTRUMENT where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION') group by PAYMENT_INSTRUMENT_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PAYMENT_INSTRUMENT where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION') group by PAYMENT_INSTRUMENT_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PAYMENT_INSTRUMENT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION')
   )
 
 union all
@@ -2329,11 +2329,11 @@ select 13 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(POLICY_HKEY is not null and PARENT_BK is not null and POLICY_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select POLICY_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW') group by POLICY_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_RELATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW') group by POLICY_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_RELATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -2360,11 +2360,11 @@ select 14 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(PRODUCT_HKEY is not null and PARENT_BK is not null and PRODUCT_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select PRODUCT_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PRODUCT where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS') group by PRODUCT_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PRODUCT where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS') group by PRODUCT_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PRODUCT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS')
   )
 
 union all
@@ -2391,11 +2391,11 @@ select 15 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(QUOTE_HKEY is not null and PARENT_BK is not null and QUOTE_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select QUOTE_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS') group by QUOTE_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS') group by QUOTE_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS')
   )
 
 union all
@@ -2422,11 +2422,11 @@ select 16 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(RISK_OBJECT_HKEY is not null and PARENT_BK is not null and RISK_OBJECT_HKEY <> MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))), ''))) as hkey_not_recomputable,
                (select count(*) from (
             select RISK_OBJECT_HKEY as hkey, count(distinct PARENT_BK) as bks
-              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW') group by RISK_OBJECT_HKEY having count(distinct PARENT_BK) > 1
+              from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW') group by RISK_OBJECT_HKEY having count(distinct PARENT_BK) > 1
                )) as collisions,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -2452,12 +2452,12 @@ select 17 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(CLAIM_HKEY is null) + count_if(PARTY_HKEY is null) as null_fk_hkeys,
                count_if(length(CLAIM_PARTY_HKEY) <> 16 or length(CLAIM_HKEY) <> 16 or length(PARTY_HKEY) <> 16) as wrong_length_hkey,
                (select count(*) from (
-            select CLAIM_PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LINK_CLAIM_PARTY where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY')
+            select CLAIM_PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LINK_CLAIM_PARTY where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY')
              group by CLAIM_PARTY_HKEY having count(distinct coalesce(to_varchar(CLAIM_HKEY, 'HEX'), '^^') || '|' || coalesce(to_varchar(PARTY_HKEY, 'HEX'), '^^')) > 1
                )) as collisions,
                iff(null_hkey = 0 and null_fk_hkeys = 0 and wrong_length_hkey = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LINK_CLAIM_PARTY
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY')
   )
 
 union all
@@ -2483,12 +2483,12 @@ select 18 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(PARTY_HKEY is null) + count_if(LOCATION_HKEY is null) as null_fk_hkeys,
                count_if(length(PARTY_LOCATION_HKEY) <> 16 or length(PARTY_HKEY) <> 16 or length(LOCATION_HKEY) <> 16) as wrong_length_hkey,
                (select count(*) from (
-            select PARTY_LOCATION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LINK_PARTY_LOCATION where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS')
+            select PARTY_LOCATION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LINK_PARTY_LOCATION where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS')
              group by PARTY_LOCATION_HKEY having count(distinct coalesce(to_varchar(PARTY_HKEY, 'HEX'), '^^') || '|' || coalesce(to_varchar(LOCATION_HKEY, 'HEX'), '^^')) > 1
                )) as collisions,
                iff(null_hkey = 0 and null_fk_hkeys = 0 and wrong_length_hkey = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LINK_PARTY_LOCATION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS')
   )
 
 union all
@@ -2511,15 +2511,15 @@ select 19 as section_no, 'MAXIMUS' as project, 'M1' as member,
         select 'MAXIMUS' as project, 'link' as table_type, 'LINK_PARTY_ROLE' as table_name,
                count(*) as rows_in_scope,
                count_if(PARTY_ROLE_HKEY is null) as null_hkey,
-               count_if(PARTY_HKEY is null) + count_if(PARTY_ROLE_ROLE is null) as null_fk_hkeys,
-               count_if(length(PARTY_ROLE_HKEY) <> 16 or length(PARTY_HKEY) <> 16 or length(PARTY_ROLE_ROLE) <> 16) as wrong_length_hkey,
+               count_if(PARTY_HKEY is null) as null_fk_hkeys,
+               count_if(length(PARTY_ROLE_HKEY) <> 16 or length(PARTY_HKEY) <> 16) as wrong_length_hkey,
                (select count(*) from (
-            select PARTY_ROLE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LINK_PARTY_ROLE where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-             group by PARTY_ROLE_HKEY having count(distinct coalesce(to_varchar(PARTY_HKEY, 'HEX'), '^^') || '|' || coalesce(to_varchar(PARTY_ROLE_ROLE, 'HEX'), '^^')) > 1
+            select PARTY_ROLE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LINK_PARTY_ROLE where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+             group by PARTY_ROLE_HKEY having count(distinct coalesce(to_varchar(PARTY_HKEY, 'HEX'), '^^') || '|' || coalesce(to_varchar(PARTY_ROLE_ROLE), '^^')) > 1
                )) as collisions,
                iff(null_hkey = 0 and null_fk_hkeys = 0 and wrong_length_hkey = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LINK_PARTY_ROLE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -2545,12 +2545,12 @@ select 20 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(POLICY_HKEY is null) + count_if(PARTY_HKEY is null) as null_fk_hkeys,
                count_if(length(POLICY_PARTY_HKEY) <> 16 or length(POLICY_HKEY) <> 16 or length(PARTY_HKEY) <> 16) as wrong_length_hkey,
                (select count(*) from (
-            select POLICY_PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LINK_POLICY_PARTY where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS')
+            select POLICY_PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LINK_POLICY_PARTY where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_RELATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS')
              group by POLICY_PARTY_HKEY having count(distinct coalesce(to_varchar(POLICY_HKEY, 'HEX'), '^^') || '|' || coalesce(to_varchar(PARTY_HKEY, 'HEX'), '^^')) > 1
                )) as collisions,
                iff(null_hkey = 0 and null_fk_hkeys = 0 and wrong_length_hkey = 0 and collisions = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LINK_POLICY_PARTY
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_RELATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS')
   )
 
 union all
@@ -2577,7 +2577,7 @@ select 21 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_ASSESSMENT_HEADER
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS')
   )
 
 union all
@@ -2604,7 +2604,7 @@ select 22 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_APPROVAL_ACTION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -2631,7 +2631,7 @@ select 23 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_ASSESSMENT_SUMMARY
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -2658,7 +2658,7 @@ select 24 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_BENEFIT_HEAD
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -2685,7 +2685,7 @@ select 25 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_CO_RI_SHARE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -2712,7 +2712,7 @@ select 26 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_DEDUCTION_WAIVER
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -2739,7 +2739,7 @@ select 27 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_DOCUMENT_REMINDER
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -2766,7 +2766,7 @@ select 28 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -2793,7 +2793,7 @@ select 29 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_EVIDENCE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -2820,7 +2820,7 @@ select 30 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_EXCLUSION_APPLIED
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -2847,7 +2847,7 @@ select 31 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_EXPENSE_LINE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -2874,7 +2874,7 @@ select 32 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_FOLLOWUP_TASK
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_EVENT_FOLLOWUP')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_EVENT_FOLLOWUP', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_EVENT_FOLLOWUP')
   )
 
 union all
@@ -2901,7 +2901,7 @@ select 33 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_FRAUD
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -2928,7 +2928,7 @@ select 34 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_HEADER
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -2955,7 +2955,7 @@ select 35 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_LITIGATION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -2982,7 +2982,7 @@ select 36 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_NETWORK_VERIFICATION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -3009,7 +3009,7 @@ select 37 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_PAYMENT_TRANCHE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -3036,7 +3036,7 @@ select 38 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_PA_DETAIL
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -3063,7 +3063,7 @@ select 39 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_PROVIDER_BILLING
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -3090,7 +3090,7 @@ select 40 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_QUALITY_AUDIT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -3117,7 +3117,7 @@ select 41 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_RECOVERY_SALVAGE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -3144,7 +3144,7 @@ select 42 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_SETTLEMENT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -3171,7 +3171,7 @@ select 43 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_SLA_TRACKING
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -3198,7 +3198,7 @@ select 44 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_STATUS_HISTORY
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_HISTORY')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_HISTORY', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_HISTORY')
   )
 
 union all
@@ -3225,7 +3225,7 @@ select 45 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_SURVEY_APPOINTMENT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -3252,7 +3252,7 @@ select 46 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_TPA_INTERACTION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -3279,7 +3279,7 @@ select 47 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_TRAVEL_DETAIL
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -3306,7 +3306,7 @@ select 48 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_TRAVEL_SECTOR
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -3333,7 +3333,7 @@ select 49 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_ADDRESS
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -3360,7 +3360,7 @@ select 50 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_COMMUNICATION_PREFERENCE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -3387,7 +3387,7 @@ select 51 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_CONDITIONS
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -3414,7 +3414,7 @@ select 52 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_DEFINITION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -3441,7 +3441,7 @@ select 53 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_LIMITS
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -3468,7 +3468,7 @@ select 54 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -3495,7 +3495,7 @@ select 55 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_SUB_COVER_ELEMENT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -3522,7 +3522,7 @@ select 56 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_DOCUMENT_CHECKLIST
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -3549,7 +3549,7 @@ select 57 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_DOCUMENT_DISPATCH
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -3576,7 +3576,7 @@ select 58 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -3603,7 +3603,7 @@ select 59 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_TAX
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -3630,7 +3630,7 @@ select 60 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FIN_RECEIPT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -3657,7 +3657,7 @@ select 61 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_CUSTOMER
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -3684,7 +3684,7 @@ select 62 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_PROVIDER
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -3711,7 +3711,7 @@ select 63 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_ORG_UNIT_CONTACT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -3738,7 +3738,7 @@ select 64 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_BANKING
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -3765,7 +3765,7 @@ select 65 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_CLAIM_HISTORY
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -3792,7 +3792,7 @@ select 66 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_CONSENT_MANDATE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -3819,7 +3819,7 @@ select 67 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_CONTACT_ADDRESS_LINK
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -3846,7 +3846,7 @@ select 68 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_CORRESPONDENCE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -3873,7 +3873,7 @@ select 69 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_EMPLOYMENT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -3900,7 +3900,7 @@ select 70 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_FINANCIAL_PROFILE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -3927,7 +3927,7 @@ select 71 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_GROUP_SCHEME
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -3954,7 +3954,7 @@ select 72 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_HEALTH_PROFILE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -3981,7 +3981,7 @@ select 73 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_HIERARCHY
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4008,7 +4008,7 @@ select 74 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_IDENTIFICATION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4035,7 +4035,7 @@ select 75 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_IDENTITY
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4062,7 +4062,7 @@ select 76 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4089,7 +4089,7 @@ select 77 as section_no, 'MAXIMUS' as project, 'M1' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_LOYALTY_CLASSIFICATION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -4116,7 +4116,7 @@ select 78 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_ONBOARDING_JOURNEY
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4143,7 +4143,7 @@ select 79 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_PAYOUT_PROFILE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4170,7 +4170,7 @@ select 80 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_PREFERENCE_PROFILE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4197,7 +4197,7 @@ select 81 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_RELATIONSHIP_PROFILE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4224,7 +4224,7 @@ select 82 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_RISK_ANALYTICS
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -4251,7 +4251,7 @@ select 83 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_CLAIM_EXPERIENCE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4278,7 +4278,7 @@ select 84 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_COVERAGE_SCHEDULE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4305,7 +4305,7 @@ select 85 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_DELIVERY
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4332,7 +4332,7 @@ select 86 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_DOCUMENT_DISPATCH
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS')
   )
 
 union all
@@ -4359,7 +4359,7 @@ select 87 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_HEADER
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4386,7 +4386,7 @@ select 88 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_HEALTH_DECLARATION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4413,7 +4413,7 @@ select 89 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_INSURED_DECLARATION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4440,7 +4440,7 @@ select 90 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_INTERMEDIARY_SPLIT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4467,7 +4467,7 @@ select 91 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_NOMINEE_DECLARATION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4494,7 +4494,7 @@ select 92 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_PREMIUM_HEAD
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4521,7 +4521,7 @@ select 93 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_PREMIUM_SUMMARY
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4548,7 +4548,7 @@ select 94 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_PROPERTY_LINE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4575,7 +4575,7 @@ select 95 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_RENEWAL
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4602,7 +4602,7 @@ select 96 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_TERMS
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4629,7 +4629,7 @@ select 97 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_TRAVEL_TERMS
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4656,7 +4656,7 @@ select 98 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4683,7 +4683,7 @@ select 99 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_UW_QUERY
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4710,7 +4710,7 @@ select 100 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_WORK_ITEM
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_WORK_ITEM_DETAILS')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_WORK_ITEM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_WORK_ITEM_DETAILS')
   )
 
 union all
@@ -4737,7 +4737,7 @@ select 101 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PRODUCT_RATING_STRUCTURE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -4764,7 +4764,7 @@ select 102 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PRODUCT_TERMS
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -4791,7 +4791,7 @@ select 103 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_CLAIM_EXPERIENCE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4818,7 +4818,7 @@ select 104 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_COVERAGE_LINE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -4845,7 +4845,7 @@ select 105 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_COVERAGE_SCHEDULE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4872,7 +4872,7 @@ select 106 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_COVER_DETAIL
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -4899,7 +4899,7 @@ select 107 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_HEADER
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -4926,7 +4926,7 @@ select 108 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_HEALTH_DECLARATION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4953,7 +4953,7 @@ select 109 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_INSURED_DECLARATION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -4980,7 +4980,7 @@ select 110 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_NOMINEE_DECLARATION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -5007,7 +5007,7 @@ select 111 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_PREMIUM_HEAD
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -5034,7 +5034,7 @@ select 112 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_PROPERTY_LINE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -5061,7 +5061,7 @@ select 113 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_RATING
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -5088,7 +5088,7 @@ select 114 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_RISK_LINE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST')
   )
 
 union all
@@ -5115,7 +5115,7 @@ select 115 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_SUM_INSURED_BREAKUP
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -5142,7 +5142,7 @@ select 116 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_TERMS
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST')
   )
 
 union all
@@ -5169,7 +5169,7 @@ select 117 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_TRAVEL_TRIP
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -5196,7 +5196,7 @@ select 118 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -5223,7 +5223,7 @@ select 119 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_UW_QUERY
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -5250,7 +5250,7 @@ select 120 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_OBJECT_CORE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -5277,7 +5277,7 @@ select 121 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_OBJECT_PREMIUM
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS')
   )
 
 union all
@@ -5304,7 +5304,7 @@ select 122 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_INSURED
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -5331,7 +5331,7 @@ select 123 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_TRAVEL
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -5358,7 +5358,7 @@ select 124 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_TRAVEL_COVER_TERMS
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -5385,7 +5385,7 @@ select 125 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_TRAVEL_RATING_INPUT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -5412,7 +5412,7 @@ select 126 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_TRAVEL_SPONSOR
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -5439,7 +5439,7 @@ select 127 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -5466,7 +5466,7 @@ select 128 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CHANNEL_DEFINITION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -5493,7 +5493,7 @@ select 129 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_ASSESSMENT_SUMMARY
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS')
   )
 
 union all
@@ -5520,7 +5520,7 @@ select 130 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_BENEFIT_HEAD
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -5547,7 +5547,7 @@ select 131 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_CO_RI_SHARE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -5574,7 +5574,7 @@ select 132 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_FNOL
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -5601,7 +5601,7 @@ select 133 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_FRAUD
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -5628,7 +5628,7 @@ select 134 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_HEADER
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -5655,7 +5655,7 @@ select 135 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_HEALTH_DETAIL
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -5682,7 +5682,7 @@ select 136 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_INVESTIGATION_FINDING
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -5709,7 +5709,7 @@ select 137 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_LITIGATION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -5736,7 +5736,7 @@ select 138 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_NOTE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -5763,7 +5763,7 @@ select 139 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_PAYMENT_TRANCHE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -5790,7 +5790,7 @@ select 140 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_PA_DETAIL
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -5817,7 +5817,7 @@ select 141 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_PROVIDER_BILLING
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -5844,7 +5844,7 @@ select 142 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_RECOVERY_SALVAGE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -5871,7 +5871,7 @@ select 143 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_REPUDIATION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -5898,7 +5898,7 @@ select 144 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_RESERVE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE')
   )
 
 union all
@@ -5925,7 +5925,7 @@ select 145 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_RESERVE_HEAD
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -5952,7 +5952,7 @@ select 146 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_SETTLEMENT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -5979,7 +5979,7 @@ select 147 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_SLA_TRACKING
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS')
   )
 
 union all
@@ -6006,7 +6006,7 @@ select 148 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_TP_FORENSIC
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -6033,7 +6033,7 @@ select 149 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_TRAVEL_DETAIL
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -6060,7 +6060,7 @@ select 150 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADDRESS
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST')
   )
 
 union all
@@ -6087,7 +6087,7 @@ select 151 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADMIN_GEOGRAPHY
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -6114,7 +6114,7 @@ select 152 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_BUSINESS_AUDIT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -6141,7 +6141,7 @@ select 153 as section_no, 'MAXIMUS' as project, 'M2' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CLASSIFICATION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -6168,7 +6168,7 @@ select 154 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_COMMUNICATION_PREFERENCE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -6195,7 +6195,7 @@ select 155 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONSENT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -6222,7 +6222,7 @@ select 156 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -6249,7 +6249,7 @@ select 157 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_GEO
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -6276,7 +6276,7 @@ select 158 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_LIFECYCLE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -6303,7 +6303,7 @@ select 159 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_MONETARY_CONTEXT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST')
   )
 
 union all
@@ -6330,7 +6330,7 @@ select 160 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_STATUS
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -6357,7 +6357,7 @@ select 161 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_CONDITIONS
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -6384,7 +6384,7 @@ select 162 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_DEFINITION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -6411,7 +6411,7 @@ select 163 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_SUBLIMIT_SCHEDULE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -6438,7 +6438,7 @@ select 164 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_DOCUMENT_DEFINITION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_DOCUMENT_DETAIL', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_DOCUMENT_DETAIL', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_DOCUMENT_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_DOCUMENT_DETAIL', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_DOCUMENT_DETAIL', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_DOCUMENT_DETAIL', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_DOCUMENT_DETAIL', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -6465,7 +6465,7 @@ select 165 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_ACCOUNTING
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW')
   )
 
 union all
@@ -6492,7 +6492,7 @@ select 166 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_CLAIM_PAYMENT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW')
   )
 
 union all
@@ -6519,7 +6519,7 @@ select 167 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_HEADER
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -6546,7 +6546,7 @@ select 168 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_PREMIUM
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -6573,7 +6573,7 @@ select 169 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_TAX
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -6600,7 +6600,7 @@ select 170 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_RECEIPT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -6627,7 +6627,7 @@ select 171 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_INSTRUMENT_DEFINITION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION')
   )
 
 union all
@@ -6654,7 +6654,7 @@ select 172 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_PARTY_ROLE_CORE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -6681,7 +6681,7 @@ select 173 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_POLICY_PARTY_ROLE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_RELATION')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_RELATION')
   )
 
 union all
@@ -6708,7 +6708,7 @@ select 174 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_AGENT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -6735,7 +6735,7 @@ select 175 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_CUSTOMER
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -6762,7 +6762,7 @@ select 176 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_EMPLOYEE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -6789,7 +6789,7 @@ select 177 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -6816,7 +6816,7 @@ select 178 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LOSS_EVENT_DETAIL
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -6843,7 +6843,7 @@ select 179 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LOSS_EVENT_NOTIFICATION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -6870,7 +6870,7 @@ select 180 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LOSS_LOCATION_ADDRESS
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -6897,7 +6897,7 @@ select 181 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_ORG_UNIT_DEFINITION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -6924,7 +6924,7 @@ select 182 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_AML_SCREENING
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -6951,7 +6951,7 @@ select 183 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -6978,7 +6978,7 @@ select 184 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CLAIM_HISTORY
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -7005,7 +7005,7 @@ select 185 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CONTACT_ADDRESS_LINK
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -7032,7 +7032,7 @@ select 186 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_EMPLOYMENT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -7059,7 +7059,7 @@ select 187 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_FINANCIAL_PROFILE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -7086,7 +7086,7 @@ select 188 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_FRAUD_PROFILE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -7113,7 +7113,7 @@ select 189 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -7140,7 +7140,7 @@ select 190 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -7167,7 +7167,7 @@ select 191 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -7194,7 +7194,7 @@ select 192 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -7221,7 +7221,7 @@ select 193 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -7248,7 +7248,7 @@ select 194 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC_REFERENCE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -7275,7 +7275,7 @@ select 195 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_ONBOARDING_JOURNEY
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -7302,7 +7302,7 @@ select 196 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_ORGANISATION_PROFILE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -7329,7 +7329,7 @@ select 197 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_PAYOUT_PROFILE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -7356,7 +7356,7 @@ select 198 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_POLICY_HISTORY
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -7383,7 +7383,7 @@ select 199 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_PORTFOLIO_SUMMARY
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -7410,7 +7410,7 @@ select 200 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_RELATIONSHIP_PROFILE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -7437,7 +7437,7 @@ select 201 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CANCELLATION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -7464,7 +7464,7 @@ select 202 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -7491,7 +7491,7 @@ select 203 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_COVERAGE_SCHEDULE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -7518,7 +7518,7 @@ select 204 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_DISCOUNT_LOADING_APPLIED
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -7545,7 +7545,7 @@ select 205 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_ENDORSEMENT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -7572,7 +7572,7 @@ select 206 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_GROUP
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -7599,7 +7599,7 @@ select 207 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -7626,7 +7626,7 @@ select 208 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_INTERMEDIARY_SPLIT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -7653,7 +7653,7 @@ select 209 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_PORTABILITY_MIGRATION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -7680,7 +7680,7 @@ select 210 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_PREMIUM_HEAD
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -7707,7 +7707,7 @@ select 211 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_PREMIUM_SUMMARY
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_PREMIUM_DETAILS')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_PREMIUM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_PREMIUM_DETAILS')
   )
 
 union all
@@ -7734,7 +7734,7 @@ select 212 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_RENEWAL
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -7761,7 +7761,7 @@ select 213 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_SERVICING_SUMMARY
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
   )
 
 union all
@@ -7788,7 +7788,7 @@ select 214 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_SUM_INSURED_BREAKUP
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -7815,7 +7815,7 @@ select 215 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_TAX_BREAKUP
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -7842,7 +7842,7 @@ select 216 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_TAX_HEAD
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -7869,7 +7869,7 @@ select 217 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_TERMS
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -7896,7 +7896,7 @@ select 218 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -7923,7 +7923,7 @@ select 219 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_RATING_STRUCTURE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -7950,7 +7950,7 @@ select 220 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_TERMS
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -7977,7 +7977,7 @@ select 221 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_QUOTE_HEADER
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -8004,7 +8004,7 @@ select 222 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_QUOTE_RATING
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -8031,7 +8031,7 @@ select 223 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_QUOTE_RATING_INPUT
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -8058,7 +8058,7 @@ select 224 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_HEALTH_MEMBER_MEDICAL
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -8085,7 +8085,7 @@ select 225 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_OBJECT_CORE
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -8112,7 +8112,7 @@ select 226 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_OBJECT_VALUATION
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -8139,7 +8139,7 @@ select 227 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_INSURED
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 union all
@@ -8166,7 +8166,7 @@ select 228 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_MEMBER
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
   )
 
 union all
@@ -8193,7 +8193,7 @@ select 229 as section_no, 'MAXIMUS' as project, 'M3' as member,
                count_if(HASHDIFF is null) as null_hashdiff,
                iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
           from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_TRAVEL
-         where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
+         where RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
   )
 
 )

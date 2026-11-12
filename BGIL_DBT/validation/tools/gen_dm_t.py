@@ -201,9 +201,16 @@ select '{t.project}' as project, 'hub' as table_type, '{t.name}' as table_name,
 
 
 def t2_link(t):
-    combo = " || '|' || ".join(f"coalesce(to_varchar({f}, 'HEX'), '^^')" for f in t.fks)
-    nulls = " + ".join(f"count_if({f} is null)" for f in t.fks)
-    lens = " or ".join(f"length({f}) <> 16" for f in [t.pk] + t.fks)
+    # Only *_HKEY columns are BINARY hash keys. Other link columns (e.g. a
+    # dependent-child role code such as PARTY_ROLE_ROLE) are text: they are part
+    # of the collision combination but have no null / 16-byte rule.
+    hk = [f for f in t.fks if f.upper().endswith("_HKEY")]
+    other = [f for f in t.fks if f not in hk]
+    combo = " || '|' || ".join(
+        f"coalesce(to_varchar({f}, 'HEX'), '^^')" if f in hk else f"coalesce(to_varchar({f}), '^^')"
+        for f in t.fks)
+    nulls = " + ".join(f"count_if({f} is null)" for f in hk) or "0"
+    lens = " or ".join(f"length({f}) <> 16" for f in [t.pk] + hk)
     sql = f"""with c as (
     select {t.pk} as hkey from {t.fq} where {t.scope()}
      group by {t.pk} having count(distinct {combo}) > 1
@@ -217,8 +224,10 @@ select '{t.project}' as project, 'link' as table_type, '{t.name}' as table_name,
        iff(null_hkey = 0 and null_fk_hkeys = 0 and wrong_length_hkey = 0 and collisions = 0, 'PASS', 'FAIL') as status
   from {t.fq}
  where {t.scope()}"""
-    return sql, (f"FK hash keys {', '.join(t.fks)}. collisions = one link hash key with more than one FK combination "
-                 f"(the link key no longer identifies one relationship).")
+    extra = (f" Non-hash link column(s) {', '.join(other)} are included in the collision combination only "
+             f"(no null / length rule)." if other else "")
+    return sql, (f"FK hash keys {', '.join(hk)}. collisions = one link hash key with more than one FK combination "
+                 f"(the link key no longer identifies one relationship).{extra}")
 
 
 def t2_sat(t):

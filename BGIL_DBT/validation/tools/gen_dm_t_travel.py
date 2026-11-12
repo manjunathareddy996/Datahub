@@ -115,6 +115,22 @@ def table_scope(self, alias=""):
 T.Table.scope = table_scope
 
 
+# The models now write LOB-scoped RECORD_SOURCE values (MAXIMUS_TRAVEL_... /
+# OPUS_TRAVEL_...), but rows loaded before that change keep the bare prefix
+# until validation/travel/backfill/record_source_lob_backfill_travel.sql is
+# run. Scope each table to both forms so old and new rows are validated.
+LEGACY_RS = re.compile(r"^(MAXIMUS|OPUS)_TRAVEL_")
+
+
+def with_legacy_record_sources(values):
+    out = []
+    for v in values:
+        for x in (v, LEGACY_RS.sub(r"\1_", v)):
+            if x not in out:
+                out.append(x)
+    return out
+
+
 # ---------------------------------------------------------------------------
 # Metadata
 # ---------------------------------------------------------------------------
@@ -167,6 +183,8 @@ def main():
             pj, md, [s for s in sats if s.project == pj],
             [l for l in links if l.project == pj])
         tables.sort(key=lambda t: (order[t.kind], t.name))
+        for t in tables:
+            t.rs_values = with_legacy_record_sources(t.rs_values)
         n = {k: sum(t.kind == k for t in tables) for k in order}
         revision = [
             f"Travel LOB generated 2026-10-13 from the current {md.parent.name} "
