@@ -277,6 +277,25 @@ def bk_map_query_travel(sat):
 
 H.bk_map_query = bk_map_query_travel
 
+# STEP 4: a satellite fed by N identical-source arms (e.g. 5 traveller members of one RAW
+# table) yields the SAME UPDATE N times. Keep each distinct statement once.
+_ORIG_FORCE_CHANGE = H.force_change_query
+
+
+def force_change_query_dedup(sat):
+    q = _ORIG_FORCE_CHANGE(sat)
+    if not q:
+        return q
+    seen, out = set(), []
+    for stmt in q.split("\n\n"):
+        if stmt not in seen:
+            seen.add(stmt)
+            out.append(stmt)
+    return "\n\n".join(out)
+
+
+H.force_change_query = force_change_query_dedup
+
 
 # ---------------------------------------------------------------------------
 # Metadata
