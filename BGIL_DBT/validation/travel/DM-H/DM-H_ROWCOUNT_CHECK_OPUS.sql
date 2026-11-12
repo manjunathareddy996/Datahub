@@ -40,6 +40,6 @@ union all select 'sat_multi_source' as path, 'ALTERNATE' as role, 'SAT_AUG_LNK_R
 union all select 'sat_multi_source' as path, 'ALTERNATE' as role, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite, count(*) as opus_rows from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_EMPLOYMENT where RECORD_SOURCE in ('OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE')
 union all select 'sat_multi_source' as path, 'ALTERNATE' as role, 'SAT_AUG_RISK_PERSON_INSURED' as satellite, count(*) as opus_rows from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_INSURED where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA')
 -- stitch(plain-join): selected
-union all select 'stitch(plain-join)' as path, 'SELECTED' as role, 'SAT_RISK_PERSON_TRAVEL' as satellite, count(*) as opus_rows from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_TRAVEL where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA', 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE')
+union all select 'stitch(plain-join)' as path, 'SELECTED' as role, 'SAT_RISK_PERSON_TRAVEL' as satellite, count(*) as opus_rows from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_TRAVEL where RECORD_SOURCE in ('OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE')
 -- stitch(plain-join): alternates (swap in if a selected sat has 0 rows)
 ;

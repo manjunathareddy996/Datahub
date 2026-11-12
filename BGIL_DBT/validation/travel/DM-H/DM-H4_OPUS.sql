@@ -1188,8 +1188,11 @@ order by record_source, column_name;
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
 -- sat_multi_source; PK RISK_OBJECT_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA [8 col(s)], OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE [2
--- col(s)]. stg2_risk_person_travel_bjaz_trv_loader_log_table: column(s) PASSPORT_NUMBER,
+-- stitch_risk_person_travel_trip_attrs (2 tables) [8 col(s)],
+-- OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE [2 col(s)]. Stitch groups: expected values are
+-- the stitch view recomputed from RAW (same coalesce priority and tie-break), and
+-- RECORD_SOURCE (contributing tables) is compared too.
+-- stg2_risk_person_travel_bjaz_trv_loader_log_table: column(s) PASSPORT_NUMBER,
 -- TRIP_DURATION, TRIP_END_DATE, TRIP_START_DATE, TRIP_TYPE, VISA_TYPE could not be
 -- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
@@ -1197,7 +1200,7 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 with s1 as (  -- the 100 most recently loaded keys of this RECORD_SOURCE (latest changes)
     select RISK_OBJECT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_TRAVEL
-     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
+     where regexp_like(RECORD_SOURCE, '^(OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS|OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA)(, (OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS|OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA))*$')
      group by RISK_OBJECT_HKEY
      order by max(LOAD_DATETIME) desc, hkey
      limit 100
@@ -1211,79 +1214,146 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(TRIP_END_DATE) as TRIP_END_DATE,
            to_varchar(TRIP_START_DATE) as TRIP_START_DATE,
            to_varchar(TRIP_TYPE) as TRIP_TYPE,
-           to_varchar(VISA_TYPE) as VISA_TYPE
+           to_varchar(VISA_TYPE) as VISA_TYPE,
+           RECORD_SOURCE as RECORD_SOURCE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_TRAVEL
-     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
+     where regexp_like(RECORD_SOURCE, '^(OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS|OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA)(, (OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS|OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA))*$')
        and RISK_OBJECT_HKEY in (select hkey from s1)
     qualify rank() over (partition by RISK_OBJECT_HKEY order by LOAD_DATETIME desc) = 1
+),
+g1_t1 as (  -- stitch source OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA
+    select distinct (nullif(trim(to_varchar("POLICY_REF")), '')) as policy_ref,
+           nullif(trim(to_varchar((nullif(trim(to_varchar("MEMBER1PASSPORTNO")), '')))), '') as member1passportno,
+           nullif(trim(to_varchar((nullif(trim(to_varchar("MEMBER2PASSPORTNO")), '')))), '') as member2passportno,
+           nullif(trim(to_varchar((nullif(trim(to_varchar("MEMBER3PASSPORTNO")), '')))), '') as member3passportno,
+           nullif(trim(to_varchar((nullif(trim(to_varchar("MEMBER4PASSPORTNO")), '')))), '') as member4passportno,
+           nullif(trim(to_varchar((nullif(trim(to_varchar("MEMBER5PASSPORTNO")), '')))), '') as member5passportno,
+           nullif(trim(to_varchar((nullif(trim(to_varchar("AREAPLAN")), '')))), '') as areaplan,
+           nullif(trim(to_varchar((nullif(trim(to_varchar("DEPARTUREDATE")), '')))), '') as departuredate,
+           nullif(trim(to_varchar((nullif(trim(to_varchar("NOOFJOURNEYDAYS")), '')))), '') as noofjourneydays,
+           nullif(trim(to_varchar((nullif(trim(to_varchar("PRJOURNEY")), '')))), '') as prjourney,
+           nullif(trim(to_varchar((nullif(trim(to_varchar("RETURNDATE")), '')))), '') as returndate,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
+     where (nullif(trim(to_varchar("POLICY_REF")), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((((nullif(trim(to_varchar("POLICY_REF")), '')))) || '|MEMBER1') AS VARCHAR))), '')) in (select hkey from s1)
+),
+g1_t2 as (  -- stitch source OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS
+    select distinct (nullif(trim(to_varchar("POLICY_REF")), '')) as policy_ref,
+           nullif(trim(to_varchar((nullif(trim(to_varchar("DESTINATION")), '')))), '') as destination,
+           nullif(trim(to_varchar(("NO_OF_DAYS"::number))), '') as no_of_days,
+           nullif(trim(to_varchar((nullif(trim(to_varchar("TRAVEL_AREA_PLAN_NM")), '')))), '') as travel_area_plan_nm,
+           nullif(trim(to_varchar(("TRAVEL_AREA_PLAN_NO"::number))), '') as travel_area_plan_no,
+           nullif(trim(to_varchar((nullif(trim(to_varchar("TYPE_OF_VISA")), '')))), '') as type_of_visa,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
+     where (nullif(trim(to_varchar("POLICY_REF")), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((((nullif(trim(to_varchar("POLICY_REF")), '')))) || '|MEMBER1') AS VARCHAR))), '')) in (select hkey from s1)
+),
+k1 as (
+    select policy_ref from g1_t1
+    union
+    select policy_ref from g1_t2
+),
+st1 as (  -- stitch_risk_person_travel_trip_attrs recomputed from RAW (same coalesce / priority as the stitch macro)
+    select ak.policy_ref,
+           g1_t1.member1passportno as member1passportno,
+           g1_t1.member2passportno as member2passportno,
+           g1_t1.member3passportno as member3passportno,
+           g1_t1.member4passportno as member4passportno,
+           g1_t1.member5passportno as member5passportno,
+           g1_t1.areaplan as areaplan,
+           g1_t1.departuredate as departuredate,
+           g1_t1.noofjourneydays as noofjourneydays,
+           g1_t1.prjourney as prjourney,
+           g1_t1.returndate as returndate,
+           g1_t2.destination as destination,
+           g1_t2.no_of_days as no_of_days,
+           g1_t2.travel_area_plan_nm as travel_area_plan_nm,
+           g1_t2.travel_area_plan_no as travel_area_plan_no,
+           g1_t2.type_of_visa as type_of_visa,
+           array_to_string(array_construct_compact(
+               case when g1_t1.policy_ref is not null then 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA' end,
+               case when g1_t2.policy_ref is not null then 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS' end
+           ), ', ') as record_source,
+           greatest_ignore_nulls(g1_t1.inc_job_updated_at, g1_t2.inc_job_updated_at) as inc_job_updated_at
+      from k1 ak
+      left join g1_t1 on g1_t1.policy_ref = ak.policy_ref
+      left join g1_t2 on g1_t2.policy_ref = ak.policy_ref
+    qualify row_number() over (partition by ak.policy_ref order by g1_t1.member1passportno nulls last, g1_t1.member2passportno nulls last, g1_t1.member3passportno nulls last, g1_t1.member4passportno nulls last, g1_t1.member5passportno nulls last, g1_t1.areaplan nulls last, g1_t1.departuredate nulls last, g1_t1.noofjourneydays nulls last, g1_t1.prjourney nulls last, g1_t1.returndate nulls last, g1_t2.destination nulls last, g1_t2.no_of_days nulls last, g1_t2.travel_area_plan_nm nulls last, g1_t2.travel_area_plan_no nulls last, g1_t2.type_of_visa nulls last) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stitch_risk_person_travel_trip_attrs (plain-join; joined columns unresolved)
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|MEMBER1') AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar(destination) as DESTINATION_COUNTRY,
-               to_varchar(coalesce((nullif(trim(to_varchar("AREAPLAN")), '')), travel_area_plan_no, travel_area_plan_nm)) as GEOGRAPHICAL_ZONE,
-               to_varchar((nullif(trim(to_varchar("MEMBER1PASSPORTNO")), ''))) as PASSPORT_NUMBER,
-               to_varchar(coalesce((nullif(trim(to_varchar("NOOFJOURNEYDAYS")), '')), no_of_days)) as TRIP_DURATION,
-               to_varchar((nullif(trim(to_varchar("RETURNDATE")), ''))) as TRIP_END_DATE,
-               to_varchar((nullif(trim(to_varchar("DEPARTUREDATE")), ''))) as TRIP_START_DATE,
-               to_varchar((nullif(trim(to_varchar("PRJOURNEY")), ''))) as TRIP_TYPE,
-               to_varchar(type_of_visa) as VISA_TYPE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
+        -- via stitch_risk_person_travel_trip_attrs
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || (st.policy_ref || '|MEMBER1') AS VARCHAR))), '')) as hkey,
+               st.inc_job_updated_at as ldts,
+               to_varchar(st.destination) as DESTINATION_COUNTRY,
+               to_varchar(coalesce(st.areaplan, st.travel_area_plan_no, st.travel_area_plan_nm)) as GEOGRAPHICAL_ZONE,
+               to_varchar(st.member1passportno) as PASSPORT_NUMBER,
+               to_varchar(coalesce(st.noofjourneydays, st.no_of_days)) as TRIP_DURATION,
+               to_varchar(st.returndate) as TRIP_END_DATE,
+               to_varchar(st.departuredate) as TRIP_START_DATE,
+               to_varchar(st.prjourney) as TRIP_TYPE,
+               to_varchar(st.type_of_visa) as VISA_TYPE,
+               st.record_source as RECORD_SOURCE
+          from st1 st
         union all
-        -- via stitch_risk_person_travel_trip_attrs (plain-join; joined columns unresolved)
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|MEMBER2') AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar(destination) as DESTINATION_COUNTRY,
-               to_varchar(coalesce((nullif(trim(to_varchar("AREAPLAN")), '')), travel_area_plan_no, travel_area_plan_nm)) as GEOGRAPHICAL_ZONE,
-               to_varchar((nullif(trim(to_varchar("MEMBER2PASSPORTNO")), ''))) as PASSPORT_NUMBER,
-               to_varchar(coalesce((nullif(trim(to_varchar("NOOFJOURNEYDAYS")), '')), no_of_days)) as TRIP_DURATION,
-               to_varchar((nullif(trim(to_varchar("RETURNDATE")), ''))) as TRIP_END_DATE,
-               to_varchar((nullif(trim(to_varchar("DEPARTUREDATE")), ''))) as TRIP_START_DATE,
-               to_varchar((nullif(trim(to_varchar("PRJOURNEY")), ''))) as TRIP_TYPE,
-               to_varchar(type_of_visa) as VISA_TYPE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
+        -- via stitch_risk_person_travel_trip_attrs
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || (st.policy_ref || '|MEMBER2') AS VARCHAR))), '')) as hkey,
+               st.inc_job_updated_at as ldts,
+               to_varchar(st.destination) as DESTINATION_COUNTRY,
+               to_varchar(coalesce(st.areaplan, st.travel_area_plan_no, st.travel_area_plan_nm)) as GEOGRAPHICAL_ZONE,
+               to_varchar(st.member2passportno) as PASSPORT_NUMBER,
+               to_varchar(coalesce(st.noofjourneydays, st.no_of_days)) as TRIP_DURATION,
+               to_varchar(st.returndate) as TRIP_END_DATE,
+               to_varchar(st.departuredate) as TRIP_START_DATE,
+               to_varchar(st.prjourney) as TRIP_TYPE,
+               to_varchar(st.type_of_visa) as VISA_TYPE,
+               st.record_source as RECORD_SOURCE
+          from st1 st
         union all
-        -- via stitch_risk_person_travel_trip_attrs (plain-join; joined columns unresolved)
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|MEMBER3') AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar(destination) as DESTINATION_COUNTRY,
-               to_varchar(coalesce((nullif(trim(to_varchar("AREAPLAN")), '')), travel_area_plan_no, travel_area_plan_nm)) as GEOGRAPHICAL_ZONE,
-               to_varchar((nullif(trim(to_varchar("MEMBER3PASSPORTNO")), ''))) as PASSPORT_NUMBER,
-               to_varchar(coalesce((nullif(trim(to_varchar("NOOFJOURNEYDAYS")), '')), no_of_days)) as TRIP_DURATION,
-               to_varchar((nullif(trim(to_varchar("RETURNDATE")), ''))) as TRIP_END_DATE,
-               to_varchar((nullif(trim(to_varchar("DEPARTUREDATE")), ''))) as TRIP_START_DATE,
-               to_varchar((nullif(trim(to_varchar("PRJOURNEY")), ''))) as TRIP_TYPE,
-               to_varchar(type_of_visa) as VISA_TYPE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
+        -- via stitch_risk_person_travel_trip_attrs
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || (st.policy_ref || '|MEMBER3') AS VARCHAR))), '')) as hkey,
+               st.inc_job_updated_at as ldts,
+               to_varchar(st.destination) as DESTINATION_COUNTRY,
+               to_varchar(coalesce(st.areaplan, st.travel_area_plan_no, st.travel_area_plan_nm)) as GEOGRAPHICAL_ZONE,
+               to_varchar(st.member3passportno) as PASSPORT_NUMBER,
+               to_varchar(coalesce(st.noofjourneydays, st.no_of_days)) as TRIP_DURATION,
+               to_varchar(st.returndate) as TRIP_END_DATE,
+               to_varchar(st.departuredate) as TRIP_START_DATE,
+               to_varchar(st.prjourney) as TRIP_TYPE,
+               to_varchar(st.type_of_visa) as VISA_TYPE,
+               st.record_source as RECORD_SOURCE
+          from st1 st
         union all
-        -- via stitch_risk_person_travel_trip_attrs (plain-join; joined columns unresolved)
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|MEMBER4') AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar(destination) as DESTINATION_COUNTRY,
-               to_varchar(coalesce((nullif(trim(to_varchar("AREAPLAN")), '')), travel_area_plan_no, travel_area_plan_nm)) as GEOGRAPHICAL_ZONE,
-               to_varchar((nullif(trim(to_varchar("MEMBER4PASSPORTNO")), ''))) as PASSPORT_NUMBER,
-               to_varchar(coalesce((nullif(trim(to_varchar("NOOFJOURNEYDAYS")), '')), no_of_days)) as TRIP_DURATION,
-               to_varchar((nullif(trim(to_varchar("RETURNDATE")), ''))) as TRIP_END_DATE,
-               to_varchar((nullif(trim(to_varchar("DEPARTUREDATE")), ''))) as TRIP_START_DATE,
-               to_varchar((nullif(trim(to_varchar("PRJOURNEY")), ''))) as TRIP_TYPE,
-               to_varchar(type_of_visa) as VISA_TYPE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
+        -- via stitch_risk_person_travel_trip_attrs
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || (st.policy_ref || '|MEMBER4') AS VARCHAR))), '')) as hkey,
+               st.inc_job_updated_at as ldts,
+               to_varchar(st.destination) as DESTINATION_COUNTRY,
+               to_varchar(coalesce(st.areaplan, st.travel_area_plan_no, st.travel_area_plan_nm)) as GEOGRAPHICAL_ZONE,
+               to_varchar(st.member4passportno) as PASSPORT_NUMBER,
+               to_varchar(coalesce(st.noofjourneydays, st.no_of_days)) as TRIP_DURATION,
+               to_varchar(st.returndate) as TRIP_END_DATE,
+               to_varchar(st.departuredate) as TRIP_START_DATE,
+               to_varchar(st.prjourney) as TRIP_TYPE,
+               to_varchar(st.type_of_visa) as VISA_TYPE,
+               st.record_source as RECORD_SOURCE
+          from st1 st
         union all
-        -- via stitch_risk_person_travel_trip_attrs (plain-join; joined columns unresolved)
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|MEMBER5') AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar(destination) as DESTINATION_COUNTRY,
-               to_varchar(coalesce((nullif(trim(to_varchar("AREAPLAN")), '')), travel_area_plan_no, travel_area_plan_nm)) as GEOGRAPHICAL_ZONE,
-               to_varchar((nullif(trim(to_varchar("MEMBER5PASSPORTNO")), ''))) as PASSPORT_NUMBER,
-               to_varchar(coalesce((nullif(trim(to_varchar("NOOFJOURNEYDAYS")), '')), no_of_days)) as TRIP_DURATION,
-               to_varchar((nullif(trim(to_varchar("RETURNDATE")), ''))) as TRIP_END_DATE,
-               to_varchar((nullif(trim(to_varchar("DEPARTUREDATE")), ''))) as TRIP_START_DATE,
-               to_varchar((nullif(trim(to_varchar("PRJOURNEY")), ''))) as TRIP_TYPE,
-               to_varchar(type_of_visa) as VISA_TYPE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
+        -- via stitch_risk_person_travel_trip_attrs
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || (st.policy_ref || '|MEMBER5') AS VARCHAR))), '')) as hkey,
+               st.inc_job_updated_at as ldts,
+               to_varchar(st.destination) as DESTINATION_COUNTRY,
+               to_varchar(coalesce(st.areaplan, st.travel_area_plan_no, st.travel_area_plan_nm)) as GEOGRAPHICAL_ZONE,
+               to_varchar(st.member5passportno) as PASSPORT_NUMBER,
+               to_varchar(coalesce(st.noofjourneydays, st.no_of_days)) as TRIP_DURATION,
+               to_varchar(st.returndate) as TRIP_END_DATE,
+               to_varchar(st.departuredate) as TRIP_START_DATE,
+               to_varchar(st.prjourney) as TRIP_TYPE,
+               to_varchar(st.type_of_visa) as VISA_TYPE,
+               st.record_source as RECORD_SOURCE
+          from st1 st
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -1328,6 +1398,11 @@ r1 as (
            max(iff(equal_null(c.VISA_TYPE, e.VISA_TYPE), 1, 0)) as matched, count(e.hkey) as src_rows, min(e.VISA_TYPE) as src_value
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.VISA_TYPE
+    union all
+    select 'RECORD_SOURCE' as column_name, c.hkey, c.RECORD_SOURCE as sat_value,
+           max(iff(equal_null(c.RECORD_SOURCE, e.RECORD_SOURCE), 1, 0)) as matched, count(e.hkey) as src_rows, min(e.RECORD_SOURCE) as src_value
+      from c1 c left join e1 e on e.hkey = c.hkey
+     group by c.hkey, c.RECORD_SOURCE
 ),
 s2 as (  -- the 100 most recently loaded keys of this RECORD_SOURCE (latest changes)
     select RISK_OBJECT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_TRAVEL
@@ -1369,7 +1444,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey
      group by c.hkey, c.GEOGRAPHICAL_ZONE
 )
-select 'OPUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA' as record_source, column_name,
+select 'OPUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite, 'stitch_risk_person_travel_trip_attrs (2 tables)' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
