@@ -146,6 +146,11 @@ def table_branch(project, no, member, label, sql):
 # the other half: satellites only, and hubs + links (+ section 1, column types).
 PARTS = [("SATS", {"satellite"}), ("HUBS_LINKS", {"columns", "hub", "link"})]
 
+# Files actually written. OPUS is done (results recorded in DM-T2_OPUS.docx);
+# MAXIMUS hubs/links wait on the LINK_PARTY_ROLE and hub-recompute fixes.
+# Add ("MAXIMUS", "HUBS_LINKS") etc. back here to regenerate those files.
+OUTPUTS = {("MAXIMUS", "SATS")}
+
 # Sections left out of the runnable query because the vault table does not
 # have a column the section reads (compile error). Record them separately.
 SKIP = {
@@ -176,6 +181,8 @@ def main():
                 built.append((kind, table_branch(project, no, mem, label, sql),
                               {tc: no for tc in columns_used(sql)}))
         for part, kinds in PARTS:
+            if (project, part) not in OUTPUTS:
+                continue
             sel = [x for x in built if x[0] in kinds]
             cols = {}
             for _, _, c in sel:
