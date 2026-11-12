@@ -100,6 +100,18 @@ def type_check_branch(project, no, member, label, sql):
   )"""
 
 
+FQ = re.compile(r"BAGIC_PREPROD_CURATED_DB\.BGIL_DATA_MODEL\.([A-Z0-9_]+)")
+NOT_COLUMNS = {"MD5_BINARY", "NULLIF", "UPPER", "TRIM", "CAST", "AS", "VARCHAR"}
+
+
+def columns_used(sql):
+    """(table, column) pairs a hub/link/satellite section reads."""
+    table = FQ.search(sql).group(1)
+    body = re.sub(r"'(?:[^']|'')*'", "''", FQ.sub(" ", sql))
+    cols = set(re.findall(r"\b[A-Z][A-Z0-9_]*\b", body)) - NOT_COLUMNS
+    return {(table, c) for c in cols}
+
+
 def table_branch(project, no, member, label, sql):
     ttype = re.search(r"'(hub|link|satellite)' as table_type", sql).group(1)
     m = CTE.match(sql)
@@ -131,25 +143,27 @@ def table_branch(project, no, member, label, sql):
 
 def main():
     for project, path in SOURCES:
-        branches, tables = [], set()
+        branches, cols = [], {}
         secs = list(sections(path))
         nums = [s[0] for s in secs]
         assert nums == list(range(1, len(secs) + 1)), f"{path.name}: gaps"
         for (no, label, sql), mem in zip(secs, member_buckets(len(secs))):
             if no == 1:
-                names, b = type_check_branch(project, no, mem, label, sql)
-                tables.update(names)
+                _, b = type_check_branch(project, no, mem, label, sql)
             else:
                 b = table_branch(project, no, mem, label, sql)
+                for tc in sorted(columns_used(sql)):
+                    cols.setdefault(tc, no)
             branches.append(b)
         out = DMT / f"DM-T2_{project}_SUMMARY.sql"
-        out.write_text(render(project, len(secs), tables, branches))
+        out.write_text(render(project, len(secs), cols, branches))
         print(f"wrote {out.relative_to(HERE.parent)}: {len(secs)} sections, "
-              f"{len(tables)} tables, {out.stat().st_size:,} bytes")
+              f"{len({t for t, _ in cols})} tables, {len(cols)} columns, "
+              f"{out.stat().st_size:,} bytes")
 
 
-def render(project, total, tables, branches):
-    values = ",\n".join(f"    ({lit(t)})" for t in sorted(tables))
+def render(project, total, cols, branches):
+    values = ",\n".join(f"    ({no}, {lit(t)}, {lit(c)})" for (t, c), no in sorted(cols.items(), key=lambda x: (x[1], x[0])))
     union = "\n\nunion all\n\n".join(branches)
     header = f"""/* =====================================================================================
    DM-T2  |  Load Audit - Hash Key Integrity (DV2.0, Travel LOB)  -- {project} SUMMARY RUN
@@ -160,7 +174,7 @@ def render(project, total, tables, branches):
    Section queries are verbatim; hub/link `with c` CTEs are inlined only.
 
    Run order (Snowflake worksheet, one statement at a time):
-     1. Preflight -- must return 0 rows. Any row = table missing, statement 2 will fail.
+     1. Preflight -- must return 0 rows. Any row = table/column missing, statement 2 will fail.
      2. Main      -- one row per section, same numbering as the .docx Results summary.
                      Doc mapping: result -> "Result (Pass / Fail / NA)",
                      failing_rows -> "Rows with status = FAIL (count)", remarks -> "Remarks".
@@ -169,16 +183,21 @@ def render(project, total, tables, branches):
    ===================================================================================== */
 
 
--- 1. Preflight: in-scope tables missing from BGIL_DATA_MODEL ---------------------------
-select t.column1 as missing_table
+-- 1. Preflight: tables / columns the sections read that are missing in BGIL_DATA_MODEL --
+-- Must return 0 rows. Each row names the first section that would fail to compile.
+select v.column1 as section_no, v.column2 as table_name, v.column3 as column_name,
+       iff(t.table_name is null, 'TABLE MISSING', 'COLUMN MISSING') as problem
   from (values
 {values}
-  ) t
- where t.column1 not in (
-       select table_name
-         from BAGIC_PREPROD_CURATED_DB.INFORMATION_SCHEMA.TABLES
-        where table_schema = 'BGIL_DATA_MODEL')
- order by 1;
+  ) v
+  left join (select distinct table_name
+               from BAGIC_PREPROD_CURATED_DB.INFORMATION_SCHEMA.TABLES
+              where table_schema = 'BGIL_DATA_MODEL') t
+    on t.table_name = v.column2
+  left join BAGIC_PREPROD_CURATED_DB.INFORMATION_SCHEMA.COLUMNS c
+    on c.table_schema = 'BGIL_DATA_MODEL' and c.table_name = v.column2 and c.column_name = v.column3
+ where c.column_name is null
+ order by 1, 2, 3;
 
 
 -- 2. Main: all sections ------------------------------------------------------------------
