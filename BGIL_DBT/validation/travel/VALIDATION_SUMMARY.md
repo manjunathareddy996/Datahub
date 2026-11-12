@@ -72,7 +72,7 @@ nothing recorded.
 | DM-R2_MAXIMUS | 12 | 4 | 4 | 4 | 0 | 0 | 0 | 12 | pending |
 | DM-T1_OPUS | 60 | 20 | 20 | 20 | 0 | 0 | 0 | 60 | pending |
 | DM-T1_MAXIMUS | 229 | 77 | 76 | 76 | 0 | 0 | 0 | 229 | pending |
-| DM-T2_OPUS | 60 | 20 | 20 | 20 | 32 | 0 | 18 | 10 | in progress (10 hubs: recompute re-run pending) |
+| DM-T2_OPUS | 60 | 20 | 20 | 20 | 31 | 29 | 0 | 0 | FAIL |
 | DM-T2_MAXIMUS | 229 | 77 | 76 | 76 | 0 | 0 | 0 | 229 | pending |
 | DM-AG1–AG3 | — | — | — | — | — | — | — | — | NA |
 
@@ -81,13 +81,14 @@ nothing recorded.
 Notes
 - DM-T2_OPUS results (run 2026-11-12, raw export in
   `DM-T/results/DM-T2_OPUS_SUMMARY_2026-11-12.csv`, written into the docx by
-  `tools/fill_dm_t2_travel_results.py`): 32 pass, 0 fail, 18 NA (0 rows in
-  scope: 4 hubs, 14 satellites), 10 hubs pending. On every one of those 10
-  hubs, null / length / collision checks are 0, but the recompute failed on
-  100% of rows. The query recomputes `'OPUS_' || PARENT_BK`, while the models
-  hash `'HUB_<NAME>|' || PARENT_BK`, so the hubs must be re-run once the
-  formula is corrected. Section 1 is recorded as Pass: all 104 columns are
-  BINARY, and Snowflake reports no length for BINARY in INFORMATION_SCHEMA.
+  `tools/fill_dm_t2_travel_results.py`): 31 pass, 29 fail, recorded exactly
+  as the query returned them. The fails are:
+  - section 1: all 104 columns are BINARY, but Snowflake reports no length
+    for BINARY in INFORMATION_SCHEMA;
+  - 18 sections with 0 rows in scope (4 hubs, 14 satellites);
+  - 10 hubs where null / length / collision = 0 but the recompute fails on
+    100% of rows: the query recomputes `'OPUS_' || PARENT_BK`, while the
+    models hash `'HUB_<NAME>|' || PARENT_BK`.
 - Validation SQL + DOCX are regenerable from
   `BGIL_DBT/validation/tools/gen_dm_{k,a,h,r,t}_travel.py`. The DM-AG family
   (aggregate / cross-check rollups) is not yet planned for travel — shown as

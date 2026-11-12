@@ -10,19 +10,10 @@ exported as CSV) into DM-T2_<PROJECT>.docx:
     python3 BGIL_DBT/validation/tools/fill_dm_t2_travel_results.py OPUS \
         BGIL_DBT/validation/travel/DM-T/results/DM-T2_OPUS_SUMMARY_2026-11-12.csv
 
-Verdict rules (applied on top of the query's PASS / FAIL):
-  * rows_in_scope = 0                   -> NA   (table holds no rows for the
-                                                 project's travel RECORD_SOURCEs)
-  * section 1, every column BINARY      -> Pass (Snowflake INFORMATION_SCHEMA
-                                                 reports no length for BINARY;
-                                                 16 bytes is checked per table by
-                                                 wrong_length_hkey)
-  * hub whose only failure is hkey_not_recomputable on 100% of rows
-                                        -> Pending re-run (the query recomputes
-                                                 '<PROJECT>_' || PARENT_BK but the
-                                                 models hash 'HUB_<NAME>|' ||
-                                                 PARENT_BK; query defect, not data)
-  * anything else                       -> the query's own Pass / Fail
+Result and failing rows are written exactly as the query returned them
+(Pass / Fail). Remarks carry the counts, plus the known reason for these
+Fail patterns: section 1 (BINARY reported without length), 0 rows in scope,
+and hubs whose recompute fails on 100% of rows (query formula mismatch).
 Idempotent: re-running overwrites the same cells.
 """
 import csv
@@ -49,35 +40,34 @@ def num(v):
 
 
 def verdict(r):
+    """Result and failing rows are copied from the query as-is (Pass / Fail).
+    Remarks give the counts and, for known causes, the reason for a Fail."""
     no, kind = int(r["SECTION_NO"]), r["TABLE_TYPE"]
     rows = num(r["ROWS_IN_SCOPE"])
-    if kind != "columns" and rows == 0:
-        return "NA", "", ("0 rows in scope: the table holds no rows for this project's travel "
-                          "RECORD_SOURCE values (old and LOB-scoped prefix).")
+    result, failing = r["RESULT"], r["FAILING_ROWS"]
     if no == 1:
-        rem = r["REMARKS"]
-        listed = re.findall(r"\b([A-Z0-9_]+\.[A-Z0-9_]+) (\w+)", rem)
-        if listed and all(t == "BINARY" for _, t in listed) and len(listed) == rows:
-            return "Pass", "0", (f"All {rows} *_HKEY / HASHDIFF columns are BINARY. Snowflake "
-                                 "INFORMATION_SCHEMA.COLUMNS reports no length for BINARY, so the "
-                                 "query flagged them; the 16-byte length is confirmed per table by "
-                                 "wrong_length_hkey = 0 in every section with rows.")
-        return r["RESULT"], r["FAILING_ROWS"], rem
-    if kind == "hub" and r["RESULT"] == "Fail":
-        nr = num(r["HKEY_NOT_RECOMPUTABLE"])
-        others = [num(r[c]) or 0 for c in ("NULL_HKEY", "WRONG_LENGTH_HKEY", "COLLISIONS")]
-        if nr == rows and not any(others):
-            return "Pending re-run", "", (
-                f"rows_in_scope={rows}; null_hkey=0; wrong_length_hkey=0; collisions=0. "
-                f"hkey_not_recomputable={nr} (100%): the query recomputed '<PROJECT>_' || PARENT_BK, "
-                "but the model hashes 'HUB_<NAME>|' || PARENT_BK. Recompute to be re-run with "
-                "the corrected formula.")
+        listed = re.findall(r"\b([A-Z0-9_]+\.[A-Z0-9_]+) (\w+)", r["REMARKS"])
+        if listed and all(t == "BINARY" for _, t in listed):
+            return result, failing, (
+                f"columns checked={rows}; flagged={len(listed)}. Every flagged column is BINARY: "
+                "Snowflake INFORMATION_SCHEMA.COLUMNS reports no length for BINARY, so the "
+                "16-byte test cannot pass here. Byte length is checked per table by "
+                "wrong_length_hkey.")
+        return result, failing, r["REMARKS"]
+    if kind != "columns" and rows == 0:
+        return result, failing, ("0 rows in scope for this project's travel RECORD_SOURCE "
+                                 "values (old and LOB-scoped prefix); nothing to check.")
     parts = [f"rows_in_scope={r['ROWS_IN_SCOPE']}"]
     for c in ("NULL_HKEY", "NULL_FK_HKEYS", "WRONG_LENGTH_HKEY", "HKEY_NOT_RECOMPUTABLE",
               "COLLISIONS", "NULL_HASHDIFF"):
         if r[c] != "":
             parts.append(f"{c.lower()}={r[c]}")
-    return r["RESULT"], r["FAILING_ROWS"], "; ".join(parts)
+    rem = "; ".join(parts)
+    if kind == "hub" and result == "Fail" and num(r["HKEY_NOT_RECOMPUTABLE"]) == rows and not any(
+            num(r[c]) or 0 for c in ("NULL_HKEY", "WRONG_LENGTH_HKEY", "COLLISIONS")):
+        rem += (". Recompute fails on 100% of rows: the query recomputes '<PROJECT>_' || "
+                "PARENT_BK, but the model hashes 'HUB_<NAME>|' || PARENT_BK.")
+    return result, failing, rem
 
 
 def para_with(old_para, text):
