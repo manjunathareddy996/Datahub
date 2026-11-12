@@ -238,7 +238,10 @@ def part_cols(sat):
 def h1a(sat):
     _, hd_phys = sat_hashdiff(sat)
     hd_src, _ = sat_hashdiff(sat)
-    payload = set(sat.payload)
+    # Child-key (src_cdk) columns are physical columns of a multi-active sat, and the
+    # stage HASHDIFF may hash them (travel ma_sat feeds do) -- they are stored, so they
+    # are recomputable from the row and must not be reported as "not stored".
+    payload = set(sat.payload) | {c.upper() for c in sat.cdk}
     findings = []
     if sat.object_cols:
         branches = [(f"all {sat.project} rows (OBJECT hashdiff)", project_scope(sat), object_hashdiff_expr(sat))]
@@ -818,6 +821,42 @@ def before_part_b(project, check):
     return [("Before running part (b)", items)]
 
 
+def h1_section(s):
+    """DM-H1 section for ONE satellite: STEP 1 (static HASHDIFF integrity) then, when the
+    sat has mapped payload, STEP 2..7 (CDC capture, key pick, forced change, result)."""
+    sec = h1a(s)
+    sec["hub"] = plan_tag(s) + sec["hub"]
+    # Relabel the static (a) query as STEP 1 for a clear per-model sequence.
+    if sec["queries"]:
+        a_label, a_sql = sec["queries"][0]
+        sec["queries"][0] = (
+            "STEP 1 (static, run anytime) -- HASHDIFF integrity. PASS here = the change-detection "
+            "fingerprint is sound. " + a_label, a_sql)
+    cap = cdc_capture(s) if s.applicable else None
+    if cap and sec["status"] != "NA":
+        sec["queries"].append(
+            ("STEP 2 (BEFORE) -- set $DM_H_RUN (with your <M#>) and $DM_H_PHASE='BEFORE', then run "
+             "this CDC capture. Re-run it again in STEP 6 after setting phase to AFTER.", cap))
+        bkq = bk_map_query(s)
+        if bkq:
+            sec["queries"].append(
+                ("STEP 3 (pick a key) -- map a sampled BEFORE hkey to its RAW business key. Copy one "
+                 "business_key value to use in STEP 4.", bkq))
+        fcq = force_change_query(s)
+        if fcq:
+            sec["queries"].append(
+                ("STEP 4 (force the change) -- fill <BK> from STEP 3, run this UPDATE in UTILS. "
+                 "STEP 5: dbt run --select this sat. STEP 6: set phase='AFTER' and re-run STEP 2.", fcq))
+        ko = " NOTE: this is a KEY-ONLY multi-active sat (payload = child key), so a change " \
+             "creates a NEW member; counting is PER PARENT KEY -- PASS = the parent key gained a row." \
+             if is_key_only(s) else ""
+        sec["queries"].append(
+            ("STEP 7 (result for THIS sat) -- after AFTER capture, run this. PASS = every changed "
+             "key got >= 1 new row; NOT TESTED = no change reached the sample." + ko,
+             cdc_result_for_sat(s)))
+    return sec
+
+
 def main():
     # Styles template for the generated .docx. Prefer the canonical DM-K4 template; if it
     # is absent, fall back to any existing generated .docx (same base styling).
@@ -851,37 +890,7 @@ def main():
             if cid == "DM-H1":
                 sections = [cdc_setup(), cdc_procedure(pj)]
                 for s in ps:
-                    sec = h1a(s)
-                    sec["hub"] = plan_tag(s) + sec["hub"]
-                    # Relabel the static (a) query as STEP 1 for a clear per-model sequence.
-                    if sec["queries"]:
-                        a_label, a_sql = sec["queries"][0]
-                        sec["queries"][0] = (
-                            "STEP 1 (static, run anytime) -- HASHDIFF integrity. PASS here = the change-detection "
-                            "fingerprint is sound. " + a_label, a_sql)
-                    cap = cdc_capture(s) if s.applicable else None
-                    if cap and sec["status"] != "NA":
-                        sec["queries"].append(
-                            ("STEP 2 (BEFORE) -- set $DM_H_RUN (with your <M#>) and $DM_H_PHASE='BEFORE', then run "
-                             "this CDC capture. Re-run it again in STEP 6 after setting phase to AFTER.", cap))
-                        bkq = bk_map_query(s)
-                        if bkq:
-                            sec["queries"].append(
-                                ("STEP 3 (pick a key) -- map a sampled BEFORE hkey to its RAW business key. Copy one "
-                                 "business_key value to use in STEP 4.", bkq))
-                        fcq = force_change_query(s)
-                        if fcq:
-                            sec["queries"].append(
-                                ("STEP 4 (force the change) -- fill <BK> from STEP 3, run this UPDATE in UTILS. "
-                                 "STEP 5: dbt run --select this sat. STEP 6: set phase='AFTER' and re-run STEP 2.", fcq))
-                        ko = " NOTE: this is a KEY-ONLY multi-active sat (payload = child key), so a change " \
-                             "creates a NEW member; counting is PER PARENT KEY -- PASS = the parent key gained a row." \
-                             if is_key_only(s) else ""
-                        sec["queries"].append(
-                            ("STEP 7 (result for THIS sat) -- after AFTER capture, run this. PASS = every changed "
-                             "key got >= 1 new row; NOT TESTED = no change reached the sample." + ko,
-                             cdc_result_for_sat(s)))
-                    sections.append(sec)
+                    sections.append(h1_section(s))
                 res = cdc_result(pj, cid)
                 res["hub"] = "STEP 7 -- " + res["hub"]
                 sections.append(res)
