@@ -206,9 +206,9 @@ def t2_link(t):
     # of the collision combination but have no null / 16-byte rule.
     hk = [f for f in t.fks if f.upper().endswith("_HKEY")]
     other = [f for f in t.fks if f not in hk]
-    combo = " || '|' || ".join(
-        f"coalesce(to_varchar({f}, 'HEX'), '^^')" if f in hk else f"coalesce(to_varchar({f}), '^^')"
-        for f in t.fks)
+    # HASH() accepts any column type and treats NULL as a value, so the
+    # combination works whether a column is BINARY or text.
+    combo = f"hash({', '.join(t.fks)})"
     nulls = " + ".join(f"count_if({f} is null)" for f in hk) or "0"
     lens = " or ".join(f"length({f}) <> 16" for f in [t.pk] + hk)
     sql = f"""with c as (
