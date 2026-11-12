@@ -146,6 +146,17 @@ def table_branch(project, no, member, label, sql):
 # the other half: satellites only, and hubs + links (+ section 1, column types).
 PARTS = [("SATS", {"satellite"}), ("HUBS_LINKS", {"columns", "hub", "link"})]
 
+# Sections left out of the runnable query because the vault table does not
+# have a column the section reads (compile error). Record them separately.
+SKIP = {
+    "MAXIMUS": {
+        62: "SAT_AUG_LNK_ROLE_PROVIDER has no PARTY_ROLE_HKEY in the vault (keyed on PARTY_HKEY by the partner build)",
+        174: "SAT_LNK_ROLE_AGENT has no PARTY_ROLE_HKEY in the vault (keyed on PARTY_HKEY by the health/partner builds)",
+        175: "SAT_LNK_ROLE_CUSTOMER has no PARTY_ROLE_HKEY in the vault (keyed on PARTY_HKEY by the health/partner builds)",
+        176: "SAT_LNK_ROLE_EMPLOYEE has no PARTY_ROLE_HKEY in the vault (keyed on PARTY_HKEY by the health/partner builds)",
+    },
+}
+
 
 def main():
     for project, path in SOURCES:
@@ -153,7 +164,10 @@ def main():
         nums = [s[0] for s in secs]
         assert nums == list(range(1, len(secs) + 1)), f"{path.name}: gaps"
         built = []  # (kind, branch_sql, columns_used)
+        skip = SKIP.get(project, {})
         for (no, label, sql), mem in zip(secs, member_buckets(len(secs))):
+            if no in skip:
+                continue
             if no == 1:
                 _, b = type_check_branch(project, no, mem, label, sql)
                 built.append(("columns", b, {}))
@@ -168,7 +182,15 @@ def main():
                 for tc, no in c.items():
                     cols.setdefault(tc, no)
             out = DMT / f"DM-T2_{project}_{part}_SUMMARY.sql"
-            out.write_text(render(project, part, len(sel), cols, [b for _, b, _ in sel]))
+            text = render(project, part, len(sel), cols, [b for _, b, _ in sel])
+            skipped = [(no, why) for no, why in sorted(skip.items())
+                       if (secs[no - 1][1].split()[0].lower() in kinds)
+                       or (no == 1 and "columns" in kinds)]
+            if skipped:
+                note = "   NOT IN THIS QUERY (vault table lacks a column the section reads):\n" + "".join(
+                    f"     section {no}: {why}\n" for no, why in skipped)
+                text = text.replace("\n   Run order", "\n" + note + "\n   Run order", 1)
+            out.write_text(text)
             print(f"wrote {out.relative_to(HERE.parent)}: {len(sel)} sections, "
                   f"{len({t for t, _ in cols})} tables, {out.stat().st_size:,} bytes")
 
