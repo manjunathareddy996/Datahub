@@ -156,6 +156,7 @@ OUTPUTS = {("MAXIMUS", "SATS")}
 SKIP = {
     "MAXIMUS": {
         62: "SAT_AUG_LNK_ROLE_PROVIDER has no PARTY_ROLE_HKEY in the vault (keyed on PARTY_HKEY by the partner build)",
+        67: "SAT_AUG_PARTY_CONTACT_ADDRESS_LINK has no PARTY_LOCATION_HKEY in the vault (keyed on PARTY_HKEY by the partner build)",
         174: "SAT_LNK_ROLE_AGENT has no PARTY_ROLE_HKEY in the vault (keyed on PARTY_HKEY by the health/partner builds)",
         175: "SAT_LNK_ROLE_CUSTOMER has no PARTY_ROLE_HKEY in the vault (keyed on PARTY_HKEY by the health/partner builds)",
         176: "SAT_LNK_ROLE_EMPLOYEE has no PARTY_ROLE_HKEY in the vault (keyed on PARTY_HKEY by the health/partner builds)",
