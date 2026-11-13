@@ -9,8 +9,8 @@
 
 {%- set yaml_metadata -%}
 source_model:
-  - 'stg2_mp__pd_prop_msdp_pv'
-  - 'stg2_mp__pd_prop_sp_pv'
+  - 'satfeed_mp_sat__party_banking__msdp_pv'
+  - 'satfeed_mp_sat__party_banking__sp_pv'
 src_pk: 'PARTY_HKEY'
 src_cdk:
   - 'ACCOUNTNUMBERMASKED'
@@ -27,8 +27,8 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_mp__pd_prop_msdp_pv: 'MAXIMUS_PARTNER'
-  stg2_mp__pd_prop_sp_pv: 'MAXIMUS_PARTNER'
+  satfeed_mp_sat__party_banking__msdp_pv: 'MAXIMUS_PARTNER'
+  satfeed_mp_sat__party_banking__sp_pv: 'MAXIMUS_PARTNER'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
@@ -42,6 +42,6 @@ src_record_source_map:
                        source_model=metadata_dict['source_model'],
                        src_record_source_map=metadata_dict['src_record_source_map'],
                        src_column_map={
-                        'stg2_mp__pd_prop_msdp_pv': ['ACCOUNTHOLDERNAME', 'ACCOUNTNUMBERMASKED', 'ACCOUNTTYPE', 'BANKNAME', 'BRANCHNAME', 'IFSCCODE', 'MICRCODE', 'PENNYDROPVERIFIEDINDICATOR', 'PRIMARYACCOUNTINDICATOR'],
-                        'stg2_mp__pd_prop_sp_pv': ['ACCOUNTNUMBERMASKED', 'ACCOUNTTYPE']
+                        'satfeed_mp_sat__party_banking__msdp_pv': ['ACCOUNTHOLDERNAME', 'ACCOUNTNUMBERMASKED', 'ACCOUNTTYPE', 'BANKNAME', 'BRANCHNAME', 'IFSCCODE', 'MICRCODE', 'PENNYDROPVERIFIEDINDICATOR', 'PRIMARYACCOUNTINDICATOR'],
+                        'satfeed_mp_sat__party_banking__sp_pv': ['ACCOUNTNUMBERMASKED', 'ACCOUNTTYPE']
                        }) }}
