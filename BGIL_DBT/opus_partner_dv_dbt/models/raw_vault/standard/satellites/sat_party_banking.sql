@@ -5,7 +5,9 @@
     )
 }}
 
--- PARTNER STANDARD-MODEL sat_multi_source() for SAT_PARTY_BANKING (HUB_PARTY grain) -- 4 source table(s).
+-- PARTNER STANDARD-MODEL ma_sat_multi_source() for SAT_PARTY_BANKING (HUB_PARTY grain) -- 4 source table(s).
+-- Multi-active on the account number (a party can hold several bank accounts); change detection
+-- and watermark are per (PARTY_HKEY, RECORD_SOURCE), so other projects' rows are never touched.
 
 {%- set yaml_metadata -%}
 source_model:
@@ -14,8 +16,9 @@ source_model:
   - 'stg2_sat_bjaz_ctngy_pa_mem_dtls__party_banking'
   - 'stg2_sat_bjaz_hm_member_dtls__party_banking'
 src_pk: 'PARTY_HKEY'
-src_payload:
+src_cdk:
   - 'ACCOUNTNUMBERMASKED'
+src_payload:
   - 'BANKCODE'
   - 'BANKNAME'
   - 'IFSCCODE'
@@ -32,16 +35,17 @@ src_record_source_map:
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
 
-{{ sat_multi_source(src_pk=metadata_dict['src_pk'],
-                    src_payload=metadata_dict['src_payload'],
-                    src_hashdiff=metadata_dict['src_hashdiff'],
-                    src_ldts=metadata_dict['src_ldts'],
-                    src_source=metadata_dict['src_source'],
-                    source_model=metadata_dict['source_model'],
-                    src_record_source_map=metadata_dict['src_record_source_map'],
-                    src_column_map={
+{{ ma_sat_multi_source(src_pk=metadata_dict['src_pk'],
+                       src_cdk=metadata_dict['src_cdk'],
+                       src_payload=metadata_dict['src_payload'],
+                       src_hashdiff=metadata_dict['src_hashdiff'],
+                       src_ldts=metadata_dict['src_ldts'],
+                       src_source=metadata_dict['src_source'],
+                       source_model=metadata_dict['source_model'],
+                       src_record_source_map=metadata_dict['src_record_source_map'],
+                       src_column_map={
                         'stg2_sat_azbj_partner_extn__party_banking': ['ACCOUNTNUMBERMASKED', 'IFSCCODE', 'MICRCODE'],
                         'stg2_sat_bjaz_clm_supp_extn__party_banking': ['ACCOUNTNUMBERMASKED', 'BANKNAME'],
                         'stg2_sat_bjaz_ctngy_pa_mem_dtls__party_banking': ['ACCOUNTNUMBERMASKED', 'BANKCODE'],
                         'stg2_sat_bjaz_hm_member_dtls__party_banking': ['ACCOUNTNUMBERMASKED', 'BANKNAME', 'MICRCODE']
-                    }) }}
+                       }) }}

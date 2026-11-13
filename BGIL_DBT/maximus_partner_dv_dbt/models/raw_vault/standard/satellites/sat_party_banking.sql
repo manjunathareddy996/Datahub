@@ -1,18 +1,21 @@
 {{ config(materialized='incremental') }}
 
--- MAXIMUS PARTNER sat() for SAT_PARTY_BANKING.
--- Writes the SAME physical table as partner_dv_dbt's model of the same name: separate projects,
+-- MAXIMUS PARTNER ma_sat_multi_source() for SAT_PARTY_BANKING.
+-- Writes the SAME physical table as the other projects' models of the same name: separate projects,
 -- separate pipelines, one shared vault. This model declares ONLY Maximus's sources and only the
 -- payload Maximus populates, which is what removes any need to back-patch the other project.
+-- Multi-active on the account number (a party can hold several bank accounts); change detection
+-- and watermark are per (PARTY_HKEY, RECORD_SOURCE), so other projects' rows are never touched.
 
 {%- set yaml_metadata -%}
 source_model:
   - 'stg2_mp__pd_prop_msdp_pv'
   - 'stg2_mp__pd_prop_sp_pv'
 src_pk: 'PARTY_HKEY'
+src_cdk:
+  - 'ACCOUNTNUMBERMASKED'
 src_payload:
   - 'ACCOUNTHOLDERNAME'
-  - 'ACCOUNTNUMBERMASKED'
   - 'ACCOUNTTYPE'
   - 'BANKNAME'
   - 'BRANCHNAME'
@@ -20,7 +23,7 @@ src_payload:
   - 'MICRCODE'
   - 'PENNYDROPVERIFIEDINDICATOR'
   - 'PRIMARYACCOUNTINDICATOR'
-src_hashdiff: 'HASHDIFF_PARTY_BANKING'
+src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
@@ -30,15 +33,15 @@ src_record_source_map:
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
 
-{{ sat_multi_source(src_pk=metadata_dict['src_pk'],
-                    src_payload=metadata_dict['src_payload'],
-                    src_hashdiff=metadata_dict['src_hashdiff'],
-                    src_hashdiff_alias='HASHDIFF',
-                    src_ldts=metadata_dict['src_ldts'],
-                    src_source=metadata_dict['src_source'],
-                    source_model=metadata_dict['source_model'],
-                    src_record_source_map=metadata_dict['src_record_source_map'],
-                    src_column_map={
+{{ ma_sat_multi_source(src_pk=metadata_dict['src_pk'],
+                       src_cdk=metadata_dict['src_cdk'],
+                       src_payload=metadata_dict['src_payload'],
+                       src_hashdiff=metadata_dict['src_hashdiff'],
+                       src_ldts=metadata_dict['src_ldts'],
+                       src_source=metadata_dict['src_source'],
+                       source_model=metadata_dict['source_model'],
+                       src_record_source_map=metadata_dict['src_record_source_map'],
+                       src_column_map={
                         'stg2_mp__pd_prop_msdp_pv': ['ACCOUNTHOLDERNAME', 'ACCOUNTNUMBERMASKED', 'ACCOUNTTYPE', 'BANKNAME', 'BRANCHNAME', 'IFSCCODE', 'MICRCODE', 'PENNYDROPVERIFIEDINDICATOR', 'PRIMARYACCOUNTINDICATOR'],
                         'stg2_mp__pd_prop_sp_pv': ['ACCOUNTNUMBERMASKED', 'ACCOUNTTYPE']
-                    }) }}
+                       }) }}
