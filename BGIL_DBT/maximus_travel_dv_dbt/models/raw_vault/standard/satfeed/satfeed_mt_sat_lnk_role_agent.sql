@@ -10,7 +10,7 @@
 -- 27 views feed more than one sibling-built satellite (BD7 / BUILD_RULES 12).
 
     select
-        PARTY_ROLE_HKEY__PROPOSER as PARTY_ROLE_HKEY,
+        PARTY_HKEY__PROPOSER as PARTY_HKEY,
         AGENT_CODE as AGENT_CODE,
         IRDAI_AGENT_LICENCE_NUMBER as IRDAI_AGENT_LICENCE_NUMBER,
         LICENCE_CATEGORY as LICENCE_CATEGORY,
@@ -23,4 +23,4 @@
         HASHDIFF_LNK_ROLE_AGENT as HASHDIFF,
         LOAD_DATETIME, RECORD_SOURCE
     from {{ ref('stg2_mt__uwr_pol_prp_pp_sp_pv') }}
-    where PARTY_ROLE_HKEY__PROPOSER is not null
+    where PARTY_HKEY__PROPOSER is not null
