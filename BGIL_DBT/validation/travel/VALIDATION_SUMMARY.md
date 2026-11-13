@@ -70,8 +70,8 @@ nothing recorded.
 | DM-R1_MAXIMUS | 210 | 70 | 70 | 70 | 0 | 0 | 0 | 210 | pending |
 | DM-R2_OPUS | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 1 | pending |
 | DM-R2_MAXIMUS | 12 | 4 | 4 | 4 | 0 | 0 | 0 | 12 | pending |
-| DM-T1_OPUS | 60 | 20 | 20 | 20 | 0 | 0 | 0 | 60 | pending |
-| DM-T1_MAXIMUS | 229 | 77 | 76 | 76 | 0 | 0 | 0 | 229 | pending |
+| DM-T1_OPUS | 60 | 20 | 20 | 20 | 42 | 18 | 0 | 0 | FAIL |
+| DM-T1_MAXIMUS | 229 | 77 | 76 | 76 | 138 | 91 | 0 | 0 | FAIL |
 | DM-T2_OPUS | 60 | 20 | 20 | 20 | 31 | 29 | 0 | 0 | FAIL |
 | DM-T2_MAXIMUS | 229 | 77 | 76 | 76 | 122 | 107 | 0 | 0 | FAIL |
 | DM-AG1–AG3 | — | — | — | — | — | — | — | — | NA |
@@ -109,6 +109,19 @@ Notes
     models hash `'HUB_<NAME>|' || PARENT_BK`.
 
   File total: 122 pass, 107 fail.
+- DM-T1 (run 2026-11-13, raw exports in `DM-T/results/DM-T1_*_SUMMARY_2026-11-13-*.csv`,
+  written into the docx by `tools/fill_dm_t1_travel_results.py`). Pass / Fail
+  are recorded exactly as the queries returned them. No table had a null,
+  placeholder or future LOAD_DATETIME, a null RECORD_SOURCE, or a run-timestamp
+  problem. Every table-level fail is "0 rows in scope", and section 1
+  (summary) fails because of those.
+  - OPUS: 42 pass, 18 fail. That is 4 hubs and 13 satellites with 0 rows,
+    plus section 1. The satellite remarks are taken from DM-R1.
+  - MAXIMUS: 138 pass, 91 fail. That is 89 satellites with 0 rows, section
+    107 not run (SAT_AUG_QUOTE_HEADER table missing), plus section 1. The
+    satellite remarks are taken from DM-R1 / DM-A1 / DM-A2.
+  - Known gap: `unexpected_record_source` is always 0, because each query
+    already filters to the expected RECORD_SOURCE values.
 - Validation SQL + DOCX are regenerable from
   `BGIL_DBT/validation/tools/gen_dm_{k,a,h,r,t}_travel.py`. The DM-AG family
   (aggregate / cross-check rollups) is not yet planned for travel — shown as
