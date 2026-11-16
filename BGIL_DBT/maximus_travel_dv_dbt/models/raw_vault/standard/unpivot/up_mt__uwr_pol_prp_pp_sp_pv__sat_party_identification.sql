@@ -36,6 +36,27 @@
 --   tan                                      1 attribute(s)
 --   voter_id                                 1 attribute(s)
 
+-- INCREMENTAL VIEW: returns only rows whose REC_REFRESH_AT is after the latest
+-- LOAD_DATETIME this feeder already wrote to SAT_PARTY_IDENTIFICATION.
+--   Incremental (default):  dbt run -s +sat_party_identification
+--   Full load:              dbt run -s +sat_party_identification --vars '{full_load: true}'
+--   (--full-refresh, or SAT_PARTY_IDENTIFICATION not existing yet, also gives full data)
+
+{%- set sat_rel = adapter.get_relation(database=this.database, schema=this.schema, identifier='SAT_PARTY_IDENTIFICATION') if execute else none %}
+{%- set is_full_load = var('full_load', false) or flags.FULL_REFRESH or sat_rel is none %}
+
+with src as (
+    select *
+    from {{ ref('resolved_mt__uwr_pol_prp_pp_sp_pv') }}
+    {%- if not is_full_load %}
+    where try_to_timestamp_ntz(to_varchar(rec_refresh_at)) > (
+        select coalesce(max(try_to_timestamp_ntz(to_varchar(LOAD_DATETIME))), '1900-01-01'::timestamp_ntz)
+        from {{ sat_rel }}
+        where RECORD_SOURCE = 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'
+    )
+    {%- endif %}
+)
+
     select
         nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__PROPOSER,
         coalesce(nullif(trim(identification_proof), ''),'') as IDENTIFICATION_TYPE_CODE,
@@ -66,7 +87,7 @@
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_prp_pp_sp_pv') }}
+    from src
     where id_number is not null or id_proof is not null or identification_proof is not null or identification_proof_effective_date is not null
 union all
     select
@@ -99,7 +120,7 @@ union all
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_prp_pp_sp_pv') }}
+    from src
     where aadhaar_number is not null or aadhar_no is not null or poa_aadhar_card_status is not null or uid is not null
 union all
     select
@@ -132,7 +153,7 @@ union all
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_prp_pp_sp_pv') }}
+    from src
     where aadhaar_enrollment_no is not null
 union all
     select
@@ -165,7 +186,7 @@ union all
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_prp_pp_sp_pv') }}
+    from src
     where vid is not null
 union all
     select
@@ -198,7 +219,7 @@ union all
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_prp_pp_sp_pv') }}
+    from src
     where abha_id is not null
 union all
     select
@@ -231,7 +252,7 @@ union all
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_prp_pp_sp_pv') }}
+    from src
     where dob_proof is not null
 union all
     select
@@ -264,7 +285,7 @@ union all
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_prp_pp_sp_pv') }}
+    from src
     where cin_number is not null
 union all
     select
@@ -297,7 +318,7 @@ union all
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_prp_pp_sp_pv') }}
+    from src
     where ckyc_number is not null or claim_ckyc_number is not null
 union all
     select
@@ -330,7 +351,7 @@ union all
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_prp_pp_sp_pv') }}
+    from src
     where driving_license_expiry_date is not null or driving_license_issue_date is not null or driving_license_number is not null or driving_license_place_of_issue is not null or poa_driving_license_status is not null
 union all
     select
@@ -363,7 +384,7 @@ union all
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_prp_pp_sp_pv') }}
+    from src
     where e_insurance_demat_account_verified is not null or eia_number is not null or insurance_repository_code is not null
 union all
     select
@@ -396,7 +417,7 @@ union all
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_prp_pp_sp_pv') }}
+    from src
     where poi_form_60_status is not null
 union all
     select
@@ -429,7 +450,7 @@ union all
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_prp_pp_sp_pv') }}
+    from src
     where expiry_date is not null
 union all
     select
@@ -462,7 +483,7 @@ union all
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_prp_pp_sp_pv') }}
+    from src
     where gstin_issuance_dt is not null or gstinuin is not null or gstn_number is not null or gstn_regn_status is not null or gstn_status is not null or gstn_taxpayer_type is not null or taxpayer_type is not null
 union all
     select
@@ -495,7 +516,7 @@ union all
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_prp_pp_sp_pv') }}
+    from src
     where nrega_job_card is not null or poa_nrega_job_card_status is not null
 union all
     select
@@ -528,7 +549,7 @@ union all
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_prp_pp_sp_pv') }}
+    from src
     where pan_no is not null or pan_number is not null or poi_pan_card_status is not null
 union all
     select
@@ -561,7 +582,7 @@ union all
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_prp_pp_sp_pv') }}
+    from src
     where poa_passport_status is not null
 union all
     select
@@ -594,7 +615,7 @@ union all
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_prp_pp_sp_pv') }}
+    from src
     where poa_document_status is not null or proof_of_address_submitted_for_current_permanent_overseas_address is not null
 union all
     select
@@ -627,7 +648,7 @@ union all
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_prp_pp_sp_pv') }}
+    from src
     where poi_document_status is not null
 union all
     select
@@ -660,7 +681,7 @@ union all
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_prp_pp_sp_pv') }}
+    from src
     where sepz_registration_date is not null or sepz_registration_no is not null
 union all
     select
@@ -693,7 +714,7 @@ union all
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_prp_pp_sp_pv') }}
+    from src
     where service_tax is not null
 union all
     select
@@ -726,7 +747,7 @@ union all
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_prp_pp_sp_pv') }}
+    from src
     where sez_expiry_date is not null or sez_registration_date is not null or sez_registration_no is not null
 union all
     select
@@ -759,7 +780,7 @@ union all
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_prp_pp_sp_pv') }}
+    from src
     where tan_number is not null
 union all
     select
@@ -792,5 +813,5 @@ union all
         voter_id as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_prp_pp_sp_pv') }}
+    from src
     where voter_id is not null

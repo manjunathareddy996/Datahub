@@ -25,6 +25,27 @@
 --   mobile_key_contact_1                     1 attribute(s)
 --   mobile_registered_1                      1 attribute(s)
 
+-- INCREMENTAL VIEW: returns only rows whose REC_REFRESH_AT is after the latest
+-- LOAD_DATETIME this feeder already wrote to SAT_COMMON_CONTACT.
+--   Incremental (default):  dbt run -s +sat_common_contact
+--   Full load:              dbt run -s +sat_common_contact --vars '{full_load: true}'
+--   (--full-refresh, or SAT_COMMON_CONTACT not existing yet, also gives full data)
+
+{%- set sat_rel = adapter.get_relation(database=this.database, schema=this.schema, identifier='SAT_COMMON_CONTACT') if execute else none %}
+{%- set is_full_load = var('full_load', false) or flags.FULL_REFRESH or sat_rel is none %}
+
+with src as (
+    select *
+    from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
+    {%- if not is_full_load %}
+    where try_to_timestamp_ntz(to_varchar(rec_refresh_at)) > (
+        select coalesce(max(try_to_timestamp_ntz(to_varchar(LOAD_DATETIME))), '1900-01-01'::timestamp_ntz)
+        from {{ sat_rel }}
+        where RECORD_SOURCE = 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW'
+    )
+    {%- endif %}
+)
+
     select
         nullif(trim(case when nullif(trim(customerid),'') is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
         'EMAIL' as CONTACT_POINT_TYPE,
@@ -40,7 +61,7 @@
         cast(null as varchar) as STD_CODE,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
+    from src
     where email is not null
 union all
     select
@@ -58,7 +79,7 @@ union all
         cast(null as varchar) as STD_CODE,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
+    from src
     where communication_email_id is not null
 union all
     select
@@ -76,7 +97,7 @@ union all
         cast(null as varchar) as STD_CODE,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
+    from src
     where insured_email_id is not null
 union all
     select
@@ -94,7 +115,7 @@ union all
         cast(null as varchar) as STD_CODE,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
+    from src
     where key_email_id is not null
 union all
     select
@@ -112,7 +133,7 @@ union all
         cast(null as varchar) as STD_CODE,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
+    from src
     where telephone_number is not null
 union all
     select
@@ -130,7 +151,7 @@ union all
         cast(null as varchar) as STD_CODE,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
+    from src
     where mobile_number is not null
 union all
     select
@@ -148,7 +169,7 @@ union all
         cast(null as varchar) as STD_CODE,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
+    from src
     where alternate_mobile_number_belongs_to is not null or alternate_mobile_numberclaims is not null
 union all
     select
@@ -166,7 +187,7 @@ union all
         cast(null as varchar) as STD_CODE,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
+    from src
     where communication_contact_number is not null
 union all
     select
@@ -184,7 +205,7 @@ union all
         cast(null as varchar) as STD_CODE,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
+    from src
     where insured_mobile_number is not null
 union all
     select
@@ -202,7 +223,7 @@ union all
         cast(null as varchar) as STD_CODE,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
+    from src
     where insured_contact_number is not null
 union all
     select
@@ -220,7 +241,7 @@ union all
         cast(null as varchar) as STD_CODE,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
+    from src
     where key_contact_number is not null
 union all
     select
@@ -238,5 +259,5 @@ union all
         cast(null as varchar) as STD_CODE,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
+    from src
     where registered_mobile_number is not null

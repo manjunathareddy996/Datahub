@@ -21,6 +21,27 @@
 --   passport                                 1 attribute(s)
 --   voter_id                                 1 attribute(s)
 
+-- INCREMENTAL VIEW: returns only rows whose REC_REFRESH_AT is after the latest
+-- LOAD_DATETIME this feeder already wrote to SAT_PARTY_IDENTIFICATION.
+--   Incremental (default):  dbt run -s +sat_party_identification
+--   Full load:              dbt run -s +sat_party_identification --vars '{full_load: true}'
+--   (--full-refresh, or SAT_PARTY_IDENTIFICATION not existing yet, also gives full data)
+
+{%- set sat_rel = adapter.get_relation(database=this.database, schema=this.schema, identifier='SAT_PARTY_IDENTIFICATION') if execute else none %}
+{%- set is_full_load = var('full_load', false) or flags.FULL_REFRESH or sat_rel is none %}
+
+with src as (
+    select *
+    from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
+    {%- if not is_full_load %}
+    where try_to_timestamp_ntz(to_varchar(rec_refresh_at)) > (
+        select coalesce(max(try_to_timestamp_ntz(to_varchar(LOAD_DATETIME))), '1900-01-01'::timestamp_ntz)
+        from {{ sat_rel }}
+        where RECORD_SOURCE = 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW'
+    )
+    {%- endif %}
+)
+
     select
         nullif(trim(case when nullif(trim(customerid),'') is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
         'AADHAAR' as IDENTIFICATION_TYPE_CODE,
@@ -51,7 +72,7 @@
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
+    from src
     where insured_aadhar_number is not null
 union all
     select
@@ -84,7 +105,7 @@ union all
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
+    from src
     where enter_ckyc_no is not null
 union all
     select
@@ -117,7 +138,7 @@ union all
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
+    from src
     where identification_number is not null
 union all
     select
@@ -150,7 +171,7 @@ union all
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
+    from src
     where gstn_number is not null
 union all
     select
@@ -183,7 +204,7 @@ union all
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
+    from src
     where pan_number is not null
 union all
     select
@@ -216,7 +237,7 @@ union all
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
+    from src
     where insured_pan_number is not null
 union all
     select
@@ -249,7 +270,7 @@ union all
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
+    from src
     where passport_number is not null
 union all
     select
@@ -282,5 +303,5 @@ union all
         enter_voter_id as VOTER_ID_NUMBER,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
+    from src
     where enter_voter_id is not null

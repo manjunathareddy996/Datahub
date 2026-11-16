@@ -15,6 +15,27 @@
 --   mobile_claim_1                           1 attribute(s)
 --   mobile_kyc_1                             1 attribute(s)
 
+-- INCREMENTAL VIEW: returns only rows whose REC_REFRESH_AT is after the latest
+-- LOAD_DATETIME this feeder already wrote to SAT_COMMON_CONTACT.
+--   Incremental (default):  dbt run -s +sat_common_contact
+--   Full load:              dbt run -s +sat_common_contact --vars '{full_load: true}'
+--   (--full-refresh, or SAT_COMMON_CONTACT not existing yet, also gives full data)
+
+{%- set sat_rel = adapter.get_relation(database=this.database, schema=this.schema, identifier='SAT_COMMON_CONTACT') if execute else none %}
+{%- set is_full_load = var('full_load', false) or flags.FULL_REFRESH or sat_rel is none %}
+
+with src as (
+    select *
+    from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
+    {%- if not is_full_load %}
+    where try_to_timestamp_ntz(to_varchar(rec_refresh_at)) > (
+        select coalesce(max(try_to_timestamp_ntz(to_varchar(LOAD_DATETIME))), '1900-01-01'::timestamp_ntz)
+        from {{ sat_rel }}
+        where RECORD_SOURCE = 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'
+    )
+    {%- endif %}
+)
+
     select
         nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'MOBILE_CLAIM' as CONTACT_POINT_TYPE,
@@ -30,7 +51,7 @@
         cast(null as varchar) as STD_CODE,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
+    from src
     where claim_mobile_number is not null
 union all
     select
@@ -48,5 +69,5 @@ union all
         cast(null as varchar) as STD_CODE,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
+    from src
     where kyc_mobile_number is not null

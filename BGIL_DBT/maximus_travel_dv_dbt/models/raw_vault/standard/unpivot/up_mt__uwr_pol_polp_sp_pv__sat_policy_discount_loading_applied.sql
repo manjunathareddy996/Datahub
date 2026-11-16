@@ -27,6 +27,27 @@
 --   student_discount                         1 attribute(s)
 --   travelling_companion_discount            1 attribute(s)
 
+-- INCREMENTAL VIEW: returns only rows whose REC_REFRESH_AT is after the latest
+-- LOAD_DATETIME this feeder already wrote to SAT_POLICY_DISCOUNT_LOADING_APPLIED.
+--   Incremental (default):  dbt run -s +sat_policy_discount_loading_applied
+--   Full load:              dbt run -s +sat_policy_discount_loading_applied --vars '{full_load: true}'
+--   (--full-refresh, or SAT_POLICY_DISCOUNT_LOADING_APPLIED not existing yet, also gives full data)
+
+{%- set sat_rel = adapter.get_relation(database=this.database, schema=this.schema, identifier='SAT_POLICY_DISCOUNT_LOADING_APPLIED') if execute else none %}
+{%- set is_full_load = var('full_load', false) or flags.FULL_REFRESH or sat_rel is none %}
+
+with src as (
+    select *
+    from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
+    {%- if not is_full_load %}
+    where try_to_timestamp_ntz(to_varchar(rec_refresh_at)) > (
+        select coalesce(max(try_to_timestamp_ntz(to_varchar(LOAD_DATETIME))), '1900-01-01'::timestamp_ntz)
+        from {{ sat_rel }}
+        where RECORD_SOURCE = 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'
+    )
+    {%- endif %}
+)
+
     select
         nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim(foreign_key), '')) end),'') as POLICY_BK,
         'ADJUSTMENT_VALUE' as ITEM_CODE,
@@ -35,7 +56,7 @@
         cast(null as varchar) as PERCENTAGE_APPLIED,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
+    from src
     where adjustment_value is not null
 union all
     select
@@ -46,7 +67,7 @@ union all
         cast(null as varchar) as PERCENTAGE_APPLIED,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
+    from src
     where claims_experience_discount is not null
 union all
     select
@@ -57,7 +78,7 @@ union all
         cast(null as varchar) as PERCENTAGE_APPLIED,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
+    from src
     where claims_experience_loading is not null
 union all
     select
@@ -68,7 +89,7 @@ union all
         cast(null as varchar) as PERCENTAGE_APPLIED,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
+    from src
     where clu_discount is not null
 union all
     select
@@ -79,7 +100,7 @@ union all
         cast(null as varchar) as PERCENTAGE_APPLIED,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
+    from src
     where type_of_discount is not null
 union all
     select
@@ -90,7 +111,7 @@ union all
         cast(null as varchar) as PERCENTAGE_APPLIED,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
+    from src
     where employee_discount is not null
 union all
     select
@@ -101,7 +122,7 @@ union all
         cast(null as varchar) as PERCENTAGE_APPLIED,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
+    from src
     where group_discount is not null
 union all
     select
@@ -112,7 +133,7 @@ union all
         cast(null as varchar) as PERCENTAGE_APPLIED,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
+    from src
     where type_of_loading is not null
 union all
     select
@@ -123,7 +144,7 @@ union all
         cast(null as varchar) as PERCENTAGE_APPLIED,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
+    from src
     where nil_commission_discount is not null
 union all
     select
@@ -134,7 +155,7 @@ union all
         cast(null as varchar) as PERCENTAGE_APPLIED,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
+    from src
     where online_discount is not null
 union all
     select
@@ -145,7 +166,7 @@ union all
         cast(null as varchar) as PERCENTAGE_APPLIED,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
+    from src
     where other_discount is not null
 union all
     select
@@ -156,7 +177,7 @@ union all
         cast(null as varchar) as PERCENTAGE_APPLIED,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
+    from src
     where premium_adjustment is not null
 union all
     select
@@ -167,7 +188,7 @@ union all
         cast(null as varchar) as PERCENTAGE_APPLIED,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
+    from src
     where student_discount is not null
 union all
     select
@@ -178,5 +199,5 @@ union all
         cast(null as varchar) as PERCENTAGE_APPLIED,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
+    from src
     where travelling_companion_discount is not null

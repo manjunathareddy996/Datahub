@@ -20,6 +20,27 @@
 --   round_trip_premium_all_policy_n          1 attribute(s)
 --   slab_all_policy_n                        1 attribute(s)
 
+-- INCREMENTAL VIEW: returns only rows whose REC_REFRESH_AT is after the latest
+-- LOAD_DATETIME this feeder already wrote to SAT_POLICY_PREMIUM_HEAD.
+--   Incremental (default):  dbt run -s +sat_policy_premium_head
+--   Full load:              dbt run -s +sat_policy_premium_head --vars '{full_load: true}'
+--   (--full-refresh, or SAT_POLICY_PREMIUM_HEAD not existing yet, also gives full data)
+
+{%- set sat_rel = adapter.get_relation(database=this.database, schema=this.schema, identifier='SAT_POLICY_PREMIUM_HEAD') if execute else none %}
+{%- set is_full_load = var('full_load', false) or flags.FULL_REFRESH or sat_rel is none %}
+
+with src as (
+    select *
+    from {{ ref('resolved_mt__uwr_pol_polp_msp_msd_prop_pv') }}
+    {%- if not is_full_load %}
+    where try_to_timestamp_ntz(to_varchar(rec_refresh_at)) > (
+        select coalesce(max(try_to_timestamp_ntz(to_varchar(LOAD_DATETIME))), '1900-01-01'::timestamp_ntz)
+        from {{ sat_rel }}
+        where RECORD_SOURCE = 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW'
+    )
+    {%- endif %}
+)
+
     select
         nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim(foreign_key), '')) end),'') as POLICY_BK,
         'N' as ADJUSTED_INDICATOR,
@@ -32,7 +53,7 @@
         ace_premium_type as PREMIUM_BASIS,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_polp_msp_msd_prop_pv') }}
+    from src
     where ace_premium_type is not null
 union all
     select
@@ -47,7 +68,7 @@ union all
         cast(null as varchar) as PREMIUM_BASIS,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_polp_msp_msd_prop_pv') }}
+    from src
     where fixed_one_way_premium is not null
 union all
     select
@@ -62,7 +83,7 @@ union all
         cast(null as varchar) as PREMIUM_BASIS,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_polp_msp_msd_prop_pv') }}
+    from src
     where fixed_round_trip_premium is not null
 union all
     select
@@ -77,7 +98,7 @@ union all
         cast(null as varchar) as PREMIUM_BASIS,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_polp_msp_msd_prop_pv') }}
+    from src
     where gross_premium is not null
 union all
     select
@@ -92,7 +113,7 @@ union all
         cast(null as varchar) as PREMIUM_BASIS,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_polp_msp_msd_prop_pv') }}
+    from src
     where one_way_premium is not null
 union all
     select
@@ -107,7 +128,7 @@ union all
         cast(null as varchar) as PREMIUM_BASIS,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_polp_msp_msd_prop_pv') }}
+    from src
     where round_trip_premium is not null
 union all
     select
@@ -122,5 +143,5 @@ union all
         slab_ as PREMIUM_BASIS,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_pol_polp_msp_msd_prop_pv') }}
+    from src
     where slab_ is not null

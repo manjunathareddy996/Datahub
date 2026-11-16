@@ -15,6 +15,27 @@
 --   gst                                      9 attribute(s)
 --   tds                                      3 attribute(s)
 
+-- INCREMENTAL VIEW: returns only rows whose REC_REFRESH_AT is after the latest
+-- LOAD_DATETIME this feeder already wrote to SAT_FINTXN_TAX.
+--   Incremental (default):  dbt run -s +sat_fintxn_tax
+--   Full load:              dbt run -s +sat_fintxn_tax --vars '{full_load: true}'
+--   (--full-refresh, or SAT_FINTXN_TAX not existing yet, also gives full data)
+
+{%- set sat_rel = adapter.get_relation(database=this.database, schema=this.schema, identifier='SAT_FINTXN_TAX') if execute else none %}
+{%- set is_full_load = var('full_load', false) or flags.FULL_REFRESH or sat_rel is none %}
+
+with src as (
+    select *
+    from {{ ref('resolved_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv') }}
+    {%- if not is_full_load %}
+    where try_to_timestamp_ntz(to_varchar(rec_refresh_at)) > (
+        select coalesce(max(try_to_timestamp_ntz(to_varchar(LOAD_DATETIME))), '1900-01-01'::timestamp_ntz)
+        from {{ sat_rel }}
+        where RECORD_SOURCE = 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW'
+    )
+    {%- endif %}
+)
+
     select
         nullif(trim(case when nullif(trim(invoice_number),'') is not null then 'INV:' || nullif(trim(invoice_number), '') end),'') as FINANCIAL_TRANSACTION_BK__CLAIM_BILL_INVOICE,
         'GST' as TAX_TYPE,
@@ -33,7 +54,7 @@
         cast(null as varchar) as TDS_RATE,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv') }}
+    from src
     where cgst is not null or cgst_percentage is not null or gst_applicability is not null or igst is not null or igst_percentage is not null or invoice_number is not null or sgst is not null or sgst_percentage is not null or total_gst_percentage is not null
 union all
     select
@@ -54,5 +75,5 @@ union all
         tds_rate as TDS_RATE,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv') }}
+    from src
     where tds_amount is not null or tds_applicability is not null or tds_applicable_flag is not null or tds_rate is not null

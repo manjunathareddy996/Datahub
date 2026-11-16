@@ -17,6 +17,27 @@
 --   tds_on_interest                          1 attribute(s)
 --   vat                                      1 attribute(s)
 
+-- INCREMENTAL VIEW: returns only rows whose REC_REFRESH_AT is after the latest
+-- LOAD_DATETIME this feeder already wrote to SAT_FINTXN_TAX.
+--   Incremental (default):  dbt run -s +sat_fintxn_tax
+--   Full load:              dbt run -s +sat_fintxn_tax --vars '{full_load: true}'
+--   (--full-refresh, or SAT_FINTXN_TAX not existing yet, also gives full data)
+
+{%- set sat_rel = adapter.get_relation(database=this.database, schema=this.schema, identifier='SAT_FINTXN_TAX') if execute else none %}
+{%- set is_full_load = var('full_load', false) or flags.FULL_REFRESH or sat_rel is none %}
+
+with src as (
+    select *
+    from {{ ref('resolved_mt__clm_clmd_clmpay_payp_pv') }}
+    {%- if not is_full_load %}
+    where try_to_timestamp_ntz(to_varchar(rec_refresh_at)) > (
+        select coalesce(max(try_to_timestamp_ntz(to_varchar(LOAD_DATETIME))), '1900-01-01'::timestamp_ntz)
+        from {{ sat_rel }}
+        where RECORD_SOURCE = 'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW'
+    )
+    {%- endif %}
+)
+
     select
         nullif(trim(case when nullif(trim(w1_claimpaymentid),'') is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'') as FINANCIAL_TRANSACTION_BK__CLAIM_PAYMENT,
         'GST' as TAX_TYPE,
@@ -35,7 +56,7 @@
         cast(null as varchar) as TDS_RATE,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__clm_clmd_clmpay_payp_pv') }}
+    from src
     where cgst_amount is not null or gst_percentage is not null or igst_amount is not null or payment_state is not null or sgst_amount is not null or tax_invoice_date is not null or tax_invoice_number is not null
 union all
     select
@@ -56,7 +77,7 @@ union all
         cast(null as varchar) as TDS_RATE,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__clm_clmd_clmpay_payp_pv') }}
+    from src
     where tds_amount is not null
 union all
     select
@@ -77,7 +98,7 @@ union all
         cast(null as varchar) as TDS_RATE,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__clm_clmd_clmpay_payp_pv') }}
+    from src
     where tds_on_interest is not null
 union all
     select
@@ -98,5 +119,5 @@ union all
         cast(null as varchar) as TDS_RATE,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__clm_clmd_clmpay_payp_pv') }}
+    from src
     where vat_applicable is not null

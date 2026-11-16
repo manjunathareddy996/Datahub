@@ -21,6 +21,27 @@
 --   rate_per_trip_per_mille_for_main_sub_cover 1 attribute(s)
 --   slab                                     1 attribute(s)
 
+-- INCREMENTAL VIEW: returns only rows whose REC_REFRESH_AT is after the latest
+-- LOAD_DATETIME this feeder already wrote to SAT_QUOTE_RATING_INPUT.
+--   Incremental (default):  dbt run -s +sat_quote_rating_input
+--   Full load:              dbt run -s +sat_quote_rating_input --vars '{full_load: true}'
+--   (--full-refresh, or SAT_QUOTE_RATING_INPUT not existing yet, also gives full data)
+
+{%- set sat_rel = adapter.get_relation(database=this.database, schema=this.schema, identifier='SAT_QUOTE_RATING_INPUT') if execute else none %}
+{%- set is_full_load = var('full_load', false) or flags.FULL_REFRESH or sat_rel is none %}
+
+with src as (
+    select *
+    from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
+    {%- if not is_full_load %}
+    where try_to_timestamp_ntz(to_varchar(rec_refresh_at)) > (
+        select coalesce(max(try_to_timestamp_ntz(to_varchar(LOAD_DATETIME))), '1900-01-01'::timestamp_ntz)
+        from {{ sat_rel }}
+        where RECORD_SOURCE = 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW'
+    )
+    {%- endif %}
+)
+
     select
         nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'LOADING_ACE' as FACTOR_CODE,
@@ -29,7 +50,7 @@
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
+    from src
     where loading_ace is not null
 union all
     select
@@ -40,7 +61,7 @@ union all
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
+    from src
     where loading_ace_for_main_sub_cover is not null
 union all
     select
@@ -51,7 +72,7 @@ union all
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
+    from src
     where office_premium_per_mille_pa is not null
 union all
     select
@@ -62,7 +83,7 @@ union all
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
+    from src
     where office_premium_per_mille_per_trip is not null
 union all
     select
@@ -73,7 +94,7 @@ union all
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
+    from src
     where premium_rate is not null
 union all
     select
@@ -84,7 +105,7 @@ union all
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
+    from src
     where rate_per_trip_per_mille is not null
 union all
     select
@@ -95,7 +116,7 @@ union all
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
+    from src
     where rate_per_trip_per_mille_for_main_sub_cover is not null
 union all
     select
@@ -106,5 +127,5 @@ union all
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
         'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
-    from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
+    from src
     where slab_ is not null
