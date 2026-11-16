@@ -9,7 +9,7 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'LANDLINE_NUMBER'
+      - 'LANDLINENUMBER'
       - 'CONTACT_POINT_TYPE'
       - 'CONTACT_PRIORITY_ORDER'
 derived_columns:
@@ -17,7 +17,7 @@ derived_columns:
   PARENT_NK: "'HUB_PARTY|' || (premiumpayerid)"
   CONTACT_POINT_TYPE: '!landline'
   CONTACT_PRIORITY_ORDER: '!1'
-  LANDLINE_NUMBER: 'telephone'
+  LANDLINENUMBER: 'telephone'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
 {%- endset -%}

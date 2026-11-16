@@ -9,7 +9,7 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'FAX_NUMBER'
+      - 'FAXNUMBER'
       - 'CONTACT_POINT_TYPE'
       - 'CONTACT_PRIORITY_ORDER'
 derived_columns:
@@ -17,7 +17,7 @@ derived_columns:
   PARENT_NK: "'HUB_PARTY|' || (premiumpayerid)"
   CONTACT_POINT_TYPE: '!fax'
   CONTACT_PRIORITY_ORDER: '!1'
-  FAX_NUMBER: 'fax'
+  FAXNUMBER: 'fax'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
 {%- endset -%}

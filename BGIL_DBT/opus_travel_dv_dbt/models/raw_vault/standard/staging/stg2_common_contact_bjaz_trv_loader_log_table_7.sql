@@ -9,7 +9,7 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'MOBILE_NUMBER'
+      - 'MOBILENUMBER'
       - 'CONTACT_POINT_TYPE'
       - 'CONTACT_PRIORITY_ORDER'
 derived_columns:
@@ -17,7 +17,7 @@ derived_columns:
   PARENT_NK: "'HUB_PARTY|' || (premiumpayerid)"
   CONTACT_POINT_TYPE: '!mobile'
   CONTACT_PRIORITY_ORDER: '!1'
-  MOBILE_NUMBER: 'mobilenumber'
+  MOBILENUMBER: 'mobilenumber'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
 {%- endset -%}
