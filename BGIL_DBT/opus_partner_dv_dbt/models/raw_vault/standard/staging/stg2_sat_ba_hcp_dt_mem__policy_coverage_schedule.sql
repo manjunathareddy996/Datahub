@@ -9,11 +9,11 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'COVERAGESEQUENCE'
+      - 'COVERAGE_SEQUENCE'
 derived_columns:
   PARENT_BK: 'contract_id'
   PARENT_NK: "'HUB_POLICY|' || (contract_id)"
-  COVERAGESEQUENCE: 'mem_seqno'
+  COVERAGE_SEQUENCE: 'mem_seqno'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BA_HCP_DT_MEM'
 {%- endset -%}
