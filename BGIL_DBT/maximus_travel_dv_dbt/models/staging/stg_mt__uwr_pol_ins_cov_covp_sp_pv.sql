@@ -26,7 +26,6 @@ with source as (
     "KEY_HASH" as key_hash,
     try_to_timestamp_ntz(trim(to_varchar("INC_JOB_CREATED_AT"))) as inc_job_created_at,
     nullif(trim(to_varchar("REC_REFRESH_AT")), '') as rec_refresh_at,
-    nullif(trim(to_varchar("UNNAMED_COLUMN_ORD7")), '') as unnamed_column_ord7,
     nullif(trim(to_varchar("ACCIDENTAL_PREMIUMACE")), '') as accidental_premiumace,
     nullif(trim(to_varchar("AMBULANCE_SUBCOVER")), '') as ambulance_subcover,
     nullif(trim(to_varchar("BASE_AMT_ON_CURRENT_PMM_SLAB")), '') as base_amt_on_current_pmm_slab,
