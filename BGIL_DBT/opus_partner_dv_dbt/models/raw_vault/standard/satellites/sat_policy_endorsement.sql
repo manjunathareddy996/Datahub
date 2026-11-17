@@ -6,7 +6,8 @@
 }}
 
 -- PARTNER STANDARD-MODEL sat_multi_source() for SAT_POLICY_ENDORSEMENT (HUB_POLICY grain) -- single source.
--- Grain unchanged: single-active on POLICY_HKEY with ENDORSEMENTNUMBER as payload.
+-- Grain unchanged: single-active on POLICY_HKEY with ENDORSEMENT_NUMBER as payload
+-- (UPPER_SNAKE name shared with maximus_travel / opus_health on this table).
 -- sat_multi_source keeps change detection and the watermark per (POLICY_HKEY, RECORD_SOURCE) on
 -- OPUS_PARTNER_* rows only, so the other projects' rows on the shared table are never touched.
 
@@ -15,7 +16,7 @@ source_model:
   - 'stg2_sat_bjaz_hm_member_dtls__policy_endorsement'
 src_pk: 'POLICY_HKEY'
 src_payload:
-  - 'ENDORSEMENTNUMBER'
+  - 'ENDORSEMENT_NUMBER'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
@@ -33,5 +34,5 @@ src_record_source_map:
                     source_model=metadata_dict['source_model'],
                     src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
-                        'stg2_sat_bjaz_hm_member_dtls__policy_endorsement': ['ENDORSEMENTNUMBER']
+                        'stg2_sat_bjaz_hm_member_dtls__policy_endorsement': ['ENDORSEMENT_NUMBER']
                     }) }}

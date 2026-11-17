@@ -9,11 +9,11 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'ENDORSEMENTNUMBER'
+      - 'ENDORSEMENT_NUMBER'
 derived_columns:
   PARENT_BK: 'contract_id'
   PARENT_NK: "'HUB_POLICY|' || (contract_id)"
-  ENDORSEMENTNUMBER: 'endorsement_no'
+  ENDORSEMENT_NUMBER: 'endorsement_no'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_HM_MEMBER_DTLS'
 {%- endset -%}
