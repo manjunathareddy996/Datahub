@@ -1,0 +1,227 @@
+{
+ "rule": "for every single-active multi-writer group, the member carrying redundant_of is WITHHELD and its target is the single writer emitted; every group's decision is stated in build_artifacts/reports/single_writer_decisions.json, because redundant_of has no representation in SQL.",
+ "groups": [
+  {
+   "group": "BA_QUOTE_MOT_DTLS | SAT_RISK_MOTOR_VEHICLE | Registration Number | None",
+   "emitted": [
+    "VEHICLE_REG_NO"
+   ],
+   "withheld": [
+    "REG_NO_PART1",
+    "REG_NO_PART2",
+    "REG_NO_PART3",
+    "REG_NO_PART4"
+   ]
+  },
+  {
+   "group": "BJAZ_MOT_ONLINE_POL_DTLS | SAT_COMMON_ADDRESS | Postal Code | dispatch",
+   "emitted": [
+    "DISPPOSTCODE"
+   ],
+   "withheld": [
+    "MAILING_PINCODE"
+   ]
+  },
+  {
+   "group": "BJAZ_MOT_ONLINE_POL_DTLS | SAT_PARTY_IDENTITY | Gender Code | proposer",
+   "emitted": [
+    "GENDER"
+   ],
+   "withheld": [
+    "YOUR_GENDER"
+   ]
+  },
+  {
+   "group": "BJAZ_MOT_WINBACK_DTLS | SAT_RISK_MOTOR_NCB_HISTORY | Previous Policy Number | None",
+   "emitted": [
+    "PREV_POLICYNO"
+   ],
+   "withheld": [
+    "PREV_POLICY_NUMBER"
+   ]
+  },
+  {
+   "group": "BJAZ_SCR_MOT_VEH_DTLS | SAT_RISK_MOTOR_NCB_HISTORY | No Claim Bonus Percentage | None",
+   "emitted": [
+    "NCB_PERCENT"
+   ],
+   "withheld": [
+    "NCB_RATE"
+   ]
+  },
+  {
+   "group": "BJAZ_SCR_MOT_VEH_DTLS | SAT_RISK_MOTOR_VEHICLE | Registration Number | None",
+   "emitted": [
+    "REGISTRATION_NO"
+   ],
+   "withheld": [
+    "REG_NO_PART1",
+    "REG_NO_PART2",
+    "REG_NO_PART3",
+    "REG_NO_PART4"
+   ]
+  },
+  {
+   "group": "BJAZ_WAP_MOT_ADD_QSTN_DTLS | SAT_RISK_MOTOR_VEHICLE | Odometer Reading | None",
+   "emitted": [
+    "KM_READING"
+   ],
+   "withheld": [
+    "ODMETER"
+   ]
+  }
+ ],
+ "withheld": [
+  {
+   "table": "BJAZ_MOT_ONLINE_POL_DTLS",
+   "column": "YOUR_GENDER",
+   "satellite": "SAT_PARTY_IDENTITY",
+   "attribute": "Gender Code",
+   "instance": "proposer",
+   "redundant_of": "GENDER",
+   "group_writers_emitted": [
+    "GENDER"
+   ]
+  },
+  {
+   "table": "BJAZ_MOT_ONLINE_POL_DTLS",
+   "column": "MAILING_PINCODE",
+   "satellite": "SAT_COMMON_ADDRESS",
+   "attribute": "Postal Code",
+   "instance": "dispatch",
+   "redundant_of": "DISPPOSTCODE",
+   "group_writers_emitted": [
+    "DISPPOSTCODE"
+   ]
+  },
+  {
+   "table": "BJAZ_MOT_ONLINE_POL_DTLS",
+   "column": "CIBIL_PAN_NUMBER",
+   "satellite": "SAT_PARTY_IDENTIFICATION",
+   "attribute": "PAN Number",
+   "instance": "proposer",
+   "redundant_of": "PAN_NUMBER"
+  },
+  {
+   "table": "BA_QUOTE_MOT_DTLS",
+   "column": "REG_NO_PART1",
+   "satellite": "SAT_RISK_MOTOR_VEHICLE",
+   "attribute": "Registration Number",
+   "instance": null,
+   "redundant_of": "VEHICLE_REG_NO",
+   "group_writers_emitted": [
+    "VEHICLE_REG_NO"
+   ]
+  },
+  {
+   "table": "BA_QUOTE_MOT_DTLS",
+   "column": "REG_NO_PART2",
+   "satellite": "SAT_RISK_MOTOR_VEHICLE",
+   "attribute": "Registration Number",
+   "instance": null,
+   "redundant_of": "VEHICLE_REG_NO",
+   "group_writers_emitted": [
+    "VEHICLE_REG_NO"
+   ]
+  },
+  {
+   "table": "BA_QUOTE_MOT_DTLS",
+   "column": "REG_NO_PART3",
+   "satellite": "SAT_RISK_MOTOR_VEHICLE",
+   "attribute": "Registration Number",
+   "instance": null,
+   "redundant_of": "VEHICLE_REG_NO",
+   "group_writers_emitted": [
+    "VEHICLE_REG_NO"
+   ]
+  },
+  {
+   "table": "BA_QUOTE_MOT_DTLS",
+   "column": "REG_NO_PART4",
+   "satellite": "SAT_RISK_MOTOR_VEHICLE",
+   "attribute": "Registration Number",
+   "instance": null,
+   "redundant_of": "VEHICLE_REG_NO",
+   "group_writers_emitted": [
+    "VEHICLE_REG_NO"
+   ]
+  },
+  {
+   "table": "BJAZ_SCR_MOT_VEH_DTLS",
+   "column": "REG_NO_PART1",
+   "satellite": "SAT_RISK_MOTOR_VEHICLE",
+   "attribute": "Registration Number",
+   "instance": null,
+   "redundant_of": "REGISTRATION_NO",
+   "group_writers_emitted": [
+    "REGISTRATION_NO"
+   ]
+  },
+  {
+   "table": "BJAZ_SCR_MOT_VEH_DTLS",
+   "column": "REG_NO_PART2",
+   "satellite": "SAT_RISK_MOTOR_VEHICLE",
+   "attribute": "Registration Number",
+   "instance": null,
+   "redundant_of": "REGISTRATION_NO",
+   "group_writers_emitted": [
+    "REGISTRATION_NO"
+   ]
+  },
+  {
+   "table": "BJAZ_SCR_MOT_VEH_DTLS",
+   "column": "REG_NO_PART3",
+   "satellite": "SAT_RISK_MOTOR_VEHICLE",
+   "attribute": "Registration Number",
+   "instance": null,
+   "redundant_of": "REGISTRATION_NO",
+   "group_writers_emitted": [
+    "REGISTRATION_NO"
+   ]
+  },
+  {
+   "table": "BJAZ_SCR_MOT_VEH_DTLS",
+   "column": "REG_NO_PART4",
+   "satellite": "SAT_RISK_MOTOR_VEHICLE",
+   "attribute": "Registration Number",
+   "instance": null,
+   "redundant_of": "REGISTRATION_NO",
+   "group_writers_emitted": [
+    "REGISTRATION_NO"
+   ]
+  },
+  {
+   "table": "BJAZ_SCR_MOT_VEH_DTLS",
+   "column": "NCB_RATE",
+   "satellite": "SAT_RISK_MOTOR_NCB_HISTORY",
+   "attribute": "No Claim Bonus Percentage",
+   "instance": null,
+   "redundant_of": "NCB_PERCENT",
+   "group_writers_emitted": [
+    "NCB_PERCENT"
+   ]
+  },
+  {
+   "table": "BJAZ_MOT_WINBACK_DTLS",
+   "column": "PREV_POLICY_NUMBER",
+   "satellite": "SAT_RISK_MOTOR_NCB_HISTORY",
+   "attribute": "Previous Policy Number",
+   "instance": null,
+   "redundant_of": "PREV_POLICYNO",
+   "group_writers_emitted": [
+    "PREV_POLICYNO"
+   ]
+  },
+  {
+   "table": "BJAZ_WAP_MOT_ADD_QSTN_DTLS",
+   "column": "ODMETER",
+   "satellite": "SAT_RISK_MOTOR_VEHICLE",
+   "attribute": "Odometer Reading",
+   "instance": null,
+   "redundant_of": "KM_READING",
+   "group_writers_emitted": [
+    "KM_READING"
+   ]
+  }
+ ]
+}

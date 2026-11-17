@@ -1,0 +1,73 @@
+-- Staging for source table BJAZ_SCR_MOT_VEH_DTLS. Every column trimmed varchar: the tables index carries
+-- data_type absent_from_source, so no type is inferred.
+-- inc_job_updated_at: the mandatory load/CDC watermark (skill.md section 1a), cast to timestamp_ntz
+-- as in the partner, travel and health stg1 models.
+with source as (
+
+    select
+        nullif(trim(to_varchar("SCRUTINY_NO")), '') as scrutiny_no,
+        nullif(trim(to_varchar("VERSION_NO")), '') as version_no,
+        nullif(trim(to_varchar("VEHICLE_CODE")), '') as vehicle_code,
+        nullif(trim(to_varchar("VEHICLE_TYPE_CODE")), '') as vehicle_type_code,
+        nullif(trim(to_varchar("VEHICLE_MAKE_CODE")), '') as vehicle_make_code,
+        nullif(trim(to_varchar("VEHICLE_MODEL_CODE")), '') as vehicle_model_code,
+        nullif(trim(to_varchar("VEHICLE_SUBTYPE_CODE")), '') as vehicle_subtype_code,
+        nullif(trim(to_varchar("REGISTRATION_DATE")), '') as registration_date,
+        nullif(trim(to_varchar("DELIVERY_DATE")), '') as delivery_date,
+        nullif(trim(to_varchar("YEAR_OF_MANF")), '') as year_of_manf,
+        nullif(trim(to_varchar("VEH_FUEL")), '') as veh_fuel,
+        nullif(trim(to_varchar("REG_CITY")), '') as reg_city,
+        nullif(trim(to_varchar("PARTNER_TYPE")), '') as partner_type,
+        nullif(trim(to_varchar("VEH_ZONE")), '') as veh_zone,
+        nullif(trim(to_varchar("CUBIC_CAPACITY")), '') as cubic_capacity,
+        nullif(trim(to_varchar("CARRYING_CAP")), '') as carrying_cap,
+        nullif(trim(to_varchar("VEHICLE_IDV")), '') as vehicle_idv,
+        nullif(trim(to_varchar("ELEC_ACCESS_SI")), '') as elec_access_si,
+        nullif(trim(to_varchar("NON_ELEC_ACCESS_SI")), '') as non_elec_access_si,
+        nullif(trim(to_varchar("GEOG_EXTN")), '') as geog_extn,
+        nullif(trim(to_varchar("PA_UNAMED")), '') as pa_unamed,
+        nullif(trim(to_varchar("SI_PER_PERSON")), '') as si_per_person,
+        nullif(trim(to_varchar("AAM_MEMBER")), '') as aam_member,
+        nullif(trim(to_varchar("ANTITHEFT_DEVICE")), '') as antitheft_device,
+        nullif(trim(to_varchar("VOLUNTARY_DEDUC")), '') as voluntary_deduc,
+        nullif(trim(to_varchar("NCB_PERCENT")), '') as ncb_percent,
+        nullif(trim(to_varchar("CNG_SI")), '') as cng_si,
+        nullif(trim(to_varchar("RECORD_DATE")), '') as record_date,
+        nullif(trim(to_varchar("USER_NAME")), '') as user_name,
+        nullif(trim(to_varchar("CHASIS_NO")), '') as chasis_no,
+        nullif(trim(to_varchar("ENGINE_NO")), '') as engine_no,
+        nullif(trim(to_varchar("REGISTRATION_NO")), '') as registration_no,
+        nullif(trim(to_varchar("MISC_VEH_TYPE_CODE")), '') as misc_veh_type_code,
+        nullif(trim(to_varchar("MISC_VEH_TYPE")), '') as misc_veh_type,
+        nullif(trim(to_varchar("REG_NO_PART1")), '') as reg_no_part1,
+        nullif(trim(to_varchar("REG_NO_PART2")), '') as reg_no_part2,
+        nullif(trim(to_varchar("REG_NO_PART3")), '') as reg_no_part3,
+        nullif(trim(to_varchar("REG_NO_PART4")), '') as reg_no_part4,
+        nullif(trim(to_varchar("NCB_RATE")), '') as ncb_rate,
+        nullif(trim(to_varchar("OTR_REG_NO_FLG")), '') as otr_reg_no_flg,
+        nullif(trim(to_varchar("IIB_REF_NO")), '') as iib_ref_no,
+        nullif(trim(to_varchar("TP_PREV_POL_NO")), '') as tp_prev_pol_no,
+        nullif(trim(to_varchar("OD_PREV_POL_NO")), '') as od_prev_pol_no,
+        nullif(trim(to_varchar("TP_PREV_POL_RID")), '') as tp_prev_pol_rid,
+        nullif(trim(to_varchar("TP_PREV_POL_RED")), '') as tp_prev_pol_red,
+        nullif(trim(to_varchar("OD_PREV_POL_RID")), '') as od_prev_pol_rid,
+        nullif(trim(to_varchar("OD_PREV_POL_RED")), '') as od_prev_pol_red,
+        nullif(trim(to_varchar("OD_STANDALONE_REQ_FOR")), '') as od_standalone_req_for,
+        nullif(trim(to_varchar("REG_POLICY_NO")), '') as reg_policy_no,
+        nullif(trim(to_varchar("CLAIM_PATTERN")), '') as claim_pattern,
+        nullif(trim(to_varchar("IIB_PREV_EXP_DATE")), '') as iib_prev_exp_date,
+        nullif(trim(to_varchar("BH_REG_FLAG")), '') as bh_reg_flag,
+        nullif(trim(to_varchar("OWNER_SRNO")), '') as owner_srno,
+        nullif(trim(to_varchar("FURTHER_DEP_RATE")), '') as further_dep_rate,
+        nullif(trim(to_varchar("VAHAN_REF_NO")), '') as vahan_ref_no,
+        nullif(trim(to_varchar("NCB_AMOUNT")), '') as ncb_amount,
+        nullif(trim(to_varchar("ZOOP_REFNO")), '') as zoop_refno,
+        nullif(trim(to_varchar("VEH_DATA_SERVERD_BY")), '') as veh_data_serverd_by,
+        nullif(trim(to_varchar("GG_CHANGE_DATE")), '') as gg_change_date,
+        nullif(trim(to_varchar("TP_PREV_COMP_NAME")), '') as tp_prev_comp_name,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
+    from {{ source('motor_raw', 'BJAZ_SCR_MOT_VEH_DTLS') }}
+
+)
+
+select * from source

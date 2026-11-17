@@ -1,0 +1,207 @@
+{
+ "project": "opus_motor_v3_dv_dbt",
+ "mapping": "exactly the 16 bundle files opus_motor_v2_dv_dbt was built from, plus data_7.js (see build_profile.json -> inputs_pinned)",
+ "single_writer_decisions_G3": [
+  {
+   "group": "BA_QUOTE_MOT_DTLS | SAT_RISK_MOTOR_VEHICLE | Registration Number | None",
+   "emitted": [
+    "VEHICLE_REG_NO"
+   ],
+   "withheld": [
+    "REG_NO_PART1",
+    "REG_NO_PART2",
+    "REG_NO_PART3",
+    "REG_NO_PART4"
+   ]
+  },
+  {
+   "group": "BJAZ_MOT_ONLINE_POL_DTLS | SAT_COMMON_ADDRESS | Postal Code | dispatch",
+   "emitted": [
+    "DISPPOSTCODE"
+   ],
+   "withheld": [
+    "MAILING_PINCODE"
+   ]
+  },
+  {
+   "group": "BJAZ_MOT_ONLINE_POL_DTLS | SAT_PARTY_IDENTITY | Gender Code | proposer",
+   "emitted": [
+    "GENDER"
+   ],
+   "withheld": [
+    "YOUR_GENDER"
+   ]
+  },
+  {
+   "group": "BJAZ_MOT_WINBACK_DTLS | SAT_RISK_MOTOR_NCB_HISTORY | Previous Policy Number | None",
+   "emitted": [
+    "PREV_POLICYNO"
+   ],
+   "withheld": [
+    "PREV_POLICY_NUMBER"
+   ]
+  },
+  {
+   "group": "BJAZ_SCR_MOT_VEH_DTLS | SAT_RISK_MOTOR_NCB_HISTORY | No Claim Bonus Percentage | None",
+   "emitted": [
+    "NCB_PERCENT"
+   ],
+   "withheld": [
+    "NCB_RATE"
+   ]
+  },
+  {
+   "group": "BJAZ_SCR_MOT_VEH_DTLS | SAT_RISK_MOTOR_VEHICLE | Registration Number | None",
+   "emitted": [
+    "REGISTRATION_NO"
+   ],
+   "withheld": [
+    "REG_NO_PART1",
+    "REG_NO_PART2",
+    "REG_NO_PART3",
+    "REG_NO_PART4"
+   ]
+  },
+  {
+   "group": "BJAZ_WAP_MOT_ADD_QSTN_DTLS | SAT_RISK_MOTOR_VEHICLE | Odometer Reading | None",
+   "emitted": [
+    "KM_READING"
+   ],
+   "withheld": [
+    "ODMETER"
+   ]
+  }
+ ],
+ "grain_unratified_P2": [
+  "SAT_AUG_CASE_DOCUMENT_CHECKLIST",
+  "SAT_AUG_CASE_WORKFLOW_TASK",
+  "SAT_AUG_CLAIM_DOC_CHECKLIST",
+  "SAT_AUG_PRODUCT_RATING_FACTOR",
+  "SAT_AUG_PRODUCT_RIDER_CATALOGUE",
+  "SAT_AUG_PRODUCT_UW_RULE",
+  "SAT_CASE_WORKFLOW_TASK",
+  "SAT_LEAD_ATTRIBUTION",
+  "SAT_POLICY_COVERAGE_SCHEDULE"
+ ],
+ "macro_library": "automate_dv: every hub, link and satellite is a macro call; every key hash is computed by automate_dv.stage()",
+ "structure": "partner_dv_dbt / travel_dv_dbt layout, exactly",
+ "build_status": "PARTIAL_BY_DECLARATION",
+ "models": {
+  "total": 691,
+  "by_layer": {
+   "automate_dv/augmented/satellites": 117,
+   "automate_dv/augmented/staging": 117,
+   "automate_dv/standard/hubs": 18,
+   "automate_dv/standard/links": 36,
+   "automate_dv/standard/satellites": 129,
+   "automate_dv/standard/staging": 155,
+   "automate_dv/standard/stitched": 26,
+   "staging/opus_motor": 93
+  }
+ },
+ "tree_digest_sha256": "a36eec8fda9c178bc42e49f2870408ab86af159b4949a944fdfc2e6c55faccfe",
+ "tree_digest_recipe": "per file: posix-relpath + LF + sha256(bytes); lines sorted bytewise, joined by LF, sha256 of the UTF-8 join",
+ "central_views": {
+  "views": 26,
+  "satellites": 246,
+  "views_over_limit": 12,
+  "link_only_views": 0,
+  "feeding_tables": 93,
+  "link_pairs": 115
+ },
+ "unresolved_register": {
+  "count": 1172,
+  "by_kind": {
+   "augmentation_on_unbuildable_link": 2,
+   "augmentation_without_anchor": 2,
+   "child_key_leg_unresolved": 590,
+   "collapse_group_without_emittable_writer": 1,
+   "key_not_emittable": 2,
+   "key_object_without_expression": 537,
+   "reference_target_not_built": 38
+  },
+  "by_whose_call": {
+   "mapper": 596,
+   "modeller": 38,
+   "source owner": 538
+  },
+  "where": "build_artifacts/reports/unresolved_register.json"
+ },
+ "verification": {
+  "tally": {
+   "PASS": 21,
+   "FAIL": 1
+  },
+  "where": "build_artifacts/reports/verification.json"
+ },
+ "preconditions_before_dbt_run": [
+  {
+   "item": "normalise() must exist as a Snowflake function",
+   "detail": "the map calls it inside md5(normalise(upper(...))) content-hash keys; nothing in the bundle or this workspace defines it. Carried verbatim (build_profile.json normalise_policy); health_consolidated_v5_dv_dbt refuses it instead -- settle once."
+  }
+ ],
+ "shared_gates": {
+  "check_internal": "PASS",
+  "check_patterns": "PASS",
+  "check_prose_counts": "PASS",
+  "check_prose_shape": "PASS"
+ },
+ "check_vault_alignment": {
+  "sibling": "motor_dv_dbt (the gen-1 automate_dv motor build, same LOB)",
+  "exit": 1,
+  "findings": {
+   "1. payload column is not the canonical rendering": 60,
+   "2. grain differs from the sibling": 3,
+   "2. src_cdk differs from the sibling": 18,
+   "2. src_pk differs from the sibling": 41,
+   "4. hub key names differ from the sibling": 10,
+   "4. link key names differ from the sibling": 2,
+   "5. alias selected more than once in one select": 109,
+   "6. mapped column reaches no satellite": 96
+  },
+  "mapped_columns_reaching_a_satellite": {
+   "reached": 566,
+   "of": 662
+  },
+  "triage": {
+   "5. alias selected more than once in one select": {
+    "gate_count_reproduced": 109,
+    "explained": 109,
+    "n_unexplained": 0,
+    "unexplained": [],
+    "aliases_repeated_within_one_real_select": 0,
+    "cause": "the gate splits a file on 'union all' only, so a view's last branch and its final windowed select fall in one block and each payload column, aliased once in each, reads as repeated. Parsed select by select, no alias repeats."
+   },
+   "1. and 6. mapped column reaches no satellite": {
+    "pairs_the_gate_reports_missing": 96,
+    "explained_by_refusal_kind": {
+     "key_object_without_expression": 95,
+     "key_not_emittable": 1
+    },
+    "n_unexplained": 0,
+    "unexplained": [],
+    "cause": "every such pair had ALL its map rows refused under a directive or for an unresolvable key, each registered with whose call it is."
+   },
+   "2. src_pk / 4. hub and link key names differ from the sibling": {
+    "cause": "motor_dv_dbt names keys with the entity prefix (HUB_ASSESSMENT_HKEY, HUB_ASSESSMENT_BK, LNK_POLICY_PARTY_HKEY). partner_dv_dbt and travel_dv_dbt -- the structure this build follows by instruction -- name them ASSESSMENT_HKEY, POLICY_PARTY_HKEY, and so does this build. A convention difference, not a defect."
+   },
+   "2. grain / src_cdk differs from the sibling": {
+    "cause": "data_7.js governs grain and child keys; motor_dv_dbt was built against an earlier model and an earlier map, and names child keys without the _CK suffix in places. Where data_7.js declares a satellite multi-active or declares more legs, this build follows data_7.js."
+   }
+  }
+ },
+ "other_builds_unchanged": {
+  "check": "ABSOLUTE: no file outside this project changed",
+  "status": "PASS",
+  "population": 26475,
+  "detail": {
+   "files_compared": 26475,
+   "added": [],
+   "removed": [],
+   "modified": [],
+   "n_added": 0,
+   "n_removed": 0,
+   "n_modified": 0
+  }
+ }
+}

@@ -1,0 +1,7 @@
+{
+ "method": "delete models/, regenerate, compare tree digest",
+ "first": "a36eec8fda9c178bc42e49f2870408ab86af159b4949a944fdfc2e6c55faccfe",
+ "second": "a36eec8fda9c178bc42e49f2870408ab86af159b4949a944fdfc2e6c55faccfe",
+ "models": 691,
+ "status": "PASS"
+}

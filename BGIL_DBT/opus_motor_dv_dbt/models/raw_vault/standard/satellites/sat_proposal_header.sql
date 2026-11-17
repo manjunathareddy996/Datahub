@@ -1,0 +1,25 @@
+-- Standard sat() for SAT_PROPOSAL_HEADER (parent HUB_PROPOSAL, history SCD2), fed whole from central view stitch_motor__v06_distribution_channel.
+{{ config(materialized='incremental') }}
+
+{%- set yaml_metadata -%}
+source_model: 'stg2_motor__proposal_header'
+src_pk: 'PROPOSAL_HKEY'
+src_payload:
+  - 'PROPOSAL_CREATION_TIME'
+  - 'PROPOSAL_DATE'
+  - 'PROPOSAL_STATUS'
+  - 'RECEIPT_DATE'
+  - 'SUBMISSION_CHANNEL'
+src_hashdiff: 'HASHDIFF'
+src_ldts: 'LOAD_DATETIME'
+src_source: 'RECORD_SOURCE'
+{%- endset -%}
+
+{% set metadata_dict = fromyaml(yaml_metadata) %}
+
+{{ automate_dv.sat(src_pk=metadata_dict['src_pk'],
+                   src_payload=metadata_dict['src_payload'],
+                   src_hashdiff=metadata_dict['src_hashdiff'],
+                   src_ldts=metadata_dict['src_ldts'],
+                   src_source=metadata_dict['src_source'],
+                   source_model=metadata_dict['source_model']) }}

@@ -1,0 +1,73 @@
+-- Staging for source table WRN_BJAZ_MOT_RENEWAL. Every column trimmed varchar: the tables index carries
+-- data_type absent_from_source, so no type is inferred.
+-- inc_job_updated_at: the mandatory load/CDC watermark (skill.md section 1a), cast to timestamp_ntz
+-- as in the partner, travel and health stg1 models.
+with source as (
+
+    select
+        nullif(trim(to_varchar("CONTRACT_ID")), '') as contract_id,
+        nullif(trim(to_varchar("VERSION_NO")), '') as version_no,
+        nullif(trim(to_varchar("POLICY_REF")), '') as policy_ref,
+        nullif(trim(to_varchar("PROCESS_DATE")), '') as process_date,
+        nullif(trim(to_varchar("TERM_END_DATE")), '') as term_end_date,
+        nullif(trim(to_varchar("MAIN_AGENT_CODE")), '') as main_agent_code,
+        nullif(trim(to_varchar("LOCATION_CODE")), '') as location_code,
+        nullif(trim(to_varchar("SPL_DISCOUNT")), '') as spl_discount,
+        nullif(trim(to_varchar("NCB_RATE")), '') as ncb_rate,
+        nullif(trim(to_varchar("ADD_LOAD_PER")), '') as add_load_per,
+        nullif(trim(to_varchar("ADD_LOAD_AMT")), '') as add_load_amt,
+        nullif(trim(to_varchar("NO_OF_CLAIMS")), '') as no_of_claims,
+        nullif(trim(to_varchar("CLAIM_RATIO")), '') as claim_ratio,
+        nullif(trim(to_varchar("INC_CLAIM_RATIO")), '') as inc_claim_ratio,
+        nullif(trim(to_varchar("NET_PREMIUM")), '') as net_premium,
+        nullif(trim(to_varchar("SERVICE_TAX")), '') as service_tax,
+        nullif(trim(to_varchar("GROSS_PREMIUM")), '') as gross_premium,
+        nullif(trim(to_varchar("NEW_NET_PREMIUM")), '') as new_net_premium,
+        nullif(trim(to_varchar("NEW_SERVICE_TAX")), '') as new_service_tax,
+        nullif(trim(to_varchar("NEW_GROSS_PREMIUM")), '') as new_gross_premium,
+        nullif(trim(to_varchar("RN_STATUS")), '') as rn_status,
+        nullif(trim(to_varchar("PRINT_FLAG")), '') as print_flag,
+        nullif(trim(to_varchar("VEH_IDV")), '') as veh_idv,
+        nullif(trim(to_varchar("WEB_USERID")), '') as web_userid,
+        nullif(trim(to_varchar("REGENERATE")), '') as regenerate,
+        nullif(trim(to_varchar("REGEN_DATE")), '') as regen_date,
+        nullif(trim(to_varchar("IDV_FLAG")), '') as idv_flag,
+        nullif(trim(to_varchar("SYS_CALC_IDV")), '') as sys_calc_idv,
+        nullif(trim(to_varchar("ELECACC_IEV")), '') as elecacc_iev,
+        nullif(trim(to_varchar("SYSCAL_ELECACC_IEV")), '') as syscal_elecacc_iev,
+        nullif(trim(to_varchar("NON_ELECACC_IEV")), '') as non_elecacc_iev,
+        nullif(trim(to_varchar("SYSCAL_NON_ELECACC_IEV")), '') as syscal_non_elecacc_iev,
+        nullif(trim(to_varchar("EDU_CESS_TAX")), '') as edu_cess_tax,
+        nullif(trim(to_varchar("ADD_LOAD_REASON")), '') as add_load_reason,
+        nullif(trim(to_varchar("TARIFF_IND")), '') as tariff_ind,
+        nullif(trim(to_varchar("BASIC_OD_RATE")), '') as basic_od_rate,
+        nullif(trim(to_varchar("COMM_DISC_RATE")), '') as comm_disc_rate,
+        nullif(trim(to_varchar("COMM_DISC_AMT")), '') as comm_disc_amt,
+        nullif(trim(to_varchar("NCB_RATE1")), '') as ncb_rate1,
+        nullif(trim(to_varchar("NO_OF_CLMS")), '') as no_of_clms,
+        nullif(trim(to_varchar("DATE_OF_CLMS")), '') as date_of_clms,
+        nullif(trim(to_varchar("PROSPECT_ID")), '') as prospect_id,
+        nullif(trim(to_varchar("DM_LOCATION")), '') as dm_location,
+        nullif(trim(to_varchar("EX_SHOWROOM_PRICE")), '') as ex_showroom_price,
+        nullif(trim(to_varchar("DEPRICATE_RATE")), '') as depricate_rate,
+        nullif(trim(to_varchar("REGISTRATION_DATE")), '') as registration_date,
+        nullif(trim(to_varchar("PRICE_MASTER_CITY")), '') as price_master_city,
+        nullif(trim(to_varchar("STATUS")), '') as status,
+        nullif(trim(to_varchar("FLAG_FOR_IDV")), '') as flag_for_idv,
+        nullif(trim(to_varchar("UW_STDS_PREM")), '') as uw_stds_prem,
+        nullif(trim(to_varchar("VEH_IDV_ORG")), '') as veh_idv_org,
+        nullif(trim(to_varchar("UNIFIED_REN_STATUS")), '') as unified_ren_status,
+        nullif(trim(to_varchar("TAX_CODE")), '') as tax_code,
+        nullif(trim(to_varchar("KKC_AMT")), '') as kkc_amt,
+        nullif(trim(to_varchar("CESS1_AMT")), '') as cess1_amt,
+        nullif(trim(to_varchar("CESS2_AMT")), '') as cess2_amt,
+        nullif(trim(to_varchar("CESS3_AMT")), '') as cess3_amt,
+        nullif(trim(to_varchar("SWB_AMT")), '') as swb_amt,
+        nullif(trim(to_varchar("TAX_DESC")), '') as tax_desc,
+        nullif(trim(to_varchar("CESS_TOTAL")), '') as cess_total,
+        "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
+    from {{ source('motor_raw', 'WRN_BJAZ_MOT_RENEWAL') }}
+
+)
+
+select * from source

@@ -1,0 +1,41 @@
+-- automate_dv.stage() for SAT_AUG_FIN_RECEIPT, read off central view stitch_motor__v06_distribution_channel.
+-- The key is NULL wherever this satellite has no payload: sat() takes no filter, and it skips a NULL key.
+{{ config(materialized='view') }}
+
+{%- set yaml_metadata -%}
+source_model: 'stitch_motor__v06_distribution_channel'
+hashed_columns:
+  FINANCIAL_TRANSACTION_HKEY: 'FINANCIAL_TRANSACTION_NK'
+  HASHDIFF:
+    is_hashdiff: true
+    columns:
+      - 'BANK_CHARGES_AMOUNT'
+      - 'GATEWAY_RESPONSE_IDENTIFIER'
+      - 'GATEWAY_TRACE_NUMBER'
+      - 'PAYMENT_RECEIVED_INDICATOR'
+      - 'PAYMENT_REQUEST_TIMESTAMP'
+      - 'PAYMENT_RESPONSE_TIMESTAMP'
+      - 'PAY_IN_SLIP_DATE'
+      - 'PAY_IN_SLIP_NUMBER'
+      - 'UNIQUE_PAYMENT_REFERENCE_NUMBER'
+derived_columns:
+  FINANCIAL_TRANSACTION_NK: "case when coalesce(AUG_FIN_RECEIPT__BANK_CHARGES_AMOUNT, AUG_FIN_RECEIPT__GATEWAY_RESPONSE_IDENTIFIER, AUG_FIN_RECEIPT__GATEWAY_TRACE_NUMBER, AUG_FIN_RECEIPT__PAYMENT_RECEIVED_INDICATOR, AUG_FIN_RECEIPT__PAYMENT_REQUEST_TIMESTAMP, AUG_FIN_RECEIPT__PAYMENT_RESPONSE_TIMESTAMP, AUG_FIN_RECEIPT__PAY_IN_SLIP_DATE, AUG_FIN_RECEIPT__PAY_IN_SLIP_NUMBER, AUG_FIN_RECEIPT__UNIQUE_PAYMENT_REFERENCE_NUMBER) is not null then 'HUB_FINANCIAL_TRANSACTION|' || FINANCIAL_TRANSACTION_BK end"
+  BANK_CHARGES_AMOUNT: 'AUG_FIN_RECEIPT__BANK_CHARGES_AMOUNT'
+  GATEWAY_RESPONSE_IDENTIFIER: 'AUG_FIN_RECEIPT__GATEWAY_RESPONSE_IDENTIFIER'
+  GATEWAY_TRACE_NUMBER: 'AUG_FIN_RECEIPT__GATEWAY_TRACE_NUMBER'
+  PAYMENT_RECEIVED_INDICATOR: 'AUG_FIN_RECEIPT__PAYMENT_RECEIVED_INDICATOR'
+  PAYMENT_REQUEST_TIMESTAMP: 'AUG_FIN_RECEIPT__PAYMENT_REQUEST_TIMESTAMP'
+  PAYMENT_RESPONSE_TIMESTAMP: 'AUG_FIN_RECEIPT__PAYMENT_RESPONSE_TIMESTAMP'
+  PAY_IN_SLIP_DATE: 'AUG_FIN_RECEIPT__PAY_IN_SLIP_DATE'
+  PAY_IN_SLIP_NUMBER: 'AUG_FIN_RECEIPT__PAY_IN_SLIP_NUMBER'
+  UNIQUE_PAYMENT_REFERENCE_NUMBER: 'AUG_FIN_RECEIPT__UNIQUE_PAYMENT_REFERENCE_NUMBER'
+  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  RECORD_SOURCE: '!stitch_motor__v06_distribution_channel'
+{%- endset -%}
+
+{% set metadata_dict = fromyaml(yaml_metadata) %}
+
+{{ automate_dv.stage(include_source_columns=false,
+                      source_model=metadata_dict['source_model'],
+                      hashed_columns=metadata_dict['hashed_columns'],
+                      derived_columns=metadata_dict['derived_columns']) }}

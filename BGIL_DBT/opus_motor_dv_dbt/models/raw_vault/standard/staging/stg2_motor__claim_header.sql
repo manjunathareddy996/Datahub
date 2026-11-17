@@ -1,0 +1,49 @@
+-- automate_dv.stage() for SAT_CLAIM_HEADER, read off central view stitch_motor__v02_claim.
+-- The key is NULL wherever this satellite has no payload: sat() takes no filter, and it skips a NULL key.
+{{ config(materialized='view') }}
+
+{%- set yaml_metadata -%}
+source_model: 'stitch_motor__v02_claim'
+hashed_columns:
+  CLAIM_HKEY: 'CLAIM_NK'
+  HASHDIFF:
+    is_hashdiff: true
+    columns:
+      - 'CLAIM_EXAMINER_REFERENCE'
+      - 'CLAIM_HANDLER_REFERENCE'
+      - 'CLAIM_REFERENCE_NUMBER'
+      - 'CLAIM_REMARKS'
+      - 'CLAIM_SUB_STATUS'
+      - 'CLAIM_TYPE'
+      - 'CLOSED_DATE'
+      - 'FAST_TRACK_INDICATOR'
+      - 'HANDLING_ORG_UNIT_CODE'
+      - 'INTIMATED_BY_ROLE'
+      - 'INTIMATION_CHANNEL'
+      - 'LOSS_DATE'
+      - 'NOTIFICATION_DATE'
+derived_columns:
+  CLAIM_NK: "case when coalesce(CLAIM_HEADER__CLAIM_EXAMINER_REFERENCE, CLAIM_HEADER__CLAIM_HANDLER_REFERENCE, CLAIM_HEADER__CLAIM_REFERENCE_NUMBER, CLAIM_HEADER__CLAIM_REMARKS, CLAIM_HEADER__CLAIM_SUB_STATUS, CLAIM_HEADER__CLAIM_TYPE, CLAIM_HEADER__CLOSED_DATE, CLAIM_HEADER__FAST_TRACK_INDICATOR, CLAIM_HEADER__HANDLING_ORG_UNIT_CODE, CLAIM_HEADER__INTIMATED_BY_ROLE, CLAIM_HEADER__INTIMATION_CHANNEL, CLAIM_HEADER__LOSS_DATE, CLAIM_HEADER__NOTIFICATION_DATE) is not null then 'HUB_CLAIM|' || CLAIM_BK end"
+  CLAIM_EXAMINER_REFERENCE: 'CLAIM_HEADER__CLAIM_EXAMINER_REFERENCE'
+  CLAIM_HANDLER_REFERENCE: 'CLAIM_HEADER__CLAIM_HANDLER_REFERENCE'
+  CLAIM_REFERENCE_NUMBER: 'CLAIM_HEADER__CLAIM_REFERENCE_NUMBER'
+  CLAIM_REMARKS: 'CLAIM_HEADER__CLAIM_REMARKS'
+  CLAIM_SUB_STATUS: 'CLAIM_HEADER__CLAIM_SUB_STATUS'
+  CLAIM_TYPE: 'CLAIM_HEADER__CLAIM_TYPE'
+  CLOSED_DATE: 'CLAIM_HEADER__CLOSED_DATE'
+  FAST_TRACK_INDICATOR: 'CLAIM_HEADER__FAST_TRACK_INDICATOR'
+  HANDLING_ORG_UNIT_CODE: 'CLAIM_HEADER__HANDLING_ORG_UNIT_CODE'
+  INTIMATED_BY_ROLE: 'CLAIM_HEADER__INTIMATED_BY_ROLE'
+  INTIMATION_CHANNEL: 'CLAIM_HEADER__INTIMATION_CHANNEL'
+  LOSS_DATE: 'CLAIM_HEADER__LOSS_DATE'
+  NOTIFICATION_DATE: 'CLAIM_HEADER__NOTIFICATION_DATE'
+  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  RECORD_SOURCE: '!stitch_motor__v02_claim'
+{%- endset -%}
+
+{% set metadata_dict = fromyaml(yaml_metadata) %}
+
+{{ automate_dv.stage(include_source_columns=false,
+                      source_model=metadata_dict['source_model'],
+                      hashed_columns=metadata_dict['hashed_columns'],
+                      derived_columns=metadata_dict['derived_columns']) }}

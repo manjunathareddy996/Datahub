@@ -1,0 +1,37 @@
+-- automate_dv.stage() for SAT_AUG_PROPOSAL_HEADER, read off central view stitch_motor__v24_risk_object.
+-- The key is NULL wherever this satellite has no payload: sat() takes no filter, and it skips a NULL key.
+{{ config(materialized='view') }}
+
+{%- set yaml_metadata -%}
+source_model: 'stitch_motor__v24_risk_object'
+hashed_columns:
+  PROPOSAL_HKEY: 'PROPOSAL_NK'
+  HASHDIFF:
+    is_hashdiff: true
+    columns:
+      - 'COVER_PACKAGE_CODE'
+      - 'COVER_PACKAGE_DESCRIPTION'
+      - 'EXTERNAL_PARTNER_REQUEST_REFERENCE'
+      - 'LEAD_REFERENCE_NUMBER'
+      - 'MOTOR_WEB_SERVICE_TRANSACTION_REFERENCE'
+      - 'SALES_ORDER_FORM_REFERENCE_NUMBER'
+      - 'SOURCE_SYSTEM_REFERENCE_NUMBER'
+derived_columns:
+  PROPOSAL_NK: "case when coalesce(AUG_PROPOSAL_HEADER__COVER_PACKAGE_CODE, AUG_PROPOSAL_HEADER__COVER_PACKAGE_DESCRIPTION, AUG_PROPOSAL_HEADER__EXTERNAL_PARTNER_REQUEST_REFERENCE, AUG_PROPOSAL_HEADER__LEAD_REFERENCE_NUMBER, AUG_PROPOSAL_HEADER__MOTOR_WEB_SERVICE_TRANSACTION_REFERENCE, AUG_PROPOSAL_HEADER__SALES_ORDER_FORM_REFERENCE_NUMBER, AUG_PROPOSAL_HEADER__SOURCE_SYSTEM_REFERENCE_NUMBER) is not null then 'HUB_PROPOSAL|' || PROPOSAL_BK end"
+  COVER_PACKAGE_CODE: 'AUG_PROPOSAL_HEADER__COVER_PACKAGE_CODE'
+  COVER_PACKAGE_DESCRIPTION: 'AUG_PROPOSAL_HEADER__COVER_PACKAGE_DESCRIPTION'
+  EXTERNAL_PARTNER_REQUEST_REFERENCE: 'AUG_PROPOSAL_HEADER__EXTERNAL_PARTNER_REQUEST_REFERENCE'
+  LEAD_REFERENCE_NUMBER: 'AUG_PROPOSAL_HEADER__LEAD_REFERENCE_NUMBER'
+  MOTOR_WEB_SERVICE_TRANSACTION_REFERENCE: 'AUG_PROPOSAL_HEADER__MOTOR_WEB_SERVICE_TRANSACTION_REFERENCE'
+  SALES_ORDER_FORM_REFERENCE_NUMBER: 'AUG_PROPOSAL_HEADER__SALES_ORDER_FORM_REFERENCE_NUMBER'
+  SOURCE_SYSTEM_REFERENCE_NUMBER: 'AUG_PROPOSAL_HEADER__SOURCE_SYSTEM_REFERENCE_NUMBER'
+  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  RECORD_SOURCE: '!stitch_motor__v24_risk_object'
+{%- endset -%}
+
+{% set metadata_dict = fromyaml(yaml_metadata) %}
+
+{{ automate_dv.stage(include_source_columns=false,
+                      source_model=metadata_dict['source_model'],
+                      hashed_columns=metadata_dict['hashed_columns'],
+                      derived_columns=metadata_dict['derived_columns']) }}

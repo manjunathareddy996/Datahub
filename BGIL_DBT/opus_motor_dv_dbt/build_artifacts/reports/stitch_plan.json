@@ -1,0 +1,3147 @@
+{
+ "rule": "1. we create a central view from source tables (by joining them , max upto 10). The join are selected so that it can feed sat as a whole (one or moew). That is we do not split sat across these views. Restriction of 10 can be broken if a sat needs more than source tables to build. If a view as less source tables join, we add more tables to it efficiently so that new sats can be built.",
+ "table_limit": 10,
+ "views": [
+  {
+   "ordinal": 1,
+   "name": "v01_claim",
+   "stitch_model": "stitch_v01_claim",
+   "stage_model": "stg2_v01_claim",
+   "tables": [
+    "BJAZ_CLM_BASE_MOT_EXT",
+    "BJAZ_CLM_MOTOR_INTIM_DETAILS",
+    "BJAZ_CLM_MOT_TAX_DTLS",
+    "BJAZ_MOT_CLM_CDC_DTLS",
+    "BJAZ_MOT_CLM_COMPARABLE_DTLS",
+    "BJAZ_MOT_CLM_IP_DMG_EXTN",
+    "BJAZ_WB_CLM_BASE_MOT_EXT",
+    "BJAZ_WB_CLM_IP_MOT_EXT",
+    "BJAZ_WS_MOTCLM_DETAILS",
+    "BJAZ_WS_MOTCLM_SURVEY_DTLS"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_ASSESSMENT_HEADER",
+    "SAT_AUG_CLAIM_ASSESSMENT_SUMMARY",
+    "SAT_AUG_CLAIM_COMPARABLE_CLAIM",
+    "SAT_AUG_CLAIM_DOC_CHECKLIST",
+    "SAT_AUG_CLAIM_FNOL",
+    "SAT_AUG_CLAIM_HEADER",
+    "SAT_AUG_CLAIM_MOTOR_DETAIL",
+    "SAT_AUG_CLAIM_SLA_TRACKING",
+    "SAT_AUG_CLAIM_THIRD_PARTY_LINE",
+    "SAT_AUG_CLAIM_THIRD_PARTY_MACT",
+    "SAT_CLAIM_ASSESSMENT_SUMMARY",
+    "SAT_CLAIM_FNOL",
+    "SAT_CLAIM_SLA_TRACKING",
+    "SAT_LOSS_EVENT_DETAIL",
+    "SAT_LOSS_LOCATION_ADDRESS"
+   ],
+   "links": [
+    "LNK_CLAIM_ASSESSMENT",
+    "LNK_CLAIM_LOSS_EVENT",
+    "LNK_CLAIM_POLICY",
+    "LNK_CLAIM_RISK_OBJECT",
+    "LNK_LOSS_EVENT_RISK_OBJECT",
+    "LNK_POLICY_RISK_OBJECT",
+    "LNK_RISK_OBJECT_ASSESSMENT"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_CLAIM_POLICY",
+     "table": "BJAZ_CLM_BASE_MOT_EXT",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(to_char(CLAIM_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(CERT_POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_CLAIM_LOSS_EVENT",
+     "table": "BJAZ_CLM_MOTOR_INTIM_DETAILS",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif('INTIMATION:' || nullif(trim(INTIMATION_ID), ''), 'INTIMATION:')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_LOSS_EVENT": {
+       "expr": "md5(normalise(upper(nullif('LOSSEVENT:' || coalesce(INTIMATION_ID, ''), 'LOSSEVENT:'))))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_CLAIM_ASSESSMENT",
+     "table": "BJAZ_MOT_CLM_IP_DMG_EXTN",
+     "legs": {
+      "HUB_ASSESSMENT": {
+       "expr": "nullif(trim(to_char(SF_NO)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(to_char(CLAIM_ID)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_CLAIM_LOSS_EVENT",
+     "table": "BJAZ_WB_CLM_BASE_MOT_EXT",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(to_char(CLAIM_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_LOSS_EVENT": {
+       "expr": "nullif('LOSS:' || nullif(trim(to_char(CLAIM_ID)), ''), 'LOSS:')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_CLAIM_ASSESSMENT",
+     "table": "BJAZ_WS_MOTCLM_DETAILS",
+     "legs": {
+      "HUB_ASSESSMENT": {
+       "expr": "nullif(trim(ESTIMATION_NO), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(to_char(CLM_REF_ID)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_CLAIM_LOSS_EVENT",
+     "table": "BJAZ_WS_MOTCLM_DETAILS",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(to_char(CLM_REF_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_LOSS_EVENT": {
+       "expr": "md5(normalise(upper(nullif('LOSSEVENT:' || coalesce(to_char(CLM_REF_ID), ''), 'LOSSEVENT:'))))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_CLAIM_POLICY",
+     "table": "BJAZ_WS_MOTCLM_DETAILS",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(to_char(CLM_REF_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_CLAIM_RISK_OBJECT",
+     "table": "BJAZ_WS_MOTCLM_DETAILS",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(to_char(CLM_REF_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "nullif(trim(VEH_REG_NO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_LOSS_EVENT_RISK_OBJECT",
+     "table": "BJAZ_WS_MOTCLM_DETAILS",
+     "legs": {
+      "HUB_LOSS_EVENT": {
+       "expr": "md5(normalise(upper(nullif('LOSSEVENT:' || coalesce(to_char(CLM_REF_ID), ''), 'LOSSEVENT:'))))",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "nullif(trim(VEH_REG_NO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_RISK_OBJECT",
+     "table": "BJAZ_WS_MOTCLM_DETAILS",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "nullif(trim(VEH_REG_NO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_RISK_OBJECT_ASSESSMENT",
+     "table": "BJAZ_WS_MOTCLM_DETAILS",
+     "legs": {
+      "HUB_ASSESSMENT": {
+       "expr": "nullif(trim(ESTIMATION_NO), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "nullif(trim(VEH_REG_NO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_ASSESSMENT",
+    "HUB_CLAIM",
+    "HUB_LOSS_EVENT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 2,
+   "name": "v02_claim",
+   "stitch_model": "stitch_v02_claim",
+   "stage_model": "stg2_v02_claim",
+   "tables": [
+    "BJAZ_CLM_BASE_MOT_EXT",
+    "BJAZ_CLM_MOTOR_INTIM_DETAILS",
+    "BJAZ_CLM_SUBFILE_MOT_EXT",
+    "BJAZ_MOTORTHEFT_CASE_DTLS",
+    "BJAZ_MOTOR_INVOICE_OCR_DTLS",
+    "BJAZ_MOT_CLM_CDC_REVIEWER_DTLS",
+    "BJAZ_PAYMOTORTHEFT_DTLS",
+    "BJAZ_WB_CLM_BASE_MOT_EXT",
+    "BJAZ_WB_CLM_IP_MOT_EXT",
+    "BJAZ_WS_MOTCLM_DETAILS"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_CASE_DOCUMENT_CHECKLIST",
+    "SAT_AUG_CASE_LITIGATION",
+    "SAT_AUG_CASE_WORKFLOW_TASK",
+    "SAT_AUG_CLAIM_FRAUD",
+    "SAT_AUG_CLAIM_LITIGATION",
+    "SAT_AUG_CLAIM_PA_DETAIL",
+    "SAT_AUG_CLAIM_RECOVERY_EXPENSE_LINE",
+    "SAT_AUG_CLAIM_SALVAGE_BIDDER",
+    "SAT_AUG_CLAIM_SUB_FILE",
+    "SAT_AUG_CLAIM_SURVEY_APPOINTMENT",
+    "SAT_AUG_CLAIM_TP_FORENSIC",
+    "SAT_AUG_DOCUMENT_DEFINITION",
+    "SAT_AUG_LOSS_EVENT_DETAIL",
+    "SAT_AUG_LOSS_LOCATION_ADDRESS",
+    "SAT_CASE_EXTERNAL_REF",
+    "SAT_CASE_HEADER",
+    "SAT_CASE_INVESTIGATION",
+    "SAT_CASE_LITIGATION",
+    "SAT_CASE_WORKFLOW_TASK",
+    "SAT_CLAIM_EVIDENCE",
+    "SAT_CLAIM_FRAUD",
+    "SAT_CLAIM_HEADER",
+    "SAT_CLAIM_LITIGATION",
+    "SAT_CLAIM_NOTE",
+    "SAT_CLAIM_QUALITY_AUDIT",
+    "SAT_CLAIM_RECOVERY_SALVAGE",
+    "SAT_CLAIM_TP_FORENSIC",
+    "SAT_DOCUMENT_DEFINITION"
+   ],
+   "links": [
+    "LNK_CLAIM_DOCUMENT"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_CLAIM_DOCUMENT",
+     "table": "BJAZ_MOTOR_INVOICE_OCR_DTLS",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(CLAIM_ID), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_DOCUMENT": {
+       "expr": "nullif(trim(to_char(INDEX_ID)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_CASE",
+    "HUB_CLAIM",
+    "HUB_DOCUMENT",
+    "HUB_LOSS_EVENT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 3,
+   "name": "v03_claim",
+   "stitch_model": "stitch_v03_claim",
+   "stage_model": "stg2_v03_claim",
+   "tables": [
+    "BJAZ_CLM_BASE_MOT_EXT",
+    "BJAZ_CLM_MOTOR_INTIM_DETAILS",
+    "BJAZ_CLM_MOT_TAX_DTLS",
+    "BJAZ_MOTORTHEFT_CASE_DTLS",
+    "BJAZ_MOT_CLM_CDC_DTLS",
+    "BJAZ_MOT_CLM_TRANS_EXTN",
+    "BJAZ_PAYMOTORTHEFT_DTLS",
+    "BJAZ_WB_CLM_BASE_MOT_EXT",
+    "BJAZ_WS_MOTCLM_DETAILS",
+    "BJAZ_WS_MOTCLM_SURVEY_DTLS"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_CLAIM_CO_RI_SHARE",
+    "SAT_AUG_CLAIM_RECOVERY_SALVAGE",
+    "SAT_AUG_CLAIM_SETTLEMENT",
+    "SAT_AUG_FINTXN_CLAIM_PAYMENT",
+    "SAT_CLAIM_MOTOR_DETAIL",
+    "SAT_CLAIM_RESERVE",
+    "SAT_CLAIM_SALVAGE_BIDDER",
+    "SAT_CLAIM_SETTLEMENT",
+    "SAT_COMMON_MONETARY_CONTEXT",
+    "SAT_FINTXN_CLAIM_PAYMENT",
+    "SAT_LNK_PARTY_ROLE_CORE"
+   ],
+   "links": [
+    "LNK_CASE_POLICY",
+    "LNK_CLAIM_CASE",
+    "LNK_CLAIM_POLICY",
+    "LNK_CLAIM_RISK_OBJECT",
+    "LNK_FINTXN_CLAIM",
+    "LNK_POLICY_ORG_UNIT",
+    "LNK_POLICY_RISK_OBJECT"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_CLAIM_CASE",
+     "table": "BJAZ_MOTORTHEFT_CASE_DTLS",
+     "legs": {
+      "HUB_CASE": {
+       "expr": "nullif(trim(CASE_ID), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(to_char(CLAIM_ID)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_FINTXN_CLAIM",
+     "table": "BJAZ_MOT_CLM_TRANS_EXTN",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(to_char(CLAIM_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_FINANCIAL_TRANSACTION": {
+       "expr": "nullif('CLMTXN:' || nullif(trim(to_char(TRANS_NO)), ''), 'CLMTXN:')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_CASE_POLICY",
+     "table": "BJAZ_PAYMOTORTHEFT_DTLS",
+     "legs": {
+      "HUB_CASE": {
+       "expr": "nullif(trim(CASE_ID), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_CLAIM_CASE",
+     "table": "BJAZ_PAYMOTORTHEFT_DTLS",
+     "legs": {
+      "HUB_CASE": {
+       "expr": "nullif(trim(CASE_ID), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(to_char(CLAIM_ID)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_CLAIM_POLICY",
+     "table": "BJAZ_PAYMOTORTHEFT_DTLS",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(to_char(CLAIM_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_CLAIM_RISK_OBJECT",
+     "table": "BJAZ_PAYMOTORTHEFT_DTLS",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(to_char(CLAIM_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NO), ''), nullif(trim(REGISTRATION_NO), ''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_ORG_UNIT",
+     "table": "BJAZ_PAYMOTORTHEFT_DTLS",
+     "legs": {
+      "HUB_ORG_UNIT": {
+       "expr": "nullif(trim(to_char(HO_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_RISK_OBJECT",
+     "table": "BJAZ_PAYMOTORTHEFT_DTLS",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NO), ''), nullif(trim(REGISTRATION_NO), ''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_CLAIM",
+    "HUB_FINANCIAL_TRANSACTION",
+    "HUB_PARTY"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 4,
+   "name": "v04_coverage",
+   "stitch_model": "stitch_v04_coverage",
+   "stage_model": "stg2_v04_coverage",
+   "tables": [
+    "BJAZ_MOT_PKG_COVER_MST",
+    "BJAZ_MOT_PKG_MAPPED_COVERS",
+    "BJAZ_WAP_MOT_ADDONPKG"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_COVERAGE_CONDITIONS",
+    "SAT_AUG_COVERAGE_PACKAGE_RATING",
+    "SAT_COVERAGE_DEFINITION",
+    "SAT_COVERAGE_SUBLIMIT_SCHEDULE"
+   ],
+   "links": [],
+   "link_pairs": [],
+   "anchor_hubs": [
+    "HUB_COVERAGE"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 5,
+   "name": "v05_coverage",
+   "stitch_model": "stitch_v05_coverage",
+   "stage_model": "stg2_v05_coverage",
+   "tables": [
+    "BA_QUOTE_MOT_COVERS",
+    "BJAZ_MOT_COVER_EXTN",
+    "BJAZ_MOT_NAMED_DRIVER_EXTN",
+    "BJAZ_MOT_ONLINE_POL_DTLS",
+    "BJAZ_MOT_PAYC_DTLS",
+    "BJAZ_MOT_PROD_UIN_MAPPING",
+    "BJAZ_MOT_RENEWAL_HIST",
+    "BJAZ_MOT_WAR_CHILD_DTLS",
+    "BJAZ_MOT_WAR_PLANS_EXTN",
+    "BJAZ_MOT_WS_POL_DTLS"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_COVERAGE_MOTOR_ADDON_PARAMS",
+    "SAT_AUG_COVERAGE_MOTOR_LAID_UP",
+    "SAT_AUG_POLICY_COVERAGE_SCHEDULE",
+    "SAT_AUG_PRODUCT_TERMS",
+    "SAT_AUG_RISK_MOTOR_DRIVER",
+    "SAT_COVERAGE_MOTOR_PA_OCCUPANT",
+    "SAT_POLICY_COVERAGE_SCHEDULE",
+    "SAT_POLICY_TERMS",
+    "SAT_PRODUCT_DEFINITION"
+   ],
+   "links": [
+    "LNK_POLICY_COVERAGE",
+    "LNK_POLICY_COVERAGE_RISK",
+    "LNK_POLICY_RISK_OBJECT"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_POLICY_COVERAGE",
+     "table": "BJAZ_MOT_COVER_EXTN",
+     "legs": {
+      "HUB_COVERAGE": {
+       "expr": "nullif(coalesce(nullif(trim(to_char(CONTRACT_ID)), ''), '') || '|' || coalesce(nullif(trim(COVER_CODE), ''), '') || '|' || coalesce(nullif(trim(to_char(COVER_NO)), ''), ''), '||')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(to_char(CONTRACT_ID)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_COVERAGE",
+     "table": "BJAZ_MOT_NAMED_DRIVER_EXTN",
+     "legs": {
+      "HUB_COVERAGE": {
+       "expr": "nullif(trim(COVER_CODE), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(to_char(CONTRACT_ID)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_COVERAGE_RISK",
+     "table": "BJAZ_MOT_NAMED_DRIVER_EXTN",
+     "legs": {
+      "HUB_COVERAGE": {
+       "expr": "nullif(trim(COVER_CODE), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(to_char(CONTRACT_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "nullif(trim(to_char(OBJECT_ID)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_RISK_OBJECT",
+     "table": "BJAZ_MOT_NAMED_DRIVER_EXTN",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(to_char(CONTRACT_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "nullif(trim(to_char(OBJECT_ID)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_COVERAGE",
+    "HUB_POLICY",
+    "HUB_PRODUCT",
+    "HUB_RISK_OBJECT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 6,
+   "name": "v06_distribution_channel",
+   "stitch_model": "stitch_v06_distribution_channel",
+   "stage_model": "stg2_v06_distribution_channel",
+   "tables": [
+    "BJAZ_CVTP_WS_DATA",
+    "BJAZ_MOT_OD_TP_DTLS",
+    "BJAZ_MOT_ONLINE_POL_DTLS",
+    "BJAZ_MOT_RENEWAL_HIST",
+    "BJAZ_MOT_TAC_DTLS",
+    "BJAZ_MOT_WINBACK_DTLS",
+    "BJAZ_MOT_WS_POL_DTLS",
+    "BJAZ_RTA_STATE_MASTER",
+    "BJAZ_WAP_MOT_GS_ACT_DTLS",
+    "RTA_CLUSTER_PREFERRED_DECLINE"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_CHANNEL_FIELD_ACTIVITY",
+    "SAT_AUG_FIN_RECEIPT",
+    "SAT_AUG_PRODUCT_DISTRIBUTION_RULES",
+    "SAT_AUG_RISK_MOTOR_GEOGRAPHICAL_EXTENSION",
+    "SAT_AUG_RISK_OBJECT_INSURABLE_INTEREST",
+    "SAT_CHANNEL_DEFINITION",
+    "SAT_CHANNEL_FIELD_ACTIVITY",
+    "SAT_COMMON_GEO",
+    "SAT_FINTXN_RECON_INSTRUMENT",
+    "SAT_INSTRUMENT_DEFINITION",
+    "SAT_PARTY_KYC_REFERENCE",
+    "SAT_PARTY_MARKETING",
+    "SAT_POLICY_CANCELLATION",
+    "SAT_POLICY_CLASSIFICATION",
+    "SAT_POLICY_CLAUSE_ATTACHED",
+    "SAT_PROPOSAL_HEADER",
+    "SAT_PROPOSAL_PAYMENT",
+    "SAT_PROPOSAL_SCRUTINY",
+    "SAT_RISK_MOTOR_LIABILITY_ADDON"
+   ],
+   "links": [
+    "LNK_CHANNEL_ORG_UNIT",
+    "LNK_FINTXN_INSTRUMENT",
+    "LNK_FINTXN_POLICY",
+    "LNK_ORG_UNIT_LOCATION",
+    "LNK_POLICY_ORG_UNIT",
+    "LNK_POLICY_PAYMENT_INSTRUMENT",
+    "LNK_POLICY_RISK_OBJECT",
+    "LNK_PROPOSAL_POLICY",
+    "LNK_PROPOSAL_RISK_OBJECT"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_FINTXN_INSTRUMENT",
+     "table": "BJAZ_CVTP_WS_DATA",
+     "legs": {
+      "HUB_FINANCIAL_TRANSACTION": {
+       "expr": "nullif(trim(to_char(PAYMENTID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PAYMENT_INSTRUMENT": {
+       "expr": "nullif(trim(RECONCILEDCHEQUENO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_FINTXN_POLICY",
+     "table": "BJAZ_CVTP_WS_DATA",
+     "legs": {
+      "HUB_FINANCIAL_TRANSACTION": {
+       "expr": "nullif(trim(to_char(PAYMENTID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(BJAZPOLICYNO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_ORG_UNIT",
+     "table": "BJAZ_CVTP_WS_DATA",
+     "legs": {
+      "HUB_ORG_UNIT": {
+       "expr": "nullif(trim(to_char(BJAZ_LOC_CODE)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(BJAZPOLICYNO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_PAYMENT_INSTRUMENT",
+     "table": "BJAZ_CVTP_WS_DATA",
+     "legs": {
+      "HUB_PAYMENT_INSTRUMENT": {
+       "expr": "nullif(trim(RECONCILEDCHEQUENO), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(BJAZPOLICYNO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_RISK_OBJECT",
+     "table": "BJAZ_CVTP_WS_DATA",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(BJAZPOLICYNO), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSISNO), ''), nullif(trim(REGISTRATIONNO), ''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_PROPOSAL_POLICY",
+     "table": "BJAZ_CVTP_WS_DATA",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(BJAZPOLICYNO), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(INSPROPOSALNO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_PROPOSAL_RISK_OBJECT",
+     "table": "BJAZ_CVTP_WS_DATA",
+     "legs": {
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(INSPROPOSALNO), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSISNO), ''), nullif(trim(REGISTRATIONNO), ''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_ORG_UNIT_LOCATION",
+     "table": "BJAZ_WAP_MOT_GS_ACT_DTLS",
+     "legs": {
+      "HUB_LOCATION": {
+       "expr": "md5(normalise(upper(nullif(coalesce(LATITUDE, '') || '|' || coalesce(LONGITUDE, '') || '|' || coalesce(GOOGLE_ADD, ''), '||'))))",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_ORG_UNIT": {
+       "expr": "nullif(trim(to_char(BRANCH_CODE)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_CHANNEL_ORG_UNIT",
+     "table": "RTA_CLUSTER_PREFERRED_DECLINE",
+     "legs": {
+      "HUB_DISTRIBUTION_CHANNEL": {
+       "expr": "nullif(trim(AGENT_CHANNEL), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_ORG_UNIT": {
+       "expr": "nullif(trim(to_char(LOCATION_CODE)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_DISTRIBUTION_CHANNEL",
+    "HUB_FINANCIAL_TRANSACTION",
+    "HUB_LOCATION",
+    "HUB_PARTY",
+    "HUB_PAYMENT_INSTRUMENT",
+    "HUB_POLICY",
+    "HUB_PRODUCT",
+    "HUB_PROPOSAL",
+    "HUB_RISK_OBJECT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 7,
+   "name": "v07_location",
+   "stitch_model": "stitch_v07_location",
+   "stage_model": "stg2_v07_location",
+   "tables": [
+    "BA_QUOTE_MOT_DTLS",
+    "BGIL_MOTOR_WEBSERVICE_INFO_EQM",
+    "BJAZ_AGENCY_MOT_WAR_DTLS",
+    "BJAZ_CLM_BASE_MOT_EXT",
+    "BJAZ_CLM_MOTOR_INTIM_DETAILS",
+    "BJAZ_CVTP_WS_DATA",
+    "BJAZ_MOTORTHEFT_CASE_DTLS",
+    "BJAZ_MOTOR_WEBSERVICE_INFO",
+    "BJAZ_MOT_ADD_QSTN_DTLS",
+    "BJAZ_MOT_ONLINE_POL_DTLS",
+    "BJAZ_MOT_ONLINE_POL_DTLS_EXTN",
+    "BJAZ_MOT_RENEWAL_EXTN",
+    "BJAZ_MOT_RENEWAL_HIST",
+    "BJAZ_MOT_WAR_CHILD_DTLS",
+    "BJAZ_MOT_WS_POL_DTLS",
+    "BJAZ_VEHICLE_PRICE_MASTER",
+    "RTA_CLUSTER_PREFERRED_DECLINE",
+    "RTO_MASTER"
+   ],
+   "over_limit": true,
+   "satellites": [
+    "SAT_AUG_COMMON_ADMIN_GEOGRAPHY",
+    "SAT_COMMON_ADDRESS",
+    "SAT_LNK_ROLE_NOMINEE_BENEFICIARY",
+    "SAT_LOCATION_PROFILE"
+   ],
+   "links": [],
+   "link_pairs": [],
+   "anchor_hubs": [
+    "HUB_LOCATION",
+    "HUB_PARTY"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 8,
+   "name": "v08_org_unit",
+   "stitch_model": "stitch_v08_org_unit",
+   "stage_model": "stg2_v08_org_unit",
+   "tables": [
+    "BGIL_MOTOR_WS_PLAN_DETAILS_EQM",
+    "BJAZ_CLM_SUBFILE_MOT_EXT",
+    "BJAZ_MOTOR_WS_PLAN_DETAILS",
+    "BJAZ_MOT_ONLINE_POL_DTLS",
+    "BJAZ_MOT_RENEWAL_EXTN",
+    "BJAZ_MOT_UW_BRANCH_GROUP_MST",
+    "BJAZ_MOT_WAR_CHILD_DTLS",
+    "BJAZ_MOT_WS_POL_DTLS",
+    "BJAZ_WAP_MOT_GS_ACT_DTLS",
+    "BJAZ_WB_CLM_BASE_MOT_EXT"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_COMMON_ADDRESS",
+    "SAT_AUG_ORG_UNIT_DEFINITION",
+    "SAT_AUG_RISK_EXTENDED_WARRANTY",
+    "SAT_ORG_UNIT_DEFINITION"
+   ],
+   "links": [
+    "LNK_FINTXN_POLICY",
+    "LNK_POLICY_PRODUCT",
+    "LNK_POLICY_RISK_OBJECT"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_FINTXN_POLICY",
+     "table": "BGIL_MOTOR_WS_PLAN_DETAILS_EQM",
+     "legs": {
+      "HUB_FINANCIAL_TRANSACTION": {
+       "expr": "nullif(trim(to_char(TRANSACTIONID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(to_char(CONTRACT_ID)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_PRODUCT",
+     "table": "BGIL_MOTOR_WS_PLAN_DETAILS_EQM",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(to_char(CONTRACT_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(to_char(PRODUCT_4DIGIT_CODE)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_RISK_OBJECT",
+     "table": "BGIL_MOTOR_WS_PLAN_DETAILS_EQM",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(to_char(CONTRACT_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NO), ''), nullif(trim(REGISTRATION_NO), ''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_FINTXN_POLICY",
+     "table": "BJAZ_MOTOR_WS_PLAN_DETAILS",
+     "legs": {
+      "HUB_FINANCIAL_TRANSACTION": {
+       "expr": "nullif(trim(to_char(TRANSACTIONID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(to_char(CONTRACT_ID)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_PRODUCT",
+     "table": "BJAZ_MOTOR_WS_PLAN_DETAILS",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(to_char(CONTRACT_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(to_char(PRODUCT_4DIGIT_CODE)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_RISK_OBJECT",
+     "table": "BJAZ_MOTOR_WS_PLAN_DETAILS",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(to_char(CONTRACT_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NO), ''), nullif(trim(REGISTRATION_NO), ''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_LOCATION",
+    "HUB_ORG_UNIT",
+    "HUB_RISK_OBJECT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 9,
+   "name": "v09_party",
+   "stitch_model": "stitch_v09_party",
+   "stage_model": "stg2_v09_party",
+   "tables": [
+    "BA_QUOTE_MOT_DTLS",
+    "BJAZ_AGENCY_MOT_WAR_DTLS",
+    "BJAZ_CLM_MOTOR_INTIM_DETAILS",
+    "BJAZ_CLM_SUBFILE_MOT_EXT",
+    "BJAZ_CVTP_WS_DATA",
+    "BJAZ_CVTP_WS_DATA_EXTN",
+    "BJAZ_IIB_INSURER_MASTER",
+    "BJAZ_IIB_SUDARS_POLICY_DTL_HST_QM",
+    "BJAZ_MOTORTHEFT_CASE_DTLS",
+    "BJAZ_MOT_ADD_QSTN_DTLS",
+    "BJAZ_MOT_NAMED_DRIVER_EXTN",
+    "BJAZ_MOT_ONLINE_POL_DTLS",
+    "BJAZ_MOT_ONLINE_POL_DTLS_EXTN",
+    "BJAZ_MOT_RENEWAL_EXTN",
+    "BJAZ_MOT_UW_BUDGET_MST",
+    "BJAZ_MOT_WAR_CHILD_DTLS",
+    "BJAZ_MOT_WINBACK_DTLS",
+    "BJAZ_MOT_WS_POL_DTLS",
+    "BJAZ_RTA_STATE_MASTER",
+    "BJAZ_SCR_MOT_VEH_DTLS",
+    "BJAZ_WAP_MOTOR_IW_ASSIST",
+    "BJAZ_WAP_MOT_ADD_QSTN_DTLS",
+    "BJAZ_WS_MOTCLM_DETAILS"
+   ],
+   "over_limit": true,
+   "satellites": [
+    "SAT_ASSESSMENT_HEADER",
+    "SAT_AUG_CASE_SERVICE_REQUEST",
+    "SAT_AUG_CHANNEL_SALES_TARGET",
+    "SAT_AUG_PARTY_ORGANISATION_PROFILE",
+    "SAT_AUG_PROPOSAL_UNDERWRITING",
+    "SAT_CASE_SERVICE_REQUEST",
+    "SAT_CHANNEL_SALES_TARGET",
+    "SAT_COMMON_CONTACT",
+    "SAT_PARTY_IDENTITY",
+    "SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS",
+    "SAT_PROPOSAL_DECLARATIONS",
+    "SAT_RISK_MOTOR_DRIVER",
+    "SAT_RISK_OBJECT_OWNERSHIP_HISTORY"
+   ],
+   "links": [],
+   "link_pairs": [],
+   "anchor_hubs": [
+    "HUB_ASSESSMENT",
+    "HUB_CASE",
+    "HUB_DISTRIBUTION_CHANNEL",
+    "HUB_PARTY",
+    "HUB_PROPOSAL",
+    "HUB_RISK_OBJECT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 10,
+   "name": "v10_party",
+   "stitch_model": "stitch_v10_party",
+   "stage_model": "stg2_v10_party",
+   "tables": [
+    "BJAZ_AGENCY_MOT_WAR_DTLS",
+    "BJAZ_CLM_MOTOR_INTIM_DETAILS",
+    "BJAZ_CVTP_WS_DATA",
+    "BJAZ_CVTP_WS_DATA_EXTN",
+    "BJAZ_MOT_ADD_QSTN_DTLS",
+    "BJAZ_MOT_CLM_TRANS_EXTN",
+    "BJAZ_MOT_ONLINE_POL_DTLS",
+    "BJAZ_MOT_ONLINE_POL_DTLS_EXTN",
+    "BJAZ_MOT_WAR_CHILD_DTLS",
+    "BJAZ_MOT_WS_POL_DTLS",
+    "BJAZ_WB_CLM_BASE_MOT_EXT"
+   ],
+   "over_limit": true,
+   "satellites": [
+    "SAT_ASSESSMENT_PRE_INSPECTION",
+    "SAT_AUG_ASSESSMENT_BUREAU_PRIOR_INSURANCE",
+    "SAT_AUG_LOCATION_PROFILE",
+    "SAT_AUG_PARTY_CORRESPONDENCE",
+    "SAT_AUG_PARTY_EMPLOYMENT",
+    "SAT_AUG_PARTY_IDENTIFICATION",
+    "SAT_AUG_PARTY_IDENTITY",
+    "SAT_AUG_POLICY_PORTABILITY_MIGRATION",
+    "SAT_AUG_POLICY_TAX_BREAKUP",
+    "SAT_AUG_POLICY_TAX_HEAD",
+    "SAT_PARTY_IDENTIFICATION",
+    "SAT_POLICY_PORTABILITY_MIGRATION",
+    "SAT_POLICY_TAX_BREAKUP",
+    "SAT_PROPOSAL_QUESTIONNAIRE",
+    "SAT_RISK_EXTENDED_WARRANTY",
+    "SAT_RISK_TRAILER"
+   ],
+   "links": [
+    "LNK_PARTY_LOCATION",
+    "LNK_POLICY_LOCATION",
+    "LNK_POLICY_PARTY",
+    "LNK_POLICY_PRODUCT",
+    "LNK_PROPOSAL_ASSESSMENT",
+    "LNK_PROPOSAL_PARTY",
+    "LNK_PROPOSAL_POLICY",
+    "LNK_PROPOSAL_PRODUCT"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_PROPOSAL_ASSESSMENT",
+     "table": "BJAZ_CVTP_WS_DATA_EXTN",
+     "legs": {
+      "HUB_ASSESSMENT": {
+       "expr": "nullif(trim(BREAKINREFERENCENO), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PROPOSAL": {
+       "expr": "nullif('VISOF:' || nullif(trim(VISOFNUMBER), ''), 'VISOF:')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_PARTY_LOCATION",
+     "table": "BJAZ_MOT_ADD_QSTN_DTLS",
+     "legs": {
+      "HUB_LOCATION": {
+       "expr": "nullif('PIN:' || nullif(trim(STP_PIN), ''), 'PIN:')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PARTY": {
+       "expr": "nullif(trim(PAN_NO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_LOCATION",
+     "table": "BJAZ_MOT_ADD_QSTN_DTLS",
+     "legs": {
+      "HUB_LOCATION": {
+       "expr": "nullif('PIN:' || nullif(trim(STP_PIN), ''), 'PIN:')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(to_char(CONTRACT_ID)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_PARTY",
+     "table": "BJAZ_MOT_ADD_QSTN_DTLS",
+     "legs": {
+      "HUB_PARTY": {
+       "expr": "nullif(trim(PAN_NO), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(to_char(CONTRACT_ID)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_PRODUCT",
+     "table": "BJAZ_MOT_ADD_QSTN_DTLS",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(to_char(CONTRACT_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(PACKAGE_ID), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_PROPOSAL_PARTY",
+     "table": "BJAZ_MOT_ADD_QSTN_DTLS",
+     "legs": {
+      "HUB_PARTY": {
+       "expr": "nullif(trim(PAN_NO), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(to_char(SCRUTINY_NO)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_PROPOSAL_POLICY",
+     "table": "BJAZ_MOT_ADD_QSTN_DTLS",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(to_char(CONTRACT_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(to_char(SCRUTINY_NO)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_PROPOSAL_PRODUCT",
+     "table": "BJAZ_MOT_ADD_QSTN_DTLS",
+     "legs": {
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(PACKAGE_ID), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(to_char(SCRUTINY_NO)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_ASSESSMENT",
+    "HUB_LOCATION",
+    "HUB_PARTY",
+    "HUB_POLICY",
+    "HUB_PROPOSAL",
+    "HUB_RISK_OBJECT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 11,
+   "name": "v11_party",
+   "stitch_model": "stitch_v11_party",
+   "stage_model": "stg2_v11_party",
+   "tables": [
+    "BGIL_MOTOR_WEBSERVICE_INFO_EQM",
+    "BGIL_MOTOR_WS_PREMIUM_DTLS_EQM",
+    "BGIL_MOTOR_WS_PREMIUM_SUMMARY_EQM",
+    "BJAZ_MOTOR_WEBSERVICE_INFO",
+    "BJAZ_MOT_CLM_TRANS_EXTN",
+    "BJAZ_MOT_ONLINE_POL_DTLS",
+    "BJAZ_MOT_WINBACK_DTLS",
+    "BJAZ_MOT_WS_POL_DTLS",
+    "BJAZ_WAP_MOT_ADDONPKG",
+    "BJAZ_WAP_MOT_STP_RATE_SUMM"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_CHANNEL_DIGITAL_INTEGRATION",
+    "SAT_AUG_COMMON_CONTACT",
+    "SAT_AUG_FINTXN_CHANNEL_AUTHORISATION",
+    "SAT_AUG_FINTXN_HEADER",
+    "SAT_AUG_FINTXN_PREMIUM",
+    "SAT_AUG_PARTY_CONTACT_ADDRESS_LINK",
+    "SAT_AUG_PARTY_DIGITAL_IDENTITY",
+    "SAT_AUG_PARTY_DIGITAL_JOURNEY_STAGE",
+    "SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS",
+    "SAT_AUG_PARTY_INTERACTION_EVENT",
+    "SAT_AUG_PARTY_MARKETING",
+    "SAT_AUG_PARTY_ONBOARDING_JOURNEY",
+    "SAT_AUG_PARTY_PREFERENCE_PROFILE",
+    "SAT_AUG_PARTY_VEHICLE_OWNER",
+    "SAT_AUG_POLICY_INTERMEDIARY_SPLIT",
+    "SAT_AUG_POLICY_TERMS",
+    "SAT_AUG_RISK_MOTOR_CPA",
+    "SAT_AUG_RISK_PERSON_STUDENT_PA",
+    "SAT_COMMON_COMMUNICATION_PREFERENCE",
+    "SAT_FINTXN_HEADER",
+    "SAT_FINTXN_PREMIUM",
+    "SAT_FINTXN_TAX",
+    "SAT_FIN_CHARGE_RATE",
+    "SAT_LEAD_ATTRIBUTION",
+    "SAT_LNK_ROLE_AGENT",
+    "SAT_LNK_ROLE_EMPLOYEE",
+    "SAT_LNK_ROLE_POSP",
+    "SAT_PARTY_BANKING",
+    "SAT_PARTY_CORRESPONDENCE",
+    "SAT_PARTY_DIGITAL_IDENTITY",
+    "SAT_PARTY_EMPLOYMENT",
+    "SAT_PARTY_FINANCIAL_PROFILE",
+    "SAT_PARTY_INTERACTION_EVENT",
+    "SAT_POLICY_DOC_CHECKLIST",
+    "SAT_POLICY_LIFECYCLE",
+    "SAT_PROPOSAL_UNDERWRITING",
+    "SAT_QUOTE_COMPARISON",
+    "SAT_RISK_PERSON_STUDENT_PA"
+   ],
+   "links": [
+    "LNK_CASE_POLICY",
+    "LNK_CHANNEL_ORG_UNIT",
+    "LNK_FINTXN_POLICY",
+    "LNK_POLICY_CHANNEL",
+    "LNK_POLICY_LOCATION",
+    "LNK_POLICY_ORG_UNIT",
+    "LNK_POLICY_PRODUCT",
+    "LNK_POLICY_RISK_OBJECT",
+    "LNK_PROPOSAL_POLICY",
+    "LNK_PROPOSAL_PRODUCT",
+    "LNK_PROPOSAL_RISK_OBJECT",
+    "LNK_QUOTE_PRODUCT",
+    "LNK_QUOTE_PROPOSAL",
+    "LNK_QUOTE_RISK_OBJECT",
+    "LNK_RISK_OBJECT_LOCATION"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_FINTXN_POLICY",
+     "table": "BGIL_MOTOR_WEBSERVICE_INFO_EQM",
+     "legs": {
+      "HUB_FINANCIAL_TRANSACTION": {
+       "expr": "nullif(trim(to_char(PTRANSACTION_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_CHANNEL",
+     "table": "BGIL_MOTOR_WEBSERVICE_INFO_EQM",
+     "legs": {
+      "HUB_DISTRIBUTION_CHANNEL": {
+       "expr": "nullif(trim(IMD_CODE), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_LOCATION",
+     "table": "BGIL_MOTOR_WEBSERVICE_INFO_EQM",
+     "legs": {
+      "HUB_LOCATION": {
+       "expr": "md5(normalise(upper(nullif(coalesce(CITY, '') || '|' || coalesce(to_char(POSTAL_CODE), ''), '|'))))",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_PRODUCT",
+     "table": "BGIL_MOTOR_WEBSERVICE_INFO_EQM",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(to_char(PRODUCT_CODE)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_RISK_OBJECT",
+     "table": "BGIL_MOTOR_WEBSERVICE_INFO_EQM",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NO), ''), nullif(trim(REGISTRATION_NO), ''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_RISK_OBJECT_LOCATION",
+     "table": "BGIL_MOTOR_WEBSERVICE_INFO_EQM",
+     "legs": {
+      "HUB_LOCATION": {
+       "expr": "md5(normalise(upper(nullif(coalesce(CITY, '') || '|' || coalesce(to_char(POSTAL_CODE), ''), '|'))))",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NO), ''), nullif(trim(REGISTRATION_NO), ''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_FINTXN_POLICY",
+     "table": "BJAZ_MOTOR_WEBSERVICE_INFO",
+     "legs": {
+      "HUB_FINANCIAL_TRANSACTION": {
+       "expr": "nullif(trim(to_char(PTRANSACTION_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_CHANNEL",
+     "table": "BJAZ_MOTOR_WEBSERVICE_INFO",
+     "legs": {
+      "HUB_DISTRIBUTION_CHANNEL": {
+       "expr": "nullif(trim(IMD_CODE), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_LOCATION",
+     "table": "BJAZ_MOTOR_WEBSERVICE_INFO",
+     "legs": {
+      "HUB_LOCATION": {
+       "expr": "md5(normalise(upper(nullif(coalesce(CITY, '') || '|' || coalesce(to_char(POSTAL_CODE), ''), '|'))))",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_PRODUCT",
+     "table": "BJAZ_MOTOR_WEBSERVICE_INFO",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(to_char(PRODUCT_CODE)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_RISK_OBJECT",
+     "table": "BJAZ_MOTOR_WEBSERVICE_INFO",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NO), ''), nullif(trim(REGISTRATION_NO), ''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_RISK_OBJECT_LOCATION",
+     "table": "BJAZ_MOTOR_WEBSERVICE_INFO",
+     "legs": {
+      "HUB_LOCATION": {
+       "expr": "md5(normalise(upper(nullif(coalesce(CITY, '') || '|' || coalesce(to_char(POSTAL_CODE), ''), '|'))))",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NO), ''), nullif(trim(REGISTRATION_NO), ''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_FINTXN_POLICY",
+     "table": "BJAZ_MOT_ONLINE_POL_DTLS",
+     "legs": {
+      "HUB_FINANCIAL_TRANSACTION": {
+       "expr": "nullif('RECEIPT:' || nullif(trim(RECEIPT_NO), ''), 'RECEIPT:')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_PRODUCT",
+     "table": "BJAZ_MOT_ONLINE_POL_DTLS",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(PRODUCT_4DIGIT_CODE), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_PROPOSAL_POLICY",
+     "table": "BJAZ_MOT_ONLINE_POL_DTLS",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(to_char(REFERENCE_ID)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_PROPOSAL_PRODUCT",
+     "table": "BJAZ_MOT_ONLINE_POL_DTLS",
+     "legs": {
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(PRODUCT_4DIGIT_CODE), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(to_char(REFERENCE_ID)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_QUOTE_PRODUCT",
+     "table": "BJAZ_MOT_ONLINE_POL_DTLS",
+     "legs": {
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(PRODUCT_4DIGIT_CODE), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_QUOTE": {
+       "expr": "nullif(trim(QUOTE_REF_NO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_QUOTE_PROPOSAL",
+     "table": "BJAZ_MOT_ONLINE_POL_DTLS",
+     "legs": {
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(to_char(REFERENCE_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_QUOTE": {
+       "expr": "nullif(trim(QUOTE_REF_NO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_CHANNEL_ORG_UNIT",
+     "table": "BJAZ_MOT_WINBACK_DTLS",
+     "legs": {
+      "HUB_DISTRIBUTION_CHANNEL": {
+       "expr": "nullif(trim(to_char(PARTNER_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_ORG_UNIT": {
+       "expr": "nullif(trim(to_char(LOCATION_CODE)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_FINTXN_POLICY",
+     "table": "BJAZ_MOT_WINBACK_DTLS",
+     "legs": {
+      "HUB_FINANCIAL_TRANSACTION": {
+       "expr": "nullif('RECEIPT:' || nullif(trim(RECEIPT_NO), ''), 'RECEIPT:')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(BJAZPOLICYNO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_CHANNEL",
+     "table": "BJAZ_MOT_WINBACK_DTLS",
+     "legs": {
+      "HUB_DISTRIBUTION_CHANNEL": {
+       "expr": "nullif(trim(to_char(PARTNER_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(BJAZPOLICYNO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_ORG_UNIT",
+     "table": "BJAZ_MOT_WINBACK_DTLS",
+     "legs": {
+      "HUB_ORG_UNIT": {
+       "expr": "nullif(trim(to_char(LOCATION_CODE)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(BJAZPOLICYNO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_PRODUCT",
+     "table": "BJAZ_MOT_WINBACK_DTLS",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(BJAZPOLICYNO), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(to_char(PRODUCT_CODE)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_RISK_OBJECT",
+     "table": "BJAZ_MOT_WINBACK_DTLS",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(BJAZPOLICYNO), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "nullif(trim(REGISTRATION_NO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_PROPOSAL_POLICY",
+     "table": "BJAZ_MOT_WINBACK_DTLS",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(BJAZPOLICYNO), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(to_char(SCRUTINY_NO)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_PROPOSAL_PRODUCT",
+     "table": "BJAZ_MOT_WINBACK_DTLS",
+     "legs": {
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(to_char(PRODUCT_CODE)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(to_char(SCRUTINY_NO)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_PROPOSAL_RISK_OBJECT",
+     "table": "BJAZ_MOT_WINBACK_DTLS",
+     "legs": {
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(to_char(SCRUTINY_NO)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "nullif(trim(REGISTRATION_NO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_CASE_POLICY",
+     "table": "BJAZ_MOT_WS_POL_DTLS",
+     "legs": {
+      "HUB_CASE": {
+       "expr": "nullif(trim(to_char(CALL_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_FINTXN_POLICY",
+     "table": "BJAZ_MOT_WS_POL_DTLS",
+     "legs": {
+      "HUB_FINANCIAL_TRANSACTION": {
+       "expr": "nullif(trim(RECEIPT_NO), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_ORG_UNIT",
+     "table": "BJAZ_MOT_WS_POL_DTLS",
+     "legs": {
+      "HUB_ORG_UNIT": {
+       "expr": "nullif(trim(to_char(COMPANY_ORG_UNIT)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_PRODUCT",
+     "table": "BJAZ_MOT_WS_POL_DTLS",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(to_char(PRODUCT_4DIGIT_CODE)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_RISK_OBJECT",
+     "table": "BJAZ_MOT_WS_POL_DTLS",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NO), ''), nullif(trim(REGISTRATION_NO), ''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_QUOTE_PRODUCT",
+     "table": "BJAZ_MOT_WS_POL_DTLS",
+     "legs": {
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(to_char(PRODUCT_4DIGIT_CODE)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_QUOTE": {
+       "expr": "nullif(trim(QUOTE_REF_NO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_QUOTE_RISK_OBJECT",
+     "table": "BJAZ_MOT_WS_POL_DTLS",
+     "legs": {
+      "HUB_QUOTE": {
+       "expr": "nullif(trim(QUOTE_REF_NO), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NO), ''), nullif(trim(REGISTRATION_NO), ''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_DISTRIBUTION_CHANNEL",
+    "HUB_FINANCIAL_TRANSACTION",
+    "HUB_LOCATION",
+    "HUB_PARTY",
+    "HUB_POLICY",
+    "HUB_PROPOSAL",
+    "HUB_QUOTE",
+    "HUB_RISK_OBJECT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 12,
+   "name": "v12_policy",
+   "stitch_model": "stitch_v12_policy",
+   "stage_model": "stg2_v12_policy",
+   "tables": [
+    "BJAZ_AGENCY_MOT_WAR_DTLS",
+    "BJAZ_MOT_WAR_CHILD_DTLS",
+    "BJAZ_MOT_WAR_MAST_CHILD",
+    "WEO_BJAZ_MOT_DISPATCH_DTLS"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AGREEMENT_DEFINITION",
+    "SAT_AUG_AGREEMENT_DEFINITION",
+    "SAT_AUG_POLICY_DELIVERY",
+    "SAT_COMMON_CONSENT",
+    "SAT_POLICY_CERTIFICATE",
+    "SAT_POLICY_DELIVERY"
+   ],
+   "links": [
+    "LNK_AGREEMENT_CHANNEL",
+    "LNK_CHANNEL_ORG_UNIT",
+    "LNK_POLICY_CHANNEL",
+    "LNK_POLICY_LOCATION",
+    "LNK_POLICY_ORG_UNIT",
+    "LNK_POLICY_RISK_OBJECT",
+    "LNK_RISK_OBJECT_LOCATION"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_POLICY_LOCATION",
+     "table": "BJAZ_AGENCY_MOT_WAR_DTLS",
+     "legs": {
+      "HUB_LOCATION": {
+       "expr": "md5(normalise(upper(nullif(coalesce(CUSTOMER_ADDRESS, '') || '|' || coalesce(AREA, '') || '|' || coalesce(CITY, '') || '|' || coalesce(STATE, '') || '|' || coalesce(to_char(PINCODE), ''), '||||'))))",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_RISK_OBJECT",
+     "table": "BJAZ_AGENCY_MOT_WAR_DTLS",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NO), ''), nullif(trim(VEH_REG_NO), ''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_RISK_OBJECT_LOCATION",
+     "table": "BJAZ_AGENCY_MOT_WAR_DTLS",
+     "legs": {
+      "HUB_LOCATION": {
+       "expr": "md5(normalise(upper(nullif(coalesce(CUSTOMER_ADDRESS, '') || '|' || coalesce(AREA, '') || '|' || coalesce(CITY, '') || '|' || coalesce(STATE, '') || '|' || coalesce(to_char(PINCODE), ''), '||||'))))",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NO), ''), nullif(trim(VEH_REG_NO), ''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_AGREEMENT_CHANNEL",
+     "table": "BJAZ_MOT_WAR_CHILD_DTLS",
+     "legs": {
+      "HUB_AGREEMENT": {
+       "expr": "nullif(trim(to_char(CONTRACT_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_DISTRIBUTION_CHANNEL": {
+       "expr": "nullif('DEALER:' || nullif(trim(DEALER_CODE), ''), 'DEALER:')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_CHANNEL_ORG_UNIT",
+     "table": "BJAZ_MOT_WAR_CHILD_DTLS",
+     "legs": {
+      "HUB_DISTRIBUTION_CHANNEL": {
+       "expr": "nullif('DEALER:' || nullif(trim(DEALER_CODE), ''), 'DEALER:')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_ORG_UNIT": {
+       "expr": "nullif(trim(OUTLET_CODE), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_CHANNEL",
+     "table": "BJAZ_MOT_WAR_CHILD_DTLS",
+     "legs": {
+      "HUB_DISTRIBUTION_CHANNEL": {
+       "expr": "nullif('DEALER:' || nullif(trim(DEALER_CODE), ''), 'DEALER:')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(MOTOR_POLICY_NO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_ORG_UNIT",
+     "table": "BJAZ_MOT_WAR_CHILD_DTLS",
+     "legs": {
+      "HUB_ORG_UNIT": {
+       "expr": "nullif(trim(OUTLET_CODE), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(MOTOR_POLICY_NO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_RISK_OBJECT",
+     "table": "BJAZ_MOT_WAR_CHILD_DTLS",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(MOTOR_POLICY_NO), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(VEHICLE_REG_NO), ''), nullif(trim(EQUIPMENT_SERIAL_NO), ''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_AGREEMENT",
+    "HUB_PARTY",
+    "HUB_POLICY"
+   ],
+   "absorbed_by_rule_4": [
+    [
+     "SAT_AUG_POLICY_DELIVERY",
+     "SAT_POLICY_DELIVERY"
+    ]
+   ]
+  },
+  {
+   "ordinal": 13,
+   "name": "v13_policy",
+   "stitch_model": "stitch_v13_policy",
+   "stage_model": "stg2_v13_policy",
+   "tables": [
+    "BGIL_MOTOR_WEBSERVICE_INFO_EQM",
+    "BJAZ_AGENCY_MOT_WAR_DTLS",
+    "BJAZ_IIB_SUDARS_POLICY_DTL_HST_QM",
+    "BJAZ_MOTOR_WEBSERVICE_INFO",
+    "BJAZ_MOT_COVER_EXTN",
+    "BJAZ_MOT_OD_TP_DTLS",
+    "BJAZ_MOT_PAYC_DTLS",
+    "BJAZ_MOT_RENEWAL_EXTN",
+    "BJAZ_MOT_SPECIAL_POLICY",
+    "BJAZ_MOT_TRADE_DTLS_EXTN",
+    "BJAZ_MOT_WAR_CHILD_DTLS",
+    "BJAZ_MOT_WAR_PLANS_EXTN",
+    "BJAZ_MOT_WINBACK_DTLS",
+    "BJAZ_MOT_WS_POL_DTLS",
+    "BJAZ_PAYMOTORTHEFT_DTLS"
+   ],
+   "over_limit": true,
+   "satellites": [
+    "SAT_AUG_CASE_HEADER",
+    "SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED",
+    "SAT_AUG_POLICY_HEADER"
+   ],
+   "links": [],
+   "link_pairs": [],
+   "anchor_hubs": [
+    "HUB_CASE",
+    "HUB_POLICY"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 14,
+   "name": "v14_policy",
+   "stitch_model": "stitch_v14_policy",
+   "stage_model": "stg2_v14_policy",
+   "tables": [
+    "BJAZ_MOT_INS_HST_EXTN",
+    "BJAZ_MOT_OD_TP_DTLS",
+    "BJAZ_MOT_ONLINE_POL_DTLS",
+    "BJAZ_MOT_PREM_SUMM_EXTN_ADJ",
+    "BJAZ_MOT_RENEWAL",
+    "BJAZ_MOT_RENEWAL_EXTN",
+    "BJAZ_MOT_RENEWAL_HIST",
+    "BJAZ_MOT_REN_SUM_DTLS_A",
+    "BJAZ_MOT_WS_POL_DTLS",
+    "WRN_BJAZ_MOT_RENEWAL"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_CHANNEL_DEFINITION",
+    "SAT_AUG_POLICY_BONUS_TRACKING",
+    "SAT_AUG_POLICY_PREMIUM_HEAD",
+    "SAT_AUG_POLICY_PREMIUM_SETTLEMENT",
+    "SAT_AUG_POLICY_RENEWAL",
+    "SAT_AUG_RISK_MOTOR_ADDON",
+    "SAT_AUG_RISK_MOTOR_FITMENTS",
+    "SAT_COMMON_STATUS",
+    "SAT_LNK_ROLE_CUSTOMER",
+    "SAT_POLICY_RENEWAL"
+   ],
+   "links": [
+    "LNK_POLICY_ORG_UNIT",
+    "LNK_POLICY_PRODUCT",
+    "LNK_POLICY_RISK_OBJECT",
+    "LNK_PROPOSAL_POLICY",
+    "LNK_PROPOSAL_RISK_OBJECT"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_POLICY_ORG_UNIT",
+     "table": "BJAZ_MOT_OD_TP_DTLS",
+     "legs": {
+      "HUB_ORG_UNIT": {
+       "expr": "nullif(trim(to_char(BRANCH_CODE)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(to_char(CONTRACT_ID)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_PRODUCT",
+     "table": "BJAZ_MOT_OD_TP_DTLS",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(to_char(CONTRACT_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(to_char(PRODUCT_CODE)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_RISK_OBJECT",
+     "table": "BJAZ_MOT_RENEWAL_EXTN",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NO), ''), nullif(trim(REGISTRATION_NO), ''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_RISK_OBJECT",
+     "table": "BJAZ_MOT_RENEWAL_HIST",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(to_char(CONTRACT_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NO), ''), nullif(trim(REGISTRATION_NO), ''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_PROPOSAL_POLICY",
+     "table": "BJAZ_MOT_RENEWAL_HIST",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(to_char(CONTRACT_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(to_char(REN_REF_NO)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_PROPOSAL_RISK_OBJECT",
+     "table": "BJAZ_MOT_RENEWAL_HIST",
+     "legs": {
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(to_char(REN_REF_NO)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NO), ''), nullif(trim(REGISTRATION_NO), ''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_DISTRIBUTION_CHANNEL",
+    "HUB_PARTY",
+    "HUB_POLICY",
+    "HUB_RISK_OBJECT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 15,
+   "name": "v15_policy",
+   "stitch_model": "stitch_v15_policy",
+   "stage_model": "stg2_v15_policy",
+   "tables": [
+    "BGIL_MOTWS_OTHER_DTLS_EQM",
+    "BJAZ_IIB_SUDARS_POLICY_DTL_HST_QM",
+    "BJAZ_MOT_INS_HST_EXTN",
+    "BJAZ_MOT_RNW_VALIDATE_VEH_DTLS",
+    "BJAZ_MOT_RN_CLS_VEH_DTLS_HIST",
+    "BJAZ_MOT_WS_POL_DTLS",
+    "BJAZ_RTA_STATE_MASTER",
+    "BJAZ_SCR_MOT_VEH_DTLS",
+    "BJAZ_VAHAN_AUTO_ENDT_LOG",
+    "RTO_MASTER"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_COMMON_BUSINESS_AUDIT",
+    "SAT_AUG_COMMON_GEO",
+    "SAT_AUG_POLICY_ENDORSEMENT",
+    "SAT_AUG_POLICY_EXTERNAL_TP_LINK",
+    "SAT_COMMON_ADMIN_GEOGRAPHY",
+    "SAT_POLICY_BONUS_TRACKING",
+    "SAT_POLICY_ENDORSEMENT",
+    "SAT_RISK_MOTOR_VERIFICATION"
+   ],
+   "links": [
+    "LNK_POLICY_PRODUCT",
+    "LNK_POLICY_RISK_OBJECT",
+    "LNK_PROPOSAL_RISK_OBJECT",
+    "LNK_QUOTE_RISK_OBJECT"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_PROPOSAL_RISK_OBJECT",
+     "table": "BJAZ_IIB_SUDARS_POLICY_DTL_HST_QM",
+     "legs": {
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(MAXIMUSREFNO), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "nullif(trim(REGNO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_PRODUCT",
+     "table": "BJAZ_MOT_RNW_VALIDATE_VEH_DTLS",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(to_char(PRODUCT_CODE)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_RISK_OBJECT",
+     "table": "BJAZ_MOT_RNW_VALIDATE_VEH_DTLS",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASIS_NUMBER), ''), nullif(trim(REGISTRATION_NO), ''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_PRODUCT",
+     "table": "BJAZ_MOT_RN_CLS_VEH_DTLS_HIST",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(to_char(PRODUCT_CODE)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_RISK_OBJECT",
+     "table": "BJAZ_MOT_RN_CLS_VEH_DTLS_HIST",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_REF), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASIS_NUMBER), ''), nullif(trim(REGISTRATION_NO), ''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_QUOTE_RISK_OBJECT",
+     "table": "BJAZ_SCR_MOT_VEH_DTLS",
+     "legs": {
+      "HUB_QUOTE": {
+       "expr": "nullif(trim(to_char(SCRUTINY_NO)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASIS_NO), ''), nullif(trim(REGISTRATION_NO), ''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_RISK_OBJECT",
+     "table": "BJAZ_VAHAN_AUTO_ENDT_LOG",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_NO), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NO), ''), nullif(trim(REG_NO), ''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_LOCATION",
+    "HUB_POLICY",
+    "HUB_RISK_OBJECT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 16,
+   "name": "v16_policy",
+   "stitch_model": "stitch_v16_policy",
+   "stage_model": "stg2_v16_policy",
+   "tables": [
+    "BGIL_MOTOR_WEBSERVICE_INFO_EQM",
+    "BGIL_MOTOR_WS_PLAN_DETAILS_EQM",
+    "BJAZ_AGENCY_MOT_WAR_DTLS",
+    "BJAZ_CVTP_WS_DATA",
+    "BJAZ_IIB_SUDARS_POLICY_DTL_HST_QM",
+    "BJAZ_MOTOR_WEBSERVICE_INFO",
+    "BJAZ_MOTOR_WS_PLAN_DETAILS",
+    "BJAZ_MOT_OD_TP_DTLS",
+    "BJAZ_MOT_ONLINE_POL_DTLS",
+    "BJAZ_MOT_ONLINE_POL_DTLS_EXTN",
+    "BJAZ_MOT_RENEWAL",
+    "BJAZ_MOT_RENEWAL_EXTN",
+    "BJAZ_MOT_RENEWAL_HIST",
+    "BJAZ_MOT_SPECIAL_POLICY",
+    "BJAZ_MOT_WAR_CHILD_DTLS",
+    "BJAZ_MOT_WAR_MAST_DTLS",
+    "BJAZ_MOT_WINBACK_DTLS",
+    "BJAZ_MOT_WS_POL_DTLS",
+    "BJAZ_VAHAN_AUTO_ENDT_LOG",
+    "WRN_BJAZ_MOT_RENEWAL"
+   ],
+   "over_limit": true,
+   "satellites": [
+    "SAT_AUG_POLICY_EXTENDED_WARRANTY",
+    "SAT_AUG_POLICY_PREMIUM_SUMMARY",
+    "SAT_POLICY_HEADER",
+    "SAT_POLICY_PREMIUM_SUMMARY",
+    "SAT_POLICY_TAX_HEAD",
+    "SAT_RISK_OBJECT_CORE"
+   ],
+   "links": [
+    "LNK_FINTXN_POLICY",
+    "LNK_POLICY_CHANNEL"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_FINTXN_POLICY",
+     "table": "BJAZ_MOT_WAR_MAST_DTLS",
+     "legs": {
+      "HUB_FINANCIAL_TRANSACTION": {
+       "expr": "nullif(trim(to_char(TRANSACTION_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(to_char(CONTRACT_ID)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_CHANNEL",
+     "table": "BJAZ_MOT_WAR_MAST_DTLS",
+     "legs": {
+      "HUB_DISTRIBUTION_CHANNEL": {
+       "expr": "nullif('DEALER:' || nullif(trim(to_char(PARTNER_ID)), ''), 'DEALER:')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(to_char(CONTRACT_ID)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_POLICY",
+    "HUB_RISK_OBJECT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 17,
+   "name": "v17_policy",
+   "stitch_model": "stitch_v17_policy",
+   "stage_model": "stg2_v17_policy",
+   "tables": [
+    "BGIL_MOTOR_WEBSERVICE_INFO_EQM",
+    "BGIL_MOTOR_WS_PLAN_DETAILS_EQM",
+    "BJAZ_AGENCY_MOT_WAR_DTLS",
+    "BJAZ_CVTP_WS_DATA",
+    "BJAZ_MOTOR_WEBSERVICE_INFO",
+    "BJAZ_MOTOR_WS_PLAN_DETAILS",
+    "BJAZ_MOT_ONLINE_POL_DTLS",
+    "BJAZ_MOT_ONLINE_POL_DTLS_EXTN",
+    "BJAZ_MOT_RENEWAL",
+    "BJAZ_MOT_RENEWAL_HIST",
+    "BJAZ_MOT_RNW_VALIDATE_VEH_DTLS",
+    "BJAZ_MOT_RN_CLS_VEH_DTLS_HIST",
+    "BJAZ_MOT_SPECIAL_POLICY",
+    "BJAZ_MOT_WAR_PLANS_EXTN",
+    "BJAZ_MOT_WINBACK_DTLS",
+    "BJAZ_MOT_WS_POL_DTLS",
+    "WRN_BJAZ_MOT_RENEWAL"
+   ],
+   "over_limit": true,
+   "satellites": [
+    "SAT_COMMON_BUSINESS_AUDIT",
+    "SAT_COMMON_LIFECYCLE"
+   ],
+   "links": [],
+   "link_pairs": [],
+   "anchor_hubs": [
+    "HUB_POLICY"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 18,
+   "name": "v18_policy",
+   "stitch_model": "stitch_v18_policy",
+   "stage_model": "stg2_v18_policy",
+   "tables": [
+    "BGIL_MOTOR_WEBSERVICE_INFO_EQM",
+    "BGIL_MOTOR_WS_PLAN_DETAILS_EQM",
+    "BJAZ_CVTP_WS_DATA",
+    "BJAZ_MOTOR_WEBSERVICE_INFO",
+    "BJAZ_MOTOR_WS_PLAN_DETAILS",
+    "BJAZ_MOT_ONLINE_POL_DTLS",
+    "BJAZ_MOT_RENEWAL",
+    "BJAZ_MOT_RENEWAL_HIST",
+    "BJAZ_MOT_STP_PREM_SUMM_EXTN",
+    "BJAZ_MOT_WINBACK_DTLS",
+    "BJAZ_MOT_WS_POL_DTLS",
+    "WRN_BJAZ_MOT_RENEWAL"
+   ],
+   "over_limit": true,
+   "satellites": [
+    "SAT_FIN_RECEIPT",
+    "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+    "SAT_POLICY_INTERMEDIARY_SPLIT",
+    "SAT_POLICY_TP_PRIOR_PERIOD"
+   ],
+   "links": [],
+   "link_pairs": [],
+   "anchor_hubs": [
+    "HUB_FINANCIAL_TRANSACTION",
+    "HUB_POLICY"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 19,
+   "name": "v19_policy",
+   "stitch_model": "stitch_v19_policy",
+   "stage_model": "stg2_v19_policy",
+   "tables": [
+    "BJAZ_CVTP_WS_DATA",
+    "BJAZ_MOT_COVER_EXTN",
+    "BJAZ_MOT_OD_TP_DTLS",
+    "BJAZ_MOT_ONLINE_POL_DTLS",
+    "BJAZ_MOT_PREM_SUMM_EXTN",
+    "BJAZ_MOT_PREM_SUMM_EXTN_ADJ",
+    "BJAZ_MOT_RENEWAL_EXTN",
+    "BJAZ_MOT_RENEWAL_HIST",
+    "BJAZ_MOT_REN_PREM",
+    "BJAZ_MOT_REN_SUM_DTLS_A",
+    "BJAZ_MOT_TRADE_DTLS_EXTN",
+    "BJAZ_MOT_WAR_PLANS_EXTN",
+    "BJAZ_MOT_WINBACK_DTLS",
+    "BJAZ_MOT_WS_POL_DTLS"
+   ],
+   "over_limit": true,
+   "satellites": [
+    "SAT_POLICY_EXCESS_STRUCTURE",
+    "SAT_POLICY_FLEET",
+    "SAT_POLICY_PREMIUM_HEAD",
+    "SAT_POLICY_SUM_INSURED_BREAKUP"
+   ],
+   "links": [],
+   "link_pairs": [],
+   "anchor_hubs": [
+    "HUB_POLICY"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 20,
+   "name": "v20_product",
+   "stitch_model": "stitch_v20_product",
+   "stage_model": "stg2_v20_product",
+   "tables": [
+    "BJAZ_MOT_COMM_CAPPPING_MASTER",
+    "BJAZ_MOT_GEN_RATE_MASTER",
+    "BJAZ_MOT_PKG_MST",
+    "BJAZ_MOT_TP_GST_APPLICABLE_PRD",
+    "BJAZ_WAP_MOT_STP_RATE_SUMM",
+    "BJAZ_WS_MOT_STP_RATE_SUMM"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_PRODUCT_COMMISSION_GRID",
+    "SAT_AUG_PRODUCT_RATING_FACTOR",
+    "SAT_AUG_PRODUCT_RIDER_CATALOGUE",
+    "SAT_AUG_PRODUCT_TAX_APPLICABILITY",
+    "SAT_PRODUCT_COMMISSION_GRID",
+    "SAT_PRODUCT_DISCOUNT_LOADING",
+    "SAT_PRODUCT_RATING_FACTOR",
+    "SAT_PRODUCT_RIDER_CATALOGUE"
+   ],
+   "links": [
+    "LNK_QUOTE_PRODUCT"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_QUOTE_PRODUCT",
+     "table": "BJAZ_WS_MOT_STP_RATE_SUMM",
+     "legs": {
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(to_char(PROD_CODE)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_QUOTE": {
+       "expr": "nullif(trim(to_char(TRANSACTION_ID)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_PRODUCT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 21,
+   "name": "v21_product",
+   "stitch_model": "stitch_v21_product",
+   "stage_model": "stg2_v21_product",
+   "tables": [
+    "BGIL_MOTOR_WEBSERVICE_INFO_EQM",
+    "BJAZ_MOTOR_WEBSERVICE_INFO",
+    "BJAZ_MOT_PROD_UIN_MAPPING",
+    "BJAZ_MOT_STP_PREM_SUMM_EXTN",
+    "BJAZ_RTA_STATUS_MASTER",
+    "BJAZ_VEHICLE_TYPE_MASTER_ACT",
+    "BJAZ_WAP_MOT_STP_RATE_SUMM",
+    "BJAZ_WS_MOT_STP_RATE_SUMM",
+    "CVTP_GUIDELINES",
+    "RTA_CLUSTER_PREFERRED_DECLINE"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_PRODUCT_DEFINITION",
+    "SAT_AUG_PRODUCT_DISCOUNT_LOADING",
+    "SAT_AUG_PRODUCT_UW_RULE",
+    "SAT_PRODUCT_UW_RULE"
+   ],
+   "links": [
+    "LNK_POLICY_PRODUCT",
+    "LNK_PRODUCT_COVERAGE",
+    "LNK_PROPOSAL_POLICY",
+    "LNK_PROPOSAL_PRODUCT"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_POLICY_PRODUCT",
+     "table": "BJAZ_MOT_STP_PREM_SUMM_EXTN",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(to_char(CONTRACT_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(to_char(PROD_CODE)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_PROPOSAL_POLICY",
+     "table": "BJAZ_MOT_STP_PREM_SUMM_EXTN",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(to_char(CONTRACT_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(to_char(SCRUTINY_NO)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_PROPOSAL_PRODUCT",
+     "table": "BJAZ_MOT_STP_PREM_SUMM_EXTN",
+     "legs": {
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(to_char(PROD_CODE)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(to_char(SCRUTINY_NO)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_PRODUCT_COVERAGE",
+     "table": "BJAZ_VEHICLE_TYPE_MASTER_ACT",
+     "legs": {
+      "HUB_COVERAGE": {
+       "expr": "nullif(trim(COVER_TYPE), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(to_char(PRODUCT_CODE)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_PRODUCT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 22,
+   "name": "v22_quote",
+   "stitch_model": "stitch_v22_quote",
+   "stage_model": "stg2_v22_quote",
+   "tables": [
+    "BA_PART_QUOTE_MOT_PREM",
+    "BA_QUOTE_MOT_COVERS",
+    "BA_QUOTE_MOT_DTLS",
+    "BA_QUOTE_MOT_PREM",
+    "BGIL_MOTOR_WS_DETARIFF_EQM",
+    "BGIL_MOTWS_OTHER_DTLS_EQM",
+    "BJAZ_MOTOR_WS_DETARIFF",
+    "BJAZ_MOTOR_WS_EXTRA_COVERS",
+    "BJAZ_MOTOR_WS_PREMIUM_SUMMARY"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_QUOTE_COVERAGE_LINE",
+    "SAT_AUG_QUOTE_PREMIUM_HEAD",
+    "SAT_AUG_QUOTE_VEHICLE_SPEC",
+    "SAT_AUG_RISK_MOTOR_USAGE_PLAN",
+    "SAT_QUOTE_RATING_INPUT"
+   ],
+   "links": [
+    "LNK_PROPOSAL_RISK_OBJECT",
+    "LNK_QUOTE_PROPOSAL",
+    "LNK_QUOTE_RISK_OBJECT",
+    "LNK_RISK_OBJECT_LOCATION"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_QUOTE_RISK_OBJECT",
+     "table": "BA_QUOTE_MOT_DTLS",
+     "legs": {
+      "HUB_QUOTE": {
+       "expr": "nullif(trim(to_char(SCRUTINY_NO)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NO), ''), nullif(trim(VEHICLE_REG_NO), ''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_RISK_OBJECT_LOCATION",
+     "table": "BA_QUOTE_MOT_DTLS",
+     "legs": {
+      "HUB_LOCATION": {
+       "expr": "nullif(trim(to_char(PINCODE)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NO), ''), nullif(trim(VEHICLE_REG_NO), ''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_PROPOSAL_RISK_OBJECT",
+     "table": "BGIL_MOTWS_OTHER_DTLS_EQM",
+     "legs": {
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(to_char(PTRANSACTION_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "nullif(trim(REG_NO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_QUOTE_PROPOSAL",
+     "table": "BGIL_MOTWS_OTHER_DTLS_EQM",
+     "legs": {
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(to_char(PTRANSACTION_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_QUOTE": {
+       "expr": "nullif(trim(to_char(PTRANSACTION_ID)), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_QUOTE_RISK_OBJECT",
+     "table": "BGIL_MOTWS_OTHER_DTLS_EQM",
+     "legs": {
+      "HUB_QUOTE": {
+       "expr": "nullif(trim(to_char(PTRANSACTION_ID)), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "nullif(trim(REG_NO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_QUOTE",
+    "HUB_RISK_OBJECT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 23,
+   "name": "v23_quote",
+   "stitch_model": "stitch_v23_quote",
+   "stage_model": "stg2_v23_quote",
+   "tables": [
+    "BA_QUOTE_MOT_DTLS",
+    "BGIL_MOTOR_WS_DETARIFF_EQM",
+    "BJAZ_MOTOR_WS_DETARIFF",
+    "BJAZ_MOTOR_WS_EXTRA_COVERS",
+    "BJAZ_MOTOR_WS_PREMIUM_DTLS",
+    "BJAZ_MOTOR_WS_PREMIUM_SUMMARY",
+    "BJAZ_MOT_ONLINE_POL_DTLS",
+    "BJAZ_MOT_ONLINE_POL_DTLS_EXTN",
+    "BJAZ_MOT_WS_POL_DTLS",
+    "BJAZ_SCR_MOT_VEH_DTLS",
+    "BJAZ_WS_MOT_STP_RATE_SUMM"
+   ],
+   "over_limit": true,
+   "satellites": [
+    "SAT_AUG_QUOTE_HEADER",
+    "SAT_AUG_QUOTE_PRIOR_INSURANCE",
+    "SAT_AUG_QUOTE_RATING",
+    "SAT_QUOTE_HEADER",
+    "SAT_QUOTE_RATING"
+   ],
+   "links": [],
+   "link_pairs": [],
+   "anchor_hubs": [
+    "HUB_QUOTE"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 24,
+   "name": "v24_risk_object",
+   "stitch_model": "stitch_v24_risk_object",
+   "stage_model": "stg2_v24_risk_object",
+   "tables": [
+    "BA_QUOTE_MOT_DTLS",
+    "BGIL_MOTOR_WEBSERVICE_INFO_EQM",
+    "BGIL_MOTOR_WS_PLAN_DETAILS_EQM",
+    "BJAZ_AGENCY_MOT_WAR_DTLS",
+    "BJAZ_CVTP_WS_DATA",
+    "BJAZ_MOTORTHEFT_CASE_DTLS",
+    "BJAZ_MOTOR_WEBSERVICE_INFO",
+    "BJAZ_MOTOR_WS_PLAN_DETAILS",
+    "BJAZ_MOT_ONLINE_POL_DTLS",
+    "BJAZ_MOT_RENEWAL_EXTN",
+    "BJAZ_MOT_RENEWAL_HIST",
+    "BJAZ_MOT_RNW_LOADER_DATA",
+    "BJAZ_MOT_WINBACK_DTLS",
+    "BJAZ_MOT_WS_POL_DTLS",
+    "BJAZ_SCR_MOT_VEH_DTLS",
+    "BJAZ_WAP_MOT_ADD_QSTN_DTLS"
+   ],
+   "over_limit": true,
+   "satellites": [
+    "SAT_AUG_PROPOSAL_DECLARATIONS",
+    "SAT_AUG_PROPOSAL_HEADER",
+    "SAT_AUG_RISK_OBJECT_VALUATION",
+    "SAT_RISK_MOTOR_IDV",
+    "SAT_RISK_OBJECT_INSURABLE_INTEREST",
+    "SAT_RISK_OBJECT_VALUATION"
+   ],
+   "links": [
+    "LNK_PROPOSAL_RISK_OBJECT"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_PROPOSAL_RISK_OBJECT",
+     "table": "BJAZ_WAP_MOT_ADD_QSTN_DTLS",
+     "legs": {
+      "HUB_PROPOSAL": {
+       "expr": "nullif('WAP:' || nullif(trim(to_char(TRANS_ID)), ''), 'WAP:')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "nullif(trim(coalesce(REG_NO_PART1, '') || coalesce(REG_NO_PART2, '') || coalesce(REG_NO_PART3, '') || coalesce(REG_NO_PART4, '')), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_PROPOSAL",
+    "HUB_RISK_OBJECT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 25,
+   "name": "v25_risk_object",
+   "stitch_model": "stitch_v25_risk_object",
+   "stage_model": "stg2_v25_risk_object",
+   "tables": [
+    "BA_QUOTE_MOT_DTLS",
+    "BGIL_MOTOR_WEBSERVICE_INFO_EQM",
+    "BGIL_MOTOR_WS_PLAN_DETAILS_EQM",
+    "BJAZ_CVTP_WS_DATA",
+    "BJAZ_IIB_SUDARS_POLICY_DTL_HST_QM",
+    "BJAZ_MOTOR_WEBSERVICE_INFO",
+    "BJAZ_MOTOR_WS_PLAN_DETAILS",
+    "BJAZ_MOT_ONLINE_POL_DTLS",
+    "BJAZ_MOT_RENEWAL_EXTN",
+    "BJAZ_MOT_RENEWAL_HIST",
+    "BJAZ_MOT_RNW_LOADER_DATA",
+    "BJAZ_MOT_WINBACK_DTLS",
+    "BJAZ_MOT_WS_POL_DTLS",
+    "BJAZ_SCR_MOT_VEH_DTLS"
+   ],
+   "over_limit": true,
+   "satellites": [
+    "SAT_AUG_RISK_MOTOR_IDV",
+    "SAT_AUG_RISK_MOTOR_LIABILITY_ADDON",
+    "SAT_AUG_RISK_MOTOR_NCB_HISTORY",
+    "SAT_AUG_RISK_MOTOR_TELEMATICS",
+    "SAT_POLICY_EXTERNAL_TP_LINK",
+    "SAT_RISK_MOTOR_ADDON",
+    "SAT_RISK_MOTOR_CPA",
+    "SAT_RISK_MOTOR_FITMENTS",
+    "SAT_RISK_MOTOR_NCB_HISTORY",
+    "SAT_RISK_MOTOR_TELEMATICS"
+   ],
+   "links": [],
+   "link_pairs": [],
+   "anchor_hubs": [
+    "HUB_POLICY",
+    "HUB_RISK_OBJECT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 26,
+   "name": "v26_risk_object",
+   "stitch_model": "stitch_v26_risk_object",
+   "stage_model": "stg2_v26_risk_object",
+   "tables": [
+    "BA_QUOTE_MOT_DTLS",
+    "BGIL_MOTOR_WEBSERVICE_INFO_EQM",
+    "BGIL_MOTOR_WS_PLAN_DETAILS_EQM",
+    "BJAZ_AGENCY_MOT_WAR_DTLS",
+    "BJAZ_CVTP_WS_DATA",
+    "BJAZ_IIB_SUDARS_POLICY_DTL_HST_QM",
+    "BJAZ_MOTORTHEFT_CASE_DTLS",
+    "BJAZ_MOTOR_WEBSERVICE_INFO",
+    "BJAZ_MOTOR_WS_PLAN_DETAILS",
+    "BJAZ_MOT_ONLINE_POL_DTLS",
+    "BJAZ_MOT_RENEWAL_EXTN",
+    "BJAZ_MOT_RENEWAL_HIST",
+    "BJAZ_MOT_RNW_VALIDATE_VEH_DTLS",
+    "BJAZ_MOT_RN_CLS_VEH_DTLS_HIST",
+    "BJAZ_MOT_WAR_CHILD_DTLS",
+    "BJAZ_MOT_WINBACK_DTLS",
+    "BJAZ_MOT_WS_POL_DTLS",
+    "BJAZ_PAYMOTORTHEFT_DTLS",
+    "BJAZ_SCR_MOT_VEH_DTLS",
+    "BJAZ_VAHAN_AUTO_ENDT_LOG",
+    "BJAZ_VAHAN_MOTOR_DTLS",
+    "BJAZ_WAP_MOT_ADD_QSTN_DTLS",
+    "VEHICLE_BLOCK_MASTER"
+   ],
+   "over_limit": true,
+   "satellites": [
+    "SAT_AUG_RISK_MOTOR_VEHICLE",
+    "SAT_AUG_RISK_MOTOR_VERIFICATION",
+    "SAT_AUG_RISK_OBJECT_CORE",
+    "SAT_RISK_MOTOR_VEHICLE"
+   ],
+   "links": [],
+   "link_pairs": [],
+   "anchor_hubs": [
+    "HUB_RISK_OBJECT"
+   ],
+   "absorbed_by_rule_4": []
+  }
+ ],
+ "census": {
+  "views": 26,
+  "satellites": 246,
+  "views_over_limit": 12,
+  "link_only_views": 0,
+  "feeding_tables": 93,
+  "link_pairs": 115
+ }
+}

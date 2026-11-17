@@ -1,0 +1,78 @@
+name: 'opus_motor_dv_dbt'
+version: '1.0.0'
+
+profile: 'opus_motor_dbt'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# Raw source location: the OPUS GG replica that opus_partner_dv_dbt and opus_travel_dv_dbt
+# point their *_raw sources at. Not yet confirmed for the motor tables: run
+# analyses/round1_raw_source_check.sql first.
+vars:
+  motor_raw_database: BAGIC_PROD_MIRROR_DB
+  motor_raw_schema: OPUS_GG_DWHSTAGE
+
+
+# Shared vault: every layer lands in BGIL_DATA_MODEL, the schema the opus_partner, opus_travel,
+# opus_health and maximus projects also write. A hub, link or satellite with the same name is ONE
+# physical table across those projects.
+#   * Never --full-refresh a hub, link or satellite: it drops the other projects' rows.
+#   * +on_schema_change: append_new_columns is required, so other projects' columns survive a run.
+#   * Motor's view layers carry a motor marker (stg_motor__, stg2_motor__, stg2_motor_aug__,
+#     stitch_motor__) so a motor run cannot replace a sibling's view of the same name.
+models:
+  opus_motor_dv_dbt:
+    +pre-hook:
+      - "{% if target.name == 'dev' %}INSERT INTO BAGIC_PREPROD_CURATED_DB.UTILS.MAXI_RAW_DBT_MODEL_RUN_LOG (model_name, status, run_id, run_start_timestamp, materialization, schema_name, target_table) SELECT '{{ this.name }}', 'RUNNING', '{{ invocation_id }}', '{{ run_started_at }}'::TIMESTAMP_NTZ, '{{ config.get(\"materialized\", \"view\") }}', '{{ this.schema }}', '{{ this.database }}.{{ this.schema }}.{{ this.name }}'{% endif %}"
+    +post-hook:
+      - "{% if target.name == 'dev' %}UPDATE BAGIC_PREPROD_CURATED_DB.UTILS.MAXI_RAW_DBT_MODEL_RUN_LOG SET status = 'SUCCESS' WHERE model_name = '{{ this.name }}' AND run_id = '{{ invocation_id }}' AND status = 'RUNNING'{% endif %}"
+    staging:
+      +materialized: view
+      +schema: BGIL_DATA_MODEL
+      +tags: ["stg1"]
+
+    raw_vault:
+      standard:
+        +schema: BGIL_DATA_MODEL
+        stitched:
+          +materialized: view
+          +tags: ["stitch"]
+        staging:
+          +materialized: view
+          +tags: ["standard_stg2"]
+        hubs:
+          +materialized: incremental
+          +tags: ["hub"]
+          +on_schema_change: append_new_columns
+        links:
+          +materialized: incremental
+          +tags: ["lnk"]
+          +on_schema_change: append_new_columns
+        satellites:
+          +materialized: incremental
+          +tags: ["standard_sat"]
+          +on_schema_change: append_new_columns
+        references:
+          +materialized: view
+          +tags: ["ref"]
+      augmented:
+        +schema: BGIL_DATA_MODEL
+        +tags: ["aug"]
+        staging:
+          +materialized: view
+          +tags: ["aug_stg2"]
+        satellites:
+          +materialized: incremental
+          +tags: ["aug_sat"]
+          +on_schema_change: append_new_columns
+

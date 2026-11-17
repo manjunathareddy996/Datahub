@@ -1,0 +1,68 @@
+{
+ "project": "opus_motor_v3_dv_dbt",
+ "dbt_project_name": "opus_motor_v3_dv",
+ "lob": "opus_motor",
+ "structure_reference": "partner_dv_dbt / travel_dv_dbt -- models/staging/<lob>/ and models/automate_dv/{standard/{stitched,staging,hubs,links,satellites,references},augmented/{staging,satellites}}, the same layout as health_consolidated_v5_dv_dbt and maximus_health_v4_dv_dbt.",
+ "macro_library": {
+  "packages": [
+   {"package": "dbt-labs/dbt_utils", "version": [">=1.1.0", "<2.0.0"]},
+   {"package": "Datavault-UK/automate_dv", "version": [">=0.11.0", "<0.12.0"]}
+  ]
+ },
+ "inputs_pinned": {
+  "note": "EXACTLY the 16 bundle files opus_motor_v2_dv_dbt pinned (its sha256 values, verified identical to the live bundle on 2026-11-16), read in place from the frozen outputs/ directory, plus data_7.js. Files the mapper added to the bundle ROOT after that build (RUN_CLOSURE_OPUS_MOTOR_V2.md and its facts, HANDOFF_RECORD.md, E8_STALE_DIGEST_CENSUS.json, SESSION_FINDINGS_FOR_CLAUDE_MD.md) are closure records, not mapping inputs: read for errata E-7 and E-8, neither of which changes what is built.",
+  "files": {
+   "SourceMapping_Skill/OPUS Motor New V2/outputs/00_tables_index.json": "sha256:0dc9acfdcf04ea91e5b4632f32510ad5d773e136da45fedafa5e18d9bc90fafe",
+   "SourceMapping_Skill/OPUS Motor New V2/outputs/04_column_map.json": "sha256:c68ab9d563c1e81a567e3b244647b539fef1a53b04cf9cce26812e883a6f26c0",
+   "SourceMapping_Skill/OPUS Motor New V2/outputs/08_handoff_facts.json": "sha256:c61e926743450ff6dd574754b669bc14417b5e50c0591cd73238f40765781a09",
+   "SourceMapping_Skill/OPUS Motor New V2/outputs/09_validation_report.json": "sha256:69c29eea57d9c44e896f6791f78a738a72692a9aa39b460a3344bc5f1c1410df",
+   "SourceMapping_Skill/OPUS Motor New V2/outputs/09_validator_findings.json": "sha256:92e56aafe5e19fd95ca5bdf235991fa00628be3d7b6428ac9b71c77ac840b1fb",
+   "SourceMapping_Skill/OPUS Motor New V2/outputs/A5_DECISIONS.json": "sha256:5e4293d44704fa73da541517feb25481938662e9d4be688b7d9d42231fa1c876",
+   "SourceMapping_Skill/OPUS Motor New V2/outputs/A5_RETIREMENT_INVENTORY.json": "sha256:b4281e2671297be42207fc450e88f431b0b590f09a36575bb2ebd38b3f4ef8aa",
+   "SourceMapping_Skill/OPUS Motor New V2/outputs/BUILD_INSTRUCTIONS_OPUS_MOTOR_V2.md": "sha256:89e65406743a4a66742c6514d81ff175d683b4320937998a3d3f19e525a5a009",
+   "SourceMapping_Skill/OPUS Motor New V2/outputs/CHILDKEY_GAPS.csv": "sha256:101ee3fd22862b029914824fd55756c978896d011473e7b4e7a72be518db0e96",
+   "SourceMapping_Skill/OPUS Motor New V2/outputs/MESSAGE_TO_BUILDER.md": "sha256:1f5a775079c83117f2b878b61d99cd8a107adee27ab414b176cb15bcb077ef8a",
+   "SourceMapping_Skill/OPUS Motor New V2/outputs/OPUS_Motor_V2_SourceToModel_Mapping.xlsx": "sha256:242a0ecb490213a580ced664223961d8df2d5b52343e7de1005420c9caa45b88",
+   "SourceMapping_Skill/OPUS Motor New V2/outputs/SCOPE_LISTS.json": "sha256:bdf3c223699272d43e77e6a6d5217e759786f4d77534583a137434e2d9f91d57",
+   "SourceMapping_Skill/OPUS Motor New V2/outputs/VALIDATION_REPORT_OPUS_Motor_V2.md": "sha256:429867f441156309eb7e7680c2c0c323f415548f803e6ce4e9329474c7796c4c",
+   "SourceMapping_Skill/OPUS Motor New V2/outputs/consolidation/07_consolidation.json": "sha256:49a3f4bcc775bb747cd4c75df96fdac5b3d6280399553797ca01fc8ee57edfb2",
+   "SourceMapping_Skill/OPUS Motor New V2/outputs/modeler_feedback.json": "sha256:11ea09cb711752e0e33ea95a79fd23cee8528a458cd5d2c687ec4a5981ecaa5b",
+   "SourceMapping_Skill/OPUS Motor New V2/outputs/reports/A4_sweep_report.json": "sha256:a25bd8b8d9da30cc19d4d7742a5c1a00e221def9f13b5a343107c4ede903f99f",
+   "Health_DBTModel/data_7.js": "md5:082b92d7650cf4e192b6e9bb931cdc7e"
+  }
+ },
+ "central_view_rule": {
+  "status": "GOVERNS",
+  "verbatim": "1. we create a central view from source tables (by joining them , max upto 10). The join are selected so that it can feed sat as a whole (one or moew). That is we do not split sat across these views. Restriction of 10 can be broken if a sat needs more than source tables to build. If a view as less source tables join, we add more tables to it efficiently so that new sats can be built.",
+  "hub_and_link_extension_verbatim": "the views will have hub keys -- effectively each sat is primary key goes to hub -- so hub has to come from there, 2nd the links will also be from same view , as different hub keys and sat populatin comes from there",
+  "table_limit": 10
+ },
+ "flat_source": "BUILD_INSTRUCTIONS s3: a flat relational catalogue, every key an on-view expression. Any walk notation in a key is refused, never resolved.",
+ "ratified_functions": ["coalesce", "lnk", "md5", "normalise", "nullif", "to_char", "trim", "upper"],
+ "normalise_policy": "emit",
+ "normalise_note": "normalise() is called inside md5(normalise(upper(...))) content-hash keys in this map and is defined nowhere in the bundle or this workspace. 'emit' carries the expressions verbatim and declares a precondition: a Snowflake function normalise(varchar) must exist before dbt run. health_consolidated_v5_dv_dbt runs 'refuse' for its map; the two builds differ on this and it should be settled once, estate-wide.",
+ "directives": {
+  "scope": "SCOPE_LISTS.json out-of-scope tables are matched by EQUALITY on the full table name, never containment; the map already carries none, which is verified, not re-applied.",
+  "empty_key_shell": "a resolved_key object with no expression (E-7: 540 blocks, the same set as those with no tier) is refused, never keyed on a bare prefix.",
+  "key_derivation_prose": "key_derivation is prose and is never parsed into a key.",
+  "child_key_order": "child_key_components where present -- per leg the source_column when resolved_on_view is true, else the literal value ('{COL}' is a column); a leg offering neither refuses the block. Else child_key_value 'Leg = VALUE | Leg = VALUE'. A declared leg left unresolved lands NULL and the grain is declared.",
+  "single_writer_G3": "for every single-active multi-writer group, the member carrying redundant_of is WITHHELD and its target is the single writer emitted; every group's decision is stated in build_artifacts/reports/single_writer_decisions.json, because redundant_of has no representation in SQL.",
+  "grain_unratified_P2": "a satellite with a block whose child-key value is its own column name is emitted as the map states and STAMPED grain_unratified in its SQL header.",
+  "risk_object_key_spaces_P11": "the four HUB_RISK_OBJECT key spaces are emitted exactly as the map states; no unifying key is invented, and OBJECT_ID is never stamped onto an empty key."
+ },
+ "conventions": {
+  "hub_key_column": "<HUB minus HUB_>_HKEY",
+  "link_key_column": "<LNK minus LNK_>_HKEY",
+  "natural_key": "'<HUB_CODE>|' || <business key>, hashed by automate_dv.stage()",
+  "link_natural_key": "'<LNK_CODE>|' || <leg BKs in hub-code order, '|'-joined>",
+  "hashdiff": "HASHDIFF (bare, one stage per satellite)",
+  "child_key_column": "<LEG>_CK",
+  "role_satellites": "satellites on the one-hub LNK_PARTY_ROLE are built off HUB_PARTY with a literal ROLE_TYPE_CK",
+  "load_datetime": "!CURRENT_TIMESTAMP()  -- as the reference projects write it, by the user's instruction",
+  "payload_names": "UPPER_SNAKE of the data_7.js attribute name",
+  "hub_business_key_column": "<HUB>_BK, as in health_consolidated_v5_dv_dbt and maximus_health_v4_dv_dbt"
+ },
+ "staging_casts": "every column nullif(trim(to_varchar(\"COL\")), '') aliased lower-case. 00_tables_index carries data_type absent_from_source, so no type is inferred.",
+ "row_filters": {},
+ "refusals_not_fallbacks": "A key, child key or attribute that cannot be resolved from the pinned inputs is REFUSED and registered with whose call it is."
+}
