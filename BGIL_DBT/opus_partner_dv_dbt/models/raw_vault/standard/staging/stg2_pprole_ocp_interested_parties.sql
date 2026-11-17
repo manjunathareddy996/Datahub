@@ -6,6 +6,9 @@
 -- insured/agent/nominee/etc.) is NOT mapped anywhere in Partner's source mapping. Only
 -- "Role Sequence" (IP_NO) is. Built with Role Sequence as the sole childkey component --
 -- not fabricating a role-type value. See mapper follow-up note.
+-- PRIMARY_INDICATOR <- TOP_INDICATOR: the canonical "Primary Indicator" attribute. It is the
+-- satellite's payload, since ROLE_SEQUENCE is the childkey (ma_sat_multi_source keeps the
+-- childkey out of the payload and needs at least one payload column).
 
 {%- set yaml_metadata -%}
 source_model: 'stg_partner__ocp_interested_parties'
@@ -15,9 +18,11 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'ROLE_SEQUENCE'
+      - 'PRIMARY_INDICATOR'
 derived_columns:
   POLICY_PARTY_HKEY_NK: "'LNK_POLICY_PARTY|' || partner_id || '|' || contract_id"
   ROLE_SEQUENCE: 'ip_no'
+  PRIMARY_INDICATOR: 'top_indicator'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_OCP_INTERESTED_PARTIES'
 {%- endset -%}
