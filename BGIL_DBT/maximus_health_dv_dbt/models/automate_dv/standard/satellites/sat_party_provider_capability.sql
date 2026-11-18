@@ -5,7 +5,7 @@
 source_model: 'stg2_party_provider_capability'
 src_pk: 'PARTY_HKEY'
 src_cdk:
-  - 'FACILITY_CODE_CK'
+  - 'FACILITY_CODE'
 src_payload:
   - 'AVAILABLE_INDICATOR'
 src_hashdiff: 'HASHDIFF'

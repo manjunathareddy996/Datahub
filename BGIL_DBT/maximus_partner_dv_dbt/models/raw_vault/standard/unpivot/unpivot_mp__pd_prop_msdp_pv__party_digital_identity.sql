@@ -7,7 +7,7 @@
 
     select
         foreign_key as parent_bk,
-        '{USER_ID}' as activesequencenumber,
+        '{USER_ID}' as active_sequence_number,
         user_id as login_identifier,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source

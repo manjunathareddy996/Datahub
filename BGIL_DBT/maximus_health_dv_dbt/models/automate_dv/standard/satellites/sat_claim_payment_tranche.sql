@@ -5,7 +5,7 @@
 source_model: 'stg2_claim_payment_tranche'
 src_pk: 'CLAIM_HKEY'
 src_cdk:
-  - 'TRANCHE_NUMBER_CK'
+  - 'TRANCHE_NUMBER'
 src_payload:
   - 'GROSS_AMOUNT'
   - 'PAYMENT_TYPE'

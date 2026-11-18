@@ -10,10 +10,10 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'SERVICE_TAX_AMOUNT'
-      - 'TAX_TYPE_CK'
+      - 'TAX_TYPE'
 derived_columns:
   FINANCIAL_TRANSACTION_NK: "case when FINTXN_TAX__SERVICE_TAX_AMOUNT is not null then 'HUB_FINANCIAL_TRANSACTION|' || FINANCIAL_TRANSACTION_BK end"
-  TAX_TYPE_CK: 'FINTXN_TAX__TAX_TYPE_CK'
+  TAX_TYPE: 'FINTXN_TAX__TAX_TYPE_CK'
   SERVICE_TAX_AMOUNT: 'FINTXN_TAX__SERVICE_TAX_AMOUNT'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
   RECORD_SOURCE: '!stitch_motor__v11_party'

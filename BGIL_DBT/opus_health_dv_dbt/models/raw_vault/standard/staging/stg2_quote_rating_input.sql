@@ -11,10 +11,10 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'FACTOR_VALUE'
-      - 'FACTOR_CODE_CK'
+      - 'FACTOR_CODE'
 derived_columns:
   QUOTE_NK: "case when QUOTE_RATING_INPUT__FACTOR_VALUE is not null then 'HUB_QUOTE|' || QUOTE_BK end"
-  FACTOR_CODE_CK: 'QUOTE_RATING_INPUT__FACTOR_CODE_CK'
+  FACTOR_CODE: 'QUOTE_RATING_INPUT__FACTOR_CODE_CK'
   FACTOR_VALUE: 'QUOTE_RATING_INPUT__FACTOR_VALUE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
   RECORD_SOURCE: '!stitch_v33_quote'

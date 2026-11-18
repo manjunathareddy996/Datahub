@@ -5,7 +5,7 @@
 source_model: 'stg2_claim_reserve_head'
 src_pk: 'CLAIM_HKEY'
 src_cdk:
-  - 'RESERVE_HEAD_CODE_CK'
+  - 'RESERVE_HEAD_CODE'
 src_payload:
   - 'OPENING_RESERVE'
 src_hashdiff: 'HASHDIFF'

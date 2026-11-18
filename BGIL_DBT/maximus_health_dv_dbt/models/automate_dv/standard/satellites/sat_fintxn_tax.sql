@@ -5,7 +5,7 @@
 source_model: 'stg2_fintxn_tax'
 src_pk: 'FINANCIAL_TRANSACTION_HKEY'
 src_cdk:
-  - 'TAX_TYPE_CK'
+  - 'TAX_TYPE'
 src_payload:
   - 'COMPONENT_TAX_AMOUNT'
   - 'GSTIN'

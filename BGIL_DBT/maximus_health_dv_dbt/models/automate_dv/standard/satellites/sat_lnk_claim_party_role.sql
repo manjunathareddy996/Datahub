@@ -6,7 +6,7 @@ source_model: 'stg2_lnk_claim_party_role'
 src_pk: 'CLAIM_PARTY_HKEY'
 src_cdk:
   - 'PARTY_ROLE_TYPE_CK'
-  - 'ROLE_SEQUENCE_CK'
+  - 'ROLE_SEQUENCE'
 src_payload:
   - 'ATTRIBUTION_PERCENTAGE'
   - 'PARTY_ROLE_TYPE'

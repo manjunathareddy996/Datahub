@@ -9,7 +9,7 @@
 source_model: 'stg2_mp_up__pd_prop_sp_pv__party_provider_capability'
 src_pk: 'PARTY_HKEY'
 src_cdk:
-  - 'FACILITYCODE'
+  - 'FACILITY_CODE'
 src_payload:
   - 'ACCREDITATION_INDICATOR'
   - 'ACCREDITATION_REFERENCE'

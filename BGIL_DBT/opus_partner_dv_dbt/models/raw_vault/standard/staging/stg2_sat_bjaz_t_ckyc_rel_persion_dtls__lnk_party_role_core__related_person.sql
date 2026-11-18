@@ -53,7 +53,7 @@ derived_columns:
   PARENT_BK: "nullif('CKYC:' || upper(trim(coalesce(ckyc_no,''))), 'CKYC:')"
   PARENT_NK: "'HUB_PARTY|' || (nullif('CKYC:' || upper(trim(coalesce(ckyc_no,''))), 'CKYC:'))"
   ROLE_CODE: "coalesce(nullif(trim(to_varchar(rel_type)), ''), '~')"
-  ROLESEQUENCE: "coalesce(nullif(trim(to_varchar(sequence_no)), ''), '~')"
+  ROLE_SEQUENCE: "coalesce(nullif(trim(to_varchar(sequence_no)), ''), '~')"
   ROLESTATUS: 'add_del_flag'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_CKYC_REL_PERSION_DTLS'

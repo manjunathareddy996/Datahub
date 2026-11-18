@@ -5,7 +5,7 @@
 source_model: 'stg2_motor__product_rating_factor'
 src_pk: 'PRODUCT_HKEY'
 src_cdk:
-  - 'ACTIVE_SEQUENCE_NUMBER_CK'
+  - 'ACTIVE_SEQUENCE_NUMBER'
 src_payload:
   - 'BASE_TARIFF_RATE'
   - 'EFFECTIVE_DATE'

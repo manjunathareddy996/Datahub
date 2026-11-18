@@ -5,7 +5,7 @@
 source_model: 'stg2_claim_investigation_finding'
 src_pk: 'CLAIM_HKEY'
 src_cdk:
-  - 'FINDING_SEQUENCE_CK'
+  - 'FINDING_SEQUENCE'
 src_payload:
   - 'FINDING_DESCRIPTION'
   - 'FINDING_OUTCOME'

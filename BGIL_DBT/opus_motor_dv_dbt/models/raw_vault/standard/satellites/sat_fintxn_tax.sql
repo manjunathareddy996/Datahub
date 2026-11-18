@@ -5,7 +5,7 @@
 source_model: 'stg2_motor__fintxn_tax'
 src_pk: 'FINANCIAL_TRANSACTION_HKEY'
 src_cdk:
-  - 'TAX_TYPE_CK'
+  - 'TAX_TYPE'
 src_payload:
   - 'SERVICE_TAX_AMOUNT'
 src_hashdiff: 'HASHDIFF'

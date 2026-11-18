@@ -5,7 +5,7 @@
 source_model: 'stg2_coverage_sublimit_schedule'
 src_pk: 'COVERAGE_HKEY'
 src_cdk:
-  - 'ACTIVE_SEQUENCE_NUMBER_CK'
+  - 'ACTIVE_SEQUENCE_NUMBER'
 src_payload:
   - 'CAPPING_BASIS'
   - 'PER_DAY_LIMIT'

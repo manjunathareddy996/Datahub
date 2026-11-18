@@ -5,8 +5,8 @@
 source_model: 'stg2_risk_health_member_medical'
 src_pk: 'RISK_OBJECT_HKEY'
 src_cdk:
-  - 'MEMBER_REFERENCE_CK'
-  - 'CONDITION_CODE_CK'
+  - 'MEMBER_REFERENCE'
+  - 'CONDITION_CODE'
 src_payload:
   - 'CONDITION_NAME'
   - 'DISCLOSED_INDICATOR'

@@ -8,7 +8,7 @@
     select
         foreign_key as parent_bk,
         stake_code as role_code,
-        '1' as rolesequence,
+        '1' as role_sequence,
         cast(null as varchar) as role_end_date,
         cast(null as varchar) as role_start_date,
         cast(null as varchar) as role_type,

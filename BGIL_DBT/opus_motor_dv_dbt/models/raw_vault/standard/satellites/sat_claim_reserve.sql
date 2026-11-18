@@ -5,7 +5,7 @@
 source_model: 'stg2_motor__claim_reserve'
 src_pk: 'CLAIM_HKEY'
 src_cdk:
-  - 'RESERVE_HEAD_CK'
+  - 'RESERVE_HEAD'
 src_payload:
   - 'CURRENT_RESERVE_AMOUNT'
   - 'OUTSTANDING_RESERVE_AMOUNT'

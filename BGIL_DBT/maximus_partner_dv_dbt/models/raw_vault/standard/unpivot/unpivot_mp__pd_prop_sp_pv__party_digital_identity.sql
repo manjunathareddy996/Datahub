@@ -7,7 +7,7 @@
 
     select
         bagic_employee_code as parent_bk,
-        'PORTAL_LOGIN' as activesequencenumber,
+        'PORTAL_LOGIN' as active_sequence_number,
         login_id as login_identifier,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
@@ -16,7 +16,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'REPAIRER_PORTAL' as activesequencenumber,
+        'REPAIRER_PORTAL' as active_sequence_number,
         repairer_portal_id as login_identifier,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
@@ -25,7 +25,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'SURVEYOR_MODULE' as activesequencenumber,
+        'SURVEYOR_MODULE' as active_sequence_number,
         sur_module_login_id as login_identifier,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
@@ -34,7 +34,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'USER_CODE' as activesequencenumber,
+        'USER_CODE' as active_sequence_number,
         user_code as login_identifier,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
@@ -43,7 +43,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'WEB_PORTAL' as activesequencenumber,
+        'WEB_PORTAL' as active_sequence_number,
         user_web_id as login_identifier,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source

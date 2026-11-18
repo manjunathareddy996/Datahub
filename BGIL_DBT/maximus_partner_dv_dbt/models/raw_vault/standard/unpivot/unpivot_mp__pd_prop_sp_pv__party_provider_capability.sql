@@ -7,7 +7,7 @@
 
     select
         bagic_employee_code as parent_bk,
-        'AMBULANCE' as facilitycode,
+        'AMBULANCE' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         ambulance as available_indicator,
@@ -21,7 +21,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'BIOCHEMISTRY_LAB' as facilitycode,
+        'BIOCHEMISTRY_LAB' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         bio_chemistry as available_indicator,
@@ -35,7 +35,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'BIOMEDICAL_WASTE_FACILITY' as facilitycode,
+        'BIOMEDICAL_WASTE_FACILITY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         biomedical_waste_facility as available_indicator,
@@ -49,7 +49,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'BLOOD_BANK_24_HR' as facilitycode,
+        'BLOOD_BANK_24_HR' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         blood_bank_24_hrs as available_indicator,
@@ -63,7 +63,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'BOYLES_APPARATUS' as facilitycode,
+        'BOYLES_APPARATUS' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         boyles_apparatus as available_indicator,
@@ -77,7 +77,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'BRONCHOSCOPY_LAB' as facilitycode,
+        'BRONCHOSCOPY_LAB' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         bronchoscopy_lab as available_indicator,
@@ -91,7 +91,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'BURNS_SPECIALITY' as facilitycode,
+        'BURNS_SPECIALITY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         burn as available_indicator,
@@ -105,7 +105,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'BURN_WARD' as facilitycode,
+        'BURN_WARD' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         burn_ward as available_indicator,
@@ -119,7 +119,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'CARDIOLOGY' as facilitycode,
+        'CARDIOLOGY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cardiology as available_indicator,
@@ -133,7 +133,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'CASE_OPINION_CAPABILITY' as facilitycode,
+        'CASE_OPINION_CAPABILITY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         ability_to_give_opinion_on_cases as available_indicator,
@@ -147,7 +147,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'CATH_LAB' as facilitycode,
+        'CATH_LAB' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cath_lab as available_indicator,
@@ -161,7 +161,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'CENTRALISED_OXYGEN_SUPPLY' as facilitycode,
+        'CENTRALISED_OXYGEN_SUPPLY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         centralized_oxygen_connections as available_indicator,
@@ -175,7 +175,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'CHEMOTHERAPY_UNIT' as facilitycode,
+        'CHEMOTHERAPY_UNIT' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         chemotherapy_unit as available_indicator,
@@ -189,7 +189,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'CLINICAL_PATHOLOGY' as facilitycode,
+        'CLINICAL_PATHOLOGY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         clinical_pathology as available_indicator,
@@ -203,7 +203,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'COBALT_UNIT' as facilitycode,
+        'COBALT_UNIT' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cobalt_unit as available_indicator,
@@ -217,7 +217,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'COMPUTER@TOTAL' as facilitycode,
+        'COMPUTER@TOTAL' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -231,7 +231,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'CRITICAL_CARE' as facilitycode,
+        'CRITICAL_CARE' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         critical_care as available_indicator,
@@ -245,7 +245,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'CSSD' as facilitycode,
+        'CSSD' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         centralize_sterile_supply_department as available_indicator,
@@ -259,7 +259,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'CT_SCAN' as facilitycode,
+        'CT_SCAN' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         ct_scan as available_indicator,
@@ -273,7 +273,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'Computer' as facilitycode,
+        'Computer' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -287,7 +287,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'DAY_CARE' as facilitycode,
+        'DAY_CARE' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         day_care as available_indicator,
@@ -301,7 +301,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'DAY_CARE_BED' as facilitycode,
+        'DAY_CARE_BED' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -315,7 +315,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'DELUXE_BED' as facilitycode,
+        'DELUXE_BED' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -329,7 +329,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'DENTAL' as facilitycode,
+        'DENTAL' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         dental as available_indicator,
@@ -343,7 +343,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'DERMATOLOGY' as facilitycode,
+        'DERMATOLOGY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         dermatology as available_indicator,
@@ -357,7 +357,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'DIALYSIS_UNIT' as facilitycode,
+        'DIALYSIS_UNIT' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         dialysis_unit as available_indicator,
@@ -371,7 +371,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'DISASTER_CRISIS_MANAGEMENT' as facilitycode,
+        'DISASTER_CRISIS_MANAGEMENT' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -385,7 +385,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'ECG' as facilitycode,
+        'ECG' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         ecg as available_indicator,
@@ -399,7 +399,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'ECHOCARDIOGRAPHY' as facilitycode,
+        'ECHOCARDIOGRAPHY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         echo as available_indicator,
@@ -413,7 +413,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'EEG' as facilitycode,
+        'EEG' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         eeg as available_indicator,
@@ -427,7 +427,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'ELECTRONIC_GADGET_SPY_CAM_RECORDER@BAGIC' as facilitycode,
+        'ELECTRONIC_GADGET_SPY_CAM_RECORDER@BAGIC' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -441,7 +441,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'ELECTRONIC_GADGET_SPY_CAM_RECORDER@TOTAL' as facilitycode,
+        'ELECTRONIC_GADGET_SPY_CAM_RECORDER@TOTAL' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -455,7 +455,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'EMERGENCY_CASUALTY_BED' as facilitycode,
+        'EMERGENCY_CASUALTY_BED' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -469,7 +469,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'EMERGENCY_SERVICE' as facilitycode,
+        'EMERGENCY_SERVICE' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         emergency as available_indicator,
@@ -483,7 +483,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'EMG' as facilitycode,
+        'EMG' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         emg as available_indicator,
@@ -497,7 +497,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'ENDOCRINOLOGY' as facilitycode,
+        'ENDOCRINOLOGY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         endocrinology as available_indicator,
@@ -511,7 +511,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'ENT' as facilitycode,
+        'ENT' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         ent as available_indicator,
@@ -525,7 +525,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'FIRE_SAFETY_EQUIPMENT' as facilitycode,
+        'FIRE_SAFETY_EQUIPMENT' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -539,7 +539,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'FOS_FEET_ON_STREET' as facilitycode,
+        'FOS_FEET_ON_STREET' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -553,7 +553,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'FOS_FEET_ON_STREET@BAGIC' as facilitycode,
+        'FOS_FEET_ON_STREET@BAGIC' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -567,7 +567,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'FOS_FEET_ON_STREET@TOTAL' as facilitycode,
+        'FOS_FEET_ON_STREET@TOTAL' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -581,7 +581,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'FULL_TIME_DOCTOR_MCI_QUALIFIED' as facilitycode,
+        'FULL_TIME_DOCTOR_MCI_QUALIFIED' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -595,7 +595,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'GAMMA_KNIFE' as facilitycode,
+        'GAMMA_KNIFE' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         gamma_knife as available_indicator,
@@ -609,7 +609,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'GASTROENTEROLOGY' as facilitycode,
+        'GASTROENTEROLOGY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         gastroenterology as available_indicator,
@@ -623,7 +623,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'GENERAL_MEDICINE' as facilitycode,
+        'GENERAL_MEDICINE' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         general_medicine as available_indicator,
@@ -637,7 +637,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'GENERAL_SURGERY' as facilitycode,
+        'GENERAL_SURGERY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         general_surgery as available_indicator,
@@ -651,7 +651,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'GENERAL_WARD_BED_AC' as facilitycode,
+        'GENERAL_WARD_BED_AC' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -665,7 +665,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'GENERAL_WARD_BED_NON_AC' as facilitycode,
+        'GENERAL_WARD_BED_NON_AC' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -679,7 +679,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'GENITOURINARY' as facilitycode,
+        'GENITOURINARY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         genitourinary as available_indicator,
@@ -693,7 +693,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'HAEMATOLOGY' as facilitycode,
+        'HAEMATOLOGY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         hematology as available_indicator,
@@ -707,7 +707,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'HDU' as facilitycode,
+        'HDU' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         hdu as available_indicator,
@@ -721,7 +721,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'HEALTH_VIDEO' as facilitycode,
+        'HEALTH_VIDEO' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         health_video as available_indicator,
@@ -735,7 +735,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'HELP_DESK' as facilitycode,
+        'HELP_DESK' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         help_desk as available_indicator,
@@ -749,7 +749,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'HOLTER_MONITORING' as facilitycode,
+        'HOLTER_MONITORING' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         holter as available_indicator,
@@ -763,7 +763,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'ICD_10_CODING' as facilitycode,
+        'ICD_10_CODING' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         use_of_icd_10 as available_indicator,
@@ -777,7 +777,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'ICD_DEFIBRILLATOR' as facilitycode,
+        'ICD_DEFIBRILLATOR' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         icd as available_indicator,
@@ -791,7 +791,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'ICU_BED' as facilitycode,
+        'ICU_BED' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -805,7 +805,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'INCUBATOR' as facilitycode,
+        'INCUBATOR' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -819,7 +819,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'INFECTION_CONTROL' as facilitycode,
+        'INFECTION_CONTROL' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -833,7 +833,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'INFECTIOUS_DISEASE' as facilitycode,
+        'INFECTIOUS_DISEASE' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         infectious_disease as available_indicator,
@@ -847,7 +847,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'INFRASTRUCTURE' as facilitycode,
+        'INFRASTRUCTURE' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -861,7 +861,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'INTERNET_ACCESS' as facilitycode,
+        'INTERNET_ACCESS' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         internet_access as available_indicator,
@@ -875,7 +875,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'INTERNET_ACCESS@DFADVOCATE' as facilitycode,
+        'INTERNET_ACCESS@DFADVOCATE' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         internet_accessdfadvocate as available_indicator,
@@ -889,7 +889,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'INTERNET_ACCESS@HCADVOCATE' as facilitycode,
+        'INTERNET_ACCESS@HCADVOCATE' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         internet_accesshcadvocate as available_indicator,
@@ -903,7 +903,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'INTERNET_ACCESS@LAWYER' as facilitycode,
+        'INTERNET_ACCESS@LAWYER' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         internet_accesslawyer as available_indicator,
@@ -917,7 +917,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'INTERNET_ACCESS@RETAINER' as facilitycode,
+        'INTERNET_ACCESS@RETAINER' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         internet_accessretainer as available_indicator,
@@ -931,7 +931,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'INTERNET_ACCESS@STADVOCATE' as facilitycode,
+        'INTERNET_ACCESS@STADVOCATE' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         internet_accessstadvocate as available_indicator,
@@ -945,7 +945,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'INTERNET_ACCESS@TRADVOCATE' as facilitycode,
+        'INTERNET_ACCESS@TRADVOCATE' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         internet_accesstradvocate as available_indicator,
@@ -959,7 +959,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'IN_HOUSE_DOCTORS' as facilitycode,
+        'IN_HOUSE_DOCTORS' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         availability_of_in_house_doctors as available_indicator,
@@ -973,7 +973,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'IN_HOUSE_PHARMACY' as facilitycode,
+        'IN_HOUSE_PHARMACY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         in_house_pharmacy as available_indicator,
@@ -987,7 +987,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'ISOLATION_WARD' as facilitycode,
+        'ISOLATION_WARD' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -1001,7 +1001,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'JCI_ACCREDITATION' as facilitycode,
+        'JCI_ACCREDITATION' as facility_code,
         jci_accreditation as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -1015,7 +1015,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'LAPAROSCOPIC_SURGERY' as facilitycode,
+        'LAPAROSCOPIC_SURGERY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         laparoscopic_surgery as available_indicator,
@@ -1029,7 +1029,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'LASER' as facilitycode,
+        'LASER' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         lasers as available_indicator,
@@ -1043,7 +1043,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'LIBRARY' as facilitycode,
+        'LIBRARY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         availability_of_library as available_indicator,
@@ -1057,7 +1057,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'LIBRARY@DFADVOCATE' as facilitycode,
+        'LIBRARY@DFADVOCATE' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         availability_librarydfadvocate as available_indicator,
@@ -1071,7 +1071,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'LIBRARY@HCADVOCATE' as facilitycode,
+        'LIBRARY@HCADVOCATE' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         availability_libraryhcadvocate as available_indicator,
@@ -1085,7 +1085,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'LIBRARY@LAWYER' as facilitycode,
+        'LIBRARY@LAWYER' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         availability_librarylawyer as available_indicator,
@@ -1099,7 +1099,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'LIBRARY@RETAINER' as facilitycode,
+        'LIBRARY@RETAINER' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         availability_libraryretainer as available_indicator,
@@ -1113,7 +1113,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'LIBRARY@STADVOCATE' as facilitycode,
+        'LIBRARY@STADVOCATE' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         availability_librarystadvocate as available_indicator,
@@ -1127,7 +1127,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'LIBRARY@TRADVOCATE' as facilitycode,
+        'LIBRARY@TRADVOCATE' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         availability_librarytradvocate as available_indicator,
@@ -1141,7 +1141,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'LINEAR_ACCELERATOR' as facilitycode,
+        'LINEAR_ACCELERATOR' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         linear_accelerator as available_indicator,
@@ -1155,7 +1155,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'MBBS_DOCTOR_ICU' as facilitycode,
+        'MBBS_DOCTOR_ICU' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -1169,7 +1169,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'MEDICAL_RECORDS_DEPARTMENT' as facilitycode,
+        'MEDICAL_RECORDS_DEPARTMENT' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         medical_records_dept as available_indicator,
@@ -1183,7 +1183,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'MRI' as facilitycode,
+        'MRI' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         mri as available_indicator,
@@ -1197,7 +1197,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'NEPHROLOGY' as facilitycode,
+        'NEPHROLOGY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         nephrology as available_indicator,
@@ -1211,7 +1211,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'NEUROLOGY' as facilitycode,
+        'NEUROLOGY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         neurology as available_indicator,
@@ -1225,7 +1225,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'NICU_BED' as facilitycode,
+        'NICU_BED' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -1239,7 +1239,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'NURSES' as facilitycode,
+        'NURSES' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         availability_of_nurses as available_indicator,
@@ -1253,7 +1253,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'OBSTETRICS_GYNAECOLOGY' as facilitycode,
+        'OBSTETRICS_GYNAECOLOGY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         obs_and_gynecology as available_indicator,
@@ -1267,7 +1267,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'OFFICE_YARD_SPACE_SQ_FT@TOTAL' as facilitycode,
+        'OFFICE_YARD_SPACE_SQ_FT@TOTAL' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -1281,7 +1281,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'ONCOLOGY' as facilitycode,
+        'ONCOLOGY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         oncology as available_indicator,
@@ -1295,7 +1295,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'ONLINE_JOURNAL_ACCESS' as facilitycode,
+        'ONLINE_JOURNAL_ACCESS' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         access_to_online_journal as available_indicator,
@@ -1309,7 +1309,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'ONLINE_JOURNAL_ACCESS@DFADVOCATE' as facilitycode,
+        'ONLINE_JOURNAL_ACCESS@DFADVOCATE' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         access_online_journaldfadvocate as available_indicator,
@@ -1323,7 +1323,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'ONLINE_JOURNAL_ACCESS@HCADVOCATE' as facilitycode,
+        'ONLINE_JOURNAL_ACCESS@HCADVOCATE' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         access_online_journalhcadvocate as available_indicator,
@@ -1337,7 +1337,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'ONLINE_JOURNAL_ACCESS@LAWYER' as facilitycode,
+        'ONLINE_JOURNAL_ACCESS@LAWYER' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         access_online_journallawyer as available_indicator,
@@ -1351,7 +1351,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'ONLINE_JOURNAL_ACCESS@RETAINER' as facilitycode,
+        'ONLINE_JOURNAL_ACCESS@RETAINER' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         access_online_journalretainer as available_indicator,
@@ -1365,7 +1365,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'ONLINE_JOURNAL_ACCESS@STADVOCATE' as facilitycode,
+        'ONLINE_JOURNAL_ACCESS@STADVOCATE' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         access_online_journalstadvocate as available_indicator,
@@ -1379,7 +1379,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'ONLINE_JOURNAL_ACCESS@TRADVOCATE' as facilitycode,
+        'ONLINE_JOURNAL_ACCESS@TRADVOCATE' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         access_online_journaltradvocate as available_indicator,
@@ -1393,7 +1393,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'OPERATION_THEATRE' as facilitycode,
+        'OPERATION_THEATRE' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -1407,7 +1407,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'OPERATION_THEATRE_MAJOR' as facilitycode,
+        'OPERATION_THEATRE_MAJOR' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -1421,7 +1421,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'OPERATION_THEATRE_MINOR' as facilitycode,
+        'OPERATION_THEATRE_MINOR' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -1435,7 +1435,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'OPHTHALMOLOGY' as facilitycode,
+        'OPHTHALMOLOGY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         ophthalmology as available_indicator,
@@ -1449,7 +1449,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'ORTHOPAEDICS' as facilitycode,
+        'ORTHOPAEDICS' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         orthopedics as available_indicator,
@@ -1463,7 +1463,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'OT_LAMINAR_AIR_FLOW' as facilitycode,
+        'OT_LAMINAR_AIR_FLOW' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         ot_laminar_air_flow as available_indicator,
@@ -1477,7 +1477,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'PAEDIATRICS' as facilitycode,
+        'PAEDIATRICS' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         pediatric as available_indicator,
@@ -1491,7 +1491,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'PAEDIATRIC_NEONATAL' as facilitycode,
+        'PAEDIATRIC_NEONATAL' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         pediatricneonatal as available_indicator,
@@ -1505,7 +1505,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'PFT_SPIROMETRY' as facilitycode,
+        'PFT_SPIROMETRY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         pft_spirometry as available_indicator,
@@ -1519,7 +1519,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'PHOTOTHERAPY' as facilitycode,
+        'PHOTOTHERAPY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         phototherapy as available_indicator,
@@ -1533,7 +1533,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'PHYSIOTHERAPY' as facilitycode,
+        'PHYSIOTHERAPY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         physiotherapy as available_indicator,
@@ -1547,7 +1547,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'PICU_BED' as facilitycode,
+        'PICU_BED' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -1561,7 +1561,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'PLASTIC_SURGERY' as facilitycode,
+        'PLASTIC_SURGERY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         plastic_surgery as available_indicator,
@@ -1575,7 +1575,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'PORTABLE_ECG_CARDIAC_MONITOR' as facilitycode,
+        'PORTABLE_ECG_CARDIAC_MONITOR' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         portable_ecg_cardiac_monitor as available_indicator,
@@ -1589,7 +1589,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'PORTABLE_X_RAY_IN_OT' as facilitycode,
+        'PORTABLE_X_RAY_IN_OT' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         portable_x_ray_within_ot as available_indicator,
@@ -1603,7 +1603,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'POST_GRADUATE_DOCTOR_ICU' as facilitycode,
+        'POST_GRADUATE_DOCTOR_ICU' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -1617,7 +1617,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'POWER_BACKUP_24_HR' as facilitycode,
+        'POWER_BACKUP_24_HR' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         "24_HR_POWER_BACKUP" as available_indicator,
@@ -1631,7 +1631,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'PRINTER@TOTAL' as facilitycode,
+        'PRINTER@TOTAL' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -1645,7 +1645,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'PROVIDER_ACCREDITATION' as facilitycode,
+        'PROVIDER_ACCREDITATION' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         accreditation as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -1659,7 +1659,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'PULMONOLOGY' as facilitycode,
+        'PULMONOLOGY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         pulmonology as available_indicator,
@@ -1673,7 +1673,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'Printer' as facilitycode,
+        'Printer' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -1687,7 +1687,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'QUALIFIED_NURSE' as facilitycode,
+        'QUALIFIED_NURSE' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -1701,7 +1701,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'RADIO_IMMUNO_ASSAY' as facilitycode,
+        'RADIO_IMMUNO_ASSAY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         radio_immuno_assay as available_indicator,
@@ -1715,7 +1715,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'RECOVERY_ROOM' as facilitycode,
+        'RECOVERY_ROOM' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -1729,7 +1729,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'RHEUMATOLOGY' as facilitycode,
+        'RHEUMATOLOGY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         rheumatology as available_indicator,
@@ -1743,7 +1743,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'SCANNER@TOTAL' as facilitycode,
+        'SCANNER@TOTAL' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -1757,7 +1757,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'STERILISATION_AREA' as facilitycode,
+        'STERILISATION_AREA' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         separate_sterilization_area as available_indicator,
@@ -1771,7 +1771,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'SURGERY' as facilitycode,
+        'SURGERY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -1785,7 +1785,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'SURGICAL_ICU' as facilitycode,
+        'SURGICAL_ICU' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         surgical_icu as available_indicator,
@@ -1799,7 +1799,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'Scanner' as facilitycode,
+        'Scanner' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -1813,7 +1813,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'TOTAL_BED' as facilitycode,
+        'TOTAL_BED' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         cast(null as varchar) as available_indicator,
@@ -1827,7 +1827,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'TRAUMA' as facilitycode,
+        'TRAUMA' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         trauma as available_indicator,
@@ -1841,7 +1841,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'TREADMILL_TEST' as facilitycode,
+        'TREADMILL_TEST' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         treadmill_test as available_indicator,
@@ -1855,7 +1855,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'ULTRASOUND' as facilitycode,
+        'ULTRASOUND' as facility_code,
         ultrasoundscanning_facility_register_with_district_health_and_family_welfare_officer as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         ultra_sound as available_indicator,
@@ -1869,7 +1869,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'X_KNIFE' as facilitycode,
+        'X_KNIFE' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         x_knife as available_indicator,
@@ -1883,7 +1883,7 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'X_RAY' as facilitycode,
+        'X_RAY' as facility_code,
         cast(null as varchar) as accreditation_indicator,
         cast(null as varchar) as accreditation_reference,
         x_ray as available_indicator,

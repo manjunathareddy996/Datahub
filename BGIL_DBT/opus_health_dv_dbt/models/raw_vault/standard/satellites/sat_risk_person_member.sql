@@ -5,7 +5,7 @@
 source_model: 'stg2_risk_person_member'
 src_pk: 'RISK_OBJECT_HKEY'
 src_cdk:
-  - 'MEMBER_SEQUENCE_CK'
+  - 'MEMBER_SEQUENCE'
 src_payload:
   - 'RELATIONSHIP_TO_PROPOSER'
 src_hashdiff: 'HASHDIFF'

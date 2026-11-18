@@ -5,7 +5,7 @@
 source_model: 'stg2_party_group_census'
 src_pk: 'PARTY_HKEY'
 src_cdk:
-  - 'MEMBER_REFERENCE_CK'
+  - 'MEMBER_REFERENCE'
 src_payload:
   - 'DESIGNATION_BAND'
   - 'EMPLOYEE_ID'

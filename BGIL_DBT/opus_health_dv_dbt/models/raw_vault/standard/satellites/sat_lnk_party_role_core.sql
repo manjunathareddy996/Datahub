@@ -6,7 +6,7 @@ source_model: 'stg2_lnk_party_role_core'
 src_pk: 'PARTY_HKEY'
 src_cdk:
   - 'ROLE_CODE_CK'
-  - 'ROLE_SEQUENCE_CK'
+  - 'ROLE_SEQUENCE'
 src_payload:
   - 'ROLE_CATEGORY'
   - 'ROLE_TYPE'

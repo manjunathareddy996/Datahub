@@ -6,8 +6,8 @@ source_model: 'stg2_motor__policy_premium_head'
 src_pk: 'POLICY_HKEY'
 src_cdk:
   - 'PREMIUM_HEAD_CODE_CK'
-  - 'COVERAGE_REFERENCE_CK'
-  - 'SECTION_CK'
+  - 'COVERAGE_REFERENCE'
+  - 'SECTION'
   - 'ADJUSTED_INDICATOR_CK'
 src_payload:
   - 'ADJUSTED_INDICATOR'

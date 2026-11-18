@@ -25,7 +25,7 @@ src_payload:
   - 'DESIGNATION_BAND'
   - 'EMPLOYEE_ID'
   - 'LOCATION_REFERENCE'
-  - 'MEMBERREFERENCE'
+  - 'MEMBER_REFERENCE'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
@@ -55,11 +55,11 @@ src_record_source_map:
                         'stg2_sat_azbj_partner_extn__party_group_census': ['EMPLOYEE_ID'],
                         'stg2_sat_bjaz_clm_supp_extn__party_group_census': ['EMPLOYEE_ID'],
                         'stg2_sat_bjaz_ctngy_pa_mem_dtls__party_group_census': ['ACTIVE_INDICATOR'],
-                        'stg2_sat_bjaz_ec_mem_dtls_extn__party_group_census': ['MEMBERREFERENCE'],
-                        'stg2_sat_bjaz_hcf_member_dtls__party_group_census': ['MEMBERREFERENCE'],
-                        'stg2_sat_bjaz_hlt_ensure_mem_dtls__party_group_census': ['MEMBERREFERENCE'],
-                        'stg2_sat_bjaz_hm_member_dtls__party_group_census': ['DESIGNATION_BAND', 'EMPLOYEE_ID', 'LOCATION_REFERENCE', 'MEMBERREFERENCE'],
-                        'stg2_sat_bjaz_pa_detl_extn__party_group_census': ['MEMBERREFERENCE'],
-                        'stg2_sat_bjaz_sh_mem_dtls_extn__party_group_census': ['MEMBERREFERENCE'],
-                        'stg2_sat_bjaz_spp_member_dtls__party_group_census': ['MEMBERREFERENCE']
+                        'stg2_sat_bjaz_ec_mem_dtls_extn__party_group_census': ['MEMBER_REFERENCE'],
+                        'stg2_sat_bjaz_hcf_member_dtls__party_group_census': ['MEMBER_REFERENCE'],
+                        'stg2_sat_bjaz_hlt_ensure_mem_dtls__party_group_census': ['MEMBER_REFERENCE'],
+                        'stg2_sat_bjaz_hm_member_dtls__party_group_census': ['DESIGNATION_BAND', 'EMPLOYEE_ID', 'LOCATION_REFERENCE', 'MEMBER_REFERENCE'],
+                        'stg2_sat_bjaz_pa_detl_extn__party_group_census': ['MEMBER_REFERENCE'],
+                        'stg2_sat_bjaz_sh_mem_dtls_extn__party_group_census': ['MEMBER_REFERENCE'],
+                        'stg2_sat_bjaz_spp_member_dtls__party_group_census': ['MEMBER_REFERENCE']
                     }) }}

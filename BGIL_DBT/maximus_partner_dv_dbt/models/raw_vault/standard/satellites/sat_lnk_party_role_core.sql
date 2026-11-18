@@ -14,7 +14,7 @@ source_model:
 src_pk: 'PARTY_HKEY'
 src_cdk:
   - 'ROLE_CODE'
-  - 'ROLESEQUENCE'
+  - 'ROLE_SEQUENCE'
 src_payload:
   - 'ROLE_CODE'
   - 'ROLE_END_DATE'

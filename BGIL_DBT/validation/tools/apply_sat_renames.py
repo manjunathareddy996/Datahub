@@ -17,6 +17,9 @@ other (shared upstream file) are applied together or not at all.  Files are read
 line endings stay as they are.  Finished rows are appended to sat_column_done.json.
 
     apply_sat_renames.py [--kinds "Underscores,_CK suffix"] [--limit N] [--fix PROJ:SAT:OLD:NEW ...] [--apply]
+    apply_sat_renames.py --drop-ck [--apply]     rows whose Difference involves _CK: every project that has
+        the name with _CK (or with other underscore differences) is renamed to the plain name WITHOUT _CK.
+        A row is skipped when the plain name already exists in that satellite (collision).
 
 Dry run unless --apply.  --fix renames a column that is not a workbook row (spelling fixes); such renames are not
 recorded in sat_column_done.json."""
@@ -101,6 +104,20 @@ class Fail(Exception):
     pass
 
 
+def sat_columns(code, sat, cache={}):
+    """cdk + payload names of a satellite as declared in its yaml_metadata."""
+    import yaml
+    M = cache.setdefault(code, models(code))
+    p = M.get(sat.lower())
+    if not p:
+        return set()
+    m = re.search(r"\{%-?\s*set\s+yaml_metadata\s*-?%\}(.*?)\{%-?\s*endset\s*-?%\}", p.read_text(), re.S)
+    meta = yaml.safe_load(m.group(1)) if m else {}
+    cdk = meta.get("src_cdk") or []
+    cdk = [cdk] if isinstance(cdk, str) else cdk
+    return {str(x).upper() for x in cdk} | {str(x).upper() for x in meta.get("src_payload") or []}
+
+
 def hashdiff_name(proj, sat_stem, stg2_stem):
     """Name of the hashdiff column in the stage that this satellite reads."""
     t = proj.text(proj.M[sat_stem])
@@ -164,6 +181,26 @@ def edit_stg2(proj, p, sat_stem, old, new, readers):
     return done_any
 
 
+def rewrite_upstream(kind, s, old, new):
+    """Text of a satfeed / stitch / unpivot model after renaming old -> new (unchanged text = file not affected)."""
+    lo, ln = old.lower(), new.lower()
+    if kind == "satfeed":
+        s = re.sub(r"(?m)^(\s*)" + re.escape(old) + r"(\s+as\s+" + re.escape(old) + r"(?![\w]))",
+                   lambda m: m.group(1) + new + m.group(2), s, flags=re.I)        # `OLD as OLD`: stage key is renamed too
+        s = re.sub(r"(\bas\s+)" + re.escape(old) + r"(?![\w])", lambda m: m.group(1) + new, s, flags=re.I)
+        return re.sub(r"(?m)^(\s*)" + re.escape(old) + r"(\s*,?[ \t]*\r?)$", lambda m: m.group(1) + new + m.group(2), s)
+    if kind == "stitch":
+        def sub(m):
+            before = s[max(0, m.start() - 20):m.start()]
+            if re.search(r"'(src|key_column|ldts_column|model|alias)'\s*:\s*$", before):
+                return m.group(0)
+            return "'" + ln + "'"
+        return re.sub(r"'" + re.escape(lo) + r"'", sub, s)
+    if kind == "unpivot":
+        return re.sub(r"(\bas\s+)" + re.escape(lo) + r"(?![\w])", lambda m: m.group(1) + ln, s, flags=re.I)
+    return s
+
+
 def apply_one(proj, sat, old, new, plan, readers_of):
     """Edit the working texts of one project for one (sat, old -> new). Raises Fail."""
     sat_stem = sat.lower()
@@ -177,8 +214,8 @@ def apply_one(proj, sat, old, new, plan, readers_of):
     deps = set()
     for stem, p in chain.items():
         k = kind_of(stem)
-        if k in ("stitch", "unpivot", "satfeed"):         # shared upstream file: every user of old must rename too
-            for other in readers_of(stem):
+        if k in ("stitch", "unpivot", "satfeed") and rewrite_upstream(k, proj.text(p), old, new) != proj.text(p):
+            for other in readers_of(stem):                # shared file that this rename edits: every user of old must rename too
                 if other == sat_stem:
                     continue
                 ot = proj.text(proj.M[other])
@@ -187,32 +224,14 @@ def apply_one(proj, sat, old, new, plan, readers_of):
                         raise Fail(f"{stem} is shared with {other}, which keeps {old}")
                     deps.add(other.upper())
     proj.cache[sat_p] = t.replace(f"'{old}'", f"'{new}'")
-    lo, ln = old.lower(), new.lower()
     touched = 0
     for stem, p in chain.items():
         k = kind_of(stem)
         before = proj.text(p)
-        if k == "satfeed":
-            s = before
-            s = re.sub(r"(?m)^(\s*)" + re.escape(old) + r"(\s+as\s+" + re.escape(old) + r"(?![\w]))",
-                       lambda m: m.group(1) + new + m.group(2), s, flags=re.I)        # `OLD as OLD`: stage key is renamed too
-            s = re.sub(r"(\bas\s+)" + re.escape(old) + r"(?![\w])", lambda m: m.group(1) + new, s, flags=re.I)
-            s = re.sub(r"(?m)^(\s*)" + re.escape(old) + r"(\s*,?[ \t]*\r?)$", lambda m: m.group(1) + new + m.group(2), s)
-            proj.cache[p] = s
-        elif k == "stg2":
+        if k == "stg2":
             edit_stg2(proj, p, sat_stem, old, new, readers_of(stem))
-        elif k == "stitch":
-            s = proj.text(p)
-
-            def sub(m):
-                before = s[max(0, m.start() - 20):m.start()]
-                if re.search(r"'(src|key_column|ldts_column|model|alias)'\s*:\s*$", before):
-                    return m.group(0)
-                return "'" + ln + "'"
-            proj.cache[p] = re.sub(r"'" + re.escape(lo) + r"'", sub, s)
-        elif k == "unpivot":
-            s = proj.text(p)
-            proj.cache[p] = re.sub(r"(\bas\s+)" + re.escape(lo) + r"(?![\w])", lambda m: m.group(1) + ln, s, flags=re.I)
+        elif k in ("satfeed", "stitch", "unpivot"):
+            proj.cache[p] = rewrite_upstream(k, before, old, new)
         if k and proj.cache[p] != before:
             touched += 1
     if not touched:
@@ -227,15 +246,32 @@ def main():
     ws = openpyxl.load_workbook(ROOT / "validation/SAT_COLUMN_CONSISTENCY_ALL_LOBS.xlsx")["Name differences"]
     wbrows = [r for r in ws.iter_rows(min_row=3, values_only=True) if not r[-1]][:limit]
     work = []                                            # (key, row or None, [(code, sat, old, new)])
+    drop_ck = "--drop-ck" in sys.argv
     for r in wbrows:
         sat, kind, new, rin = r[0], r[2], r[10], r[11]
+        cells = {c: (r[3 + i] or "").replace(" [cdk]", "") for i, c in enumerate(CODES) if r[3 + i]}
+        if drop_ck:
+            if "_CK suffix" not in kind:
+                continue
+            new = re.sub(r"_CK$", "", new)
+            items = [(c, sat, n, new) for c, n in cells.items() if n != new]
+            if any((sat, o) in KEEP for _, _, o, _ in items):
+                print("KEEP", sat, "(team decision, not renamed)")
+                continue
+            clash = [c for c, _, _, _ in items if new in sat_columns(c, sat)]
+            if clash:
+                print(f"CLASH {sat}: {new} already exists in {clash}; row left open")
+                continue
+            r = list(r)
+            r[10], r[11] = new, ", ".join(c for c, _, _, _ in items)     # what was actually done
+            work.append((len(work), tuple(r), items))
+            continue
         if kind not in kinds:
             continue
-        if any((sat, (r[3 + CODES.index(c.strip())] or "").replace(" [cdk]", "")) in KEEP for c in rin.split(",")):
+        if any((sat, cells.get(c.strip(), "")) in KEEP for c in rin.split(",")):
             print("KEEP", sat, "(team decision, not renamed)")
             continue
-        items = [(c.strip(), sat, (r[3 + CODES.index(c.strip())] or "").replace(" [cdk]", ""), new)
-                 for c in rin.split(",")]
+        items = [(c.strip(), sat, cells[c.strip()], new) for c in rin.split(",")]
         work.append((len(work), r, items))
     for spec in args("--fix"):
         code, sat, old, new = spec.split(":")

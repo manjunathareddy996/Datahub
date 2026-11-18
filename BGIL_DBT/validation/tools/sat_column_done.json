@@ -2479,6 +2479,24 @@
    "Two columns in same table",
    "Travel vs Partner; Health vs Partner",
    null
+  ],
+  [
+   "SAT_LNK_PARTY_ROLE_CORE",
+   "standard",
+   "Underscores + _CK suffix",
+   "ROLESEQUENCE [cdk]",
+   "ROLESEQUENCE [cdk]",
+   null,
+   "ROLE_SEQUENCE [cdk]",
+   "ROLE_SEQUENCE_CK [cdk]",
+   "ROLE_SEQUENCE_CK [cdk]",
+   "ROLE_SEQUENCE_CK [cdk]",
+   "ROLE_SEQUENCE",
+   "OP, MP, OH, MH, OM",
+   "Check, then rename",
+   "Two columns in same table",
+   "Travel vs Partner; Health vs Partner; Motor vs Partner; Health vs Travel; Motor vs Travel",
+   "ROLESEQUENCE / ROLE_SEQUENCE: only underscores differ | ROLESEQUENCE / ROLE_SEQUENCE_CK: only underscores differ; _CK on one side only | ROLE_SEQUENCE / ROLE_SEQUENCE_CK: _CK on one side only"
   ]
  ],
  "SAT_LNK_ROLE_EMPLOYEE": [
@@ -3011,6 +3029,24 @@
    "Two columns in same table",
    "Health vs Partner; Motor vs Partner",
    null
+  ],
+  [
+   "SAT_PARTY_DIGITAL_IDENTITY",
+   "standard",
+   "Underscores + _CK suffix",
+   null,
+   "ACTIVESEQUENCENUMBER [cdk]",
+   null,
+   null,
+   "ACTIVE_SEQUENCE_NUMBER_CK [cdk]",
+   "ACTIVE_SEQUENCE_NUMBER_CK [cdk]",
+   "ACTIVE_SEQUENCE_NUMBER_CK [cdk]",
+   "ACTIVE_SEQUENCE_NUMBER",
+   "MP, OH, MH, OM",
+   "Check, then rename",
+   "Two columns in same table",
+   "Health vs Partner; Motor vs Partner",
+   "ACTIVESEQUENCENUMBER / ACTIVE_SEQUENCE_NUMBER_CK: only underscores differ; _CK on one side only"
   ]
  ],
  "SAT_PARTY_EMPLOYMENT": [
@@ -3217,6 +3253,24 @@
    "Two columns in same table",
    "Health vs Partner",
    null
+  ],
+  [
+   "SAT_PARTY_GROUP_CENSUS",
+   "standard",
+   "Underscores + _CK suffix",
+   "MEMBERREFERENCE",
+   null,
+   null,
+   null,
+   "MEMBER_REFERENCE_CK [cdk]",
+   "MEMBER_REFERENCE_CK [cdk]",
+   null,
+   "MEMBER_REFERENCE",
+   "OP, OH, MH",
+   "Check, then rename",
+   "Two columns in same table",
+   "Health vs Partner",
+   "MEMBERREFERENCE / MEMBER_REFERENCE_CK: only underscores differ; _CK on one side only"
   ]
  ],
  "SAT_PARTY_HEALTH_PROFILE": [
@@ -4807,6 +4861,24 @@
    "Two columns in same table",
    "Health vs Partner",
    null
+  ],
+  [
+   "SAT_PARTY_PROVIDER_CAPABILITY",
+   "standard",
+   "Underscores + _CK suffix",
+   null,
+   "FACILITYCODE [cdk]",
+   null,
+   null,
+   "FACILITY_CODE_CK [cdk]",
+   "FACILITY_CODE_CK [cdk]",
+   null,
+   "FACILITY_CODE",
+   "MP, OH, MH",
+   "Check, then rename",
+   "Two columns in same table",
+   "Health vs Partner",
+   "FACILITYCODE / FACILITY_CODE_CK: only underscores differ; _CK on one side only"
   ]
  ],
  "SAT_POLICY_BONUS_TRACKING": [
@@ -5033,6 +5105,42 @@
    "Two columns in same table",
    "Travel vs Partner; Health vs Partner; Motor vs Partner",
    null
+  ],
+  [
+   "SAT_POLICY_PREMIUM_HEAD",
+   "standard",
+   "_CK suffix",
+   null,
+   null,
+   null,
+   "COVERAGE_REFERENCE [cdk]",
+   "COVERAGE_REFERENCE_CK [cdk]",
+   "COVERAGE_REFERENCE_CK [cdk]",
+   "COVERAGE_REFERENCE_CK [cdk]",
+   "COVERAGE_REFERENCE",
+   "OH, MH, OM",
+   "Check, then rename",
+   "Two columns in same table",
+   "Health vs Travel; Motor vs Travel",
+   "COVERAGE_REFERENCE / COVERAGE_REFERENCE_CK: _CK on one side only"
+  ],
+  [
+   "SAT_POLICY_PREMIUM_HEAD",
+   "standard",
+   "_CK suffix",
+   null,
+   null,
+   null,
+   "SECTION [cdk]",
+   "SECTION_CK [cdk]",
+   "SECTION_CK [cdk]",
+   "SECTION_CK [cdk]",
+   "SECTION",
+   "OH, MH, OM",
+   "Check, then rename",
+   "Two columns in same table",
+   "Health vs Travel; Motor vs Travel",
+   "SECTION / SECTION_CK: _CK on one side only"
   ]
  ],
  "SAT_POLICY_PREMIUM_SUMMARY": [
@@ -5239,6 +5347,284 @@
    "Name only",
    "Health vs Partner",
    null
+  ]
+ ],
+ "SAT_CLAIM_INVESTIGATION_FINDING": [
+  [
+   "SAT_CLAIM_INVESTIGATION_FINDING",
+   "standard",
+   "_CK suffix",
+   null,
+   null,
+   null,
+   "FINDING_SEQUENCE [cdk]",
+   null,
+   "FINDING_SEQUENCE_CK [cdk]",
+   null,
+   "FINDING_SEQUENCE",
+   "MH",
+   "Check, then rename",
+   "Name only",
+   "Health vs Travel",
+   "FINDING_SEQUENCE / FINDING_SEQUENCE_CK: _CK on one side only"
+  ]
+ ],
+ "SAT_CLAIM_NOTE": [
+  [
+   "SAT_CLAIM_NOTE",
+   "standard",
+   "_CK suffix",
+   null,
+   null,
+   null,
+   "NOTE_SEQUENCE [cdk]",
+   "NOTE_SEQUENCE_CK [cdk]",
+   "NOTE_SEQUENCE_CK [cdk]",
+   "NOTE_SEQUENCE_CK [cdk]",
+   "NOTE_SEQUENCE",
+   "OH, MH, OM",
+   "Check, then rename",
+   "Two columns in same table",
+   "Health vs Travel; Motor vs Travel",
+   "NOTE_SEQUENCE / NOTE_SEQUENCE_CK: _CK on one side only"
+  ]
+ ],
+ "SAT_CLAIM_PAYMENT_TRANCHE": [
+  [
+   "SAT_CLAIM_PAYMENT_TRANCHE",
+   "standard",
+   "_CK suffix",
+   null,
+   null,
+   null,
+   "TRANCHE_NUMBER [cdk]",
+   null,
+   "TRANCHE_NUMBER_CK [cdk]",
+   null,
+   "TRANCHE_NUMBER",
+   "MH",
+   "Check, then rename",
+   "Name only",
+   "Health vs Travel",
+   "TRANCHE_NUMBER / TRANCHE_NUMBER_CK: _CK on one side only"
+  ]
+ ],
+ "SAT_CLAIM_RESERVE": [
+  [
+   "SAT_CLAIM_RESERVE",
+   "standard",
+   "_CK suffix",
+   null,
+   null,
+   null,
+   "RESERVE_HEAD [cdk]",
+   "RESERVE_HEAD_CK [cdk]",
+   "RESERVE_HEAD_CK [cdk]",
+   "RESERVE_HEAD_CK [cdk]",
+   "RESERVE_HEAD",
+   "OH, MH, OM",
+   "Check, then rename",
+   "Two columns in same table",
+   "Health vs Travel; Motor vs Travel",
+   "RESERVE_HEAD / RESERVE_HEAD_CK: _CK on one side only"
+  ]
+ ],
+ "SAT_CLAIM_RESERVE_HEAD": [
+  [
+   "SAT_CLAIM_RESERVE_HEAD",
+   "standard",
+   "_CK suffix",
+   null,
+   null,
+   null,
+   "RESERVE_HEAD_CODE [cdk]",
+   "RESERVE_HEAD_CODE_CK [cdk]",
+   null,
+   null,
+   "RESERVE_HEAD_CODE",
+   "OH",
+   "Check, then rename",
+   "Two columns in same table",
+   "Health vs Travel",
+   "RESERVE_HEAD_CODE / RESERVE_HEAD_CODE_CK: _CK on one side only | RESERVE_HEAD_CODE_CK and RESERVE_HEAD_CODE are used equally, RESERVE_HEAD_CODE_CK picked"
+  ]
+ ],
+ "SAT_COVERAGE_SUBLIMIT_SCHEDULE": [
+  [
+   "SAT_COVERAGE_SUBLIMIT_SCHEDULE",
+   "standard",
+   "_CK suffix",
+   null,
+   null,
+   null,
+   "ACTIVE_SEQUENCE_NUMBER [cdk]",
+   null,
+   "ACTIVE_SEQUENCE_NUMBER_CK [cdk]",
+   "ACTIVE_SEQUENCE_NUMBER_CK [cdk]",
+   "ACTIVE_SEQUENCE_NUMBER",
+   "MH, OM",
+   "Check, then rename",
+   "Two columns in same table",
+   "Health vs Travel; Motor vs Travel",
+   "ACTIVE_SEQUENCE_NUMBER / ACTIVE_SEQUENCE_NUMBER_CK: _CK on one side only"
+  ]
+ ],
+ "SAT_FINTXN_TAX": [
+  [
+   "SAT_FINTXN_TAX",
+   "standard",
+   "_CK suffix",
+   null,
+   null,
+   "TAX_TYPE [cdk]",
+   "TAX_TYPE [cdk]",
+   "TAX_TYPE_CK [cdk]",
+   "TAX_TYPE_CK [cdk]",
+   "TAX_TYPE_CK [cdk]",
+   "TAX_TYPE",
+   "OH, MH, OM",
+   "Check, then rename",
+   "Two columns in same table",
+   "Health vs Travel; Motor vs Travel",
+   "TAX_TYPE / TAX_TYPE_CK: _CK on one side only"
+  ]
+ ],
+ "SAT_LNK_CLAIM_PARTY_ROLE": [
+  [
+   "SAT_LNK_CLAIM_PARTY_ROLE",
+   "standard",
+   "_CK suffix",
+   "ROLE_SEQUENCE [cdk]",
+   null,
+   null,
+   null,
+   null,
+   "ROLE_SEQUENCE_CK [cdk]",
+   null,
+   "ROLE_SEQUENCE",
+   "MH",
+   "Check, then rename",
+   "Name only",
+   "Health vs Partner",
+   "ROLE_SEQUENCE / ROLE_SEQUENCE_CK: _CK on one side only"
+  ]
+ ],
+ "SAT_POLICY_SUM_INSURED_BREAKUP": [
+  [
+   "SAT_POLICY_SUM_INSURED_BREAKUP",
+   "standard",
+   "_CK suffix",
+   null,
+   null,
+   null,
+   "SUM_INSURED_HEAD [cdk]",
+   "SUM_INSURED_HEAD_CK [cdk]",
+   "SUM_INSURED_HEAD_CK [cdk]",
+   "SUM_INSURED_HEAD_CK [cdk]",
+   "SUM_INSURED_HEAD",
+   "OH, MH, OM",
+   "Check, then rename",
+   "Two columns in same table",
+   "Health vs Travel; Motor vs Travel",
+   "SUM_INSURED_HEAD / SUM_INSURED_HEAD_CK: _CK on one side only"
+  ]
+ ],
+ "SAT_PRODUCT_RATING_FACTOR": [
+  [
+   "SAT_PRODUCT_RATING_FACTOR",
+   "standard",
+   "_CK suffix",
+   null,
+   null,
+   "ACTIVE_SEQUENCE_NUMBER [cdk]",
+   null,
+   null,
+   null,
+   "ACTIVE_SEQUENCE_NUMBER_CK [cdk]",
+   "ACTIVE_SEQUENCE_NUMBER",
+   "OM",
+   "Check, then rename",
+   "Two columns in same table",
+   "Motor vs Travel",
+   "ACTIVE_SEQUENCE_NUMBER / ACTIVE_SEQUENCE_NUMBER_CK: _CK on one side only | ACTIVE_SEQUENCE_NUMBER_CK and ACTIVE_SEQUENCE_NUMBER are used equally, ACTIVE_SEQUENCE_NUMBER_CK picked"
+  ]
+ ],
+ "SAT_QUOTE_RATING_INPUT": [
+  [
+   "SAT_QUOTE_RATING_INPUT",
+   "standard",
+   "_CK suffix",
+   null,
+   null,
+   null,
+   "FACTOR_CODE [cdk]",
+   "FACTOR_CODE_CK [cdk]",
+   null,
+   "FACTOR_CODE_CK [cdk]",
+   "FACTOR_CODE",
+   "OH, OM",
+   "Check, then rename",
+   "Two columns in same table",
+   "Health vs Travel; Motor vs Travel",
+   "FACTOR_CODE / FACTOR_CODE_CK: _CK on one side only"
+  ]
+ ],
+ "SAT_RISK_HEALTH_MEMBER_MEDICAL": [
+  [
+   "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+   "standard",
+   "_CK suffix",
+   null,
+   null,
+   null,
+   "CONDITION_CODE [cdk]",
+   "CONDITION_CODE_CK [cdk]",
+   "CONDITION_CODE_CK [cdk]",
+   null,
+   "CONDITION_CODE",
+   "OH, MH",
+   "Check, then rename",
+   "Two columns in same table",
+   "Health vs Travel",
+   "CONDITION_CODE / CONDITION_CODE_CK: _CK on one side only"
+  ],
+  [
+   "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+   "standard",
+   "_CK suffix",
+   null,
+   null,
+   null,
+   "MEMBER_REFERENCE [cdk]",
+   "MEMBER_REFERENCE_CK [cdk]",
+   "MEMBER_REFERENCE_CK [cdk]",
+   null,
+   "MEMBER_REFERENCE",
+   "OH, MH",
+   "Check, then rename",
+   "Two columns in same table",
+   "Health vs Travel",
+   "MEMBER_REFERENCE / MEMBER_REFERENCE_CK: _CK on one side only"
+  ]
+ ],
+ "SAT_RISK_PERSON_MEMBER": [
+  [
+   "SAT_RISK_PERSON_MEMBER",
+   "standard",
+   "_CK suffix",
+   null,
+   null,
+   null,
+   "MEMBER_SEQUENCE [cdk]",
+   "MEMBER_SEQUENCE_CK [cdk]",
+   null,
+   null,
+   "MEMBER_SEQUENCE",
+   "OH",
+   "Check, then rename",
+   "Two columns in same table",
+   "Health vs Travel",
+   "MEMBER_SEQUENCE / MEMBER_SEQUENCE_CK: _CK on one side only | MEMBER_SEQUENCE_CK and MEMBER_SEQUENCE are used equally, MEMBER_SEQUENCE_CK picked"
   ]
  ]
 }

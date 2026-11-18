@@ -5,7 +5,7 @@
 source_model: 'stg2_policy_sum_insured_breakup'
 src_pk: 'POLICY_HKEY'
 src_cdk:
-  - 'SUM_INSURED_HEAD_CK'
+  - 'SUM_INSURED_HEAD'
 src_payload:
   - 'SUM_INSURED_AMOUNT'
 src_hashdiff: 'HASHDIFF'

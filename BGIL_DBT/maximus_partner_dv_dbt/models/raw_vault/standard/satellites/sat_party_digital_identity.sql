@@ -11,7 +11,7 @@ source_model:
   - 'stg2_mp_up__pd_prop_sp_pv__party_digital_identity'
 src_pk: 'PARTY_HKEY'
 src_cdk:
-  - 'ACTIVESEQUENCENUMBER'
+  - 'ACTIVE_SEQUENCE_NUMBER'
 src_payload:
   - 'LOGIN_IDENTIFIER'
 src_hashdiff: 'HASHDIFF_PARTY_DIGITAL_IDENTITY'

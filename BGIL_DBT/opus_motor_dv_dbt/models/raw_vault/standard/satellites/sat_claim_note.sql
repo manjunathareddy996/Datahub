@@ -5,7 +5,7 @@
 source_model: 'stg2_motor__claim_note'
 src_pk: 'CLAIM_HKEY'
 src_cdk:
-  - 'NOTE_SEQUENCE_CK'
+  - 'NOTE_SEQUENCE'
 src_payload:
   - 'NOTE_TEXT'
 src_hashdiff: 'HASHDIFF'

@@ -9,11 +9,11 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'MEMBERREFERENCE'
+      - 'MEMBER_REFERENCE'
 derived_columns:
   PARENT_BK: 'partner_id'
   PARENT_NK: "'HUB_PARTY|' || (partner_id)"
-  MEMBERREFERENCE: 'member_no'
+  MEMBER_REFERENCE: 'member_no'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_SH_MEM_DTLS_EXTN'
 {%- endset -%}

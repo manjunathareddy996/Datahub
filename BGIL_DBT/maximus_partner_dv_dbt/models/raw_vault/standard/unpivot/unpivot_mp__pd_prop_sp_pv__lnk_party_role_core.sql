@@ -8,7 +8,7 @@
     select
         bagic_employee_code as parent_bk,
         'DFADVOCATE#1' as role_code,
-        '1' as rolesequence,
+        '1' as role_sequence,
         cast(null as varchar) as role_end_date,
         date_of_joiningdfadvocate as role_start_date,
         cast(null as varchar) as role_type,
@@ -20,7 +20,7 @@
     select
         bagic_employee_code as parent_bk,
         'HCADVOCATE#1' as role_code,
-        '1' as rolesequence,
+        '1' as role_sequence,
         cast(null as varchar) as role_end_date,
         date_of_joininghcadvocate as role_start_date,
         cast(null as varchar) as role_type,
@@ -32,7 +32,7 @@
     select
         bagic_employee_code as parent_bk,
         'LAWYER#1' as role_code,
-        '1' as rolesequence,
+        '1' as role_sequence,
         cast(null as varchar) as role_end_date,
         date_of_joininglawyer as role_start_date,
         cast(null as varchar) as role_type,
@@ -44,7 +44,7 @@
     select
         bagic_employee_code as parent_bk,
         'RETAINER#1' as role_code,
-        '1' as rolesequence,
+        '1' as role_sequence,
         cast(null as varchar) as role_end_date,
         date_of_joiningretainer as role_start_date,
         cast(null as varchar) as role_type,
@@ -56,7 +56,7 @@
     select
         bagic_employee_code as parent_bk,
         'STADVOCATE#1' as role_code,
-        '1' as rolesequence,
+        '1' as role_sequence,
         cast(null as varchar) as role_end_date,
         date_of_joiningstadvocate as role_start_date,
         cast(null as varchar) as role_type,
@@ -68,7 +68,7 @@
     select
         bagic_employee_code as parent_bk,
         'TRADVOCATE#1' as role_code,
-        '1' as rolesequence,
+        '1' as role_sequence,
         cast(null as varchar) as role_end_date,
         date_of_joiningtradvocate as role_start_date,
         cast(null as varchar) as role_type,
@@ -80,7 +80,7 @@
     select
         bagic_employee_code as parent_bk,
         '{COALESCE(PARTY_FUNCTION,DEFAULT_ROLE)}#1' as role_code,
-        '1' as rolesequence,
+        '1' as role_sequence,
         cancel_on as role_end_date,
         date_of_start as role_start_date,
         intermediary_type as role_type,
@@ -92,7 +92,7 @@
     select
         bagic_employee_code as parent_bk,
         default_role as role_code,
-        '1' as rolesequence,
+        '1' as role_sequence,
         cast(null as varchar) as role_end_date,
         cast(null as varchar) as role_start_date,
         cast(null as varchar) as role_type,
@@ -104,7 +104,7 @@
     select
         bagic_employee_code as parent_bk,
         party_function as role_code,
-        '1' as rolesequence,
+        '1' as role_sequence,
         cast(null as varchar) as role_end_date,
         cast(null as varchar) as role_start_date,
         cast(null as varchar) as role_type,
