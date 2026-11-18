@@ -5,7 +5,7 @@
 source_model: 'stg2_aug_claim_benefit_head'
 src_pk: 'CLAIM_HKEY'
 src_cdk:
-  - 'BENEFIT_HEAD_CODE_CK'
+  - 'BENEFIT_HEAD_CODE'
 src_payload:
   - 'BALANCE_SUM_INSURED'
   - 'BENEFIT_MULTIPLIER'

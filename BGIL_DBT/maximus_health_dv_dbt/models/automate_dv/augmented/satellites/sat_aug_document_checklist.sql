@@ -5,7 +5,7 @@
 source_model: 'stg2_aug_document_checklist'
 src_pk: 'DOCUMENT_HKEY'
 src_cdk:
-  - 'REQUIRED_DOCUMENT_TYPE_CK'
+  - 'REQUIRED_DOCUMENT_TYPE'
 src_payload:
   - 'DOCUMENT_BELONGS_TO_PARTY_ROLE'
   - 'REQUIRED_FROM_PARTY_ROLE'

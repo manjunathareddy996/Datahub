@@ -5,7 +5,7 @@
 source_model: 'stg2_aug_account_definition'
 src_pk: 'FINANCIAL_ACCOUNT_HKEY'
 src_payload:
-  - 'LOAN_TENURE_YEARS'
+  - 'LOAN_TENURE'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

@@ -5,7 +5,7 @@
 source_model: 'stg2_aug_coverage_sublimit_schedule'
 src_pk: 'COVERAGE_HKEY'
 src_cdk:
-  - 'ACTIVE_SEQUENCE_NUMBER_CK'
+  - 'ACTIVE_SEQUENCE_NUMBER'
 src_payload:
   - 'BENEFIT_DAYS_ALLOWED_PER_MONTH'
   - 'BENEFIT_DAY_COUNT'

@@ -5,7 +5,7 @@
 source_model: 'stg2_aug_claim_provider_billing'
 src_pk: 'CLAIM_HKEY'
 src_cdk:
-  - 'BILL_NUMBER_CK'
+  - 'BILL_NUMBER'
 src_payload:
   - 'ADDITIONAL_BILL_DISCOUNT_AMOUNT'
   - 'APPROVED_QUANTITY'

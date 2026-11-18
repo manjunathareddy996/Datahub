@@ -5,7 +5,7 @@
 source_model: 'stg2_aug_fintxn_tax'
 src_pk: 'FINANCIAL_TRANSACTION_HKEY'
 src_cdk:
-  - 'TAX_TYPE_CK'
+  - 'TAX_TYPE'
 src_payload:
   - 'DIFFERENTIAL_TDS_INDICATOR'
 src_hashdiff: 'HASHDIFF'
