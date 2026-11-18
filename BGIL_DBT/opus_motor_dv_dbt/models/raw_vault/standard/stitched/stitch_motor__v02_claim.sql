@@ -1622,44 +1622,16 @@ select
     first_value(DOCUMENT_DEFINITION__SOURCE_CHANNEL) ignore nulls over (partition by DOCUMENT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as DOCUMENT_DEFINITION__SOURCE_CHANNEL,
     -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
     m.INC_JOB_UPDATED_AT,
-    -- SAT_AUG_CASE_DOCUMENT_CHECKLIST (ma_sat): one load time per CASE_BK, so all its child rows share it
-    max(case when coalesce(m.AUG_CASE_DOCUMENT_CHECKLIST__RECEIVED_INDICATOR, m.AUG_CASE_DOCUMENT_CHECKLIST__REQUIREMENT_REMARKS, m.AUG_CASE_DOCUMENT_CHECKLIST__VERIFICATION_STATUS) is not null
+    -- multi-active satellites on CASE_BK (SAT_AUG_CASE_DOCUMENT_CHECKLIST, SAT_AUG_CASE_WORKFLOW_TASK, SAT_CASE_EXTERNAL_REF, SAT_CASE_WORKFLOW_TASK):
+    -- one load time per CASE_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
+    max(case when coalesce(m.AUG_CASE_DOCUMENT_CHECKLIST__RECEIVED_INDICATOR, m.AUG_CASE_DOCUMENT_CHECKLIST__REQUIREMENT_REMARKS, m.AUG_CASE_DOCUMENT_CHECKLIST__VERIFICATION_STATUS, m.AUG_CASE_WORKFLOW_TASK__TASK_CORRESPONDENCE_EMAIL_ADDRESS, m.AUG_CASE_WORKFLOW_TASK__TASK_REMARKS, m.CASE_EXTERNAL_REF__EXTERNAL_REFERENCE, m.CASE_WORKFLOW_TASK__ASSIGNED_DATE, m.CASE_WORKFLOW_TASK__COMPLETED_DATE, m.CASE_WORKFLOW_TASK__TASK_STATUS, m.CASE_WORKFLOW_TASK__TASK_TYPE) is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.CASE_BK) as AUG_CASE_DOCUMENT_CHECKLIST__LOAD_DATETIME,
-    -- SAT_AUG_CASE_WORKFLOW_TASK (ma_sat): one load time per CASE_BK, so all its child rows share it
-    max(case when coalesce(m.AUG_CASE_WORKFLOW_TASK__TASK_CORRESPONDENCE_EMAIL_ADDRESS, m.AUG_CASE_WORKFLOW_TASK__TASK_REMARKS) is not null
+        over (partition by m.CASE_BK) as CASE_BK__MA_LOAD_DATETIME,
+    -- multi-active satellites on CLAIM_BK (SAT_AUG_CLAIM_RECOVERY_EXPENSE_LINE, SAT_AUG_CLAIM_SALVAGE_BIDDER, SAT_AUG_CLAIM_SUB_FILE, SAT_AUG_CLAIM_SURVEY_APPOINTMENT, SAT_CLAIM_EVIDENCE, SAT_CLAIM_NOTE):
+    -- one load time per CLAIM_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
+    max(case when coalesce(m.AUG_CLAIM_RECOVERY_EXPENSE_LINE__EXPENSE_AMOUNT, m.AUG_CLAIM_SALVAGE_BIDDER__BIDDER_DETAILS_TEXT, m.AUG_CLAIM_SALVAGE_BIDDER__BID_INVITATION_SENT_DATE, m.AUG_CLAIM_SUB_FILE__SUB_FILE_NUMBER, m.AUG_CLAIM_SUB_FILE__SUB_FILE_REMARKS, m.AUG_CLAIM_SURVEY_APPOINTMENT__SURVEYOR_STAGE, m.CLAIM_EVIDENCE__EVIDENCE_TYPE, m.CLAIM_EVIDENCE__MEDIA_REFERENCE, m.CLAIM_NOTE__NOTE_TEXT) is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.CASE_BK) as AUG_CASE_WORKFLOW_TASK__LOAD_DATETIME,
-    -- SAT_AUG_CLAIM_RECOVERY_EXPENSE_LINE (ma_sat): one load time per CLAIM_BK, so all its child rows share it
-    max(case when m.AUG_CLAIM_RECOVERY_EXPENSE_LINE__EXPENSE_AMOUNT is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.CLAIM_BK) as AUG_CLAIM_RECOVERY_EXPENSE_LINE__LOAD_DATETIME,
-    -- SAT_AUG_CLAIM_SALVAGE_BIDDER (ma_sat): one load time per CLAIM_BK, so all its child rows share it
-    max(case when coalesce(m.AUG_CLAIM_SALVAGE_BIDDER__BIDDER_DETAILS_TEXT, m.AUG_CLAIM_SALVAGE_BIDDER__BID_INVITATION_SENT_DATE) is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.CLAIM_BK) as AUG_CLAIM_SALVAGE_BIDDER__LOAD_DATETIME,
-    -- SAT_AUG_CLAIM_SUB_FILE (ma_sat): one load time per CLAIM_BK, so all its child rows share it
-    max(case when coalesce(m.AUG_CLAIM_SUB_FILE__SUB_FILE_NUMBER, m.AUG_CLAIM_SUB_FILE__SUB_FILE_REMARKS) is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.CLAIM_BK) as AUG_CLAIM_SUB_FILE__LOAD_DATETIME,
-    -- SAT_AUG_CLAIM_SURVEY_APPOINTMENT (ma_sat): one load time per CLAIM_BK, so all its child rows share it
-    max(case when m.AUG_CLAIM_SURVEY_APPOINTMENT__SURVEYOR_STAGE is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.CLAIM_BK) as AUG_CLAIM_SURVEY_APPOINTMENT__LOAD_DATETIME,
-    -- SAT_CASE_EXTERNAL_REF (ma_sat): one load time per CASE_BK, so all its child rows share it
-    max(case when m.CASE_EXTERNAL_REF__EXTERNAL_REFERENCE is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.CASE_BK) as CASE_EXTERNAL_REF__LOAD_DATETIME,
-    -- SAT_CASE_WORKFLOW_TASK (ma_sat): one load time per CASE_BK, so all its child rows share it
-    max(case when coalesce(m.CASE_WORKFLOW_TASK__ASSIGNED_DATE, m.CASE_WORKFLOW_TASK__COMPLETED_DATE, m.CASE_WORKFLOW_TASK__TASK_STATUS, m.CASE_WORKFLOW_TASK__TASK_TYPE) is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.CASE_BK) as CASE_WORKFLOW_TASK__LOAD_DATETIME,
-    -- SAT_CLAIM_EVIDENCE (ma_sat): one load time per CLAIM_BK, so all its child rows share it
-    max(case when coalesce(m.CLAIM_EVIDENCE__EVIDENCE_TYPE, m.CLAIM_EVIDENCE__MEDIA_REFERENCE) is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.CLAIM_BK) as CLAIM_EVIDENCE__LOAD_DATETIME,
-    -- SAT_CLAIM_NOTE (ma_sat): one load time per CLAIM_BK, so all its child rows share it
-    max(case when m.CLAIM_NOTE__NOTE_TEXT is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.CLAIM_BK) as CLAIM_NOTE__LOAD_DATETIME
+        over (partition by m.CLAIM_BK) as CLAIM_BK__MA_LOAD_DATETIME
 from merged m

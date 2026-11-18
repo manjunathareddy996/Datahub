@@ -780,24 +780,22 @@ select
     first_value(POLICY_RENEWAL__RENEWAL_STATUS) ignore nulls over (partition by POLICY_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as POLICY_RENEWAL__RENEWAL_STATUS,
     -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
     m.INC_JOB_UPDATED_AT,
-    -- SAT_AUG_POLICY_PREMIUM_HEAD (ma_sat): one load time per POLICY_BK, so all its child rows share it
-    max(case when coalesce(m.AUG_POLICY_PREMIUM_HEAD__ADJUSTMENT_REMARKS, m.AUG_POLICY_PREMIUM_HEAD__DISCOUNT_PERCENTAGE, m.AUG_POLICY_PREMIUM_HEAD__HEAD_PREMIUM_RATE, m.AUG_POLICY_PREMIUM_HEAD__LOADING_PERCENTAGE, m.AUG_POLICY_PREMIUM_HEAD__MINIMUM_HEAD_PREMIUM, m.AUG_POLICY_PREMIUM_HEAD__PREMIUM_ADJUSTMENT_AMOUNT, m.AUG_POLICY_PREMIUM_HEAD__PREMIUM_RATE, m.AUG_POLICY_PREMIUM_HEAD__SECTION_APPLICABLE_INDICATOR) is not null
+    -- multi-active satellites on POLICY_BK (SAT_AUG_POLICY_PREMIUM_HEAD, SAT_AUG_POLICY_PREMIUM_SETTLEMENT):
+    -- one load time per POLICY_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
+    max(case when coalesce(m.AUG_POLICY_PREMIUM_HEAD__ADJUSTMENT_REMARKS, m.AUG_POLICY_PREMIUM_HEAD__DISCOUNT_PERCENTAGE, m.AUG_POLICY_PREMIUM_HEAD__HEAD_PREMIUM_RATE, m.AUG_POLICY_PREMIUM_HEAD__LOADING_PERCENTAGE, m.AUG_POLICY_PREMIUM_HEAD__MINIMUM_HEAD_PREMIUM, m.AUG_POLICY_PREMIUM_HEAD__PREMIUM_ADJUSTMENT_AMOUNT, m.AUG_POLICY_PREMIUM_HEAD__PREMIUM_RATE, m.AUG_POLICY_PREMIUM_HEAD__SECTION_APPLICABLE_INDICATOR, m.AUG_POLICY_PREMIUM_SETTLEMENT__ACCOUNTING_BATCH_REFERENCE, m.AUG_POLICY_PREMIUM_SETTLEMENT__ACCOUNTING_PASS_INDICATOR, m.AUG_POLICY_PREMIUM_SETTLEMENT__ACCOUNTING_POSTING_DATE) is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.POLICY_BK) as AUG_POLICY_PREMIUM_HEAD__LOAD_DATETIME,
-    -- SAT_AUG_POLICY_PREMIUM_SETTLEMENT (ma_sat): one load time per POLICY_BK, so all its child rows share it
-    max(case when coalesce(m.AUG_POLICY_PREMIUM_SETTLEMENT__ACCOUNTING_BATCH_REFERENCE, m.AUG_POLICY_PREMIUM_SETTLEMENT__ACCOUNTING_PASS_INDICATOR, m.AUG_POLICY_PREMIUM_SETTLEMENT__ACCOUNTING_POSTING_DATE) is not null
+        over (partition by m.POLICY_BK) as POLICY_BK__MA_LOAD_DATETIME,
+    -- multi-active satellites on RISK_OBJECT_BK (SAT_AUG_RISK_MOTOR_ADDON, SAT_AUG_RISK_MOTOR_FITMENTS):
+    -- one load time per RISK_OBJECT_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
+    max(case when coalesce(m.AUG_RISK_MOTOR_ADDON__ADD_ON_DISCOUNT_AMOUNT, m.AUG_RISK_MOTOR_ADDON__DEVIATED_ADD_ON_PREMIUM, m.AUG_RISK_MOTOR_FITMENTS__SYSTEM_CALCULATED_FITMENT_VALUE) is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.POLICY_BK) as AUG_POLICY_PREMIUM_SETTLEMENT__LOAD_DATETIME,
-    -- SAT_AUG_RISK_MOTOR_ADDON (ma_sat): one load time per RISK_OBJECT_BK, so all its child rows share it
-    max(case when coalesce(m.AUG_RISK_MOTOR_ADDON__ADD_ON_DISCOUNT_AMOUNT, m.AUG_RISK_MOTOR_ADDON__DEVIATED_ADD_ON_PREMIUM) is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.RISK_OBJECT_BK) as AUG_RISK_MOTOR_ADDON__LOAD_DATETIME,
-    -- SAT_AUG_RISK_MOTOR_FITMENTS (ma_sat): one load time per RISK_OBJECT_BK, so all its child rows share it
-    max(case when m.AUG_RISK_MOTOR_FITMENTS__SYSTEM_CALCULATED_FITMENT_VALUE is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.RISK_OBJECT_BK) as AUG_RISK_MOTOR_FITMENTS__LOAD_DATETIME,
-    -- SAT_LNK_ROLE_CUSTOMER (ma_sat): one load time per PARTY_BK, so all its child rows share it
+        over (partition by m.RISK_OBJECT_BK) as RISK_OBJECT_BK__MA_LOAD_DATETIME,
+    -- multi-active satellites on PARTY_BK (SAT_LNK_ROLE_CUSTOMER):
+    -- one load time per PARTY_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
     max(case when m.LNK_ROLE_CUSTOMER__VIP_INDICATOR is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.PARTY_BK) as LNK_ROLE_CUSTOMER__LOAD_DATETIME
+        over (partition by m.PARTY_BK) as PARTY_BK__MA_LOAD_DATETIME
 from merged m

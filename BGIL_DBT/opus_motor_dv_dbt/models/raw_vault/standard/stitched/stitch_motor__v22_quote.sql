@@ -1288,20 +1288,16 @@ select
     first_value(QUOTE_RATING_INPUT__FACTOR_VALUE) ignore nulls over (partition by QUOTE_BK, QUOTE_RATING_INPUT__FACTOR_CODE_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as QUOTE_RATING_INPUT__FACTOR_VALUE,
     -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
     m.INC_JOB_UPDATED_AT,
-    -- SAT_AUG_QUOTE_COVERAGE_LINE (ma_sat): one load time per QUOTE_BK, so all its child rows share it
-    max(case when coalesce(m.AUG_QUOTE_COVERAGE_LINE__CGST_AMOUNT, m.AUG_QUOTE_COVERAGE_LINE__COVERAGE_RATE, m.AUG_QUOTE_COVERAGE_LINE__COVERAGE_SEQUENCE, m.AUG_QUOTE_COVERAGE_LINE__DISCOUNT_AMOUNT, m.AUG_QUOTE_COVERAGE_LINE__DISCOUNT_ENABLED_INDICATOR, m.AUG_QUOTE_COVERAGE_LINE__EXCESS_AMOUNT, m.AUG_QUOTE_COVERAGE_LINE__IGST_AMOUNT, m.AUG_QUOTE_COVERAGE_LINE__LOADING_AMOUNT, m.AUG_QUOTE_COVERAGE_LINE__PERSONS_COVERED_COUNT, m.AUG_QUOTE_COVERAGE_LINE__PREMIUM_FOR_COVERAGE, m.AUG_QUOTE_COVERAGE_LINE__SGST_AMOUNT, m.AUG_QUOTE_COVERAGE_LINE__SUM_INSURED) is not null
+    -- multi-active satellites on QUOTE_BK (SAT_AUG_QUOTE_COVERAGE_LINE, SAT_AUG_QUOTE_PREMIUM_HEAD, SAT_QUOTE_RATING_INPUT):
+    -- one load time per QUOTE_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
+    max(case when coalesce(m.AUG_QUOTE_COVERAGE_LINE__CGST_AMOUNT, m.AUG_QUOTE_COVERAGE_LINE__COVERAGE_RATE, m.AUG_QUOTE_COVERAGE_LINE__COVERAGE_SEQUENCE, m.AUG_QUOTE_COVERAGE_LINE__DISCOUNT_AMOUNT, m.AUG_QUOTE_COVERAGE_LINE__DISCOUNT_ENABLED_INDICATOR, m.AUG_QUOTE_COVERAGE_LINE__EXCESS_AMOUNT, m.AUG_QUOTE_COVERAGE_LINE__IGST_AMOUNT, m.AUG_QUOTE_COVERAGE_LINE__LOADING_AMOUNT, m.AUG_QUOTE_COVERAGE_LINE__PERSONS_COVERED_COUNT, m.AUG_QUOTE_COVERAGE_LINE__PREMIUM_FOR_COVERAGE, m.AUG_QUOTE_COVERAGE_LINE__SGST_AMOUNT, m.AUG_QUOTE_COVERAGE_LINE__SUM_INSURED, m.AUG_QUOTE_PREMIUM_HEAD__NET_HEAD_PREMIUM, m.AUG_QUOTE_PREMIUM_HEAD__PREMIUM_COMPONENT, m.AUG_QUOTE_PREMIUM_HEAD__PREMIUM_HEAD_CODE, m.AUG_QUOTE_PREMIUM_HEAD__PREMIUM_HEAD_NAME, m.QUOTE_RATING_INPUT__FACTOR_VALUE) is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.QUOTE_BK) as AUG_QUOTE_COVERAGE_LINE__LOAD_DATETIME,
-    -- SAT_AUG_QUOTE_PREMIUM_HEAD (ma_sat): one load time per QUOTE_BK, so all its child rows share it
-    max(case when coalesce(m.AUG_QUOTE_PREMIUM_HEAD__NET_HEAD_PREMIUM, m.AUG_QUOTE_PREMIUM_HEAD__PREMIUM_COMPONENT, m.AUG_QUOTE_PREMIUM_HEAD__PREMIUM_HEAD_CODE, m.AUG_QUOTE_PREMIUM_HEAD__PREMIUM_HEAD_NAME) is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.QUOTE_BK) as AUG_QUOTE_PREMIUM_HEAD__LOAD_DATETIME,
-    -- SAT_AUG_RISK_MOTOR_USAGE_PLAN (ma_sat): one load time per RISK_OBJECT_BK, so all its child rows share it
+        over (partition by m.QUOTE_BK) as QUOTE_BK__MA_LOAD_DATETIME,
+    -- multi-active satellites on RISK_OBJECT_BK (SAT_AUG_RISK_MOTOR_USAGE_PLAN):
+    -- one load time per RISK_OBJECT_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
     max(case when m.AUG_RISK_MOTOR_USAGE_PLAN__PLAN_ELECTION_INDICATOR is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.RISK_OBJECT_BK) as AUG_RISK_MOTOR_USAGE_PLAN__LOAD_DATETIME,
-    -- SAT_QUOTE_RATING_INPUT (ma_sat): one load time per QUOTE_BK, so all its child rows share it
-    max(case when m.QUOTE_RATING_INPUT__FACTOR_VALUE is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.QUOTE_BK) as QUOTE_RATING_INPUT__LOAD_DATETIME
+        over (partition by m.RISK_OBJECT_BK) as RISK_OBJECT_BK__MA_LOAD_DATETIME
 from merged m

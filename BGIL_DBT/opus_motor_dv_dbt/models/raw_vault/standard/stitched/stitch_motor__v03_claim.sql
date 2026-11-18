@@ -601,16 +601,16 @@ select
     first_value(LNK_PARTY_ROLE_CORE__ROLE_START_DATE) ignore nulls over (partition by PARTY_BK, LNK_PARTY_ROLE_CORE__ROLE_CODE_CK, LNK_PARTY_ROLE_CORE__ROLE_SEQUENCE_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as LNK_PARTY_ROLE_CORE__ROLE_START_DATE,
     -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
     m.INC_JOB_UPDATED_AT,
-    -- SAT_CLAIM_RESERVE (ma_sat): one load time per CLAIM_BK, so all its child rows share it
-    max(case when coalesce(m.CLAIM_RESERVE__CURRENT_RESERVE_AMOUNT, m.CLAIM_RESERVE__OUTSTANDING_RESERVE_AMOUNT) is not null
+    -- multi-active satellites on CLAIM_BK (SAT_CLAIM_RESERVE, SAT_CLAIM_SALVAGE_BIDDER):
+    -- one load time per CLAIM_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
+    max(case when coalesce(m.CLAIM_RESERVE__CURRENT_RESERVE_AMOUNT, m.CLAIM_RESERVE__OUTSTANDING_RESERVE_AMOUNT, m.CLAIM_SALVAGE_BIDDER__BIDDER_NAME, m.CLAIM_SALVAGE_BIDDER__BID_AMOUNT, m.CLAIM_SALVAGE_BIDDER__BID_DATE) is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.CLAIM_BK) as CLAIM_RESERVE__LOAD_DATETIME,
-    -- SAT_CLAIM_SALVAGE_BIDDER (ma_sat): one load time per CLAIM_BK, so all its child rows share it
-    max(case when coalesce(m.CLAIM_SALVAGE_BIDDER__BIDDER_NAME, m.CLAIM_SALVAGE_BIDDER__BID_AMOUNT, m.CLAIM_SALVAGE_BIDDER__BID_DATE) is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.CLAIM_BK) as CLAIM_SALVAGE_BIDDER__LOAD_DATETIME,
-    -- SAT_LNK_PARTY_ROLE_CORE (ma_sat): one load time per PARTY_BK, so all its child rows share it
+        over (partition by m.CLAIM_BK) as CLAIM_BK__MA_LOAD_DATETIME,
+    -- multi-active satellites on PARTY_BK (SAT_LNK_PARTY_ROLE_CORE):
+    -- one load time per PARTY_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
     max(case when m.LNK_PARTY_ROLE_CORE__ROLE_START_DATE is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.PARTY_BK) as LNK_PARTY_ROLE_CORE__LOAD_DATETIME
+        over (partition by m.PARTY_BK) as PARTY_BK__MA_LOAD_DATETIME
 from merged m

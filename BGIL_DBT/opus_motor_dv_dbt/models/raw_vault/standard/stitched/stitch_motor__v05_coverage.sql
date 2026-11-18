@@ -778,20 +778,22 @@ select
     first_value(PRODUCT_DEFINITION__UIN) ignore nulls over (partition by PRODUCT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as PRODUCT_DEFINITION__UIN,
     -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
     m.INC_JOB_UPDATED_AT,
-    -- SAT_AUG_COVERAGE_MOTOR_ADDON_PARAMS (ma_sat): one load time per COVERAGE_BK, so all its child rows share it
+    -- multi-active satellites on COVERAGE_BK (SAT_AUG_COVERAGE_MOTOR_ADDON_PARAMS):
+    -- one load time per COVERAGE_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
     max(case when coalesce(m.AUG_COVERAGE_MOTOR_ADDON_PARAMS__TYRE_DESCRIPTION, m.AUG_COVERAGE_MOTOR_ADDON_PARAMS__TYRE_DETAIL) is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.COVERAGE_BK) as AUG_COVERAGE_MOTOR_ADDON_PARAMS__LOAD_DATETIME,
-    -- SAT_AUG_POLICY_COVERAGE_SCHEDULE (ma_sat): one load time per POLICY_BK, so all its child rows share it
-    max(case when coalesce(m.AUG_POLICY_COVERAGE_SCHEDULE__COVERAGE_RATE, m.AUG_POLICY_COVERAGE_SCHEDULE__SOURCE_LINE_REFERENCE) is not null
+        over (partition by m.COVERAGE_BK) as COVERAGE_BK__MA_LOAD_DATETIME,
+    -- multi-active satellites on POLICY_BK (SAT_AUG_POLICY_COVERAGE_SCHEDULE, SAT_POLICY_COVERAGE_SCHEDULE):
+    -- one load time per POLICY_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
+    max(case when coalesce(m.AUG_POLICY_COVERAGE_SCHEDULE__COVERAGE_RATE, m.AUG_POLICY_COVERAGE_SCHEDULE__SOURCE_LINE_REFERENCE, m.POLICY_COVERAGE_SCHEDULE__COVERAGE_OPTED_INDICATOR, m.POLICY_COVERAGE_SCHEDULE__COVERAGE_SEQUENCE, m.POLICY_COVERAGE_SCHEDULE__PREMIUM_FOR_COVERAGE, m.POLICY_COVERAGE_SCHEDULE__SUM_INSURED) is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.POLICY_BK) as AUG_POLICY_COVERAGE_SCHEDULE__LOAD_DATETIME,
-    -- SAT_AUG_RISK_MOTOR_DRIVER (ma_sat): one load time per RISK_OBJECT_BK, so all its child rows share it
+        over (partition by m.POLICY_BK) as POLICY_BK__MA_LOAD_DATETIME,
+    -- multi-active satellites on RISK_OBJECT_BK (SAT_AUG_RISK_MOTOR_DRIVER):
+    -- one load time per RISK_OBJECT_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
     max(case when coalesce(m.AUG_RISK_MOTOR_DRIVER__AGE_AT_LICENCE_ISSUE, m.AUG_RISK_MOTOR_DRIVER__DRIVER_LINE_PARTICULARS) is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.RISK_OBJECT_BK) as AUG_RISK_MOTOR_DRIVER__LOAD_DATETIME,
-    -- SAT_POLICY_COVERAGE_SCHEDULE (ma_sat): one load time per POLICY_BK, so all its child rows share it
-    max(case when coalesce(m.POLICY_COVERAGE_SCHEDULE__COVERAGE_OPTED_INDICATOR, m.POLICY_COVERAGE_SCHEDULE__COVERAGE_SEQUENCE, m.POLICY_COVERAGE_SCHEDULE__PREMIUM_FOR_COVERAGE, m.POLICY_COVERAGE_SCHEDULE__SUM_INSURED) is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.POLICY_BK) as POLICY_COVERAGE_SCHEDULE__LOAD_DATETIME
+        over (partition by m.RISK_OBJECT_BK) as RISK_OBJECT_BK__MA_LOAD_DATETIME
 from merged m

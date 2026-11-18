@@ -15,7 +15,7 @@ derived_columns:
   PARTY_NK: "case when LNK_ROLE_POSP__POSP_CODE is not null then 'HUB_PARTY|' || PARTY_BK end"
   ROLE_TYPE_CK: 'LNK_ROLE_POSP__ROLE_TYPE_CK'
   POSP_CODE: 'LNK_ROLE_POSP__POSP_CODE'
-  LOAD_DATETIME: 'LNK_ROLE_POSP__LOAD_DATETIME'
+  LOAD_DATETIME: 'PARTY_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!stitch_motor__v11_party'
 {%- endset -%}
 

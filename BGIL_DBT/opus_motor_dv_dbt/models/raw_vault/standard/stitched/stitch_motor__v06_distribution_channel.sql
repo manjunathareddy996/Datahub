@@ -946,36 +946,34 @@ select
     first_value(RISK_MOTOR_LIABILITY_ADDON__PA_HELPER_COUNT) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_MOTOR_LIABILITY_ADDON__PA_HELPER_COUNT,
     -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
     m.INC_JOB_UPDATED_AT,
-    -- SAT_AUG_CHANNEL_FIELD_ACTIVITY (ma_sat): one load time per DISTRIBUTION_CHANNEL_BK, so all its child rows share it
-    max(case when coalesce(m.AUG_CHANNEL_FIELD_ACTIVITY__BANK_RELATIONSHIP_MANAGER_DETAILS, m.AUG_CHANNEL_FIELD_ACTIVITY__EXPECTED_PREMIUM_DISCUSSED, m.AUG_CHANNEL_FIELD_ACTIVITY__HEALTH_LINE_PREMIUM_DISCUSSED, m.AUG_CHANNEL_FIELD_ACTIVITY__NEXT_MEETING_DATE, m.AUG_CHANNEL_FIELD_ACTIVITY__NON_HEALTH_LINE_PREMIUM_DISCUSSED, m.AUG_CHANNEL_FIELD_ACTIVITY__PARTICIPANT_DESIGNATION, m.AUG_CHANNEL_FIELD_ACTIVITY__PRODUCTS_DISCUSSED, m.AUG_CHANNEL_FIELD_ACTIVITY__PROSPECT_CONTACT_NUMBER, m.AUG_CHANNEL_FIELD_ACTIVITY__PROSPECT_NAME) is not null
+    -- multi-active satellites on DISTRIBUTION_CHANNEL_BK (SAT_AUG_CHANNEL_FIELD_ACTIVITY, SAT_CHANNEL_FIELD_ACTIVITY):
+    -- one load time per DISTRIBUTION_CHANNEL_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
+    max(case when coalesce(m.AUG_CHANNEL_FIELD_ACTIVITY__BANK_RELATIONSHIP_MANAGER_DETAILS, m.AUG_CHANNEL_FIELD_ACTIVITY__EXPECTED_PREMIUM_DISCUSSED, m.AUG_CHANNEL_FIELD_ACTIVITY__HEALTH_LINE_PREMIUM_DISCUSSED, m.AUG_CHANNEL_FIELD_ACTIVITY__NEXT_MEETING_DATE, m.AUG_CHANNEL_FIELD_ACTIVITY__NON_HEALTH_LINE_PREMIUM_DISCUSSED, m.AUG_CHANNEL_FIELD_ACTIVITY__PARTICIPANT_DESIGNATION, m.AUG_CHANNEL_FIELD_ACTIVITY__PRODUCTS_DISCUSSED, m.AUG_CHANNEL_FIELD_ACTIVITY__PROSPECT_CONTACT_NUMBER, m.AUG_CHANNEL_FIELD_ACTIVITY__PROSPECT_NAME, m.CHANNEL_FIELD_ACTIVITY__ACTIVITY_REFERENCE, m.CHANNEL_FIELD_ACTIVITY__FOLLOW_UP_DATE, m.CHANNEL_FIELD_ACTIVITY__LEAD_REFERENCE, m.CHANNEL_FIELD_ACTIVITY__MEETING_PURPOSE, m.CHANNEL_FIELD_ACTIVITY__OUTCOME_STATUS) is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.DISTRIBUTION_CHANNEL_BK) as AUG_CHANNEL_FIELD_ACTIVITY__LOAD_DATETIME,
-    -- SAT_AUG_RISK_MOTOR_GEOGRAPHICAL_EXTENSION (ma_sat): one load time per RISK_OBJECT_BK, so all its child rows share it
-    max(case when m.AUG_RISK_MOTOR_GEOGRAPHICAL_EXTENSION__COVERED_INDICATOR is not null
+        over (partition by m.DISTRIBUTION_CHANNEL_BK) as DISTRIBUTION_CHANNEL_BK__MA_LOAD_DATETIME,
+    -- multi-active satellites on RISK_OBJECT_BK (SAT_AUG_RISK_MOTOR_GEOGRAPHICAL_EXTENSION, SAT_AUG_RISK_OBJECT_INSURABLE_INTEREST):
+    -- one load time per RISK_OBJECT_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
+    max(case when coalesce(m.AUG_RISK_MOTOR_GEOGRAPHICAL_EXTENSION__COVERED_INDICATOR, m.AUG_RISK_OBJECT_INSURABLE_INTEREST__FINANCIER_BRANCH_NAME) is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.RISK_OBJECT_BK) as AUG_RISK_MOTOR_GEOGRAPHICAL_EXTENSION__LOAD_DATETIME,
-    -- SAT_AUG_RISK_OBJECT_INSURABLE_INTEREST (ma_sat): one load time per RISK_OBJECT_BK, so all its child rows share it
-    max(case when m.AUG_RISK_OBJECT_INSURABLE_INTEREST__FINANCIER_BRANCH_NAME is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.RISK_OBJECT_BK) as AUG_RISK_OBJECT_INSURABLE_INTEREST__LOAD_DATETIME,
-    -- SAT_CHANNEL_FIELD_ACTIVITY (ma_sat): one load time per DISTRIBUTION_CHANNEL_BK, so all its child rows share it
-    max(case when coalesce(m.CHANNEL_FIELD_ACTIVITY__ACTIVITY_REFERENCE, m.CHANNEL_FIELD_ACTIVITY__FOLLOW_UP_DATE, m.CHANNEL_FIELD_ACTIVITY__LEAD_REFERENCE, m.CHANNEL_FIELD_ACTIVITY__MEETING_PURPOSE, m.CHANNEL_FIELD_ACTIVITY__OUTCOME_STATUS) is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.DISTRIBUTION_CHANNEL_BK) as CHANNEL_FIELD_ACTIVITY__LOAD_DATETIME,
-    -- SAT_FINTXN_RECON_INSTRUMENT (ma_sat): one load time per FINANCIAL_TRANSACTION_BK, so all its child rows share it
+        over (partition by m.RISK_OBJECT_BK) as RISK_OBJECT_BK__MA_LOAD_DATETIME,
+    -- multi-active satellites on FINANCIAL_TRANSACTION_BK (SAT_FINTXN_RECON_INSTRUMENT):
+    -- one load time per FINANCIAL_TRANSACTION_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
     max(case when coalesce(m.FINTXN_RECON_INSTRUMENT__INSTRUMENT_AMOUNT, m.FINTXN_RECON_INSTRUMENT__INSTRUMENT_DATE) is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.FINANCIAL_TRANSACTION_BK) as FINTXN_RECON_INSTRUMENT__LOAD_DATETIME,
-    -- SAT_PARTY_KYC_REFERENCE (ma_sat): one load time per PARTY_BK, so all its child rows share it
+        over (partition by m.FINANCIAL_TRANSACTION_BK) as FINANCIAL_TRANSACTION_BK__MA_LOAD_DATETIME,
+    -- multi-active satellites on PARTY_BK (SAT_PARTY_KYC_REFERENCE):
+    -- one load time per PARTY_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
     max(case when coalesce(m.PARTY_KYC_REFERENCE__KYC_REFERENCE_NUMBER, m.PARTY_KYC_REFERENCE__KYC_REFERENCE_TYPE) is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.PARTY_BK) as PARTY_KYC_REFERENCE__LOAD_DATETIME,
-    -- SAT_POLICY_CLASSIFICATION (ma_sat): one load time per POLICY_BK, so all its child rows share it
-    max(case when m.POLICY_CLASSIFICATION__CLASSIFICATION_VALUE is not null
+        over (partition by m.PARTY_BK) as PARTY_BK__MA_LOAD_DATETIME,
+    -- multi-active satellites on POLICY_BK (SAT_POLICY_CLASSIFICATION, SAT_POLICY_CLAUSE_ATTACHED):
+    -- one load time per POLICY_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
+    max(case when coalesce(m.POLICY_CLASSIFICATION__CLASSIFICATION_VALUE, m.POLICY_CLAUSE_ATTACHED__CLAUSE_CODE) is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.POLICY_BK) as POLICY_CLASSIFICATION__LOAD_DATETIME,
-    -- SAT_POLICY_CLAUSE_ATTACHED (ma_sat): one load time per POLICY_BK, so all its child rows share it
-    max(case when m.POLICY_CLAUSE_ATTACHED__CLAUSE_CODE is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.POLICY_BK) as POLICY_CLAUSE_ATTACHED__LOAD_DATETIME
+        over (partition by m.POLICY_BK) as POLICY_BK__MA_LOAD_DATETIME
 from merged m

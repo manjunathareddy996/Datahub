@@ -160,8 +160,10 @@ select
     first_value(POLICY_DELIVERY__TRACKING_REFERENCE) ignore nulls over (partition by POLICY_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as POLICY_DELIVERY__TRACKING_REFERENCE,
     -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
     m.INC_JOB_UPDATED_AT,
-    -- SAT_POLICY_CERTIFICATE (ma_sat): one load time per POLICY_BK, so all its child rows share it
+    -- multi-active satellites on POLICY_BK (SAT_POLICY_CERTIFICATE):
+    -- one load time per POLICY_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
     max(case when coalesce(m.POLICY_CERTIFICATE__CERTIFICATE_ISSUE_DATE, m.POLICY_CERTIFICATE__CERTIFICATE_NUMBER) is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.POLICY_BK) as POLICY_CERTIFICATE__LOAD_DATETIME
+        over (partition by m.POLICY_BK) as POLICY_BK__MA_LOAD_DATETIME
 from merged m

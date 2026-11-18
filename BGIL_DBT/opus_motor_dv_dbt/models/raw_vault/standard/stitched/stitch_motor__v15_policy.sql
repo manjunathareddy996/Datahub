@@ -290,12 +290,10 @@ select
     first_value(RISK_MOTOR_VERIFICATION__VERIFICATION_REQUEST_NUMBER) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_MOTOR_VERIFICATION__VERIFICATION_REQUEST_NUMBER,
     -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
     m.INC_JOB_UPDATED_AT,
-    -- SAT_AUG_POLICY_ENDORSEMENT (ma_sat): one load time per POLICY_BK, so all its child rows share it
-    max(case when m.AUG_POLICY_ENDORSEMENT__ENDORSEMENT_REMARKS is not null
+    -- multi-active satellites on POLICY_BK (SAT_AUG_POLICY_ENDORSEMENT, SAT_POLICY_ENDORSEMENT):
+    -- one load time per POLICY_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
+    max(case when coalesce(m.AUG_POLICY_ENDORSEMENT__ENDORSEMENT_REMARKS, m.POLICY_ENDORSEMENT__ENDORSEMENT_CHANNEL, m.POLICY_ENDORSEMENT__ENDORSEMENT_DATE, m.POLICY_ENDORSEMENT__ENDORSEMENT_NUMBER) is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.POLICY_BK) as AUG_POLICY_ENDORSEMENT__LOAD_DATETIME,
-    -- SAT_POLICY_ENDORSEMENT (ma_sat): one load time per POLICY_BK, so all its child rows share it
-    max(case when coalesce(m.POLICY_ENDORSEMENT__ENDORSEMENT_CHANNEL, m.POLICY_ENDORSEMENT__ENDORSEMENT_DATE, m.POLICY_ENDORSEMENT__ENDORSEMENT_NUMBER) is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.POLICY_BK) as POLICY_ENDORSEMENT__LOAD_DATETIME
+        over (partition by m.POLICY_BK) as POLICY_BK__MA_LOAD_DATETIME
 from merged m

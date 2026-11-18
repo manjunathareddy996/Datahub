@@ -1472,12 +1472,10 @@ select
     first_value(RISK_MOTOR_TELEMATICS__USAGE_BASED_PLAN_TYPE) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_MOTOR_TELEMATICS__USAGE_BASED_PLAN_TYPE,
     -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
     m.INC_JOB_UPDATED_AT,
-    -- SAT_RISK_MOTOR_ADDON (ma_sat): one load time per RISK_OBJECT_BK, so all its child rows share it
-    max(case when coalesce(m.RISK_MOTOR_ADDON__ADD_ON_OPTED_INDICATOR, m.RISK_MOTOR_ADDON__ADD_ON_PACKAGE_CODE, m.RISK_MOTOR_ADDON__ADD_ON_PREMIUM, m.RISK_MOTOR_ADDON__ADD_ON_SUM_INSURED) is not null
+    -- multi-active satellites on RISK_OBJECT_BK (SAT_RISK_MOTOR_ADDON, SAT_RISK_MOTOR_FITMENTS):
+    -- one load time per RISK_OBJECT_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
+    max(case when coalesce(m.RISK_MOTOR_ADDON__ADD_ON_OPTED_INDICATOR, m.RISK_MOTOR_ADDON__ADD_ON_PACKAGE_CODE, m.RISK_MOTOR_ADDON__ADD_ON_PREMIUM, m.RISK_MOTOR_ADDON__ADD_ON_SUM_INSURED, m.RISK_MOTOR_FITMENTS__FITMENT_VALUE, m.RISK_MOTOR_FITMENTS__SUM_INSURED) is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.RISK_OBJECT_BK) as RISK_MOTOR_ADDON__LOAD_DATETIME,
-    -- SAT_RISK_MOTOR_FITMENTS (ma_sat): one load time per RISK_OBJECT_BK, so all its child rows share it
-    max(case when coalesce(m.RISK_MOTOR_FITMENTS__FITMENT_VALUE, m.RISK_MOTOR_FITMENTS__SUM_INSURED) is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.RISK_OBJECT_BK) as RISK_MOTOR_FITMENTS__LOAD_DATETIME
+        over (partition by m.RISK_OBJECT_BK) as RISK_OBJECT_BK__MA_LOAD_DATETIME
 from merged m

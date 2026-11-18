@@ -15,7 +15,7 @@ derived_columns:
   CLAIM_NK: "case when CLAIM_NOTE__NOTE_TEXT is not null then 'HUB_CLAIM|' || CLAIM_BK end"
   NOTE_SEQUENCE: 'CLAIM_NOTE__NOTE_SEQUENCE_CK'
   NOTE_TEXT: 'CLAIM_NOTE__NOTE_TEXT'
-  LOAD_DATETIME: 'CLAIM_NOTE__LOAD_DATETIME'
+  LOAD_DATETIME: 'CLAIM_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!stitch_motor__v02_claim'
 {%- endset -%}
 

@@ -1423,76 +1423,34 @@ select
     first_value(RISK_PERSON_STUDENT_PA__TUITION_FEE_PAYER) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_PERSON_STUDENT_PA__TUITION_FEE_PAYER,
     -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
     m.INC_JOB_UPDATED_AT,
-    -- SAT_AUG_COMMON_CONTACT (ma_sat): one load time per PARTY_BK, so all its child rows share it
-    max(case when coalesce(m.AUG_COMMON_CONTACT__ALTERNATE_LANDLINE_NUMBER, m.AUG_COMMON_CONTACT__PREFERRED_CONTACT_DATE) is not null
+    -- multi-active satellites on PARTY_BK (SAT_AUG_COMMON_CONTACT, SAT_AUG_PARTY_DIGITAL_IDENTITY, SAT_AUG_PARTY_DIGITAL_JOURNEY_STAGE, SAT_AUG_PARTY_INTERACTION_EVENT, SAT_LEAD_ATTRIBUTION, SAT_LNK_ROLE_AGENT, SAT_LNK_ROLE_EMPLOYEE, SAT_LNK_ROLE_POSP, SAT_PARTY_BANKING, SAT_PARTY_CORRESPONDENCE, SAT_PARTY_DIGITAL_IDENTITY, SAT_PARTY_INTERACTION_EVENT):
+    -- one load time per PARTY_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
+    max(case when coalesce(m.AUG_COMMON_CONTACT__ALTERNATE_LANDLINE_NUMBER, m.AUG_COMMON_CONTACT__PREFERRED_CONTACT_DATE, m.AUG_PARTY_DIGITAL_IDENTITY__BROWSER_NAME, m.AUG_PARTY_DIGITAL_IDENTITY__CLIENT_IP_ADDRESS, m.AUG_PARTY_DIGITAL_IDENTITY__CONNECTION_BANDWIDTH, m.AUG_PARTY_DIGITAL_IDENTITY__FORWARDED_IP_ADDRESS, m.AUG_PARTY_DIGITAL_IDENTITY__MACHINE_IP_ADDRESS, m.AUG_PARTY_DIGITAL_IDENTITY__PROXY_IP_ADDRESS, m.AUG_PARTY_DIGITAL_IDENTITY__THIRD_IP_ADDRESS, m.AUG_PARTY_DIGITAL_JOURNEY_STAGE__STAGE_REACHED_INDICATOR, m.AUG_PARTY_INTERACTION_EVENT__FOLLOW_UP_TIME, m.AUG_PARTY_INTERACTION_EVENT__INTERACTION_REFERENCE, m.AUG_PARTY_INTERACTION_EVENT__INTERACTION_TIME, m.LEAD_ATTRIBUTION__LEAD_REFERENCE, m.LEAD_ATTRIBUTION__PARAMETER_VALUE, m.LNK_ROLE_AGENT__AGENT_CODE, m.LNK_ROLE_EMPLOYEE__EMPLOYEE_CODE, m.LNK_ROLE_POSP__POSP_CODE, m.PARTY_BANKING__BANK_NAME, m.PARTY_CORRESPONDENCE__TEMPLATE_REFERENCE, m.PARTY_DIGITAL_IDENTITY__LOGIN_IDENTIFIER, m.PARTY_INTERACTION_EVENT__FOLLOW_UP_DATE, m.PARTY_INTERACTION_EVENT__INTERACTION_DATE) is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.PARTY_BK) as AUG_COMMON_CONTACT__LOAD_DATETIME,
-    -- SAT_AUG_PARTY_CONTACT_ADDRESS_LINK (ma_sat): one load time per LOCATION_BK, so all its child rows share it
+        over (partition by m.PARTY_BK) as PARTY_BK__MA_LOAD_DATETIME,
+    -- multi-active satellites on LOCATION_BK (SAT_AUG_PARTY_CONTACT_ADDRESS_LINK):
+    -- one load time per LOCATION_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
     max(case when m.AUG_PARTY_CONTACT_ADDRESS_LINK__SAME_AS_PRIMARY_ADDRESS_INDICATOR is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.LOCATION_BK) as AUG_PARTY_CONTACT_ADDRESS_LINK__LOAD_DATETIME,
-    -- SAT_AUG_PARTY_DIGITAL_IDENTITY (ma_sat): one load time per PARTY_BK, so all its child rows share it
-    max(case when coalesce(m.AUG_PARTY_DIGITAL_IDENTITY__BROWSER_NAME, m.AUG_PARTY_DIGITAL_IDENTITY__CLIENT_IP_ADDRESS, m.AUG_PARTY_DIGITAL_IDENTITY__CONNECTION_BANDWIDTH, m.AUG_PARTY_DIGITAL_IDENTITY__FORWARDED_IP_ADDRESS, m.AUG_PARTY_DIGITAL_IDENTITY__MACHINE_IP_ADDRESS, m.AUG_PARTY_DIGITAL_IDENTITY__PROXY_IP_ADDRESS, m.AUG_PARTY_DIGITAL_IDENTITY__THIRD_IP_ADDRESS) is not null
+        over (partition by m.LOCATION_BK) as LOCATION_BK__MA_LOAD_DATETIME,
+    -- multi-active satellites on POLICY_BK (SAT_AUG_POLICY_INTERMEDIARY_SPLIT, SAT_POLICY_DOC_CHECKLIST):
+    -- one load time per POLICY_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
+    max(case when coalesce(m.AUG_POLICY_INTERMEDIARY_SPLIT__SERVICE_CHARGE_RATE, m.POLICY_DOC_CHECKLIST__VERIFICATION_STATUS) is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.PARTY_BK) as AUG_PARTY_DIGITAL_IDENTITY__LOAD_DATETIME,
-    -- SAT_AUG_PARTY_DIGITAL_JOURNEY_STAGE (ma_sat): one load time per PARTY_BK, so all its child rows share it
-    max(case when m.AUG_PARTY_DIGITAL_JOURNEY_STAGE__STAGE_REACHED_INDICATOR is not null
+        over (partition by m.POLICY_BK) as POLICY_BK__MA_LOAD_DATETIME,
+    -- multi-active satellites on FINANCIAL_TRANSACTION_BK (SAT_FINTXN_TAX, SAT_FIN_CHARGE_RATE):
+    -- one load time per FINANCIAL_TRANSACTION_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
+    max(case when coalesce(m.FINTXN_TAX__SERVICE_TAX_AMOUNT, m.FIN_CHARGE_RATE__CHARGE_RATE) is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.PARTY_BK) as AUG_PARTY_DIGITAL_JOURNEY_STAGE__LOAD_DATETIME,
-    -- SAT_AUG_PARTY_INTERACTION_EVENT (ma_sat): one load time per PARTY_BK, so all its child rows share it
-    max(case when coalesce(m.AUG_PARTY_INTERACTION_EVENT__FOLLOW_UP_TIME, m.AUG_PARTY_INTERACTION_EVENT__INTERACTION_REFERENCE, m.AUG_PARTY_INTERACTION_EVENT__INTERACTION_TIME) is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.PARTY_BK) as AUG_PARTY_INTERACTION_EVENT__LOAD_DATETIME,
-    -- SAT_AUG_POLICY_INTERMEDIARY_SPLIT (ma_sat): one load time per POLICY_BK, so all its child rows share it
-    max(case when m.AUG_POLICY_INTERMEDIARY_SPLIT__SERVICE_CHARGE_RATE is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.POLICY_BK) as AUG_POLICY_INTERMEDIARY_SPLIT__LOAD_DATETIME,
-    -- SAT_FINTXN_TAX (ma_sat): one load time per FINANCIAL_TRANSACTION_BK, so all its child rows share it
-    max(case when m.FINTXN_TAX__SERVICE_TAX_AMOUNT is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.FINANCIAL_TRANSACTION_BK) as FINTXN_TAX__LOAD_DATETIME,
-    -- SAT_FIN_CHARGE_RATE (ma_sat): one load time per FINANCIAL_TRANSACTION_BK, so all its child rows share it
-    max(case when m.FIN_CHARGE_RATE__CHARGE_RATE is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.FINANCIAL_TRANSACTION_BK) as FIN_CHARGE_RATE__LOAD_DATETIME,
-    -- SAT_LEAD_ATTRIBUTION (ma_sat): one load time per PARTY_BK, so all its child rows share it
-    max(case when coalesce(m.LEAD_ATTRIBUTION__LEAD_REFERENCE, m.LEAD_ATTRIBUTION__PARAMETER_VALUE) is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.PARTY_BK) as LEAD_ATTRIBUTION__LOAD_DATETIME,
-    -- SAT_LNK_ROLE_AGENT (ma_sat): one load time per PARTY_BK, so all its child rows share it
-    max(case when m.LNK_ROLE_AGENT__AGENT_CODE is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.PARTY_BK) as LNK_ROLE_AGENT__LOAD_DATETIME,
-    -- SAT_LNK_ROLE_EMPLOYEE (ma_sat): one load time per PARTY_BK, so all its child rows share it
-    max(case when m.LNK_ROLE_EMPLOYEE__EMPLOYEE_CODE is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.PARTY_BK) as LNK_ROLE_EMPLOYEE__LOAD_DATETIME,
-    -- SAT_LNK_ROLE_POSP (ma_sat): one load time per PARTY_BK, so all its child rows share it
-    max(case when m.LNK_ROLE_POSP__POSP_CODE is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.PARTY_BK) as LNK_ROLE_POSP__LOAD_DATETIME,
-    -- SAT_PARTY_BANKING (ma_sat): one load time per PARTY_BK, so all its child rows share it
-    max(case when m.PARTY_BANKING__BANK_NAME is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.PARTY_BK) as PARTY_BANKING__LOAD_DATETIME,
-    -- SAT_PARTY_CORRESPONDENCE (ma_sat): one load time per PARTY_BK, so all its child rows share it
-    max(case when m.PARTY_CORRESPONDENCE__TEMPLATE_REFERENCE is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.PARTY_BK) as PARTY_CORRESPONDENCE__LOAD_DATETIME,
-    -- SAT_PARTY_DIGITAL_IDENTITY (ma_sat): one load time per PARTY_BK, so all its child rows share it
-    max(case when m.PARTY_DIGITAL_IDENTITY__LOGIN_IDENTIFIER is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.PARTY_BK) as PARTY_DIGITAL_IDENTITY__LOAD_DATETIME,
-    -- SAT_PARTY_INTERACTION_EVENT (ma_sat): one load time per PARTY_BK, so all its child rows share it
-    max(case when coalesce(m.PARTY_INTERACTION_EVENT__FOLLOW_UP_DATE, m.PARTY_INTERACTION_EVENT__INTERACTION_DATE) is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.PARTY_BK) as PARTY_INTERACTION_EVENT__LOAD_DATETIME,
-    -- SAT_POLICY_DOC_CHECKLIST (ma_sat): one load time per POLICY_BK, so all its child rows share it
-    max(case when m.POLICY_DOC_CHECKLIST__VERIFICATION_STATUS is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.POLICY_BK) as POLICY_DOC_CHECKLIST__LOAD_DATETIME,
-    -- SAT_QUOTE_COMPARISON (ma_sat): one load time per QUOTE_BK, so all its child rows share it
+        over (partition by m.FINANCIAL_TRANSACTION_BK) as FINANCIAL_TRANSACTION_BK__MA_LOAD_DATETIME,
+    -- multi-active satellites on QUOTE_BK (SAT_QUOTE_COMPARISON):
+    -- one load time per QUOTE_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
     max(case when m.QUOTE_COMPARISON__PREMIUM_OPTION is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.QUOTE_BK) as QUOTE_COMPARISON__LOAD_DATETIME
+        over (partition by m.QUOTE_BK) as QUOTE_BK__MA_LOAD_DATETIME
 from merged m

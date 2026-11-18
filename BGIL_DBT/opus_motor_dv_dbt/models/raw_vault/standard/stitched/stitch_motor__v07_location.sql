@@ -724,8 +724,10 @@ select
     first_value(LOCATION_PROFILE__LOCATION_NAME) ignore nulls over (partition by LOCATION_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as LOCATION_PROFILE__LOCATION_NAME,
     -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
     m.INC_JOB_UPDATED_AT,
-    -- SAT_LNK_ROLE_NOMINEE_BENEFICIARY (ma_sat): one load time per PARTY_BK, so all its child rows share it
+    -- multi-active satellites on PARTY_BK (SAT_LNK_ROLE_NOMINEE_BENEFICIARY):
+    -- one load time per PARTY_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
     max(case when coalesce(m.LNK_ROLE_NOMINEE_BENEFICIARY__APPOINTEE_NAME, m.LNK_ROLE_NOMINEE_BENEFICIARY__RELATIONSHIP_TO_INSURED) is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.PARTY_BK) as LNK_ROLE_NOMINEE_BENEFICIARY__LOAD_DATETIME
+        over (partition by m.PARTY_BK) as PARTY_BK__MA_LOAD_DATETIME
 from merged m

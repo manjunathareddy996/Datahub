@@ -1083,28 +1083,28 @@ select
     first_value(RISK_TRAILER__TRAILER_REGISTRATION_NUMBER) ignore nulls over (partition by RISK_OBJECT_BK, RISK_TRAILER__TRAILER_SEQUENCE_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_TRAILER__TRAILER_REGISTRATION_NUMBER,
     -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
     m.INC_JOB_UPDATED_AT,
-    -- SAT_AUG_PARTY_CORRESPONDENCE (ma_sat): one load time per PARTY_BK, so all its child rows share it
-    max(case when coalesce(m.AUG_PARTY_CORRESPONDENCE__COMMUNICATION_REQUEST_TIMESTAMP, m.AUG_PARTY_CORRESPONDENCE__COMMUNICATION_SCHEDULED_INDICATOR) is not null
+    -- multi-active satellites on PARTY_BK (SAT_AUG_PARTY_CORRESPONDENCE, SAT_AUG_PARTY_IDENTIFICATION, SAT_PARTY_IDENTIFICATION):
+    -- one load time per PARTY_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
+    max(case when coalesce(m.AUG_PARTY_CORRESPONDENCE__COMMUNICATION_REQUEST_TIMESTAMP, m.AUG_PARTY_CORRESPONDENCE__COMMUNICATION_SCHEDULED_INDICATOR, m.AUG_PARTY_IDENTIFICATION__NAME_AS_PER_IDENTIFICATION_DOCUMENT, m.PARTY_IDENTIFICATION__AADHAAR_NUMBER, m.PARTY_IDENTIFICATION__AADHAAR_VERIFICATION_STATUS, m.PARTY_IDENTIFICATION__GSTIN, m.PARTY_IDENTIFICATION__IDENTIFICATION_NUMBER, m.PARTY_IDENTIFICATION__IDENTIFICATION_VERIFIED_INDICATOR, m.PARTY_IDENTIFICATION__PAN_NUMBER, m.PARTY_IDENTIFICATION__PAN_VERIFICATION_STATUS, m.PARTY_IDENTIFICATION__PASSPORT_NUMBER) is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.PARTY_BK) as AUG_PARTY_CORRESPONDENCE__LOAD_DATETIME,
-    -- SAT_AUG_PARTY_IDENTIFICATION (ma_sat): one load time per PARTY_BK, so all its child rows share it
-    max(case when m.AUG_PARTY_IDENTIFICATION__NAME_AS_PER_IDENTIFICATION_DOCUMENT is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.PARTY_BK) as AUG_PARTY_IDENTIFICATION__LOAD_DATETIME,
-    -- SAT_AUG_POLICY_TAX_HEAD (ma_sat): one load time per POLICY_BK, so all its child rows share it
+        over (partition by m.PARTY_BK) as PARTY_BK__MA_LOAD_DATETIME,
+    -- multi-active satellites on POLICY_BK (SAT_AUG_POLICY_TAX_HEAD):
+    -- one load time per POLICY_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
     max(case when m.AUG_POLICY_TAX_HEAD__TAX_HEAD_IDENTIFIER is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.POLICY_BK) as AUG_POLICY_TAX_HEAD__LOAD_DATETIME,
-    -- SAT_PARTY_IDENTIFICATION (ma_sat): one load time per PARTY_BK, so all its child rows share it
-    max(case when coalesce(m.PARTY_IDENTIFICATION__AADHAAR_NUMBER, m.PARTY_IDENTIFICATION__AADHAAR_VERIFICATION_STATUS, m.PARTY_IDENTIFICATION__GSTIN, m.PARTY_IDENTIFICATION__IDENTIFICATION_NUMBER, m.PARTY_IDENTIFICATION__IDENTIFICATION_VERIFIED_INDICATOR, m.PARTY_IDENTIFICATION__PAN_NUMBER, m.PARTY_IDENTIFICATION__PAN_VERIFICATION_STATUS, m.PARTY_IDENTIFICATION__PASSPORT_NUMBER) is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.PARTY_BK) as PARTY_IDENTIFICATION__LOAD_DATETIME,
-    -- SAT_PROPOSAL_QUESTIONNAIRE (ma_sat): one load time per PROPOSAL_BK, so all its child rows share it
+        over (partition by m.POLICY_BK) as POLICY_BK__MA_LOAD_DATETIME,
+    -- multi-active satellites on PROPOSAL_BK (SAT_PROPOSAL_QUESTIONNAIRE):
+    -- one load time per PROPOSAL_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
     max(case when m.PROPOSAL_QUESTIONNAIRE__RESPONSE_VALUE is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.PROPOSAL_BK) as PROPOSAL_QUESTIONNAIRE__LOAD_DATETIME,
-    -- SAT_RISK_TRAILER (ma_sat): one load time per RISK_OBJECT_BK, so all its child rows share it
+        over (partition by m.PROPOSAL_BK) as PROPOSAL_BK__MA_LOAD_DATETIME,
+    -- multi-active satellites on RISK_OBJECT_BK (SAT_RISK_TRAILER):
+    -- one load time per RISK_OBJECT_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
     max(case when coalesce(m.RISK_TRAILER__ATTACHED_INDICATOR, m.RISK_TRAILER__TRAILER_IDV, m.RISK_TRAILER__TRAILER_REGISTRATION_NUMBER) is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.RISK_OBJECT_BK) as RISK_TRAILER__LOAD_DATETIME
+        over (partition by m.RISK_OBJECT_BK) as RISK_OBJECT_BK__MA_LOAD_DATETIME
 from merged m

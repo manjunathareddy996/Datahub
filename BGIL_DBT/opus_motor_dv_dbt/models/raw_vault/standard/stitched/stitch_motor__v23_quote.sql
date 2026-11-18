@@ -376,8 +376,10 @@ select
     first_value(QUOTE_RATING__NET_PREMIUM) ignore nulls over (partition by QUOTE_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as QUOTE_RATING__NET_PREMIUM,
     -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
     m.INC_JOB_UPDATED_AT,
-    -- SAT_AUG_QUOTE_PRIOR_INSURANCE (ma_sat): one load time per QUOTE_BK, so all its child rows share it
+    -- multi-active satellites on QUOTE_BK (SAT_AUG_QUOTE_PRIOR_INSURANCE):
+    -- one load time per QUOTE_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
     max(case when coalesce(m.AUG_QUOTE_PRIOR_INSURANCE__PRIOR_INSURER_NAME, m.AUG_QUOTE_PRIOR_INSURANCE__PRIOR_POLICY_CLAIM_COUNT, m.AUG_QUOTE_PRIOR_INSURANCE__PRIOR_POLICY_END_DATE, m.AUG_QUOTE_PRIOR_INSURANCE__PRIOR_POLICY_NUMBER, m.AUG_QUOTE_PRIOR_INSURANCE__PRIOR_POLICY_START_DATE, m.AUG_QUOTE_PRIOR_INSURANCE__PRIOR_TENURE_YEARS) is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.QUOTE_BK) as AUG_QUOTE_PRIOR_INSURANCE__LOAD_DATETIME
+        over (partition by m.QUOTE_BK) as QUOTE_BK__MA_LOAD_DATETIME
 from merged m

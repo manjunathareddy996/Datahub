@@ -340,8 +340,10 @@ select
     first_value(AUG_POLICY_HEADER__UNDERWRITING_YEAR) ignore nulls over (partition by POLICY_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as AUG_POLICY_HEADER__UNDERWRITING_YEAR,
     -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
     m.INC_JOB_UPDATED_AT,
-    -- SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED (ma_sat): one load time per POLICY_BK, so all its child rows share it
+    -- multi-active satellites on POLICY_BK (SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED):
+    -- one load time per POLICY_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
     max(case when coalesce(m.AUG_POLICY_DISCOUNT_LOADING_APPLIED__BASIS_AMOUNT, m.AUG_POLICY_DISCOUNT_LOADING_APPLIED__ITEM_APPLIED_INDICATOR, m.AUG_POLICY_DISCOUNT_LOADING_APPLIED__RATING_FACTOR_VALUE) is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.POLICY_BK) as AUG_POLICY_DISCOUNT_LOADING_APPLIED__LOAD_DATETIME
+        over (partition by m.POLICY_BK) as POLICY_BK__MA_LOAD_DATETIME
 from merged m

@@ -1827,16 +1827,10 @@ select
     first_value(POLICY_SUM_INSURED_BREAKUP__SUM_INSURED_AMOUNT) ignore nulls over (partition by POLICY_BK, POLICY_SUM_INSURED_BREAKUP__SUM_INSURED_HEAD_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as POLICY_SUM_INSURED_BREAKUP__SUM_INSURED_AMOUNT,
     -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
     m.INC_JOB_UPDATED_AT,
-    -- SAT_POLICY_EXCESS_STRUCTURE (ma_sat): one load time per POLICY_BK, so all its child rows share it
-    max(case when coalesce(m.POLICY_EXCESS_STRUCTURE__EXCESS_AMOUNT, m.POLICY_EXCESS_STRUCTURE__EXCESS_PERCENTAGE) is not null
+    -- multi-active satellites on POLICY_BK (SAT_POLICY_EXCESS_STRUCTURE, SAT_POLICY_PREMIUM_HEAD, SAT_POLICY_SUM_INSURED_BREAKUP):
+    -- one load time per POLICY_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
+    -- all child rows of a parent share it (ma_sat finds its latest set by time).
+    max(case when coalesce(m.POLICY_EXCESS_STRUCTURE__EXCESS_AMOUNT, m.POLICY_EXCESS_STRUCTURE__EXCESS_PERCENTAGE, m.POLICY_PREMIUM_HEAD__ADJUSTED_INDICATOR, m.POLICY_PREMIUM_HEAD__BASE_AMOUNT, m.POLICY_PREMIUM_HEAD__DISCOUNT_AMOUNT, m.POLICY_PREMIUM_HEAD__LOADING_AMOUNT, m.POLICY_PREMIUM_HEAD__NET_HEAD_PREMIUM, m.POLICY_PREMIUM_HEAD__PREMIUM_COMPONENT, m.POLICY_PREMIUM_HEAD__PREMIUM_HEAD_CODE, m.POLICY_PREMIUM_HEAD__PREMIUM_HEAD_NAME, m.POLICY_SUM_INSURED_BREAKUP__SUM_INSURED_AMOUNT) is not null
              then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.POLICY_BK) as POLICY_EXCESS_STRUCTURE__LOAD_DATETIME,
-    -- SAT_POLICY_PREMIUM_HEAD (ma_sat): one load time per POLICY_BK, so all its child rows share it
-    max(case when coalesce(m.POLICY_PREMIUM_HEAD__ADJUSTED_INDICATOR, m.POLICY_PREMIUM_HEAD__BASE_AMOUNT, m.POLICY_PREMIUM_HEAD__DISCOUNT_AMOUNT, m.POLICY_PREMIUM_HEAD__LOADING_AMOUNT, m.POLICY_PREMIUM_HEAD__NET_HEAD_PREMIUM, m.POLICY_PREMIUM_HEAD__PREMIUM_COMPONENT, m.POLICY_PREMIUM_HEAD__PREMIUM_HEAD_CODE, m.POLICY_PREMIUM_HEAD__PREMIUM_HEAD_NAME) is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.POLICY_BK) as POLICY_PREMIUM_HEAD__LOAD_DATETIME,
-    -- SAT_POLICY_SUM_INSURED_BREAKUP (ma_sat): one load time per POLICY_BK, so all its child rows share it
-    max(case when m.POLICY_SUM_INSURED_BREAKUP__SUM_INSURED_AMOUNT is not null
-             then m.INC_JOB_UPDATED_AT end)
-        over (partition by m.POLICY_BK) as POLICY_SUM_INSURED_BREAKUP__LOAD_DATETIME
+        over (partition by m.POLICY_BK) as POLICY_BK__MA_LOAD_DATETIME
 from merged m
