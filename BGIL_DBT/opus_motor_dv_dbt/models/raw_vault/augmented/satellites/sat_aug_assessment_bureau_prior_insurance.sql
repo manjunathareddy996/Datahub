@@ -1,5 +1,5 @@
 -- AUGMENTED track (not mapper-ratified) sat() for SAT_AUG_ASSESSMENT_BUREAU_PRIOR_INSURANCE (parent HUB_ASSESSMENT, history SCD2), fed whole from central view stitch_motor__v10_party.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__assessment_bureau_prior_insurance'

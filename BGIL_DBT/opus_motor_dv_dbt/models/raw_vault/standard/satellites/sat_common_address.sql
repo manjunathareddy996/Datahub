@@ -1,6 +1,6 @@
 -- Standard sat() for SAT_COMMON_ADDRESS (parent HUB_LOCATION, history SCD2), fed whole from central view stitch_motor__v07_location.
 -- SINGLE WRITER (G-3) BJAZ_MOT_ONLINE_POL_DTLS | SAT_COMMON_ADDRESS | Postal Code | dispatch: emits DISPPOSTCODE; withheld MAILING_PINCODE
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__common_address'

@@ -1,5 +1,5 @@
 -- AUGMENTED track (not mapper-ratified) sat() for SAT_AUG_COMMON_GEO (parent HUB_LOCATION, history SCD2), fed whole from central view stitch_motor__v15_policy.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__common_geo'

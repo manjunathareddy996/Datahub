@@ -13,7 +13,7 @@ hashed_columns:
 derived_columns:
   PARTY_NK: "case when AUG_PARTY_ONBOARDING_JOURNEY__JOURNEY_PAGE_URL is not null then 'HUB_PARTY|' || PARTY_BK end"
   JOURNEY_PAGE_URL: 'AUG_PARTY_ONBOARDING_JOURNEY__JOURNEY_PAGE_URL'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!stitch_motor__v11_party'
 {%- endset -%}
 

@@ -1,7 +1,7 @@
 -- Standard sat() for SAT_RISK_MOTOR_NCB_HISTORY (parent HUB_RISK_OBJECT, history SCD2), fed whole from central view stitch_motor__v25_risk_object.
 -- SINGLE WRITER (G-3) BJAZ_MOT_WINBACK_DTLS | SAT_RISK_MOTOR_NCB_HISTORY | Previous Policy Number | None: emits PREV_POLICYNO; withheld PREV_POLICY_NUMBER
 -- SINGLE WRITER (G-3) BJAZ_SCR_MOT_VEH_DTLS | SAT_RISK_MOTOR_NCB_HISTORY | No Claim Bonus Percentage | None: emits NCB_PERCENT; withheld NCB_RATE
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__risk_motor_ncb_history'

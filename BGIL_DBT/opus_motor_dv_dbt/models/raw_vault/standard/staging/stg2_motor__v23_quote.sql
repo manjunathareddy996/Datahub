@@ -9,7 +9,7 @@ hashed_columns:
 derived_columns:
   QUOTE_BK: 'QUOTE_BK'
   QUOTE_NK: "'HUB_QUOTE|' || QUOTE_BK"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!stitch_motor__v23_quote'
 {%- endset -%}
 

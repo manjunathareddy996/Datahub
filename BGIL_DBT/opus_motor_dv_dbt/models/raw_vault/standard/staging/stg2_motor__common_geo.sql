@@ -17,7 +17,7 @@ derived_columns:
   LATITUDE: 'COMMON_GEO__LATITUDE'
   LONGITUDE: 'COMMON_GEO__LONGITUDE'
   ZONE_CODE: 'COMMON_GEO__ZONE_CODE'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!stitch_motor__v06_distribution_channel'
 {%- endset -%}
 

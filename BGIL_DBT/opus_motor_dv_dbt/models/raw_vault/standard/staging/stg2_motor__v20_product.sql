@@ -14,7 +14,7 @@ derived_columns:
   QUOTE_BK: 'QUOTE_BK'
   QUOTE_NK: "'HUB_QUOTE|' || QUOTE_BK"
   QUOTE_PRODUCT_NK: "case when __LNK_QUOTE_PRODUCT = 1 then 'LNK_QUOTE_PRODUCT|' || PRODUCT_BK || '|' || QUOTE_BK end"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!stitch_motor__v20_product'
 {%- endset -%}
 

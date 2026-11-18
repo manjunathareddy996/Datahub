@@ -72,6 +72,7 @@ with merged as (
         cast(null as varchar) as QUOTE_RATING__INDICATIVE_DEDUCTIBLE,
         cast(null as varchar) as QUOTE_RATING__LOADING_AMOUNT,
         cast(null as varchar) as QUOTE_RATING__NET_PREMIUM,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_dtls') }} t0
@@ -88,6 +89,7 @@ with merged as (
         t0.ods_prev_pol_start_date as AUG_QUOTE_PRIOR_INSURANCE__PRIOR_POLICY_START_DATE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_dtls') }} t0
@@ -108,6 +110,7 @@ with merged as (
         t0.tp_prev_pol_term as AUG_QUOTE_PRIOR_INSURANCE__PRIOR_TENURE_YEARS,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_dtls') }} t0
@@ -125,6 +128,7 @@ with merged as (
         null, null, null, null, null,
         t0.uw_load_amt as QUOTE_RATING__LOADING_AMOUNT,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_ws_detariff_eqm') }} t0
@@ -142,6 +146,7 @@ with merged as (
         null, null, null, null, null,
         t0.uw_load_amt as QUOTE_RATING__LOADING_AMOUNT,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_detariff') }} t0
@@ -157,6 +162,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null,
         t0.module_from as QUOTE_HEADER__QUOTE_SOURCE,
         null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_extra_covers') }} t0
@@ -191,6 +197,7 @@ with merged as (
         null,
         t0.add_load_prem as QUOTE_RATING__LOADING_AMOUNT,
         t0.total_net_premium as QUOTE_RATING__NET_PREMIUM,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_premium_dtls') }} t0
@@ -205,6 +212,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.module_from as QUOTE_HEADER__QUOTE_SOURCE,
         null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_premium_summary') }} t0
@@ -222,6 +230,7 @@ with merged as (
         null, null, null, null,
         t0.quote_status as QUOTE_HEADER__QUOTE_STATUS,
         null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -238,6 +247,7 @@ with merged as (
         null, null, null, null, null, null, null,
         t0.get_quote_date as QUOTE_HEADER__QUOTE_DATE,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls_extn') }} t0
@@ -254,6 +264,7 @@ with merged as (
         null, null, null, null,
         t0.quote_status as QUOTE_HEADER__QUOTE_STATUS,
         null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -273,6 +284,7 @@ with merged as (
         null, null, null, null, null, null, null,
         t0.voluntary_deduc as QUOTE_RATING__INDICATIVE_DEDUCTIBLE,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_scr_mot_veh_dtls') }} t0
@@ -292,6 +304,7 @@ with merged as (
         t0.tp_prev_pol_rid as AUG_QUOTE_PRIOR_INSURANCE__PRIOR_POLICY_START_DATE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_scr_mot_veh_dtls') }} t0
@@ -306,6 +319,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null,
         t0.motor_ws_trans_id as QUOTE_HEADER__QUOTE_REFERENCE_SOURCE,
         null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         10 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_ws_mot_stp_rate_summ') }} t0
@@ -359,5 +373,11 @@ select
     first_value(QUOTE_RATING__GROSS_PREMIUM) ignore nulls over (partition by QUOTE_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as QUOTE_RATING__GROSS_PREMIUM,
     first_value(QUOTE_RATING__INDICATIVE_DEDUCTIBLE) ignore nulls over (partition by QUOTE_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as QUOTE_RATING__INDICATIVE_DEDUCTIBLE,
     first_value(QUOTE_RATING__LOADING_AMOUNT) ignore nulls over (partition by QUOTE_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as QUOTE_RATING__LOADING_AMOUNT,
-    first_value(QUOTE_RATING__NET_PREMIUM) ignore nulls over (partition by QUOTE_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as QUOTE_RATING__NET_PREMIUM
-from merged
+    first_value(QUOTE_RATING__NET_PREMIUM) ignore nulls over (partition by QUOTE_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as QUOTE_RATING__NET_PREMIUM,
+    -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
+    m.INC_JOB_UPDATED_AT,
+    -- SAT_AUG_QUOTE_PRIOR_INSURANCE (ma_sat): one load time per QUOTE_BK, so all its child rows share it
+    max(case when coalesce(m.AUG_QUOTE_PRIOR_INSURANCE__PRIOR_INSURER_NAME, m.AUG_QUOTE_PRIOR_INSURANCE__PRIOR_POLICY_CLAIM_COUNT, m.AUG_QUOTE_PRIOR_INSURANCE__PRIOR_POLICY_END_DATE, m.AUG_QUOTE_PRIOR_INSURANCE__PRIOR_POLICY_NUMBER, m.AUG_QUOTE_PRIOR_INSURANCE__PRIOR_POLICY_START_DATE, m.AUG_QUOTE_PRIOR_INSURANCE__PRIOR_TENURE_YEARS) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.QUOTE_BK) as AUG_QUOTE_PRIOR_INSURANCE__LOAD_DATETIME
+from merged m

@@ -13,7 +13,7 @@ hashed_columns:
 derived_columns:
   POLICY_NK: "case when POLICY_LIFECYCLE__ASSIGNEE_REFERENCE is not null then 'HUB_POLICY|' || POLICY_BK end"
   ASSIGNEE_REFERENCE: 'POLICY_LIFECYCLE__ASSIGNEE_REFERENCE'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!stitch_motor__v11_party'
 {%- endset -%}
 

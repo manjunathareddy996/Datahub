@@ -54,6 +54,7 @@ with merged as (
         cast(null as varchar) as POLICY_DELIVERY__DELIVERY_STATUS,
         cast(null as varchar) as POLICY_DELIVERY__DISPATCH_DATE,
         cast(null as varchar) as POLICY_DELIVERY__TRACKING_REFERENCE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_agency_mot_war_dtls') }} t0
@@ -86,6 +87,7 @@ with merged as (
         t0.cert_sale_date as POLICY_CERTIFICATE__CERTIFICATE_ISSUE_DATE,
         t0.ext_warranty_cert_no as POLICY_CERTIFICATE__CERTIFICATE_NUMBER,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_war_child_dtls') }} t0
@@ -99,6 +101,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.master_contract_id as AGREEMENT_DEFINITION__MASTER_AGREEMENT_REFERENCE,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_war_mast_child') }} t0
@@ -118,6 +121,7 @@ with merged as (
         t0.disp_status as POLICY_DELIVERY__DELIVERY_STATUS,
         t0.dispatch_date as POLICY_DELIVERY__DISPATCH_DATE,
         t0.air_way_bill_no as POLICY_DELIVERY__TRACKING_REFERENCE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__weo_bjaz_mot_dispatch_dtls') }} t0
@@ -153,5 +157,11 @@ select
     first_value(POLICY_CERTIFICATE__CERTIFICATE_NUMBER) ignore nulls over (partition by POLICY_BK, POLICY_CERTIFICATE__CERTIFICATE_NUMBER_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as POLICY_CERTIFICATE__CERTIFICATE_NUMBER,
     first_value(POLICY_DELIVERY__DELIVERY_STATUS) ignore nulls over (partition by POLICY_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as POLICY_DELIVERY__DELIVERY_STATUS,
     first_value(POLICY_DELIVERY__DISPATCH_DATE) ignore nulls over (partition by POLICY_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as POLICY_DELIVERY__DISPATCH_DATE,
-    first_value(POLICY_DELIVERY__TRACKING_REFERENCE) ignore nulls over (partition by POLICY_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as POLICY_DELIVERY__TRACKING_REFERENCE
-from merged
+    first_value(POLICY_DELIVERY__TRACKING_REFERENCE) ignore nulls over (partition by POLICY_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as POLICY_DELIVERY__TRACKING_REFERENCE,
+    -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
+    m.INC_JOB_UPDATED_AT,
+    -- SAT_POLICY_CERTIFICATE (ma_sat): one load time per POLICY_BK, so all its child rows share it
+    max(case when coalesce(m.POLICY_CERTIFICATE__CERTIFICATE_ISSUE_DATE, m.POLICY_CERTIFICATE__CERTIFICATE_NUMBER) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.POLICY_BK) as POLICY_CERTIFICATE__LOAD_DATETIME
+from merged m

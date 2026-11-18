@@ -204,6 +204,7 @@ with merged as (
         cast(null as varchar) as LOSS_LOCATION_ADDRESS__LANDMARK,
         cast(null as varchar) as LOSS_LOCATION_ADDRESS__POSTAL_CODE,
         cast(null as varchar) as LOSS_LOCATION_ADDRESS__STATE_CODE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_base_mot_ext') }} t0
@@ -225,6 +226,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_base_mot_ext') }} t0
@@ -246,6 +248,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_base_mot_ext') }} t0
@@ -298,6 +301,7 @@ with merged as (
         t0.mobile_no as CLAIM_FNOL__REPORTED_BY_CONTACT,
         t0.notified_by as CLAIM_FNOL__REPORTED_BY_NAME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_base_mot_ext') }} t0
@@ -345,6 +349,7 @@ with merged as (
         t0.clm_landmark as LOSS_LOCATION_ADDRESS__LANDMARK,
         t0.clm_pincode as LOSS_LOCATION_ADDRESS__POSTAL_CODE,
         t0.clm_state as LOSS_LOCATION_ADDRESS__STATE_CODE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_motor_intim_details') }} t0
@@ -379,6 +384,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.telephone_no as CLAIM_FNOL__REPORTED_BY_CONTACT,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_mot_tax_dtls') }} t0
@@ -422,6 +428,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_clm_cdc_dtls') }} t0
@@ -444,6 +451,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_clm_comparable_dtls') }} t0
@@ -486,6 +494,7 @@ with merged as (
         t0.negligence_details as AUG_CLAIM_THIRD_PARTY_MACT__NEGLIGENCE_DETAILS,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_clm_ip_dmg_extn') }} t0
@@ -507,6 +516,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wb_clm_base_mot_ext') }} t0
@@ -528,6 +538,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wb_clm_base_mot_ext') }} t0
@@ -548,6 +559,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wb_clm_base_mot_ext') }} t0
@@ -569,6 +581,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wb_clm_base_mot_ext') }} t0
@@ -590,6 +603,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wb_clm_base_mot_ext') }} t0
@@ -610,6 +624,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wb_clm_base_mot_ext') }} t0
@@ -631,6 +646,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wb_clm_base_mot_ext') }} t0
@@ -652,6 +668,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wb_clm_base_mot_ext') }} t0
@@ -672,6 +689,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wb_clm_base_mot_ext') }} t0
@@ -750,6 +768,7 @@ with merged as (
         t0.landmark as LOSS_LOCATION_ADDRESS__LANDMARK,
         t0.pincode as LOSS_LOCATION_ADDRESS__POSTAL_CODE,
         t0.state as LOSS_LOCATION_ADDRESS__STATE_CODE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wb_clm_base_mot_ext') }} t0
@@ -780,6 +799,7 @@ with merged as (
         t0.tp_policy_ref as AUG_CLAIM_THIRD_PARTY_LINE__THIRD_PARTY_INSURER_POLICY_NUMBER,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wb_clm_ip_mot_ext') }} t0
@@ -831,6 +851,7 @@ with merged as (
         null,
         t0.pin_code as LOSS_LOCATION_ADDRESS__POSTAL_CODE,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_ws_motclm_details') }} t0
@@ -858,6 +879,7 @@ with merged as (
         t0.insured_liablity_amt as CLAIM_ASSESSMENT_SUMMARY__TOTAL_DEDUCTION_AMOUNT,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_ws_motclm_survey_dtls') }} t0
@@ -1028,5 +1050,19 @@ select
     first_value(LOSS_LOCATION_ADDRESS__CITY) ignore nulls over (partition by LOSS_EVENT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as LOSS_LOCATION_ADDRESS__CITY,
     first_value(LOSS_LOCATION_ADDRESS__LANDMARK) ignore nulls over (partition by LOSS_EVENT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as LOSS_LOCATION_ADDRESS__LANDMARK,
     first_value(LOSS_LOCATION_ADDRESS__POSTAL_CODE) ignore nulls over (partition by LOSS_EVENT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as LOSS_LOCATION_ADDRESS__POSTAL_CODE,
-    first_value(LOSS_LOCATION_ADDRESS__STATE_CODE) ignore nulls over (partition by LOSS_EVENT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as LOSS_LOCATION_ADDRESS__STATE_CODE
-from merged
+    first_value(LOSS_LOCATION_ADDRESS__STATE_CODE) ignore nulls over (partition by LOSS_EVENT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as LOSS_LOCATION_ADDRESS__STATE_CODE,
+    -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
+    m.INC_JOB_UPDATED_AT,
+    -- SAT_AUG_CLAIM_COMPARABLE_CLAIM (ma_sat): one load time per CLAIM_BK, so all its child rows share it
+    max(case when coalesce(m.AUG_CLAIM_COMPARABLE_CLAIM__COMPARABLE_CLAIM_REFERENCE, m.AUG_CLAIM_COMPARABLE_CLAIM__COMPARISON_SOURCE) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.CLAIM_BK) as AUG_CLAIM_COMPARABLE_CLAIM__LOAD_DATETIME,
+    -- SAT_AUG_CLAIM_DOC_CHECKLIST (ma_sat): one load time per CLAIM_BK, so all its child rows share it
+    max(case when coalesce(m.AUG_CLAIM_DOC_CHECKLIST__DOCUMENT_NUMBER, m.AUG_CLAIM_DOC_CHECKLIST__DOCUMENT_SUBMITTED_INDICATOR, m.AUG_CLAIM_DOC_CHECKLIST__DOCUMENT_TYPE) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.CLAIM_BK) as AUG_CLAIM_DOC_CHECKLIST__LOAD_DATETIME,
+    -- SAT_AUG_CLAIM_THIRD_PARTY_LINE (ma_sat): one load time per CLAIM_BK, so all its child rows share it
+    max(case when coalesce(m.AUG_CLAIM_THIRD_PARTY_LINE__DAMAGED_OBJECT, m.AUG_CLAIM_THIRD_PARTY_LINE__DAMAGED_OBJECT_DESCRIPTION, m.AUG_CLAIM_THIRD_PARTY_LINE__DAMAGE_DESCRIPTION, m.AUG_CLAIM_THIRD_PARTY_LINE__DAMAGE_KIND, m.AUG_CLAIM_THIRD_PARTY_LINE__DISABILITY_TYPE, m.AUG_CLAIM_THIRD_PARTY_LINE__INJURED_PARTY_SEQUENCE, m.AUG_CLAIM_THIRD_PARTY_LINE__INJURY_DETAILS, m.AUG_CLAIM_THIRD_PARTY_LINE__INJURY_TYPE, m.AUG_CLAIM_THIRD_PARTY_LINE__PERIOD_OF_DISABLEMENT, m.AUG_CLAIM_THIRD_PARTY_LINE__THIRD_PARTY_DRIVER_LICENCE_EXPIRY_DATE, m.AUG_CLAIM_THIRD_PARTY_LINE__THIRD_PARTY_DRIVER_LICENCE_NUMBER, m.AUG_CLAIM_THIRD_PARTY_LINE__THIRD_PARTY_INSURER_BRANCH, m.AUG_CLAIM_THIRD_PARTY_LINE__THIRD_PARTY_INSURER_CONTACT_NUMBER, m.AUG_CLAIM_THIRD_PARTY_LINE__THIRD_PARTY_INSURER_NAME, m.AUG_CLAIM_THIRD_PARTY_LINE__THIRD_PARTY_INSURER_POLICY_NUMBER, m.AUG_CLAIM_THIRD_PARTY_LINE__VICTIM_ADDRESS_TEXT, m.AUG_CLAIM_THIRD_PARTY_LINE__VICTIM_AGE, m.AUG_CLAIM_THIRD_PARTY_LINE__VICTIM_DECLARED_INCOME, m.AUG_CLAIM_THIRD_PARTY_LINE__VICTIM_GENDER_CODE, m.AUG_CLAIM_THIRD_PARTY_LINE__VICTIM_NAME, m.AUG_CLAIM_THIRD_PARTY_LINE__VICTIM_OCCUPATION, m.AUG_CLAIM_THIRD_PARTY_LINE__WORK_CEASED_DATE, m.AUG_CLAIM_THIRD_PARTY_LINE__WORK_RESUMED_DATE) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.CLAIM_BK) as AUG_CLAIM_THIRD_PARTY_LINE__LOAD_DATETIME
+from merged m

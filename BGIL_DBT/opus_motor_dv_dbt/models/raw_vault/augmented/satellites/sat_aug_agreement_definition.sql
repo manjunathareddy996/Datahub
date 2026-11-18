@@ -1,5 +1,5 @@
 -- AUGMENTED track (not mapper-ratified) sat() for SAT_AUG_AGREEMENT_DEFINITION (parent HUB_AGREEMENT, history SCD2), fed whole from central view stitch_motor__v12_policy.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__agreement_definition'

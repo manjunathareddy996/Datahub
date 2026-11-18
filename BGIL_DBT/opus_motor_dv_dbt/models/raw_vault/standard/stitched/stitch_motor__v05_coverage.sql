@@ -81,6 +81,7 @@ with merged as (
         cast(null as varchar) as PRODUCT_DEFINITION__PRODUCT_NAME,
         cast(null as varchar) as PRODUCT_DEFINITION__PRODUCT_STATUS,
         cast(null as varchar) as PRODUCT_DEFINITION__UIN,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_covers') }} t0
@@ -97,6 +98,7 @@ with merged as (
         t0.tyre2 as AUG_COVERAGE_MOTOR_ADDON_PARAMS__TYRE_DESCRIPTION,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_covers') }} t0
@@ -113,6 +115,7 @@ with merged as (
         t0.tyre3 as AUG_COVERAGE_MOTOR_ADDON_PARAMS__TYRE_DESCRIPTION,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_covers') }} t0
@@ -129,6 +132,7 @@ with merged as (
         t0.tyre4 as AUG_COVERAGE_MOTOR_ADDON_PARAMS__TYRE_DESCRIPTION,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_covers') }} t0
@@ -145,6 +149,7 @@ with merged as (
         t0.tyre5 as AUG_COVERAGE_MOTOR_ADDON_PARAMS__TYRE_DESCRIPTION,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_covers') }} t0
@@ -160,6 +165,7 @@ with merged as (
         t0.pa_no_of_persons as COVERAGE_MOTOR_PA_OCCUPANT__NUMBER_OF_PERSONS_COVERED,
         t0.pa_no_drv_cl as COVERAGE_MOTOR_PA_OCCUPANT__PAID_DRIVER_COUNT,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_covers') }} t0
@@ -177,6 +183,7 @@ with merged as (
         t0.tyre1 as AUG_COVERAGE_MOTOR_ADDON_PARAMS__TYRE_DETAIL,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_cover_extn') }} t0
@@ -194,6 +201,7 @@ with merged as (
         t0.tyre2 as AUG_COVERAGE_MOTOR_ADDON_PARAMS__TYRE_DETAIL,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_cover_extn') }} t0
@@ -211,6 +219,7 @@ with merged as (
         t0.tyre3 as AUG_COVERAGE_MOTOR_ADDON_PARAMS__TYRE_DETAIL,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_cover_extn') }} t0
@@ -228,6 +237,7 @@ with merged as (
         t0.tyre4 as AUG_COVERAGE_MOTOR_ADDON_PARAMS__TYRE_DETAIL,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_cover_extn') }} t0
@@ -245,6 +255,7 @@ with merged as (
         t0.tyre5 as AUG_COVERAGE_MOTOR_ADDON_PARAMS__TYRE_DETAIL,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_cover_extn') }} t0
@@ -267,6 +278,7 @@ with merged as (
         t0.pa_no_of_persons as COVERAGE_MOTOR_PA_OCCUPANT__NUMBER_OF_PERSONS_COVERED,
         t0.pa_no_drv_cl as COVERAGE_MOTOR_PA_OCCUPANT__PAID_DRIVER_COUNT,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_cover_extn') }} t0
@@ -284,6 +296,7 @@ with merged as (
         t0.cover_rate as AUG_POLICY_COVERAGE_SCHEDULE__COVERAGE_RATE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_cover_extn') }} t0
@@ -301,6 +314,7 @@ with merged as (
         null, null,
         t0.cover_no as POLICY_COVERAGE_SCHEDULE__COVERAGE_SEQUENCE,
         null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_cover_extn') }} t0
@@ -318,6 +332,7 @@ with merged as (
         t0.ref_id as AUG_POLICY_COVERAGE_SCHEDULE__SOURCE_LINE_REFERENCE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_named_driver_extn') }} t0
@@ -339,6 +354,7 @@ with merged as (
         null, null,
         t0.particulars as AUG_RISK_MOTOR_DRIVER__DRIVER_LINE_PARTICULARS,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_named_driver_extn') }} t0
@@ -356,6 +372,7 @@ with merged as (
         null, null,
         t0.cover_no as POLICY_COVERAGE_SCHEDULE__COVERAGE_SEQUENCE,
         null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_named_driver_extn') }} t0
@@ -372,6 +389,7 @@ with merged as (
         'OWNER_DRIVER' as AUG_RISK_MOTOR_DRIVER__DRIVER_ROLE_CK,
         t0.age_recived_license as AUG_RISK_MOTOR_DRIVER__AGE_AT_LICENCE_ISSUE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -389,6 +407,7 @@ with merged as (
         null, null, null, null,
         t0.pa_cover_val as POLICY_COVERAGE_SCHEDULE__SUM_INSURED,
         null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -406,6 +425,7 @@ with merged as (
         null,
         t0.package_a_yn as POLICY_COVERAGE_SCHEDULE__COVERAGE_OPTED_INDICATOR,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -423,6 +443,7 @@ with merged as (
         null,
         t0.package_b_yn as POLICY_COVERAGE_SCHEDULE__COVERAGE_OPTED_INDICATOR,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -440,6 +461,7 @@ with merged as (
         null,
         t0.package_c_yn as POLICY_COVERAGE_SCHEDULE__COVERAGE_OPTED_INDICATOR,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -457,6 +479,7 @@ with merged as (
         null, null, null,
         t0.gross_premium_a as POLICY_COVERAGE_SCHEDULE__PREMIUM_FOR_COVERAGE,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -474,6 +497,7 @@ with merged as (
         null, null, null,
         t0.gross_premium_b as POLICY_COVERAGE_SCHEDULE__PREMIUM_FOR_COVERAGE,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -491,6 +515,7 @@ with merged as (
         null, null, null,
         t0.gross_premium_c as POLICY_COVERAGE_SCHEDULE__PREMIUM_FOR_COVERAGE,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -509,6 +534,7 @@ with merged as (
         null, null,
         t0.plan_desc as PRODUCT_DEFINITION__PRODUCT_DESCRIPTION,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -524,6 +550,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.waiting_period as POLICY_TERMS__WAITING_PERIOD,
         null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_payc_dtls') }} t0
@@ -541,6 +568,7 @@ with merged as (
         t0.prod_name as PRODUCT_DEFINITION__PRODUCT_NAME,
         t0.status as PRODUCT_DEFINITION__PRODUCT_STATUS,
         t0.prod_uin as PRODUCT_DEFINITION__UIN,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_prod_uin_mapping') }} t0
@@ -556,6 +584,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.deductible as POLICY_TERMS__DEDUCTIBLE_TOTAL,
         null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_renewal_hist') }} t0
@@ -571,6 +600,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.special_conditions as POLICY_TERMS__SPECIAL_CONDITIONS,
         null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_war_child_dtls') }} t0
@@ -597,6 +627,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.plan_desc as PRODUCT_DEFINITION__PRODUCT_DESCRIPTION,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_war_plans_extn') }} t0
@@ -613,6 +644,7 @@ with merged as (
         'OWNER_DRIVER' as AUG_RISK_MOTOR_DRIVER__DRIVER_ROLE_CK,
         t0.age_recived_license as AUG_RISK_MOTOR_DRIVER__AGE_AT_LICENCE_ISSUE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -630,6 +662,7 @@ with merged as (
         null,
         t0.package_a_yn as POLICY_COVERAGE_SCHEDULE__COVERAGE_OPTED_INDICATOR,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -647,6 +680,7 @@ with merged as (
         null,
         t0.package_b_yn as POLICY_COVERAGE_SCHEDULE__COVERAGE_OPTED_INDICATOR,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -664,6 +698,7 @@ with merged as (
         null,
         t0.package_c_yn as POLICY_COVERAGE_SCHEDULE__COVERAGE_OPTED_INDICATOR,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -682,6 +717,7 @@ with merged as (
         null, null,
         t0.plan_desc as PRODUCT_DEFINITION__PRODUCT_DESCRIPTION,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -739,5 +775,23 @@ select
     first_value(PRODUCT_DEFINITION__PRODUCT_DESCRIPTION) ignore nulls over (partition by PRODUCT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as PRODUCT_DEFINITION__PRODUCT_DESCRIPTION,
     first_value(PRODUCT_DEFINITION__PRODUCT_NAME) ignore nulls over (partition by PRODUCT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as PRODUCT_DEFINITION__PRODUCT_NAME,
     first_value(PRODUCT_DEFINITION__PRODUCT_STATUS) ignore nulls over (partition by PRODUCT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as PRODUCT_DEFINITION__PRODUCT_STATUS,
-    first_value(PRODUCT_DEFINITION__UIN) ignore nulls over (partition by PRODUCT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as PRODUCT_DEFINITION__UIN
-from merged
+    first_value(PRODUCT_DEFINITION__UIN) ignore nulls over (partition by PRODUCT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as PRODUCT_DEFINITION__UIN,
+    -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
+    m.INC_JOB_UPDATED_AT,
+    -- SAT_AUG_COVERAGE_MOTOR_ADDON_PARAMS (ma_sat): one load time per COVERAGE_BK, so all its child rows share it
+    max(case when coalesce(m.AUG_COVERAGE_MOTOR_ADDON_PARAMS__TYRE_DESCRIPTION, m.AUG_COVERAGE_MOTOR_ADDON_PARAMS__TYRE_DETAIL) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.COVERAGE_BK) as AUG_COVERAGE_MOTOR_ADDON_PARAMS__LOAD_DATETIME,
+    -- SAT_AUG_POLICY_COVERAGE_SCHEDULE (ma_sat): one load time per POLICY_BK, so all its child rows share it
+    max(case when coalesce(m.AUG_POLICY_COVERAGE_SCHEDULE__COVERAGE_RATE, m.AUG_POLICY_COVERAGE_SCHEDULE__SOURCE_LINE_REFERENCE) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.POLICY_BK) as AUG_POLICY_COVERAGE_SCHEDULE__LOAD_DATETIME,
+    -- SAT_AUG_RISK_MOTOR_DRIVER (ma_sat): one load time per RISK_OBJECT_BK, so all its child rows share it
+    max(case when coalesce(m.AUG_RISK_MOTOR_DRIVER__AGE_AT_LICENCE_ISSUE, m.AUG_RISK_MOTOR_DRIVER__DRIVER_LINE_PARTICULARS) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.RISK_OBJECT_BK) as AUG_RISK_MOTOR_DRIVER__LOAD_DATETIME,
+    -- SAT_POLICY_COVERAGE_SCHEDULE (ma_sat): one load time per POLICY_BK, so all its child rows share it
+    max(case when coalesce(m.POLICY_COVERAGE_SCHEDULE__COVERAGE_OPTED_INDICATOR, m.POLICY_COVERAGE_SCHEDULE__COVERAGE_SEQUENCE, m.POLICY_COVERAGE_SCHEDULE__PREMIUM_FOR_COVERAGE, m.POLICY_COVERAGE_SCHEDULE__SUM_INSURED) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.POLICY_BK) as POLICY_COVERAGE_SCHEDULE__LOAD_DATETIME
+from merged m

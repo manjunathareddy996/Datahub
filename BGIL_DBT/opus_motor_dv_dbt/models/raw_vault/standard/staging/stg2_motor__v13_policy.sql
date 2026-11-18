@@ -12,7 +12,7 @@ derived_columns:
   CASE_NK: "'HUB_CASE|' || CASE_BK"
   POLICY_BK: 'POLICY_BK'
   POLICY_NK: "'HUB_POLICY|' || POLICY_BK"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!stitch_motor__v13_policy'
 {%- endset -%}
 

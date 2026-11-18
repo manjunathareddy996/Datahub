@@ -13,7 +13,7 @@ hashed_columns:
 derived_columns:
   CASE_NK: "case when CASE_SERVICE_REQUEST__SERVICE_REQUEST_TYPE is not null then 'HUB_CASE|' || CASE_BK end"
   SERVICE_REQUEST_TYPE: 'CASE_SERVICE_REQUEST__SERVICE_REQUEST_TYPE'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!stitch_motor__v09_party'
 {%- endset -%}
 

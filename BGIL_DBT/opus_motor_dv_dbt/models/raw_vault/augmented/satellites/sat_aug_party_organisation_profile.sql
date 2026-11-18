@@ -1,5 +1,5 @@
 -- AUGMENTED track (not mapper-ratified) sat() for SAT_AUG_PARTY_ORGANISATION_PROFILE (parent HUB_PARTY, history SCD2), fed whole from central view stitch_motor__v09_party.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__party_organisation_profile'

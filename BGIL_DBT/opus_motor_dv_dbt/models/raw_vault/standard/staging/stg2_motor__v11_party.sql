@@ -73,7 +73,7 @@ derived_columns:
   QUOTE_RISK_OBJECT_NK: "case when __LNK_QUOTE_RISK_OBJECT = 1 then 'LNK_QUOTE_RISK_OBJECT|' || QUOTE_BK || '|' || RISK_OBJECT_BK end"
   RISK_OBJECT_LOCATION_NK: "case when __LNK_RISK_OBJECT_LOCATION = 1 then 'LNK_RISK_OBJECT_LOCATION|' || LOCATION_BK || '|' || RISK_OBJECT_BK end"
   PARTY_ROLE_NK: "case when ROLE_TYPE_CODE is not null then 'LNK_PARTY_ROLE|' || PARTY_BK || '|' || ROLE_TYPE_CODE end"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!stitch_motor__v11_party'
 {%- endset -%}
 

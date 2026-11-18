@@ -13,7 +13,7 @@ hashed_columns:
 derived_columns:
   POLICY_NK: "case when COMMON_STATUS__STATUS_CODE is not null then 'HUB_POLICY|' || POLICY_BK end"
   STATUS_CODE: 'COMMON_STATUS__STATUS_CODE'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!stitch_motor__v14_policy'
 {%- endset -%}
 

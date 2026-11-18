@@ -1,5 +1,5 @@
 -- Standard sat() for SAT_LOSS_LOCATION_ADDRESS (parent HUB_LOSS_EVENT, history SCD2), fed whole from central view stitch_motor__v01_claim.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__loss_location_address'

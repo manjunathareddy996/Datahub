@@ -122,6 +122,7 @@ with merged as (
         cast(null as varchar) as RISK_MOTOR_DRIVER__OWNER_DRIVER_INDICATOR,
         cast(null as varchar) as RISK_OBJECT_OWNERSHIP_HISTORY__OWNER_SEQUENCE_CK,
         cast(null as varchar) as RISK_OBJECT_OWNERSHIP_HISTORY__OWNER_SEQUENCE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_dtls') }} t0
@@ -140,6 +141,7 @@ with merged as (
         t0.mob_no as COMMON_CONTACT__MOBILE_NUMBER,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_agency_mot_war_dtls') }} t0
@@ -158,6 +160,7 @@ with merged as (
         t0.email_id as COMMON_CONTACT__EMAIL_ADDRESS,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_agency_mot_war_dtls') }} t0
@@ -176,6 +179,7 @@ with merged as (
         null, null, null,
         t0.title as PARTY_IDENTITY__SALUTATION,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_agency_mot_war_dtls') }} t0
@@ -194,6 +198,7 @@ with merged as (
         t0.cp_tel as COMMON_CONTACT__LANDLINE_NUMBER,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_motor_intim_details') }} t0
@@ -212,6 +217,7 @@ with merged as (
         t0.cp_mobile as COMMON_CONTACT__MOBILE_NUMBER,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_motor_intim_details') }} t0
@@ -228,6 +234,7 @@ with merged as (
         null,
         t0.cp_name as PARTY_IDENTITY__PARTY_FULL_NAME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_motor_intim_details') }} t0
@@ -244,6 +251,7 @@ with merged as (
         t0.insured_dob as PARTY_IDENTITY__DATE_OF_BIRTH,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_motor_intim_details') }} t0
@@ -260,6 +268,7 @@ with merged as (
         null,
         t0.investigator_name as PARTY_IDENTITY__PARTY_FULL_NAME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_subfile_mot_ext') }} t0
@@ -286,6 +295,7 @@ with merged as (
         t0.proposertype as PARTY_IDENTITY__PARTY_TYPE_CODE,
         t0.salutation as PARTY_IDENTITY__SALUTATION,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_cvtp_ws_data') }} t0
@@ -304,6 +314,7 @@ with merged as (
         t0.email as COMMON_CONTACT__EMAIL_ADDRESS,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_cvtp_ws_data') }} t0
@@ -323,6 +334,7 @@ with merged as (
         null, null, null, null,
         t0.paowndrivernomname as PARTY_IDENTITY__PARTY_FULL_NAME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_cvtp_ws_data') }} t0
@@ -339,6 +351,7 @@ with merged as (
         null,
         t0.pspname as PARTY_IDENTITY__PARTY_FULL_NAME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_cvtp_ws_data_extn') }} t0
@@ -356,6 +369,7 @@ with merged as (
         null, null, null, null, null,
         t0.insurer_name as PARTY_IDENTITY__PARTY_FULL_NAME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_iib_insurer_master') }} t0
@@ -372,6 +386,7 @@ with merged as (
         null,
         t0.txt_insurer as PARTY_IDENTITY__PARTY_FULL_NAME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_iib_sudars_policy_dtl_hst_qm') }} t0
@@ -390,6 +405,7 @@ with merged as (
         t0.adv_contact as COMMON_CONTACT__MOBILE_NUMBER,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -408,6 +424,7 @@ with merged as (
         t0.adv_email as COMMON_CONTACT__EMAIL_ADDRESS,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -426,6 +443,7 @@ with merged as (
         t0.court_email as COMMON_CONTACT__EMAIL_ADDRESS,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -444,6 +462,7 @@ with merged as (
         t0.highest_bidder_contact_no as COMMON_CONTACT__MOBILE_NUMBER,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -462,6 +481,7 @@ with merged as (
         t0.contact_no as COMMON_CONTACT__MOBILE_NUMBER,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -478,6 +498,7 @@ with merged as (
         null,
         t0.adv_name as PARTY_IDENTITY__PARTY_FULL_NAME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -494,6 +515,7 @@ with merged as (
         null,
         t0.bid_court_name as PARTY_IDENTITY__PARTY_FULL_NAME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -513,6 +535,7 @@ with merged as (
         t0.category as PARTY_IDENTITY__PARTY_SUB_TYPE_CODE,
         t0.cust_type as PARTY_IDENTITY__PARTY_TYPE_CODE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -529,6 +552,7 @@ with merged as (
         null,
         t0.original_rc_name as PARTY_IDENTITY__PARTY_FULL_NAME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -545,6 +569,7 @@ with merged as (
         null,
         t0.investigator_name as PARTY_IDENTITY__PARTY_FULL_NAME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -572,6 +597,7 @@ with merged as (
         t0.bagic_mot_pol_yn as PROPOSAL_DECLARATIONS__EXISTING_POLICY_INDICATOR,
         t0.claim_yn as PROPOSAL_DECLARATIONS__PREVIOUS_CLAIM_INDICATOR,
         null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_add_qstn_dtls') }} t0
@@ -597,6 +623,7 @@ with merged as (
         null, null,
         t0.owner_driver_flag as RISK_MOTOR_DRIVER__OWNER_DRIVER_INDICATOR,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         10 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_named_driver_extn') }} t0
@@ -635,6 +662,7 @@ with merged as (
         null, null, null, null, null, null,
         t0.license_type as RISK_MOTOR_DRIVER__LICENCE_TYPE,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         11 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -653,6 +681,7 @@ with merged as (
         t0.email_cust as COMMON_CONTACT__ALTERNATE_EMAIL_ADDRESS,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         11 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -672,6 +701,7 @@ with merged as (
         t0.telephone1 as COMMON_CONTACT__LANDLINE_NUMBER,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         11 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -691,6 +721,7 @@ with merged as (
         t0.telephone2 as COMMON_CONTACT__LANDLINE_NUMBER,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         11 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -710,6 +741,7 @@ with merged as (
         t0.mobile1 as COMMON_CONTACT__MOBILE_NUMBER,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         11 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -729,6 +761,7 @@ with merged as (
         t0.mobile2 as COMMON_CONTACT__ALTERNATE_MOBILE_NUMBER,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         11 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -747,6 +780,7 @@ with merged as (
         t0.email as COMMON_CONTACT__EMAIL_ADDRESS,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         11 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -765,6 +799,7 @@ with merged as (
         t0.preferedtime as COMMON_CONTACT__PREFERRED_CONTACT_TIME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         11 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -783,6 +818,7 @@ with merged as (
         t0.rvmp_lname as PARTY_IDENTITY__LAST_NAME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         11 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -803,6 +839,7 @@ with merged as (
         null, null, null, null, null, null,
         t0.nom_full_name as PARTY_IDENTITY__PARTY_FULL_NAME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         12 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls_extn') }} t0
@@ -821,6 +858,7 @@ with merged as (
         t0.whatsapp_optin_flag as COMMON_CONTACT__WHATSAPP_OPT_IN_INDICATOR,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         12 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls_extn') }} t0
@@ -838,6 +876,7 @@ with merged as (
         null, null, null, null, null, null,
         t0.ass_full_name as PARTY_IDENTITY__PARTY_FULL_NAME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         12 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls_extn') }} t0
@@ -855,6 +894,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.your_profession as PARTY_INDIVIDUAL_DEMOGRAPHICS__OCCUPATION_DESCRIPTION,
         null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         12 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls_extn') }} t0
@@ -872,6 +912,7 @@ with merged as (
         null, null, null,
         t0.od_nom_full_name as PARTY_IDENTITY__PARTY_FULL_NAME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         12 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls_extn') }} t0
@@ -890,6 +931,7 @@ with merged as (
         t0.cust_telephone as COMMON_CONTACT__LANDLINE_NUMBER,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         13 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_renewal_extn') }} t0
@@ -908,6 +950,7 @@ with merged as (
         t0.clm_mobile_no as COMMON_CONTACT__MOBILE_NUMBER,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         13 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_renewal_extn') }} t0
@@ -926,6 +969,7 @@ with merged as (
         null, null, null, null,
         t0.before_title as PARTY_IDENTITY__TITLE_CODE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         13 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_renewal_extn') }} t0
@@ -942,6 +986,7 @@ with merged as (
         null,
         t0.pa_nominee_name as PARTY_IDENTITY__PARTY_FULL_NAME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         13 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_renewal_extn') }} t0
@@ -980,6 +1025,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.user_name as PARTY_IDENTITY__PARTY_DISPLAY_NAME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         14 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_uw_budget_mst') }} t0
@@ -998,6 +1044,7 @@ with merged as (
         t0.mobile_no as COMMON_CONTACT__MOBILE_NUMBER,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         15 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_war_child_dtls') }} t0
@@ -1016,6 +1063,7 @@ with merged as (
         t0.tel_no as COMMON_CONTACT__LANDLINE_NUMBER,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         15 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_war_child_dtls') }} t0
@@ -1034,6 +1082,7 @@ with merged as (
         t0.email_id as COMMON_CONTACT__EMAIL_ADDRESS,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         15 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_war_child_dtls') }} t0
@@ -1053,6 +1102,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.ownership_no as RISK_OBJECT_OWNERSHIP_HISTORY__OWNER_SEQUENCE_CK,
         t0.ownership_no as RISK_OBJECT_OWNERSHIP_HISTORY__OWNER_SEQUENCE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         15 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_war_child_dtls') }} t0
@@ -1069,6 +1119,7 @@ with merged as (
         null,
         t0.sales_person_name as PARTY_IDENTITY__PARTY_FULL_NAME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         15 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_war_child_dtls') }} t0
@@ -1087,6 +1138,7 @@ with merged as (
         t0.contact_no as COMMON_CONTACT__MOBILE_NUMBER,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         16 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_winback_dtls') }} t0
@@ -1105,6 +1157,7 @@ with merged as (
         t0.email_id as COMMON_CONTACT__EMAIL_ADDRESS,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         16 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_winback_dtls') }} t0
@@ -1124,6 +1177,7 @@ with merged as (
         null, null, null, null,
         t0.institution_name as PARTY_IDENTITY__PARTY_LEGAL_NAME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         16 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_winback_dtls') }} t0
@@ -1142,6 +1196,7 @@ with merged as (
         t0.email_cust as COMMON_CONTACT__ALTERNATE_EMAIL_ADDRESS,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         17 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -1161,6 +1216,7 @@ with merged as (
         t0.telephone1 as COMMON_CONTACT__LANDLINE_NUMBER,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         17 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -1180,6 +1236,7 @@ with merged as (
         t0.mobile1 as COMMON_CONTACT__MOBILE_NUMBER,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         17 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -1199,6 +1256,7 @@ with merged as (
         t0.mobile2 as COMMON_CONTACT__ALTERNATE_MOBILE_NUMBER,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         17 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -1217,6 +1275,7 @@ with merged as (
         t0.email as COMMON_CONTACT__EMAIL_ADDRESS,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         17 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -1235,6 +1294,7 @@ with merged as (
         t0.family_doc_tel as COMMON_CONTACT__LANDLINE_NUMBER,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         17 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -1253,6 +1313,7 @@ with merged as (
         t0.preferedtime as COMMON_CONTACT__PREFERRED_CONTACT_TIME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         17 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -1272,6 +1333,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.license_type as RISK_MOTOR_DRIVER__LICENCE_TYPE,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         17 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -1288,6 +1350,7 @@ with merged as (
         null,
         t0.student_name as PARTY_IDENTITY__PARTY_FULL_NAME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         17 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -1321,6 +1384,7 @@ with merged as (
         t0.no_of_children as PARTY_INDIVIDUAL_DEMOGRAPHICS__NUMBER_OF_CHILDREN,
         t0.occupation as PARTY_INDIVIDUAL_DEMOGRAPHICS__OCCUPATION_DESCRIPTION,
         null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         17 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -1337,6 +1401,7 @@ with merged as (
         null,
         t0.family_doc as PARTY_IDENTITY__PARTY_FULL_NAME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         17 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -1353,6 +1418,7 @@ with merged as (
         null,
         t0.user_name as PARTY_IDENTITY__PARTY_FULL_NAME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         18 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_rta_state_master') }} t0
@@ -1372,6 +1438,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.owner_srno as RISK_OBJECT_OWNERSHIP_HISTORY__OWNER_SEQUENCE_CK,
         t0.owner_srno as RISK_OBJECT_OWNERSHIP_HISTORY__OWNER_SEQUENCE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         19 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_scr_mot_veh_dtls') }} t0
@@ -1392,6 +1459,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.customer_name as PARTY_IDENTITY__PARTY_FULL_NAME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         20 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wap_motor_iw_assist') }} t0
@@ -1410,6 +1478,7 @@ with merged as (
         t0.mobile_no as COMMON_CONTACT__MOBILE_NUMBER,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         20 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wap_motor_iw_assist') }} t0
@@ -1438,6 +1507,7 @@ with merged as (
         t0.bagic_mot_pol_yn as PROPOSAL_DECLARATIONS__EXISTING_POLICY_INDICATOR,
         t0.claim_yn as PROPOSAL_DECLARATIONS__PREVIOUS_CLAIM_INDICATOR,
         null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         21 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wap_mot_add_qstn_dtls') }} t0
@@ -1456,6 +1526,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.advisor_name as PARTY_IDENTITY__PARTY_FULL_NAME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         22 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_ws_motclm_details') }} t0
@@ -1474,6 +1545,7 @@ with merged as (
         t0.advisor_contact as COMMON_CONTACT__MOBILE_NUMBER,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         22 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_ws_motclm_details') }} t0
@@ -1492,6 +1564,7 @@ with merged as (
         t0.dealer_mailid as COMMON_CONTACT__EMAIL_ADDRESS,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         22 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_ws_motclm_details') }} t0
@@ -1575,5 +1648,27 @@ select
     first_value(RISK_MOTOR_DRIVER__LICENCE_TYPE) ignore nulls over (partition by RISK_OBJECT_BK, RISK_MOTOR_DRIVER__DRIVER_LICENCE_NUMBER_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_MOTOR_DRIVER__LICENCE_TYPE,
     first_value(RISK_MOTOR_DRIVER__OWNER_DRIVER_INDICATOR) ignore nulls over (partition by RISK_OBJECT_BK, RISK_MOTOR_DRIVER__DRIVER_LICENCE_NUMBER_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_MOTOR_DRIVER__OWNER_DRIVER_INDICATOR,
     RISK_OBJECT_OWNERSHIP_HISTORY__OWNER_SEQUENCE_CK,
-    first_value(RISK_OBJECT_OWNERSHIP_HISTORY__OWNER_SEQUENCE) ignore nulls over (partition by RISK_OBJECT_BK, RISK_OBJECT_OWNERSHIP_HISTORY__OWNER_SEQUENCE_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_OBJECT_OWNERSHIP_HISTORY__OWNER_SEQUENCE
-from merged
+    first_value(RISK_OBJECT_OWNERSHIP_HISTORY__OWNER_SEQUENCE) ignore nulls over (partition by RISK_OBJECT_BK, RISK_OBJECT_OWNERSHIP_HISTORY__OWNER_SEQUENCE_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_OBJECT_OWNERSHIP_HISTORY__OWNER_SEQUENCE,
+    -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
+    m.INC_JOB_UPDATED_AT,
+    -- SAT_AUG_CHANNEL_SALES_TARGET (ma_sat): one load time per DISTRIBUTION_CHANNEL_BK, so all its child rows share it
+    max(case when coalesce(m.AUG_CHANNEL_SALES_TARGET__BORROWED_AMOUNT_BRANCH_OFFICE, m.AUG_CHANNEL_SALES_TARGET__BORROWED_AMOUNT_ZONAL_HEAD, m.AUG_CHANNEL_SALES_TARGET__BUDGETED_OWN_DAMAGE_PREMIUM, m.AUG_CHANNEL_SALES_TARGET__BUDGET_AMOUNT_BRANCH_OFFICE, m.AUG_CHANNEL_SALES_TARGET__BUDGET_AMOUNT_ZONAL_HEAD, m.AUG_CHANNEL_SALES_TARGET__BUDGET_REFERENCE, m.AUG_CHANNEL_SALES_TARGET__CARRIED_FORWARD_AMOUNT_BRANCH_OFFICE, m.AUG_CHANNEL_SALES_TARGET__CARRIED_FORWARD_AMOUNT_ZONAL_HEAD, m.AUG_CHANNEL_SALES_TARGET__PORTFOLIO_GROUP_CODE, m.AUG_CHANNEL_SALES_TARGET__RENEWAL_TYPE, m.AUG_CHANNEL_SALES_TARGET__TARGET_YEAR, m.AUG_CHANNEL_SALES_TARGET__UTILISED_AMOUNT_BRANCH_OFFICE, m.AUG_CHANNEL_SALES_TARGET__UTILISED_AMOUNT_ZONAL_HEAD) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.DISTRIBUTION_CHANNEL_BK) as AUG_CHANNEL_SALES_TARGET__LOAD_DATETIME,
+    -- SAT_CHANNEL_SALES_TARGET (ma_sat): one load time per DISTRIBUTION_CHANNEL_BK, so all its child rows share it
+    max(case when coalesce(m.CHANNEL_SALES_TARGET__BUDGET_AMOUNT, m.CHANNEL_SALES_TARGET__BUDGET_PERCENTAGE, m.CHANNEL_SALES_TARGET__TARGET_PERIOD, m.CHANNEL_SALES_TARGET__TARGET_TYPE) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.DISTRIBUTION_CHANNEL_BK) as CHANNEL_SALES_TARGET__LOAD_DATETIME,
+    -- SAT_COMMON_CONTACT (ma_sat): one load time per PARTY_BK, so all its child rows share it
+    max(case when coalesce(m.COMMON_CONTACT__ALTERNATE_EMAIL_ADDRESS, m.COMMON_CONTACT__ALTERNATE_MOBILE_NUMBER, m.COMMON_CONTACT__EMAIL_ADDRESS, m.COMMON_CONTACT__LANDLINE_NUMBER, m.COMMON_CONTACT__MOBILE_NUMBER, m.COMMON_CONTACT__PREFERRED_CONTACT_TIME, m.COMMON_CONTACT__WHATSAPP_OPT_IN_INDICATOR) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.PARTY_BK) as COMMON_CONTACT__LOAD_DATETIME,
+    -- SAT_RISK_MOTOR_DRIVER (ma_sat): one load time per RISK_OBJECT_BK, so all its child rows share it
+    max(case when coalesce(m.RISK_MOTOR_DRIVER__DRIVER_NAME, m.RISK_MOTOR_DRIVER__DRIVER_RELATIONSHIP, m.RISK_MOTOR_DRIVER__DRIVING_LICENCE_NUMBER, m.RISK_MOTOR_DRIVER__LICENCE_TYPE, m.RISK_MOTOR_DRIVER__OWNER_DRIVER_INDICATOR) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.RISK_OBJECT_BK) as RISK_MOTOR_DRIVER__LOAD_DATETIME,
+    -- SAT_RISK_OBJECT_OWNERSHIP_HISTORY (ma_sat): one load time per RISK_OBJECT_BK, so all its child rows share it
+    max(case when m.RISK_OBJECT_OWNERSHIP_HISTORY__OWNER_SEQUENCE is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.RISK_OBJECT_BK) as RISK_OBJECT_OWNERSHIP_HISTORY__LOAD_DATETIME
+from merged m

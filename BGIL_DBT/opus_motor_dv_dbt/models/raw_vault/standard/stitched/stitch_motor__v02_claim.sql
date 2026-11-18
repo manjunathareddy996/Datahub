@@ -154,6 +154,7 @@ with merged as (
         cast(null as varchar) as DOCUMENT_DEFINITION__DOCUMENT_TYPE,
         cast(null as varchar) as DOCUMENT_DEFINITION__RECEIVED_DATE,
         cast(null as varchar) as DOCUMENT_DEFINITION__SOURCE_CHANNEL,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_base_mot_ext') }} t0
@@ -174,6 +175,7 @@ with merged as (
         t0.doc_no_identy_proof as CLAIM_EVIDENCE__MEDIA_REFERENCE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_base_mot_ext') }} t0
@@ -194,6 +196,7 @@ with merged as (
         t0.doc_no_address_proof as CLAIM_EVIDENCE__MEDIA_REFERENCE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_base_mot_ext') }} t0
@@ -214,6 +217,7 @@ with merged as (
         t0.doc_no_income_proof as CLAIM_EVIDENCE__MEDIA_REFERENCE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_base_mot_ext') }} t0
@@ -231,6 +235,7 @@ with merged as (
         null, null, null, null, null, null, null, null,
         t0.claim_type as CLAIM_HEADER__CLAIM_TYPE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_motor_intim_details') }} t0
@@ -257,6 +262,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null,
         t0.fir_no as CLAIM_TP_FORENSIC__FIR_NUMBER,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_subfile_mot_ext') }} t0
@@ -275,6 +281,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -293,6 +300,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -311,6 +319,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -329,6 +338,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -347,6 +357,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -365,6 +376,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -383,6 +395,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -401,6 +414,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -419,6 +433,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -437,6 +452,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -455,6 +471,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -473,6 +490,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -491,6 +509,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -509,6 +528,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -527,6 +547,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -545,6 +566,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -563,6 +585,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -581,6 +604,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -599,6 +623,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -617,6 +642,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -635,6 +661,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -653,6 +680,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -672,6 +700,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -691,6 +720,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -710,6 +740,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -729,6 +760,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -748,6 +780,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -767,6 +800,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -805,6 +839,7 @@ with merged as (
         t0.scrap_detail as CLAIM_RECOVERY_SALVAGE__SALVAGE_DISPOSAL_METHOD,
         t0.bid_amount as CLAIM_RECOVERY_SALVAGE__SALVAGE_REALISED_AMOUNT,
         null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -822,6 +857,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -839,6 +875,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -857,6 +894,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -875,6 +913,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -893,6 +932,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -912,6 +952,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -931,6 +972,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -950,6 +992,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -969,6 +1012,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -988,6 +1032,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -1007,6 +1052,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -1025,6 +1071,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -1043,6 +1090,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -1060,6 +1108,7 @@ with merged as (
         t0.loa_email_date as CASE_WORKFLOW_TASK__ASSIGNED_DATE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -1078,6 +1127,7 @@ with merged as (
         t0.loa_receive_date as CASE_WORKFLOW_TASK__COMPLETED_DATE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -1095,6 +1145,7 @@ with merged as (
         t0.i_track_raise_date as CASE_WORKFLOW_TASK__ASSIGNED_DATE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -1113,6 +1164,7 @@ with merged as (
         t0.i_track_receive_date as CASE_WORKFLOW_TASK__COMPLETED_DATE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -1131,6 +1183,7 @@ with merged as (
         t0.app_category1 as CASE_WORKFLOW_TASK__TASK_TYPE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -1149,6 +1202,7 @@ with merged as (
         t0.app_category2 as CASE_WORKFLOW_TASK__TASK_TYPE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -1167,6 +1221,7 @@ with merged as (
         t0.app_category3 as CASE_WORKFLOW_TASK__TASK_TYPE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -1185,6 +1240,7 @@ with merged as (
         t0.approve_status1 as CASE_WORKFLOW_TASK__TASK_STATUS,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -1203,6 +1259,7 @@ with merged as (
         t0.approve_status2 as CASE_WORKFLOW_TASK__TASK_STATUS,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -1221,6 +1278,7 @@ with merged as (
         t0.approve_status3 as CASE_WORKFLOW_TASK__TASK_STATUS,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -1239,6 +1297,7 @@ with merged as (
         t0.app_status_date1 as CASE_WORKFLOW_TASK__COMPLETED_DATE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -1257,6 +1316,7 @@ with merged as (
         t0.app_status_date2 as CASE_WORKFLOW_TASK__COMPLETED_DATE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -1275,6 +1335,7 @@ with merged as (
         t0.app_status_date3 as CASE_WORKFLOW_TASK__COMPLETED_DATE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -1304,6 +1365,7 @@ with merged as (
         t0.document_type as DOCUMENT_DEFINITION__DOCUMENT_TYPE,
         t0.received_doc_date as DOCUMENT_DEFINITION__RECEIVED_DATE,
         t0.source_flag as DOCUMENT_DEFINITION__SOURCE_CHANNEL,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_invoice_ocr_dtls') }} t0
@@ -1323,6 +1385,7 @@ with merged as (
         t0.updated_on as CLAIM_QUALITY_AUDIT__AUDIT_DATE,
         t0.review_status as CLAIM_QUALITY_AUDIT__AUDIT_OUTCOME,
         null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_clm_cdc_reviewer_dtls') }} t0
@@ -1349,6 +1412,7 @@ with merged as (
         null, null, null, null,
         t0.date_of_loss as CLAIM_HEADER__LOSS_DATE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_paymotortheft_dtls') }} t0
@@ -1391,6 +1455,7 @@ with merged as (
         null, null, null, null, null, null, null,
         t0.amt_paid_by_salvge_buyer as CLAIM_RECOVERY_SALVAGE__SALVAGE_REALISED_AMOUNT,
         null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wb_clm_base_mot_ext') }} t0
@@ -1416,6 +1481,7 @@ with merged as (
         null,
         t0.clm_type as CLAIM_HEADER__CLAIM_TYPE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wb_clm_ip_mot_ext') }} t0
@@ -1439,6 +1505,7 @@ with merged as (
         null,
         t0.claim_type as CLAIM_HEADER__CLAIM_TYPE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_ws_motclm_details') }} t0
@@ -1552,5 +1619,47 @@ select
     first_value(CLAIM_TP_FORENSIC__FIR_NUMBER) ignore nulls over (partition by CLAIM_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as CLAIM_TP_FORENSIC__FIR_NUMBER,
     first_value(DOCUMENT_DEFINITION__DOCUMENT_TYPE) ignore nulls over (partition by DOCUMENT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as DOCUMENT_DEFINITION__DOCUMENT_TYPE,
     first_value(DOCUMENT_DEFINITION__RECEIVED_DATE) ignore nulls over (partition by DOCUMENT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as DOCUMENT_DEFINITION__RECEIVED_DATE,
-    first_value(DOCUMENT_DEFINITION__SOURCE_CHANNEL) ignore nulls over (partition by DOCUMENT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as DOCUMENT_DEFINITION__SOURCE_CHANNEL
-from merged
+    first_value(DOCUMENT_DEFINITION__SOURCE_CHANNEL) ignore nulls over (partition by DOCUMENT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as DOCUMENT_DEFINITION__SOURCE_CHANNEL,
+    -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
+    m.INC_JOB_UPDATED_AT,
+    -- SAT_AUG_CASE_DOCUMENT_CHECKLIST (ma_sat): one load time per CASE_BK, so all its child rows share it
+    max(case when coalesce(m.AUG_CASE_DOCUMENT_CHECKLIST__RECEIVED_INDICATOR, m.AUG_CASE_DOCUMENT_CHECKLIST__REQUIREMENT_REMARKS, m.AUG_CASE_DOCUMENT_CHECKLIST__VERIFICATION_STATUS) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.CASE_BK) as AUG_CASE_DOCUMENT_CHECKLIST__LOAD_DATETIME,
+    -- SAT_AUG_CASE_WORKFLOW_TASK (ma_sat): one load time per CASE_BK, so all its child rows share it
+    max(case when coalesce(m.AUG_CASE_WORKFLOW_TASK__TASK_CORRESPONDENCE_EMAIL_ADDRESS, m.AUG_CASE_WORKFLOW_TASK__TASK_REMARKS) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.CASE_BK) as AUG_CASE_WORKFLOW_TASK__LOAD_DATETIME,
+    -- SAT_AUG_CLAIM_RECOVERY_EXPENSE_LINE (ma_sat): one load time per CLAIM_BK, so all its child rows share it
+    max(case when m.AUG_CLAIM_RECOVERY_EXPENSE_LINE__EXPENSE_AMOUNT is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.CLAIM_BK) as AUG_CLAIM_RECOVERY_EXPENSE_LINE__LOAD_DATETIME,
+    -- SAT_AUG_CLAIM_SALVAGE_BIDDER (ma_sat): one load time per CLAIM_BK, so all its child rows share it
+    max(case when coalesce(m.AUG_CLAIM_SALVAGE_BIDDER__BIDDER_DETAILS_TEXT, m.AUG_CLAIM_SALVAGE_BIDDER__BID_INVITATION_SENT_DATE) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.CLAIM_BK) as AUG_CLAIM_SALVAGE_BIDDER__LOAD_DATETIME,
+    -- SAT_AUG_CLAIM_SUB_FILE (ma_sat): one load time per CLAIM_BK, so all its child rows share it
+    max(case when coalesce(m.AUG_CLAIM_SUB_FILE__SUB_FILE_NUMBER, m.AUG_CLAIM_SUB_FILE__SUB_FILE_REMARKS) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.CLAIM_BK) as AUG_CLAIM_SUB_FILE__LOAD_DATETIME,
+    -- SAT_AUG_CLAIM_SURVEY_APPOINTMENT (ma_sat): one load time per CLAIM_BK, so all its child rows share it
+    max(case when m.AUG_CLAIM_SURVEY_APPOINTMENT__SURVEYOR_STAGE is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.CLAIM_BK) as AUG_CLAIM_SURVEY_APPOINTMENT__LOAD_DATETIME,
+    -- SAT_CASE_EXTERNAL_REF (ma_sat): one load time per CASE_BK, so all its child rows share it
+    max(case when m.CASE_EXTERNAL_REF__EXTERNAL_REFERENCE is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.CASE_BK) as CASE_EXTERNAL_REF__LOAD_DATETIME,
+    -- SAT_CASE_WORKFLOW_TASK (ma_sat): one load time per CASE_BK, so all its child rows share it
+    max(case when coalesce(m.CASE_WORKFLOW_TASK__ASSIGNED_DATE, m.CASE_WORKFLOW_TASK__COMPLETED_DATE, m.CASE_WORKFLOW_TASK__TASK_STATUS, m.CASE_WORKFLOW_TASK__TASK_TYPE) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.CASE_BK) as CASE_WORKFLOW_TASK__LOAD_DATETIME,
+    -- SAT_CLAIM_EVIDENCE (ma_sat): one load time per CLAIM_BK, so all its child rows share it
+    max(case when coalesce(m.CLAIM_EVIDENCE__EVIDENCE_TYPE, m.CLAIM_EVIDENCE__MEDIA_REFERENCE) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.CLAIM_BK) as CLAIM_EVIDENCE__LOAD_DATETIME,
+    -- SAT_CLAIM_NOTE (ma_sat): one load time per CLAIM_BK, so all its child rows share it
+    max(case when m.CLAIM_NOTE__NOTE_TEXT is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.CLAIM_BK) as CLAIM_NOTE__LOAD_DATETIME
+from merged m

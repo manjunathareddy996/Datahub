@@ -9,7 +9,7 @@ hashed_columns:
 derived_columns:
   COVERAGE_BK: 'COVERAGE_BK'
   COVERAGE_NK: "'HUB_COVERAGE|' || COVERAGE_BK"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!stitch_motor__v04_coverage'
 {%- endset -%}
 

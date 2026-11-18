@@ -62,6 +62,7 @@ with merged as (
         cast(null as varchar) as RISK_MOTOR_VERIFICATION__VEHICLE_VERIFICATION_REFERENCE,
         cast(null as varchar) as RISK_MOTOR_VERIFICATION__VERIFICATION_REMARKS,
         t0.iib_ref_no as RISK_MOTOR_VERIFICATION__VERIFICATION_REQUEST_NUMBER,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motws_other_dtls_eqm') }} t0
@@ -86,6 +87,7 @@ with merged as (
         t0.ncb_per as POLICY_BONUS_TRACKING__NCB_PERCENTAGE,
         null, null, null, null, null, null, null,
         t0.ref_no as RISK_MOTOR_VERIFICATION__VERIFICATION_REQUEST_NUMBER,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_iib_sudars_policy_dtl_hst_qm') }} t0
@@ -100,6 +102,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.prev_ncb_rate as POLICY_BONUS_TRACKING__BONUS_CARRIED_FORWARD_PERCENTAGE,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ins_hst_extn') }} t0
@@ -124,6 +127,7 @@ with merged as (
         t0.vahan_refno as RISK_MOTOR_VERIFICATION__VEHICLE_VERIFICATION_REFERENCE,
         t0.validate_msg as RISK_MOTOR_VERIFICATION__VERIFICATION_REMARKS,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_rnw_validate_veh_dtls') }} t0
@@ -148,6 +152,7 @@ with merged as (
         t0.vahan_refno as RISK_MOTOR_VERIFICATION__VEHICLE_VERIFICATION_REFERENCE,
         t0.validate_msg as RISK_MOTOR_VERIFICATION__VERIFICATION_REMARKS,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_rn_cls_veh_dtls_hist') }} t0
@@ -165,6 +170,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null,
         t0.damage_details as RISK_MOTOR_VERIFICATION__VERIFICATION_REMARKS,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -178,6 +184,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.state as COMMON_ADMIN_GEOGRAPHY__STATE_NAME,
         null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_rta_state_master') }} t0
@@ -196,6 +203,7 @@ with merged as (
         t0.vahan_ref_no as RISK_MOTOR_VERIFICATION__VEHICLE_VERIFICATION_REFERENCE,
         null,
         t0.iib_ref_no as RISK_MOTOR_VERIFICATION__VERIFICATION_REQUEST_NUMBER,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_scr_mot_veh_dtls') }} t0
@@ -221,6 +229,7 @@ with merged as (
         t0.endt_no as POLICY_ENDORSEMENT__ENDORSEMENT_NUMBER,
         t0.rta_flag as RISK_MOTOR_VERIFICATION__VAHAN_CHECK_STATUS,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_vahan_auto_endt_log') }} t0
@@ -239,6 +248,7 @@ with merged as (
         null,
         t0.rta_state as COMMON_ADMIN_GEOGRAPHY__STATE_NAME,
         null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__rto_master') }} t0
@@ -277,5 +287,15 @@ select
     first_value(RISK_MOTOR_VERIFICATION__VAHAN_CHECK_STATUS) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_MOTOR_VERIFICATION__VAHAN_CHECK_STATUS,
     first_value(RISK_MOTOR_VERIFICATION__VEHICLE_VERIFICATION_REFERENCE) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_MOTOR_VERIFICATION__VEHICLE_VERIFICATION_REFERENCE,
     first_value(RISK_MOTOR_VERIFICATION__VERIFICATION_REMARKS) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_MOTOR_VERIFICATION__VERIFICATION_REMARKS,
-    first_value(RISK_MOTOR_VERIFICATION__VERIFICATION_REQUEST_NUMBER) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_MOTOR_VERIFICATION__VERIFICATION_REQUEST_NUMBER
-from merged
+    first_value(RISK_MOTOR_VERIFICATION__VERIFICATION_REQUEST_NUMBER) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_MOTOR_VERIFICATION__VERIFICATION_REQUEST_NUMBER,
+    -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
+    m.INC_JOB_UPDATED_AT,
+    -- SAT_AUG_POLICY_ENDORSEMENT (ma_sat): one load time per POLICY_BK, so all its child rows share it
+    max(case when m.AUG_POLICY_ENDORSEMENT__ENDORSEMENT_REMARKS is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.POLICY_BK) as AUG_POLICY_ENDORSEMENT__LOAD_DATETIME,
+    -- SAT_POLICY_ENDORSEMENT (ma_sat): one load time per POLICY_BK, so all its child rows share it
+    max(case when coalesce(m.POLICY_ENDORSEMENT__ENDORSEMENT_CHANNEL, m.POLICY_ENDORSEMENT__ENDORSEMENT_DATE, m.POLICY_ENDORSEMENT__ENDORSEMENT_NUMBER) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.POLICY_BK) as POLICY_ENDORSEMENT__LOAD_DATETIME
+from merged m

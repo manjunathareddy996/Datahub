@@ -35,6 +35,7 @@ with merged as (
         t0.status as COVERAGE_DEFINITION__COVERAGE_STATUS,
         cast(null as varchar) as COVERAGE_SUBLIMIT_SCHEDULE__ACTIVE_SEQUENCE_NUMBER_CK,
         cast(null as varchar) as COVERAGE_SUBLIMIT_SCHEDULE__PER_DAY_LIMIT,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_pkg_cover_mst') }} t0
@@ -58,6 +59,7 @@ with merged as (
         t0.sum_insured as AUG_COVERAGE_PACKAGE_RATING__PACKAGE_SUM_INSURED,
         null, null, null,
         t0.per_days_benefit as COVERAGE_SUBLIMIT_SCHEDULE__PER_DAY_LIMIT,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_pkg_mapped_covers') }} t0
@@ -83,6 +85,7 @@ with merged as (
         null,
         t0.cover_desc as COVERAGE_DEFINITION__COVERAGE_DESCRIPTION,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wap_mot_addonpkg') }} t0
@@ -109,5 +112,15 @@ select
     first_value(COVERAGE_DEFINITION__COVERAGE_DESCRIPTION) ignore nulls over (partition by COVERAGE_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as COVERAGE_DEFINITION__COVERAGE_DESCRIPTION,
     first_value(COVERAGE_DEFINITION__COVERAGE_STATUS) ignore nulls over (partition by COVERAGE_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as COVERAGE_DEFINITION__COVERAGE_STATUS,
     COVERAGE_SUBLIMIT_SCHEDULE__ACTIVE_SEQUENCE_NUMBER_CK,
-    first_value(COVERAGE_SUBLIMIT_SCHEDULE__PER_DAY_LIMIT) ignore nulls over (partition by COVERAGE_BK, COVERAGE_SUBLIMIT_SCHEDULE__ACTIVE_SEQUENCE_NUMBER_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as COVERAGE_SUBLIMIT_SCHEDULE__PER_DAY_LIMIT
-from merged
+    first_value(COVERAGE_SUBLIMIT_SCHEDULE__PER_DAY_LIMIT) ignore nulls over (partition by COVERAGE_BK, COVERAGE_SUBLIMIT_SCHEDULE__ACTIVE_SEQUENCE_NUMBER_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as COVERAGE_SUBLIMIT_SCHEDULE__PER_DAY_LIMIT,
+    -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
+    m.INC_JOB_UPDATED_AT,
+    -- SAT_AUG_COVERAGE_PACKAGE_RATING (ma_sat): one load time per COVERAGE_BK, so all its child rows share it
+    max(case when coalesce(m.AUG_COVERAGE_PACKAGE_RATING__ADD_ON_PACKAGE_CODE, m.AUG_COVERAGE_PACKAGE_RATING__ADD_ON_PACKAGE_NAME, m.AUG_COVERAGE_PACKAGE_RATING__ADD_ON_PACKAGE_TYPE, m.AUG_COVERAGE_PACKAGE_RATING__MAXIMUM_BENEFIT_DAYS, m.AUG_COVERAGE_PACKAGE_RATING__PACKAGE_DISCOUNT_ENABLED_INDICATOR, m.AUG_COVERAGE_PACKAGE_RATING__PACKAGE_DISCOUNT_RATE, m.AUG_COVERAGE_PACKAGE_RATING__PACKAGE_ENTRY_FLAG, m.AUG_COVERAGE_PACKAGE_RATING__PACKAGE_LOADING_RATE, m.AUG_COVERAGE_PACKAGE_RATING__PACKAGE_SELECTED_INDICATOR, m.AUG_COVERAGE_PACKAGE_RATING__PACKAGE_SELECTION_STATUS, m.AUG_COVERAGE_PACKAGE_RATING__PACKAGE_SUM_INSURED) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.COVERAGE_BK) as AUG_COVERAGE_PACKAGE_RATING__LOAD_DATETIME,
+    -- SAT_COVERAGE_SUBLIMIT_SCHEDULE (ma_sat): one load time per COVERAGE_BK, so all its child rows share it
+    max(case when m.COVERAGE_SUBLIMIT_SCHEDULE__PER_DAY_LIMIT is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.COVERAGE_BK) as COVERAGE_SUBLIMIT_SCHEDULE__LOAD_DATETIME
+from merged m

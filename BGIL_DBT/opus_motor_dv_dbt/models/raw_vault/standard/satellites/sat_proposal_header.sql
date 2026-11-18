@@ -1,5 +1,5 @@
 -- Standard sat() for SAT_PROPOSAL_HEADER (parent HUB_PROPOSAL, history SCD2), fed whole from central view stitch_motor__v06_distribution_channel.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__proposal_header'

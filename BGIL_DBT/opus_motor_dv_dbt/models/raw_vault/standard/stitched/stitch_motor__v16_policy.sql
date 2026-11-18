@@ -96,6 +96,7 @@ with merged as (
         cast(null as varchar) as RISK_OBJECT_CORE__RISK_OBJECT_DESCRIPTION,
         cast(null as varchar) as RISK_OBJECT_CORE__RISK_OBJECT_NAME,
         cast(null as varchar) as RISK_OBJECT_CORE__RISK_OBJECT_REFERENCE_NUMBER,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_webservice_info_eqm') }} t0
@@ -115,6 +116,7 @@ with merged as (
         t0.term_start_date as POLICY_HEADER__RISK_INCEPTION_DATE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_ws_plan_details_eqm') }} t0
@@ -142,6 +144,7 @@ with merged as (
         null, null, null, null, null, null, null, null,
         t0.equip_sale_date as RISK_OBJECT_CORE__ACQUISITION_DATE,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_agency_mot_war_dtls') }} t0
@@ -174,6 +177,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null,
         t0.vehicleinvoicedate as RISK_OBJECT_CORE__ACQUISITION_DATE,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_cvtp_ws_data') }} t0
@@ -193,6 +197,7 @@ with merged as (
         t0.policy_start_date as POLICY_HEADER__RISK_INCEPTION_DATE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_iib_sudars_policy_dtl_hst_qm') }} t0
@@ -217,6 +222,7 @@ with merged as (
         t0.net_premium as POLICY_PREMIUM_SUMMARY__NET_PREMIUM,
         t0.ncb_amt as POLICY_PREMIUM_SUMMARY__NO_CLAIM_BONUS_AMOUNT,
         null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_webservice_info') }} t0
@@ -236,6 +242,7 @@ with merged as (
         t0.term_start_date as POLICY_HEADER__RISK_INCEPTION_DATE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_plan_details') }} t0
@@ -256,6 +263,7 @@ with merged as (
         null, null, null, null,
         t0.net_premium as POLICY_PREMIUM_SUMMARY__NET_PREMIUM,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_od_tp_dtls') }} t0
@@ -300,6 +308,7 @@ with merged as (
         null, null, null,
         t0.student_name as RISK_OBJECT_CORE__RISK_OBJECT_NAME,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -315,6 +324,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null,
         t0.vehicle_id as RISK_OBJECT_CORE__RISK_OBJECT_REFERENCE_NUMBER,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -331,6 +341,7 @@ with merged as (
         null, null, null,
         t0.product_description as RISK_OBJECT_CORE__RISK_OBJECT_DESCRIPTION,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -352,6 +363,7 @@ with merged as (
         t0.spca_tax_type as POLICY_TAX_HEAD__TAX_COMPONENT,
         t0.spca_tax_code as POLICY_TAX_HEAD__TAX_HEAD_CODE,
         null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls_extn') }} t0
@@ -383,6 +395,7 @@ with merged as (
         t0.tax_code as POLICY_TAX_HEAD__TAX_HEAD_CODE,
         t0.tax_desc as POLICY_TAX_HEAD__TAX_HEAD_NAME,
         null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         10 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_renewal') }} t0
@@ -410,6 +423,7 @@ with merged as (
         null,
         coalesce(t0.adj_cgst_amt, t0.adj_igst_amt, t0.adj_ncc_amt, t0.adj_sgst_amt, t0.adj_utgst_amt, t0.cgst_amt, t0.igst_amt, t0.ncc_amt, t0.sgst_amt, t0.utgst_amt) as POLICY_TAX_HEAD__TAX_AMOUNT,
         null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         11 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_renewal_extn') }} t0
@@ -428,6 +442,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         coalesce(t0.edu_cess_tax, t0.new_service_tax, t0.service_tax) as POLICY_TAX_HEAD__TAX_AMOUNT,
         null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         12 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_renewal_hist') }} t0
@@ -445,6 +460,7 @@ with merged as (
         t0.pol_type as POLICY_HEADER__POLICY_TYPE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         13 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_special_policy') }} t0
@@ -467,6 +483,7 @@ with merged as (
         t0.equipment_sale_date as RISK_OBJECT_CORE__ACQUISITION_DATE,
         null, null,
         t0.equipment_serial_no as RISK_OBJECT_CORE__RISK_OBJECT_REFERENCE_NUMBER,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         14 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_war_child_dtls') }} t0
@@ -492,6 +509,7 @@ with merged as (
         t0.policy_start_date as POLICY_HEADER__RISK_INCEPTION_DATE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         15 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_war_mast_dtls') }} t0
@@ -516,6 +534,7 @@ with merged as (
         null, null, null,
         t0.net_premium as POLICY_PREMIUM_SUMMARY__NET_PREMIUM,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         16 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_winback_dtls') }} t0
@@ -547,6 +566,7 @@ with merged as (
         null, null, null, null, null,
         coalesce(t0.adj_edu_cess_tax, t0.edu_cess_tax, t0.ncc_amt, t0.service_tax_amt) as POLICY_TAX_HEAD__TAX_AMOUNT,
         null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         17 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -565,6 +585,7 @@ with merged as (
         t0.term_start_date as POLICY_HEADER__RISK_INCEPTION_DATE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.vehicle_id as RISK_OBJECT_CORE__RISK_OBJECT_REFERENCE_NUMBER,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         18 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_vahan_auto_endt_log') }} t0
@@ -594,6 +615,7 @@ with merged as (
         t0.tax_code as POLICY_TAX_HEAD__TAX_HEAD_CODE,
         t0.tax_desc as POLICY_TAX_HEAD__TAX_HEAD_NAME,
         null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         19 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__wrn_bjaz_mot_renewal') }} t0
@@ -659,5 +681,11 @@ select
     first_value(RISK_OBJECT_CORE__ACQUISITION_DATE) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_OBJECT_CORE__ACQUISITION_DATE,
     first_value(RISK_OBJECT_CORE__RISK_OBJECT_DESCRIPTION) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_OBJECT_CORE__RISK_OBJECT_DESCRIPTION,
     first_value(RISK_OBJECT_CORE__RISK_OBJECT_NAME) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_OBJECT_CORE__RISK_OBJECT_NAME,
-    first_value(RISK_OBJECT_CORE__RISK_OBJECT_REFERENCE_NUMBER) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_OBJECT_CORE__RISK_OBJECT_REFERENCE_NUMBER
-from merged
+    first_value(RISK_OBJECT_CORE__RISK_OBJECT_REFERENCE_NUMBER) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_OBJECT_CORE__RISK_OBJECT_REFERENCE_NUMBER,
+    -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
+    m.INC_JOB_UPDATED_AT,
+    -- SAT_POLICY_TAX_HEAD (ma_sat): one load time per POLICY_BK, so all its child rows share it
+    max(case when coalesce(m.POLICY_TAX_HEAD__TAX_AMOUNT, m.POLICY_TAX_HEAD__TAX_COMPONENT, m.POLICY_TAX_HEAD__TAX_HEAD_CODE, m.POLICY_TAX_HEAD__TAX_HEAD_NAME) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.POLICY_BK) as POLICY_TAX_HEAD__LOAD_DATETIME
+from merged m

@@ -1,5 +1,5 @@
 -- AUGMENTED track (not mapper-ratified) sat() for SAT_AUG_COVERAGE_MOTOR_LAID_UP (parent HUB_COVERAGE, history SCD2), fed whole from central view stitch_motor__v05_coverage.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__coverage_motor_laid_up'

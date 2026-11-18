@@ -52,6 +52,7 @@ with merged as (
         cast(null as varchar) as ORG_UNIT_DEFINITION__ORG_UNIT_STATUS,
         cast(null as varchar) as ORG_UNIT_DEFINITION__PARENT_ORG_UNIT_REFERENCE,
         cast(null as varchar) as ORG_UNIT_DEFINITION__ZONE_NAME,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_ws_plan_details_eqm') }} t0
@@ -66,6 +67,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.branch_code as ORG_UNIT_DEFINITION__ORG_UNIT_CODE,
         null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_ws_plan_details_eqm') }} t0
@@ -80,6 +82,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null,
         t0.police_station_address as AUG_COMMON_ADDRESS__FULL_ADDRESS_TEXT,
         null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_subfile_mot_ext') }} t0
@@ -101,6 +104,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null,
         t0.dept_code as ORG_UNIT_DEFINITION__ORG_UNIT_CODE,
         null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_plan_details') }} t0
@@ -115,6 +119,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.branch_code as ORG_UNIT_DEFINITION__ORG_UNIT_CODE,
         null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_plan_details') }} t0
@@ -140,6 +145,7 @@ with merged as (
         t0.date_of_invoice as AUG_RISK_EXTENDED_WARRANTY__WARRANTY_INVOICE_DATE,
         t0.dept_code as ORG_UNIT_DEFINITION__ORG_UNIT_CODE,
         null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -156,6 +162,7 @@ with merged as (
         null, null, null,
         t0.disp_other_area as AUG_COMMON_ADDRESS__LOCALITY_OTHER_TEXT,
         null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -171,6 +178,7 @@ with merged as (
         t0.cust_add4 as AUG_COMMON_ADDRESS__ADDRESS_LINE4,
         t0.cust_add5 as AUG_COMMON_ADDRESS__ADDRESS_LINE_5,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_renewal_extn') }} t0
@@ -188,6 +196,7 @@ with merged as (
         t0.status as ORG_UNIT_DEFINITION__ORG_UNIT_STATUS,
         t0.group_code as ORG_UNIT_DEFINITION__PARENT_ORG_UNIT_REFERENCE,
         t0.zone as ORG_UNIT_DEFINITION__ZONE_NAME,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_uw_branch_group_mst') }} t0
@@ -206,6 +215,7 @@ with merged as (
         null, null, null,
         t0.vehicle_sold_from as ORG_UNIT_DEFINITION__ORG_UNIT_NAME,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_war_child_dtls') }} t0
@@ -228,6 +238,7 @@ with merged as (
         t0.department_code as AUG_ORG_UNIT_DEFINITION__DEPARTMENT_CODE,
         t0.dept_code as AUG_ORG_UNIT_DEFINITION__SECONDARY_DEPARTMENT_CODE,
         null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -245,6 +256,7 @@ with merged as (
         t0.disp_other_area as AUG_COMMON_ADDRESS__LOCALITY_OTHER_TEXT,
         t0.same_mailing_address as AUG_COMMON_ADDRESS__SAME_AS_RISK_ADDRESS_INDICATOR,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -262,6 +274,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null,
         t0.branch_name as ORG_UNIT_DEFINITION__ORG_UNIT_NAME,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wap_mot_gs_act_dtls') }} t0
@@ -276,6 +289,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null,
         t0.vehicle_lying_add as AUG_COMMON_ADDRESS__FULL_ADDRESS_TEXT,
         null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wb_clm_base_mot_ext') }} t0
@@ -290,6 +304,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null,
         t0.vehicle_inspect_add as AUG_COMMON_ADDRESS__FULL_ADDRESS_TEXT,
         null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wb_clm_base_mot_ext') }} t0
@@ -323,5 +338,7 @@ select
     first_value(ORG_UNIT_DEFINITION__ORG_UNIT_NAME) ignore nulls over (partition by ORG_UNIT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as ORG_UNIT_DEFINITION__ORG_UNIT_NAME,
     first_value(ORG_UNIT_DEFINITION__ORG_UNIT_STATUS) ignore nulls over (partition by ORG_UNIT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as ORG_UNIT_DEFINITION__ORG_UNIT_STATUS,
     first_value(ORG_UNIT_DEFINITION__PARENT_ORG_UNIT_REFERENCE) ignore nulls over (partition by ORG_UNIT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as ORG_UNIT_DEFINITION__PARENT_ORG_UNIT_REFERENCE,
-    first_value(ORG_UNIT_DEFINITION__ZONE_NAME) ignore nulls over (partition by ORG_UNIT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as ORG_UNIT_DEFINITION__ZONE_NAME
-from merged
+    first_value(ORG_UNIT_DEFINITION__ZONE_NAME) ignore nulls over (partition by ORG_UNIT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as ORG_UNIT_DEFINITION__ZONE_NAME,
+    -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
+    m.INC_JOB_UPDATED_AT
+from merged m

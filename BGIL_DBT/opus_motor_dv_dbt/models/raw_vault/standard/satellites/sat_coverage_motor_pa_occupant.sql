@@ -1,5 +1,5 @@
 -- Standard sat() for SAT_COVERAGE_MOTOR_PA_OCCUPANT (parent HUB_COVERAGE, history SCD2), fed whole from central view stitch_motor__v05_coverage.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__coverage_motor_pa_occupant'

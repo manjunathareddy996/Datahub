@@ -34,6 +34,7 @@ with merged as (
         cast(null as varchar) as COMMON_BUSINESS_AUDIT__SOURCE_APPLICATION_NAME,
         cast(null as varchar) as COMMON_LIFECYCLE__EFFECTIVE_DATE,
         cast(null as varchar) as COMMON_LIFECYCLE__EXPIRY_DATE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_webservice_info_eqm') }} t0
@@ -47,6 +48,7 @@ with merged as (
         null,
         t0.module_from as COMMON_BUSINESS_AUDIT__SOURCE_APPLICATION_NAME,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_ws_plan_details_eqm') }} t0
@@ -59,6 +61,7 @@ with merged as (
         nullif(nullif(trim(t0.policy_ref), ''), '') as POLICY_BK,
         t0.user_name as COMMON_BUSINESS_AUDIT__CREATED_BY_USER_REFERENCE,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_agency_mot_war_dtls') }} t0
@@ -71,6 +74,7 @@ with merged as (
         nullif(nullif(trim(t0.bjazpolicyno), ''), '') as POLICY_BK,
         t0.username as COMMON_BUSINESS_AUDIT__CREATED_BY_USER_REFERENCE,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_cvtp_ws_data') }} t0
@@ -83,6 +87,7 @@ with merged as (
         nullif(nullif(trim(t0.policy_ref), ''), '') as POLICY_BK,
         t0.user_name as COMMON_BUSINESS_AUDIT__CREATED_BY_USER_REFERENCE,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_webservice_info') }} t0
@@ -96,6 +101,7 @@ with merged as (
         null,
         t0.module_from as COMMON_BUSINESS_AUDIT__SOURCE_APPLICATION_NAME,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_plan_details') }} t0
@@ -110,6 +116,7 @@ with merged as (
         t0.data_source as COMMON_BUSINESS_AUDIT__SOURCE_APPLICATION_NAME,
         t0.business_start_date as COMMON_LIFECYCLE__EFFECTIVE_DATE,
         t0.business_end_date as COMMON_LIFECYCLE__EXPIRY_DATE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -122,6 +129,7 @@ with merged as (
         nullif(nullif(trim(t0.spca_policy_ref), ''), '') as POLICY_BK,
         t0.username as COMMON_BUSINESS_AUDIT__CREATED_BY_USER_REFERENCE,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls_extn') }} t0
@@ -134,6 +142,7 @@ with merged as (
         nullif(nullif(trim(t0.policy_ref), ''), '') as POLICY_BK,
         t0.web_userid as COMMON_BUSINESS_AUDIT__CREATED_BY_USER_REFERENCE,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_renewal') }} t0
@@ -146,6 +155,7 @@ with merged as (
         nullif(nullif(trim(to_char(t0.contract_id)), ''), '') as POLICY_BK,
         t0.web_userid as COMMON_BUSINESS_AUDIT__CREATED_BY_USER_REFERENCE,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_renewal_hist') }} t0
@@ -158,6 +168,7 @@ with merged as (
         nullif(nullif(trim(t0.policy_ref), ''), '') as POLICY_BK,
         t0.user_id as COMMON_BUSINESS_AUDIT__CREATED_BY_USER_REFERENCE,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         10 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_rnw_validate_veh_dtls') }} t0
@@ -170,6 +181,7 @@ with merged as (
         nullif(nullif(trim(t0.policy_ref), ''), '') as POLICY_BK,
         t0.user_id as COMMON_BUSINESS_AUDIT__CREATED_BY_USER_REFERENCE,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         11 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_rn_cls_veh_dtls_hist') }} t0
@@ -184,6 +196,7 @@ with merged as (
         null,
         t0.eff_date as COMMON_LIFECYCLE__EFFECTIVE_DATE,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         12 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_special_policy') }} t0
@@ -196,6 +209,7 @@ with merged as (
         nullif(nullif(trim(to_char(t0.contract_id)), ''), '') as POLICY_BK,
         t0.user_name as COMMON_BUSINESS_AUDIT__CREATED_BY_USER_REFERENCE,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         13 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_war_plans_extn') }} t0
@@ -208,6 +222,7 @@ with merged as (
         nullif(nullif(trim(t0.bjazpolicyno), ''), '') as POLICY_BK,
         t0.userid as COMMON_BUSINESS_AUDIT__CREATED_BY_USER_REFERENCE,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         14 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_winback_dtls') }} t0
@@ -222,6 +237,7 @@ with merged as (
         t0.data_source as COMMON_BUSINESS_AUDIT__SOURCE_APPLICATION_NAME,
         t0.business_start_date as COMMON_LIFECYCLE__EFFECTIVE_DATE,
         t0.business_end_date as COMMON_LIFECYCLE__EXPIRY_DATE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         15 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -234,6 +250,7 @@ with merged as (
         nullif(nullif(trim(t0.policy_ref), ''), '') as POLICY_BK,
         t0.web_userid as COMMON_BUSINESS_AUDIT__CREATED_BY_USER_REFERENCE,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         16 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__wrn_bjaz_mot_renewal') }} t0
@@ -246,5 +263,7 @@ select
     first_value(COMMON_BUSINESS_AUDIT__CREATED_BY_USER_REFERENCE) ignore nulls over (partition by POLICY_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as COMMON_BUSINESS_AUDIT__CREATED_BY_USER_REFERENCE,
     first_value(COMMON_BUSINESS_AUDIT__SOURCE_APPLICATION_NAME) ignore nulls over (partition by POLICY_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as COMMON_BUSINESS_AUDIT__SOURCE_APPLICATION_NAME,
     first_value(COMMON_LIFECYCLE__EFFECTIVE_DATE) ignore nulls over (partition by POLICY_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as COMMON_LIFECYCLE__EFFECTIVE_DATE,
-    first_value(COMMON_LIFECYCLE__EXPIRY_DATE) ignore nulls over (partition by POLICY_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as COMMON_LIFECYCLE__EXPIRY_DATE
-from merged
+    first_value(COMMON_LIFECYCLE__EXPIRY_DATE) ignore nulls over (partition by POLICY_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as COMMON_LIFECYCLE__EXPIRY_DATE,
+    -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
+    m.INC_JOB_UPDATED_AT
+from merged m

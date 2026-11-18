@@ -170,3 +170,23 @@ generators would emit.
   also reads `<HUB>_BK`.)*
 - Deferred: the stitch design for satellites (plan point 3), and with it the satellites'
   `RECORD_SOURCE` and `LOAD_DATETIME` (plan point 4). The 26 central views stay as they are.
+
+## Round 3 (2026-11-18): real source times in LOAD_DATETIME
+
+- Every branch of the 26 central views carries its table's `inc_job_updated_at` as `INC_JOB_UPDATED_AT`,
+  just before `__PREC` (the same position in every branch: the branches match columns by position).
+  Each final select now reads `from merged m` and outputs:
+  - `INC_JOB_UPDATED_AT`, the row's own source time, and
+  - for each of the 95 multi-active satellites, `<SAT>__LOAD_DATETIME` =
+    `max(INC_JOB_UPDATED_AT) over (partition by <parent key>)` over the rows that carry that satellite's data.
+    `ma_sat()` takes a parent's latest set to be its rows with the highest `LOAD_DATETIME`, so all child rows
+    of one parent must share one time; per-row times would re-insert the whole set on every run.
+- Stages: `LOAD_DATETIME: '!CURRENT_TIMESTAMP()'` (which AutomateDV stores as the text `CURRENT_TIMESTAMP()`)
+  is replaced in all 272: `'INC_JOB_UPDATED_AT'` for the 26 hub/link stages and 151 single-active satellite
+  stages, `'<SAT>__LOAD_DATETIME'` for the 95 multi-active satellite stages.
+- The 151 `automate_dv.sat()` satellites set `meta={'apply_source_filter': true}`: only rows whose
+  `LOAD_DATETIME` is later than the satellite's latest stored row for that key reach the HASHDIFF check.
+  `ma_sat()` has no such option, so the 95 multi-active satellites are unchanged.
+- Not changed: `RECORD_SOURCE` (still `'!stitch_motor__...'`), the branch SQL, the merges, the keys, macros.
+- Before `dbt run`: the raw tables must have `INC_JOB_UPDATED_AT`; `normalise()` must exist; in tables another
+  project created first with a text `LOAD_DATETIME`, the time filter does not compare real times.

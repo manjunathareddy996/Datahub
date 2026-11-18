@@ -85,6 +85,7 @@ with merged as (
         cast(null as varchar) as PRODUCT_RIDER_CATALOGUE__RIDER_CODE,
         cast(null as varchar) as PRODUCT_RIDER_CATALOGUE__RIDER_NAME,
         cast(null as varchar) as PRODUCT_RIDER_CATALOGUE__RIDER_TYPE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_comm_cappping_master') }} t0
@@ -101,6 +102,7 @@ with merged as (
         t0.vehicle_type_code as AUG_PRODUCT_RATING_FACTOR__APPLICABILITY_VEHICLE_TYPE_CODE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_gen_rate_master') }} t0
@@ -117,6 +119,7 @@ with merged as (
         t0.note as AUG_PRODUCT_RATING_FACTOR__RATING_FACTOR_NOTE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_gen_rate_master') }} t0
@@ -132,6 +135,7 @@ with merged as (
         t0.fuel_type as AUG_PRODUCT_RATING_FACTOR__APPLICABILITY_FUEL_TYPE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_gen_rate_master') }} t0
@@ -148,6 +152,7 @@ with merged as (
         t0.state_name as AUG_PRODUCT_RATING_FACTOR__APPLICABILITY_STATE_NAME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_gen_rate_master') }} t0
@@ -164,6 +169,7 @@ with merged as (
         t0.sub_product_code as AUG_PRODUCT_RATING_FACTOR__APPLICABILITY_SUB_PRODUCT_CODE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_gen_rate_master') }} t0
@@ -180,6 +186,7 @@ with merged as (
         t0.make_code as AUG_PRODUCT_RATING_FACTOR__APPLICABILITY_MAKE_CODE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_gen_rate_master') }} t0
@@ -196,6 +203,7 @@ with merged as (
         t0.model_code as AUG_PRODUCT_RATING_FACTOR__APPLICABILITY_MODEL_CODE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_gen_rate_master') }} t0
@@ -216,6 +224,7 @@ with merged as (
         coalesce(t0.act_min_value, t0.od_min_value) as PRODUCT_RATING_FACTOR__VALUE_RANGE_FROM,
         coalesce(t0.act_max_value, t0.od_max_value) as PRODUCT_RATING_FACTOR__VALUE_RANGE_TO,
         null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_gen_rate_master') }} t0
@@ -232,6 +241,7 @@ with merged as (
         t0.expiry_date as AUG_PRODUCT_RIDER_CATALOGUE__EXPIRY_DATE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_pkg_mst') }} t0
@@ -249,6 +259,7 @@ with merged as (
         t0.max_veh_age as AUG_PRODUCT_RIDER_CATALOGUE__MAXIMUM_VEHICLE_AGE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_pkg_mst') }} t0
@@ -265,6 +276,7 @@ with merged as (
         null, null, null, null, null, null,
         t0.status as AUG_PRODUCT_RIDER_CATALOGUE__RIDER_STATUS,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_pkg_mst') }} t0
@@ -282,6 +294,7 @@ with merged as (
         t0.multi_yr_yn as AUG_PRODUCT_RIDER_CATALOGUE__MULTI_YEAR_ELIGIBLE_INDICATOR,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_pkg_mst') }} t0
@@ -299,6 +312,7 @@ with merged as (
         t0.p_nb_yn as AUG_PRODUCT_RIDER_CATALOGUE__NEW_BUSINESS_ELIGIBLE_INDICATOR,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_pkg_mst') }} t0
@@ -315,6 +329,7 @@ with merged as (
         null, null, null, null, null, null, null,
         t0.p_otrnw_yn as AUG_PRODUCT_RIDER_CATALOGUE__ROLLOVER_RENEWAL_ELIGIBLE_INDICATOR,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_pkg_mst') }} t0
@@ -331,6 +346,7 @@ with merged as (
         null, null, null, null, null,
         t0.p_rnw_yn as AUG_PRODUCT_RIDER_CATALOGUE__OWN_RENEWAL_ELIGIBLE_INDICATOR,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_pkg_mst') }} t0
@@ -348,6 +364,7 @@ with merged as (
         t0.ncb_disc_yn as AUG_PRODUCT_RIDER_CATALOGUE__NO_CLAIM_BONUS_DISCOUNT_APPLICABLE_INDICATOR,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_pkg_mst') }} t0
@@ -365,6 +382,7 @@ with merged as (
         t0.package_id as PRODUCT_RIDER_CATALOGUE__RIDER_CODE,
         t0.package_name as PRODUCT_RIDER_CATALOGUE__RIDER_NAME,
         t0.package_type as PRODUCT_RIDER_CATALOGUE__RIDER_TYPE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_pkg_mst') }} t0
@@ -381,6 +399,7 @@ with merged as (
         t0.active_status as AUG_PRODUCT_TAX_APPLICABILITY__THIRD_PARTY_GST_APPLICABLE_INDICATOR,
         t0.vehicle_type_code as AUG_PRODUCT_TAX_APPLICABILITY__VEHICLE_CATEGORY_CODE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_tp_gst_applicable_prd') }} t0
@@ -396,6 +415,7 @@ with merged as (
         t0.disc_perc as PRODUCT_DISCOUNT_LOADING__DISCOUNT_PERCENTAGE,
         t0.param_ref as PRODUCT_DISCOUNT_LOADING__RULE_CODE,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wap_mot_stp_rate_summ') }} t0
@@ -413,6 +433,7 @@ with merged as (
         t0.disc_perc as PRODUCT_DISCOUNT_LOADING__DISCOUNT_PERCENTAGE,
         t0.param_ref as PRODUCT_DISCOUNT_LOADING__RULE_CODE,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_ws_mot_stp_rate_summ') }} t0
@@ -481,5 +502,39 @@ select
     first_value(PRODUCT_RIDER_CATALOGUE__EFFECTIVE_DATE) ignore nulls over (partition by PRODUCT_BK, PRODUCT_RIDER_CATALOGUE__ACTIVE_SEQUENCE_NUMBER_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as PRODUCT_RIDER_CATALOGUE__EFFECTIVE_DATE,
     first_value(PRODUCT_RIDER_CATALOGUE__RIDER_CODE) ignore nulls over (partition by PRODUCT_BK, PRODUCT_RIDER_CATALOGUE__ACTIVE_SEQUENCE_NUMBER_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as PRODUCT_RIDER_CATALOGUE__RIDER_CODE,
     first_value(PRODUCT_RIDER_CATALOGUE__RIDER_NAME) ignore nulls over (partition by PRODUCT_BK, PRODUCT_RIDER_CATALOGUE__ACTIVE_SEQUENCE_NUMBER_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as PRODUCT_RIDER_CATALOGUE__RIDER_NAME,
-    first_value(PRODUCT_RIDER_CATALOGUE__RIDER_TYPE) ignore nulls over (partition by PRODUCT_BK, PRODUCT_RIDER_CATALOGUE__ACTIVE_SEQUENCE_NUMBER_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as PRODUCT_RIDER_CATALOGUE__RIDER_TYPE
-from merged
+    first_value(PRODUCT_RIDER_CATALOGUE__RIDER_TYPE) ignore nulls over (partition by PRODUCT_BK, PRODUCT_RIDER_CATALOGUE__ACTIVE_SEQUENCE_NUMBER_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as PRODUCT_RIDER_CATALOGUE__RIDER_TYPE,
+    -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
+    m.INC_JOB_UPDATED_AT,
+    -- SAT_AUG_PRODUCT_COMMISSION_GRID (ma_sat): one load time per PRODUCT_BK, so all its child rows share it
+    max(case when coalesce(m.AUG_PRODUCT_COMMISSION_GRID__APPLICABLE_BUSINESS_TYPE, m.AUG_PRODUCT_COMMISSION_GRID__APPLICABLE_VEHICLE_MAKE_CODE, m.AUG_PRODUCT_COMMISSION_GRID__APPLICABLE_VEHICLE_TYPE_CODE, m.AUG_PRODUCT_COMMISSION_GRID__BENEFIT_PAYOUT_CAP_PERCENTAGE, m.AUG_PRODUCT_COMMISSION_GRID__RELAXATION_CAP_PERCENTAGE, m.AUG_PRODUCT_COMMISSION_GRID__RULE_STATUS, m.AUG_PRODUCT_COMMISSION_GRID__VALUE_BAND_FROM, m.AUG_PRODUCT_COMMISSION_GRID__VALUE_BAND_TO) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.PRODUCT_BK) as AUG_PRODUCT_COMMISSION_GRID__LOAD_DATETIME,
+    -- SAT_AUG_PRODUCT_RATING_FACTOR (ma_sat): one load time per PRODUCT_BK, so all its child rows share it
+    max(case when coalesce(m.AUG_PRODUCT_RATING_FACTOR__APPLICABILITY_FUEL_TYPE, m.AUG_PRODUCT_RATING_FACTOR__APPLICABILITY_MAKE_CODE, m.AUG_PRODUCT_RATING_FACTOR__APPLICABILITY_MODEL_CODE, m.AUG_PRODUCT_RATING_FACTOR__APPLICABILITY_STATE_NAME, m.AUG_PRODUCT_RATING_FACTOR__APPLICABILITY_SUB_PRODUCT_CODE, m.AUG_PRODUCT_RATING_FACTOR__APPLICABILITY_VEHICLE_TYPE_CODE, m.AUG_PRODUCT_RATING_FACTOR__RATING_FACTOR_NOTE) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.PRODUCT_BK) as AUG_PRODUCT_RATING_FACTOR__LOAD_DATETIME,
+    -- SAT_AUG_PRODUCT_RIDER_CATALOGUE (ma_sat): one load time per PRODUCT_BK, so all its child rows share it
+    max(case when coalesce(m.AUG_PRODUCT_RIDER_CATALOGUE__EXPIRY_DATE, m.AUG_PRODUCT_RIDER_CATALOGUE__MAXIMUM_VEHICLE_AGE, m.AUG_PRODUCT_RIDER_CATALOGUE__MULTI_YEAR_ELIGIBLE_INDICATOR, m.AUG_PRODUCT_RIDER_CATALOGUE__NEW_BUSINESS_ELIGIBLE_INDICATOR, m.AUG_PRODUCT_RIDER_CATALOGUE__NO_CLAIM_BONUS_DISCOUNT_APPLICABLE_INDICATOR, m.AUG_PRODUCT_RIDER_CATALOGUE__OWN_RENEWAL_ELIGIBLE_INDICATOR, m.AUG_PRODUCT_RIDER_CATALOGUE__RIDER_STATUS, m.AUG_PRODUCT_RIDER_CATALOGUE__ROLLOVER_RENEWAL_ELIGIBLE_INDICATOR) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.PRODUCT_BK) as AUG_PRODUCT_RIDER_CATALOGUE__LOAD_DATETIME,
+    -- SAT_AUG_PRODUCT_TAX_APPLICABILITY (ma_sat): one load time per PRODUCT_BK, so all its child rows share it
+    max(case when coalesce(m.AUG_PRODUCT_TAX_APPLICABILITY__EFFECTIVE_DATE, m.AUG_PRODUCT_TAX_APPLICABILITY__THIRD_PARTY_GST_APPLICABLE_INDICATOR, m.AUG_PRODUCT_TAX_APPLICABILITY__VEHICLE_CATEGORY_CODE) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.PRODUCT_BK) as AUG_PRODUCT_TAX_APPLICABILITY__LOAD_DATETIME,
+    -- SAT_PRODUCT_COMMISSION_GRID (ma_sat): one load time per PRODUCT_BK, so all its child rows share it
+    max(case when coalesce(m.PRODUCT_COMMISSION_GRID__EFFECTIVE_DATE, m.PRODUCT_COMMISSION_GRID__MAXIMUM_PAYABLE_PERCENTAGE) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.PRODUCT_BK) as PRODUCT_COMMISSION_GRID__LOAD_DATETIME,
+    -- SAT_PRODUCT_DISCOUNT_LOADING (ma_sat): one load time per PRODUCT_BK, so all its child rows share it
+    max(case when coalesce(m.PRODUCT_DISCOUNT_LOADING__DISCOUNT_PERCENTAGE, m.PRODUCT_DISCOUNT_LOADING__RULE_CODE) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.PRODUCT_BK) as PRODUCT_DISCOUNT_LOADING__LOAD_DATETIME,
+    -- SAT_PRODUCT_RATING_FACTOR (ma_sat): one load time per PRODUCT_BK, so all its child rows share it
+    max(case when coalesce(m.PRODUCT_RATING_FACTOR__BASE_TARIFF_RATE, m.PRODUCT_RATING_FACTOR__EFFECTIVE_DATE, m.PRODUCT_RATING_FACTOR__RATING_FACTOR_CODE, m.PRODUCT_RATING_FACTOR__VALUE_RANGE_FROM, m.PRODUCT_RATING_FACTOR__VALUE_RANGE_TO) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.PRODUCT_BK) as PRODUCT_RATING_FACTOR__LOAD_DATETIME,
+    -- SAT_PRODUCT_RIDER_CATALOGUE (ma_sat): one load time per PRODUCT_BK, so all its child rows share it
+    max(case when coalesce(m.PRODUCT_RIDER_CATALOGUE__EFFECTIVE_DATE, m.PRODUCT_RIDER_CATALOGUE__RIDER_CODE, m.PRODUCT_RIDER_CATALOGUE__RIDER_NAME, m.PRODUCT_RIDER_CATALOGUE__RIDER_TYPE) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.PRODUCT_BK) as PRODUCT_RIDER_CATALOGUE__LOAD_DATETIME
+from merged m

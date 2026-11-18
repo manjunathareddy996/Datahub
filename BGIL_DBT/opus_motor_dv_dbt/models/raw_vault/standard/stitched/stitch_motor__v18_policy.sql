@@ -58,6 +58,7 @@ with merged as (
         cast(null as varchar) as POLICY_TP_PRIOR_PERIOD__PRIOR_POLICY_END_DATE,
         cast(null as varchar) as POLICY_TP_PRIOR_PERIOD__PRIOR_POLICY_NUMBER,
         cast(null as varchar) as POLICY_TP_PRIOR_PERIOD__PRIOR_POLICY_START_DATE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_webservice_info_eqm') }} t0
@@ -80,6 +81,7 @@ with merged as (
         t0.prv_expiry_date as POLICY_TP_PRIOR_PERIOD__PRIOR_POLICY_END_DATE,
         t0.prv_policy_ref as POLICY_TP_PRIOR_PERIOD__PRIOR_POLICY_NUMBER,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_ws_plan_details_eqm') }} t0
@@ -104,6 +106,7 @@ with merged as (
         t0.tpprevtppolicyexpirydate as POLICY_TP_PRIOR_PERIOD__PRIOR_POLICY_END_DATE,
         t0.tpprevpolicyno as POLICY_TP_PRIOR_PERIOD__PRIOR_POLICY_NUMBER,
         t0.tpprevpolicyeffectivedate as POLICY_TP_PRIOR_PERIOD__PRIOR_POLICY_START_DATE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_cvtp_ws_data') }} t0
@@ -127,6 +130,7 @@ with merged as (
         null, null,
         t0.comm_disc_rate as POLICY_INTERMEDIARY_SPLIT__COMMISSION_RATE,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_webservice_info') }} t0
@@ -149,6 +153,7 @@ with merged as (
         t0.prv_expiry_date as POLICY_TP_PRIOR_PERIOD__PRIOR_POLICY_END_DATE,
         t0.prv_policy_ref as POLICY_TP_PRIOR_PERIOD__PRIOR_POLICY_NUMBER,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_plan_details') }} t0
@@ -176,6 +181,7 @@ with merged as (
         coalesce(t0.add_disc_reason, t0.add_load_reason) as POLICY_DISCOUNT_LOADING_APPLIED__JUSTIFICATION,
         coalesce(t0.add_disc_rate, t0.add_load_rate, t0.cd_coupon_percent, t0.cibil_disc_rate, t0.commercial_disc_rate, t0.lterm_disc_rate, t0.renewal_disc_rate) as POLICY_DISCOUNT_LOADING_APPLIED__PERCENTAGE_APPLIED,
         null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -199,6 +205,7 @@ with merged as (
         null,
         t0.main_agent_code as POLICY_INTERMEDIARY_SPLIT__INTERMEDIARY_REFERENCE,
         null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_renewal') }} t0
@@ -216,6 +223,7 @@ with merged as (
         t0.add_load_reason as POLICY_DISCOUNT_LOADING_APPLIED__JUSTIFICATION,
         coalesce(t0.add_load_per, t0.comm_disc_rate, t0.comm_disc_rate_1st) as POLICY_DISCOUNT_LOADING_APPLIED__PERCENTAGE_APPLIED,
         null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_renewal_hist') }} t0
@@ -232,6 +240,7 @@ with merged as (
         null,
         t0.disc_perc as POLICY_DISCOUNT_LOADING_APPLIED__PERCENTAGE_APPLIED,
         null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_stp_prem_summ_extn') }} t0
@@ -261,6 +270,7 @@ with merged as (
         null,
         t0.subimd as POLICY_INTERMEDIARY_SPLIT__SUB_IMD_CODE,
         null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_winback_dtls') }} t0
@@ -285,6 +295,7 @@ with merged as (
         coalesce(t0.add_disc_reason, t0.add_load_reason) as POLICY_DISCOUNT_LOADING_APPLIED__JUSTIFICATION,
         coalesce(t0.add_disc_rate, t0.add_load_rate, t0.commercial_disc_rate, t0.renewal_disc_rate) as POLICY_DISCOUNT_LOADING_APPLIED__PERCENTAGE_APPLIED,
         null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         10 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -308,6 +319,7 @@ with merged as (
         null,
         t0.main_agent_code as POLICY_INTERMEDIARY_SPLIT__INTERMEDIARY_REFERENCE,
         null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         11 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__wrn_bjaz_mot_renewal') }} t0
@@ -347,5 +359,19 @@ select
     first_value(POLICY_TP_PRIOR_PERIOD__PRIOR_INSURER_NAME) ignore nulls over (partition by POLICY_BK, POLICY_TP_PRIOR_PERIOD__PRIOR_POLICY_SEQUENCE_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as POLICY_TP_PRIOR_PERIOD__PRIOR_INSURER_NAME,
     first_value(POLICY_TP_PRIOR_PERIOD__PRIOR_POLICY_END_DATE) ignore nulls over (partition by POLICY_BK, POLICY_TP_PRIOR_PERIOD__PRIOR_POLICY_SEQUENCE_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as POLICY_TP_PRIOR_PERIOD__PRIOR_POLICY_END_DATE,
     first_value(POLICY_TP_PRIOR_PERIOD__PRIOR_POLICY_NUMBER) ignore nulls over (partition by POLICY_BK, POLICY_TP_PRIOR_PERIOD__PRIOR_POLICY_SEQUENCE_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as POLICY_TP_PRIOR_PERIOD__PRIOR_POLICY_NUMBER,
-    first_value(POLICY_TP_PRIOR_PERIOD__PRIOR_POLICY_START_DATE) ignore nulls over (partition by POLICY_BK, POLICY_TP_PRIOR_PERIOD__PRIOR_POLICY_SEQUENCE_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as POLICY_TP_PRIOR_PERIOD__PRIOR_POLICY_START_DATE
-from merged
+    first_value(POLICY_TP_PRIOR_PERIOD__PRIOR_POLICY_START_DATE) ignore nulls over (partition by POLICY_BK, POLICY_TP_PRIOR_PERIOD__PRIOR_POLICY_SEQUENCE_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as POLICY_TP_PRIOR_PERIOD__PRIOR_POLICY_START_DATE,
+    -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
+    m.INC_JOB_UPDATED_AT,
+    -- SAT_POLICY_DISCOUNT_LOADING_APPLIED (ma_sat): one load time per POLICY_BK, so all its child rows share it
+    max(case when coalesce(m.POLICY_DISCOUNT_LOADING_APPLIED__AMOUNT_APPLIED, m.POLICY_DISCOUNT_LOADING_APPLIED__BASIS, m.POLICY_DISCOUNT_LOADING_APPLIED__EXTRA_DISCOUNT_OPTED_INDICATOR, m.POLICY_DISCOUNT_LOADING_APPLIED__ITEM_CODE, m.POLICY_DISCOUNT_LOADING_APPLIED__JUSTIFICATION, m.POLICY_DISCOUNT_LOADING_APPLIED__PERCENTAGE_APPLIED) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.POLICY_BK) as POLICY_DISCOUNT_LOADING_APPLIED__LOAD_DATETIME,
+    -- SAT_POLICY_INTERMEDIARY_SPLIT (ma_sat): one load time per POLICY_BK, so all its child rows share it
+    max(case when coalesce(m.POLICY_INTERMEDIARY_SPLIT__BRANCH_REFERENCE, m.POLICY_INTERMEDIARY_SPLIT__COMMISSION_AMOUNT, m.POLICY_INTERMEDIARY_SPLIT__COMMISSION_RATE, m.POLICY_INTERMEDIARY_SPLIT__IMD_CODE, m.POLICY_INTERMEDIARY_SPLIT__INTERMEDIARY_REFERENCE, m.POLICY_INTERMEDIARY_SPLIT__SUB_IMD_CODE) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.POLICY_BK) as POLICY_INTERMEDIARY_SPLIT__LOAD_DATETIME,
+    -- SAT_POLICY_TP_PRIOR_PERIOD (ma_sat): one load time per POLICY_BK, so all its child rows share it
+    max(case when coalesce(m.POLICY_TP_PRIOR_PERIOD__PRIOR_INSURER_CODE, m.POLICY_TP_PRIOR_PERIOD__PRIOR_INSURER_NAME, m.POLICY_TP_PRIOR_PERIOD__PRIOR_POLICY_END_DATE, m.POLICY_TP_PRIOR_PERIOD__PRIOR_POLICY_NUMBER, m.POLICY_TP_PRIOR_PERIOD__PRIOR_POLICY_START_DATE) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.POLICY_BK) as POLICY_TP_PRIOR_PERIOD__LOAD_DATETIME
+from merged m

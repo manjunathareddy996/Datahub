@@ -147,6 +147,7 @@ with merged as (
         t0.noofcleanerpa as RISK_MOTOR_LIABILITY_ADDON__PA_CLEANER_COUNT,
         t0.noofconductorpa as RISK_MOTOR_LIABILITY_ADDON__PA_CONDUCTOR_COUNT,
         t0.noofhelperpa as RISK_MOTOR_LIABILITY_ADDON__PA_HELPER_COUNT,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_cvtp_ws_data') }} t0
@@ -165,6 +166,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_cvtp_ws_data') }} t0
@@ -183,6 +185,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_cvtp_ws_data') }} t0
@@ -201,6 +204,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_cvtp_ws_data') }} t0
@@ -219,6 +223,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_cvtp_ws_data') }} t0
@@ -237,6 +242,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_cvtp_ws_data') }} t0
@@ -255,6 +261,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_cvtp_ws_data') }} t0
@@ -273,6 +280,7 @@ with merged as (
         t0.visof_kyc_req_no as PARTY_KYC_REFERENCE__KYC_REFERENCE_NUMBER,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_cvtp_ws_data') }} t0
@@ -291,6 +299,7 @@ with merged as (
         t0.ic_kyc_no as PARTY_KYC_REFERENCE__KYC_REFERENCE_NUMBER,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_cvtp_ws_data') }} t0
@@ -309,6 +318,7 @@ with merged as (
         t0.inscovertype as POLICY_CLASSIFICATION__CLASSIFICATION_VALUE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_cvtp_ws_data') }} t0
@@ -327,6 +337,7 @@ with merged as (
         t0.move_code as POLICY_CLASSIFICATION__CLASSIFICATION_VALUE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_od_tp_dtls') }} t0
@@ -356,6 +367,7 @@ with merged as (
         t0.imt_numbers as POLICY_CLAUSE_ATTACHED__CLAUSE_CODE_CK,
         t0.imt_numbers as POLICY_CLAUSE_ATTACHED__CLAUSE_CODE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -374,6 +386,7 @@ with merged as (
         t0.trv_plan as POLICY_CLASSIFICATION__CLASSIFICATION_VALUE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -392,6 +405,7 @@ with merged as (
         t0.basic_plan as POLICY_CLASSIFICATION__CLASSIFICATION_VALUE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -410,6 +424,7 @@ with merged as (
         t0.advanced_plan as POLICY_CLASSIFICATION__CLASSIFICATION_VALUE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -430,6 +445,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null,
         t0.qc_status as PROPOSAL_SCRUTINY__QUALITY_CHECK_STATUS,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_renewal_hist') }} t0
@@ -448,6 +464,7 @@ with merged as (
         t0.vertical_segment as POLICY_CLASSIFICATION__CLASSIFICATION_VALUE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_renewal_hist') }} t0
@@ -466,6 +483,7 @@ with merged as (
         t0.road_type as POLICY_CLASSIFICATION__CLASSIFICATION_VALUE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_tac_dtls') }} t0
@@ -484,6 +502,7 @@ with merged as (
         t0.veh_driven_by as POLICY_CLASSIFICATION__CLASSIFICATION_VALUE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_tac_dtls') }} t0
@@ -502,6 +521,7 @@ with merged as (
         t0.driver_experience as POLICY_CLASSIFICATION__CLASSIFICATION_VALUE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_tac_dtls') }} t0
@@ -520,6 +540,7 @@ with merged as (
         t0.clm_hist_code as POLICY_CLASSIFICATION__CLASSIFICATION_VALUE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_tac_dtls') }} t0
@@ -538,6 +559,7 @@ with merged as (
         t0.incurred_clm_exp_code as POLICY_CLASSIFICATION__CLASSIFICATION_VALUE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_tac_dtls') }} t0
@@ -556,6 +578,7 @@ with merged as (
         t0.driver_qualification_code as POLICY_CLASSIFICATION__CLASSIFICATION_VALUE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_tac_dtls') }} t0
@@ -574,6 +597,7 @@ with merged as (
         t0.tac_make_code as POLICY_CLASSIFICATION__CLASSIFICATION_VALUE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_tac_dtls') }} t0
@@ -596,6 +620,7 @@ with merged as (
         null,
         t0.source_name as PROPOSAL_HEADER__SUBMISSION_CHANNEL,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_winback_dtls') }} t0
@@ -614,6 +639,7 @@ with merged as (
         t0.business_type as POLICY_CLASSIFICATION__CLASSIFICATION_VALUE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_winback_dtls') }} t0
@@ -648,6 +674,7 @@ with merged as (
         t0.imt_numbers as POLICY_CLAUSE_ATTACHED__CLAUSE_CODE_CK,
         t0.imt_numbers as POLICY_CLAUSE_ATTACHED__CLAUSE_CODE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -666,6 +693,7 @@ with merged as (
         t0.trv_plan as POLICY_CLASSIFICATION__CLASSIFICATION_VALUE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -684,6 +712,7 @@ with merged as (
         t0.basic_plan as POLICY_CLASSIFICATION__CLASSIFICATION_VALUE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -702,6 +731,7 @@ with merged as (
         t0.advanced_plan as POLICY_CLASSIFICATION__CLASSIFICATION_VALUE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -720,6 +750,7 @@ with merged as (
         t0.trv_grp as POLICY_CLASSIFICATION__CLASSIFICATION_VALUE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -743,6 +774,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_rta_state_master') }} t0
@@ -782,6 +814,7 @@ with merged as (
         t0.longitude as COMMON_GEO__LONGITUDE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wap_mot_gs_act_dtls') }} t0
@@ -802,6 +835,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__rta_cluster_preferred_decline') }} t0
@@ -909,5 +943,39 @@ select
     first_value(RISK_MOTOR_LIABILITY_ADDON__LEGAL_LIABILITY_UNNAMED_PASSENGER_PREMIUM) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_MOTOR_LIABILITY_ADDON__LEGAL_LIABILITY_UNNAMED_PASSENGER_PREMIUM,
     first_value(RISK_MOTOR_LIABILITY_ADDON__PA_CLEANER_COUNT) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_MOTOR_LIABILITY_ADDON__PA_CLEANER_COUNT,
     first_value(RISK_MOTOR_LIABILITY_ADDON__PA_CONDUCTOR_COUNT) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_MOTOR_LIABILITY_ADDON__PA_CONDUCTOR_COUNT,
-    first_value(RISK_MOTOR_LIABILITY_ADDON__PA_HELPER_COUNT) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_MOTOR_LIABILITY_ADDON__PA_HELPER_COUNT
-from merged
+    first_value(RISK_MOTOR_LIABILITY_ADDON__PA_HELPER_COUNT) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_MOTOR_LIABILITY_ADDON__PA_HELPER_COUNT,
+    -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
+    m.INC_JOB_UPDATED_AT,
+    -- SAT_AUG_CHANNEL_FIELD_ACTIVITY (ma_sat): one load time per DISTRIBUTION_CHANNEL_BK, so all its child rows share it
+    max(case when coalesce(m.AUG_CHANNEL_FIELD_ACTIVITY__BANK_RELATIONSHIP_MANAGER_DETAILS, m.AUG_CHANNEL_FIELD_ACTIVITY__EXPECTED_PREMIUM_DISCUSSED, m.AUG_CHANNEL_FIELD_ACTIVITY__HEALTH_LINE_PREMIUM_DISCUSSED, m.AUG_CHANNEL_FIELD_ACTIVITY__NEXT_MEETING_DATE, m.AUG_CHANNEL_FIELD_ACTIVITY__NON_HEALTH_LINE_PREMIUM_DISCUSSED, m.AUG_CHANNEL_FIELD_ACTIVITY__PARTICIPANT_DESIGNATION, m.AUG_CHANNEL_FIELD_ACTIVITY__PRODUCTS_DISCUSSED, m.AUG_CHANNEL_FIELD_ACTIVITY__PROSPECT_CONTACT_NUMBER, m.AUG_CHANNEL_FIELD_ACTIVITY__PROSPECT_NAME) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.DISTRIBUTION_CHANNEL_BK) as AUG_CHANNEL_FIELD_ACTIVITY__LOAD_DATETIME,
+    -- SAT_AUG_RISK_MOTOR_GEOGRAPHICAL_EXTENSION (ma_sat): one load time per RISK_OBJECT_BK, so all its child rows share it
+    max(case when m.AUG_RISK_MOTOR_GEOGRAPHICAL_EXTENSION__COVERED_INDICATOR is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.RISK_OBJECT_BK) as AUG_RISK_MOTOR_GEOGRAPHICAL_EXTENSION__LOAD_DATETIME,
+    -- SAT_AUG_RISK_OBJECT_INSURABLE_INTEREST (ma_sat): one load time per RISK_OBJECT_BK, so all its child rows share it
+    max(case when m.AUG_RISK_OBJECT_INSURABLE_INTEREST__FINANCIER_BRANCH_NAME is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.RISK_OBJECT_BK) as AUG_RISK_OBJECT_INSURABLE_INTEREST__LOAD_DATETIME,
+    -- SAT_CHANNEL_FIELD_ACTIVITY (ma_sat): one load time per DISTRIBUTION_CHANNEL_BK, so all its child rows share it
+    max(case when coalesce(m.CHANNEL_FIELD_ACTIVITY__ACTIVITY_REFERENCE, m.CHANNEL_FIELD_ACTIVITY__FOLLOW_UP_DATE, m.CHANNEL_FIELD_ACTIVITY__LEAD_REFERENCE, m.CHANNEL_FIELD_ACTIVITY__MEETING_PURPOSE, m.CHANNEL_FIELD_ACTIVITY__OUTCOME_STATUS) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.DISTRIBUTION_CHANNEL_BK) as CHANNEL_FIELD_ACTIVITY__LOAD_DATETIME,
+    -- SAT_FINTXN_RECON_INSTRUMENT (ma_sat): one load time per FINANCIAL_TRANSACTION_BK, so all its child rows share it
+    max(case when coalesce(m.FINTXN_RECON_INSTRUMENT__INSTRUMENT_AMOUNT, m.FINTXN_RECON_INSTRUMENT__INSTRUMENT_DATE) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.FINANCIAL_TRANSACTION_BK) as FINTXN_RECON_INSTRUMENT__LOAD_DATETIME,
+    -- SAT_PARTY_KYC_REFERENCE (ma_sat): one load time per PARTY_BK, so all its child rows share it
+    max(case when coalesce(m.PARTY_KYC_REFERENCE__KYC_REFERENCE_NUMBER, m.PARTY_KYC_REFERENCE__KYC_REFERENCE_TYPE) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.PARTY_BK) as PARTY_KYC_REFERENCE__LOAD_DATETIME,
+    -- SAT_POLICY_CLASSIFICATION (ma_sat): one load time per POLICY_BK, so all its child rows share it
+    max(case when m.POLICY_CLASSIFICATION__CLASSIFICATION_VALUE is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.POLICY_BK) as POLICY_CLASSIFICATION__LOAD_DATETIME,
+    -- SAT_POLICY_CLAUSE_ATTACHED (ma_sat): one load time per POLICY_BK, so all its child rows share it
+    max(case when m.POLICY_CLAUSE_ATTACHED__CLAUSE_CODE is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.POLICY_BK) as POLICY_CLAUSE_ATTACHED__LOAD_DATETIME
+from merged m

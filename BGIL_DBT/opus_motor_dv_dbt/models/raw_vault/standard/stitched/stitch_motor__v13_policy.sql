@@ -58,6 +58,7 @@ with merged as (
         cast(null as varchar) as AUG_POLICY_HEADER__TRADE_CERTIFICATE_INDICATOR,
         cast(null as varchar) as AUG_POLICY_HEADER__UNDERLYING_BASIC_POLICY_REFERENCE,
         cast(null as varchar) as AUG_POLICY_HEADER__UNDERWRITING_YEAR,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_webservice_info_eqm') }} t0
@@ -72,6 +73,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.scrutiny_no as AUG_POLICY_HEADER__SCRUTINY_REFERENCE,
         null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_agency_mot_war_dtls') }} t0
@@ -90,6 +92,7 @@ with merged as (
         null, null,
         t0.type_of_transaction as AUG_POLICY_HEADER__POLICY_TRANSACTION_TYPE,
         null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_iib_sudars_policy_dtl_hst_qm') }} t0
@@ -108,6 +111,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.promotion_no as AUG_POLICY_HEADER__PROMOTION_REFERENCE,
         null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_webservice_info') }} t0
@@ -124,6 +128,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.object_id as AUG_POLICY_HEADER__RISK_OBJECT_INTERNAL_REFERENCE,
         null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_cover_extn') }} t0
@@ -138,6 +143,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null,
         t0.uw_year as AUG_POLICY_HEADER__UNDERWRITING_YEAR,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_od_tp_dtls') }} t0
@@ -154,6 +160,7 @@ with merged as (
         null, null, null, null, null, null, null,
         t0.object_id as AUG_POLICY_HEADER__RISK_OBJECT_INTERNAL_REFERENCE,
         null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_payc_dtls') }} t0
@@ -168,6 +175,7 @@ with merged as (
         null, null, null, null, null, null, null, null,
         t0.vertical_segment as AUG_POLICY_HEADER__BUSINESS_VERTICAL_SEGMENT,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_renewal_extn') }} t0
@@ -183,6 +191,7 @@ with merged as (
         null, null,
         t0.basic_mot_policy as AUG_POLICY_HEADER__UNDERLYING_BASIC_POLICY_REFERENCE,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_special_policy') }} t0
@@ -202,6 +211,7 @@ with merged as (
         t0.tradecerti_count as AUG_POLICY_HEADER__TRADE_CERTIFICATE_COUNT,
         t0.tradecerti_flag as AUG_POLICY_HEADER__TRADE_CERTIFICATE_INDICATOR,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_trade_dtls_extn') }} t0
@@ -220,6 +230,7 @@ with merged as (
         null, null, null, null, null,
         t0.ppid as AUG_POLICY_HEADER__PLAN_PARTNER_IDENTIFIER,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         10 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_war_child_dtls') }} t0
@@ -234,6 +245,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.object_id as AUG_POLICY_HEADER__RISK_OBJECT_INTERNAL_REFERENCE,
         null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         11 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_war_plans_extn') }} t0
@@ -248,6 +260,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.package_id as AUG_POLICY_HEADER__PRODUCT_PACKAGE_IDENTIFIER,
         null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         12 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_winback_dtls') }} t0
@@ -268,6 +281,7 @@ with merged as (
         null, null, null, null, null,
         t0.reference_id as AUG_POLICY_HEADER__INTERNAL_TRACKING_NUMBER,
         null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         13 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -285,6 +299,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null,
         t0.insured_name as AUG_POLICY_HEADER__INSURED_NAME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         14 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_paymotortheft_dtls') }} t0
@@ -322,5 +337,11 @@ select
     first_value(AUG_POLICY_HEADER__TRADE_CERTIFICATE_COUNT) ignore nulls over (partition by POLICY_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as AUG_POLICY_HEADER__TRADE_CERTIFICATE_COUNT,
     first_value(AUG_POLICY_HEADER__TRADE_CERTIFICATE_INDICATOR) ignore nulls over (partition by POLICY_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as AUG_POLICY_HEADER__TRADE_CERTIFICATE_INDICATOR,
     first_value(AUG_POLICY_HEADER__UNDERLYING_BASIC_POLICY_REFERENCE) ignore nulls over (partition by POLICY_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as AUG_POLICY_HEADER__UNDERLYING_BASIC_POLICY_REFERENCE,
-    first_value(AUG_POLICY_HEADER__UNDERWRITING_YEAR) ignore nulls over (partition by POLICY_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as AUG_POLICY_HEADER__UNDERWRITING_YEAR
-from merged
+    first_value(AUG_POLICY_HEADER__UNDERWRITING_YEAR) ignore nulls over (partition by POLICY_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as AUG_POLICY_HEADER__UNDERWRITING_YEAR,
+    -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
+    m.INC_JOB_UPDATED_AT,
+    -- SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED (ma_sat): one load time per POLICY_BK, so all its child rows share it
+    max(case when coalesce(m.AUG_POLICY_DISCOUNT_LOADING_APPLIED__BASIS_AMOUNT, m.AUG_POLICY_DISCOUNT_LOADING_APPLIED__ITEM_APPLIED_INDICATOR, m.AUG_POLICY_DISCOUNT_LOADING_APPLIED__RATING_FACTOR_VALUE) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.POLICY_BK) as AUG_POLICY_DISCOUNT_LOADING_APPLIED__LOAD_DATETIME
+from merged m

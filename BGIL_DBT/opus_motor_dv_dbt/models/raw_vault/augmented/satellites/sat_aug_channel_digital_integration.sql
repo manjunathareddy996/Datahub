@@ -1,5 +1,5 @@
 -- AUGMENTED track (not mapper-ratified) sat() for SAT_AUG_CHANNEL_DIGITAL_INTEGRATION (parent HUB_DISTRIBUTION_CHANNEL, history SCD2), fed whole from central view stitch_motor__v11_party.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__channel_digital_integration'

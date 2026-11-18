@@ -73,6 +73,7 @@ with merged as (
         cast(null as varchar) as RISK_OBJECT_VALUATION__DECLARED_VALUE,
         cast(null as varchar) as RISK_OBJECT_VALUATION__DEPRECIATION_PERCENTAGE,
         cast(null as varchar) as RISK_OBJECT_VALUATION__MARKET_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_dtls') }} t0
@@ -89,6 +90,7 @@ with merged as (
         null,
         t0.sys_vehicle_idv as RISK_MOTOR_IDV__COMPUTED_IDV,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_webservice_info_eqm') }} t0
@@ -109,6 +111,7 @@ with merged as (
         null,
         t0.tp_fin_type as RISK_OBJECT_INSURABLE_INTEREST__INTEREST_TYPE,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_ws_plan_details_eqm') }} t0
@@ -123,6 +126,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.veh_invoice_price as RISK_MOTOR_IDV__EX_SHOWROOM_PRICE,
         null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_agency_mot_war_dtls') }} t0
@@ -151,6 +155,7 @@ with merged as (
         t0.financercode as RISK_OBJECT_INSURABLE_INTEREST__INTEREST_HOLDER_REFERENCE,
         t0.aggrementtype as RISK_OBJECT_INSURABLE_INTEREST__INTEREST_TYPE,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_cvtp_ws_data') }} t0
@@ -172,6 +177,7 @@ with merged as (
         null, null, null, null, null, null, null,
         t0.vehicle_depreciation_cons as RISK_OBJECT_VALUATION__DEPRECIATION_PERCENTAGE,
         t0.vehicle_value as RISK_OBJECT_VALUATION__MARKET_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -189,6 +195,7 @@ with merged as (
         null, null,
         t0.hypothecated as RISK_OBJECT_INSURABLE_INTEREST__HYPOTHECATION_INDICATOR,
         null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -205,6 +212,7 @@ with merged as (
         null,
         t0.sys_vehicle_idv as RISK_MOTOR_IDV__COMPUTED_IDV,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_webservice_info') }} t0
@@ -225,6 +233,7 @@ with merged as (
         null,
         t0.tp_fin_type as RISK_OBJECT_INSURABLE_INTEREST__INTEREST_TYPE,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_plan_details') }} t0
@@ -245,6 +254,7 @@ with merged as (
         null, null, null, null,
         t0.vehicle_iev as RISK_MOTOR_IDV__TOTAL_IDV,
         null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -262,6 +272,7 @@ with merged as (
         null,
         t0.financier_name as RISK_OBJECT_INSURABLE_INTEREST__FINANCIER_NAME,
         null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -277,6 +288,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null,
         t0.invoice_amount as RISK_OBJECT_VALUATION__DECLARED_VALUE,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -292,6 +304,7 @@ with merged as (
         null, null, null, null,
         t0.vehicle_age as RISK_MOTOR_IDV__VEHICLE_AGE,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_renewal_extn') }} t0
@@ -309,6 +322,7 @@ with merged as (
         null,
         t0.financier_name as RISK_OBJECT_INSURABLE_INTEREST__FINANCIER_NAME,
         null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_renewal_extn') }} t0
@@ -331,6 +345,7 @@ with merged as (
         null,
         t0.vehicle_age as RISK_MOTOR_IDV__VEHICLE_AGE,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         10 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_renewal_hist') }} t0
@@ -346,6 +361,7 @@ with merged as (
         null, null, null,
         t0.veh_idv as RISK_MOTOR_IDV__TOTAL_IDV,
         null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         11 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_rnw_loader_data') }} t0
@@ -362,6 +378,7 @@ with merged as (
         null, null, null, null, null, null, null, null,
         t0.veh_idv as RISK_MOTOR_IDV__COMPUTED_IDV,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         12 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_winback_dtls') }} t0
@@ -380,6 +397,7 @@ with merged as (
         null,
         t0.system_iev as RISK_MOTOR_IDV__COMPUTED_IDV,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         13 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -397,6 +415,7 @@ with merged as (
         null,
         t0.financier_name as RISK_OBJECT_INSURABLE_INTEREST__FINANCIER_NAME,
         null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         13 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -413,6 +432,7 @@ with merged as (
         t0.vehicle_idv as RISK_MOTOR_IDV__COMPUTED_IDV,
         t0.further_dep_rate as RISK_MOTOR_IDV__DEPRECIATION_PERCENTAGE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         14 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_scr_mot_veh_dtls') }} t0
@@ -441,6 +461,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.veh_age as RISK_MOTOR_IDV__VEHICLE_AGE,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         15 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wap_mot_add_qstn_dtls') }} t0
@@ -488,5 +509,11 @@ select
     first_value(RISK_OBJECT_INSURABLE_INTEREST__INTEREST_TYPE) ignore nulls over (partition by RISK_OBJECT_BK, RISK_OBJECT_INSURABLE_INTEREST__INTEREST_TYPE_CK, RISK_OBJECT_INSURABLE_INTEREST__INTEREST_HOLDER_REFERENCE_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_OBJECT_INSURABLE_INTEREST__INTEREST_TYPE,
     first_value(RISK_OBJECT_VALUATION__DECLARED_VALUE) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_OBJECT_VALUATION__DECLARED_VALUE,
     first_value(RISK_OBJECT_VALUATION__DEPRECIATION_PERCENTAGE) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_OBJECT_VALUATION__DEPRECIATION_PERCENTAGE,
-    first_value(RISK_OBJECT_VALUATION__MARKET_VALUE) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_OBJECT_VALUATION__MARKET_VALUE
-from merged
+    first_value(RISK_OBJECT_VALUATION__MARKET_VALUE) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_OBJECT_VALUATION__MARKET_VALUE,
+    -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
+    m.INC_JOB_UPDATED_AT,
+    -- SAT_RISK_OBJECT_INSURABLE_INTEREST (ma_sat): one load time per RISK_OBJECT_BK, so all its child rows share it
+    max(case when coalesce(m.RISK_OBJECT_INSURABLE_INTEREST__FINANCIER_NAME, m.RISK_OBJECT_INSURABLE_INTEREST__HYPOTHECATION_INDICATOR, m.RISK_OBJECT_INSURABLE_INTEREST__INTEREST_HOLDER_REFERENCE, m.RISK_OBJECT_INSURABLE_INTEREST__INTEREST_TYPE) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.RISK_OBJECT_BK) as RISK_OBJECT_INSURABLE_INTEREST__LOAD_DATETIME
+from merged m

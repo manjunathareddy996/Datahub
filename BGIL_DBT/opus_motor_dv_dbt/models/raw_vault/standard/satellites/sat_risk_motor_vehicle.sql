@@ -2,7 +2,7 @@
 -- SINGLE WRITER (G-3) BA_QUOTE_MOT_DTLS | SAT_RISK_MOTOR_VEHICLE | Registration Number | None: emits VEHICLE_REG_NO; withheld REG_NO_PART1, REG_NO_PART2, REG_NO_PART3, REG_NO_PART4
 -- SINGLE WRITER (G-3) BJAZ_SCR_MOT_VEH_DTLS | SAT_RISK_MOTOR_VEHICLE | Registration Number | None: emits REGISTRATION_NO; withheld REG_NO_PART1, REG_NO_PART2, REG_NO_PART3, REG_NO_PART4
 -- SINGLE WRITER (G-3) BJAZ_WAP_MOT_ADD_QSTN_DTLS | SAT_RISK_MOTOR_VEHICLE | Odometer Reading | None: emits KM_READING; withheld ODMETER
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__risk_motor_vehicle'

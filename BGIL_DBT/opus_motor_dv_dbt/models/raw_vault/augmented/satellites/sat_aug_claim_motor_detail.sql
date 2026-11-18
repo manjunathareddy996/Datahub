@@ -1,5 +1,5 @@
 -- AUGMENTED track (not mapper-ratified) sat() for SAT_AUG_CLAIM_MOTOR_DETAIL (parent HUB_CLAIM, history SCD2), fed whole from central view stitch_motor__v01_claim.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__claim_motor_detail'

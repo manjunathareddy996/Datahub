@@ -72,6 +72,7 @@ with merged as (
         cast(null as varchar) as PRODUCT_UW_RULE__ACTION,
         cast(null as varchar) as PRODUCT_UW_RULE__AUTHORITY_LEVEL_REQUIRED,
         cast(null as varchar) as PRODUCT_UW_RULE__EFFECTIVE_DATE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_webservice_info_eqm') }} t0
@@ -87,6 +88,7 @@ with merged as (
         t0.pack_name as AUG_PRODUCT_DEFINITION__PRODUCT_PACKAGE_NAME,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_webservice_info') }} t0
@@ -104,6 +106,7 @@ with merged as (
         t0.tenure as AUG_PRODUCT_DEFINITION__PRODUCT_TENURE_YEARS,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_prod_uin_mapping') }} t0
@@ -126,6 +129,7 @@ with merged as (
         t0.veh_type_code as AUG_PRODUCT_DISCOUNT_LOADING__APPLICABLE_VEHICLE_TYPE_CODE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_stp_prem_summ_extn') }} t0
@@ -142,6 +146,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.status as AUG_PRODUCT_UW_RULE__RULE_STATUS,
         null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_rta_status_master') }} t0
@@ -158,6 +163,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.business_type as AUG_PRODUCT_UW_RULE__APPLICABLE_BUSINESS_TYPE,
         null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_rta_status_master') }} t0
@@ -174,6 +180,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.vehicle_code as AUG_PRODUCT_UW_RULE__APPLICABLE_VEHICLE_CODE,
         null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_rta_status_master') }} t0
@@ -190,6 +197,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.rtasts_id as AUG_PRODUCT_UW_RULE__CONFIGURATION_ROW_REFERENCE,
         null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_rta_status_master') }} t0
@@ -206,6 +214,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.vehicle_type_code as AUG_PRODUCT_UW_RULE__APPLICABLE_VEHICLE_TYPE_CODE,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_rta_status_master') }} t0
@@ -222,6 +231,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.vehicle_type_code as AUG_PRODUCT_UW_RULE__APPLICABLE_VEHICLE_TYPE_CODE,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_vehicle_type_master_act') }} t0
@@ -238,6 +248,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.min_rid as AUG_PRODUCT_UW_RULE__MINIMUM_RID_VALUE,
         null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_vehicle_type_master_act') }} t0
@@ -254,6 +265,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.active_yn as AUG_PRODUCT_UW_RULE__RULE_ACTIVE_INDICATOR,
         null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_vehicle_type_master_act') }} t0
@@ -271,6 +283,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.effective_date as PRODUCT_UW_RULE__EFFECTIVE_DATE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_vehicle_type_master_act') }} t0
@@ -288,6 +301,7 @@ with merged as (
         t0.veh_type_code as AUG_PRODUCT_DISCOUNT_LOADING__APPLICABLE_VEHICLE_TYPE_CODE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wap_mot_stp_rate_summ') }} t0
@@ -305,6 +319,7 @@ with merged as (
         t0.veh_type_code as AUG_PRODUCT_DISCOUNT_LOADING__APPLICABLE_VEHICLE_TYPE_CODE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_ws_mot_stp_rate_summ') }} t0
@@ -321,6 +336,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.end_date as AUG_PRODUCT_UW_RULE__EXPIRY_DATE,
         null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__cvtp_guidelines') }} t0
@@ -337,6 +353,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.vehicle_model as AUG_PRODUCT_UW_RULE__APPLICABILITY_VEHICLE_MODEL,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__cvtp_guidelines') }} t0
@@ -353,6 +370,7 @@ with merged as (
         null, null, null, null,
         t0.engine_capacity_type as AUG_PRODUCT_UW_RULE__APPLICABILITY_ENGINE_CAPACITY_TYPE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__cvtp_guidelines') }} t0
@@ -370,6 +388,7 @@ with merged as (
         t0.engine_capacity_value_from as AUG_PRODUCT_UW_RULE__APPLICABILITY_ENGINE_CAPACITY_FROM,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__cvtp_guidelines') }} t0
@@ -386,6 +405,7 @@ with merged as (
         null, null, null,
         t0.engine_capacity_value_to as AUG_PRODUCT_UW_RULE__APPLICABILITY_ENGINE_CAPACITY_TO,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__cvtp_guidelines') }} t0
@@ -402,6 +422,7 @@ with merged as (
         null, null, null, null, null,
         t0.fuel_type as AUG_PRODUCT_UW_RULE__APPLICABILITY_FUEL_TYPE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__cvtp_guidelines') }} t0
@@ -418,6 +439,7 @@ with merged as (
         t0.business_type as AUG_PRODUCT_UW_RULE__APPLICABILITY_BUSINESS_TYPE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__cvtp_guidelines') }} t0
@@ -434,6 +456,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null,
         t0.vehicle_age_from as AUG_PRODUCT_UW_RULE__APPLICABILITY_VEHICLE_AGE_FROM,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__cvtp_guidelines') }} t0
@@ -450,6 +473,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null,
         t0.vehicle_age_to as AUG_PRODUCT_UW_RULE__APPLICABILITY_VEHICLE_AGE_TO,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__cvtp_guidelines') }} t0
@@ -466,6 +490,7 @@ with merged as (
         null, null, null, null, null, null, null, null,
         t0.policy_term as AUG_PRODUCT_UW_RULE__APPLICABILITY_POLICY_TERM,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__cvtp_guidelines') }} t0
@@ -483,6 +508,7 @@ with merged as (
         t0.dumper_or_tipper_flag as AUG_PRODUCT_UW_RULE__APPLICABILITY_DUMPER_OR_TIPPER_INDICATOR,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__cvtp_guidelines') }} t0
@@ -499,6 +525,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null,
         t0.rta_cluster as AUG_PRODUCT_UW_RULE__APPLICABILITY_RTA_CLUSTER,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__cvtp_guidelines') }} t0
@@ -515,6 +542,7 @@ with merged as (
         null, null, null, null, null, null, null,
         t0.policy_plan as AUG_PRODUCT_UW_RULE__APPLICABILITY_POLICY_PLAN,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__cvtp_guidelines') }} t0
@@ -531,6 +559,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.vehicle_type as AUG_PRODUCT_UW_RULE__APPLICABILITY_VEHICLE_TYPE,
         null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__cvtp_guidelines') }} t0
@@ -547,6 +576,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null,
         t0.vehicle_make as AUG_PRODUCT_UW_RULE__APPLICABILITY_VEHICLE_MAKE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__cvtp_guidelines') }} t0
@@ -563,6 +593,7 @@ with merged as (
         null, null, null, null, null, null,
         t0.issuance_source as AUG_PRODUCT_UW_RULE__APPLICABILITY_ISSUANCE_SOURCE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__cvtp_guidelines') }} t0
@@ -578,6 +609,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.referral_to as PRODUCT_UW_RULE__AUTHORITY_LEVEL_REQUIRED,
         t0.start_date as PRODUCT_UW_RULE__EFFECTIVE_DATE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__cvtp_guidelines') }} t0
@@ -594,6 +626,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.end_date as AUG_PRODUCT_UW_RULE__EXPIRY_DATE,
         null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__rta_cluster_preferred_decline') }} t0
@@ -610,6 +643,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.vehicle_type as AUG_PRODUCT_UW_RULE__APPLICABLE_VEHICLE_TYPE_CODE,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__rta_cluster_preferred_decline') }} t0
@@ -626,6 +660,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.policy_plan as AUG_PRODUCT_UW_RULE__APPLICABLE_POLICY_PLAN_CODE,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__rta_cluster_preferred_decline') }} t0
@@ -642,6 +677,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.status as AUG_PRODUCT_UW_RULE__RULE_STATUS,
         null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__rta_cluster_preferred_decline') }} t0
@@ -658,6 +694,7 @@ with merged as (
         t0.config as PRODUCT_UW_RULE__ACTION,
         null,
         t0.start_date as PRODUCT_UW_RULE__EFFECTIVE_DATE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__rta_cluster_preferred_decline') }} t0
@@ -710,5 +747,19 @@ select
     PRODUCT_UW_RULE__ACTIVE_SEQUENCE_NUMBER_CK,
     first_value(PRODUCT_UW_RULE__ACTION) ignore nulls over (partition by PRODUCT_BK, PRODUCT_UW_RULE__ACTIVE_SEQUENCE_NUMBER_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as PRODUCT_UW_RULE__ACTION,
     first_value(PRODUCT_UW_RULE__AUTHORITY_LEVEL_REQUIRED) ignore nulls over (partition by PRODUCT_BK, PRODUCT_UW_RULE__ACTIVE_SEQUENCE_NUMBER_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as PRODUCT_UW_RULE__AUTHORITY_LEVEL_REQUIRED,
-    first_value(PRODUCT_UW_RULE__EFFECTIVE_DATE) ignore nulls over (partition by PRODUCT_BK, PRODUCT_UW_RULE__ACTIVE_SEQUENCE_NUMBER_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as PRODUCT_UW_RULE__EFFECTIVE_DATE
-from merged
+    first_value(PRODUCT_UW_RULE__EFFECTIVE_DATE) ignore nulls over (partition by PRODUCT_BK, PRODUCT_UW_RULE__ACTIVE_SEQUENCE_NUMBER_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as PRODUCT_UW_RULE__EFFECTIVE_DATE,
+    -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
+    m.INC_JOB_UPDATED_AT,
+    -- SAT_AUG_PRODUCT_DISCOUNT_LOADING (ma_sat): one load time per PRODUCT_BK, so all its child rows share it
+    max(case when coalesce(m.AUG_PRODUCT_DISCOUNT_LOADING__APPLICABLE_CLAIM_PATTERN_CODE, m.AUG_PRODUCT_DISCOUNT_LOADING__APPLICABLE_COVER_PACKAGE_CODE, m.AUG_PRODUCT_DISCOUNT_LOADING__APPLICABLE_VEHICLE_TYPE_CODE) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.PRODUCT_BK) as AUG_PRODUCT_DISCOUNT_LOADING__LOAD_DATETIME,
+    -- SAT_AUG_PRODUCT_UW_RULE (ma_sat): one load time per PRODUCT_BK, so all its child rows share it
+    max(case when coalesce(m.AUG_PRODUCT_UW_RULE__APPLICABILITY_BUSINESS_TYPE, m.AUG_PRODUCT_UW_RULE__APPLICABILITY_DUMPER_OR_TIPPER_INDICATOR, m.AUG_PRODUCT_UW_RULE__APPLICABILITY_ENGINE_CAPACITY_FROM, m.AUG_PRODUCT_UW_RULE__APPLICABILITY_ENGINE_CAPACITY_TO, m.AUG_PRODUCT_UW_RULE__APPLICABILITY_ENGINE_CAPACITY_TYPE, m.AUG_PRODUCT_UW_RULE__APPLICABILITY_FUEL_TYPE, m.AUG_PRODUCT_UW_RULE__APPLICABILITY_ISSUANCE_SOURCE, m.AUG_PRODUCT_UW_RULE__APPLICABILITY_POLICY_PLAN, m.AUG_PRODUCT_UW_RULE__APPLICABILITY_POLICY_TERM, m.AUG_PRODUCT_UW_RULE__APPLICABILITY_RTA_CLUSTER, m.AUG_PRODUCT_UW_RULE__APPLICABILITY_VEHICLE_AGE_FROM, m.AUG_PRODUCT_UW_RULE__APPLICABILITY_VEHICLE_AGE_TO, m.AUG_PRODUCT_UW_RULE__APPLICABILITY_VEHICLE_MAKE, m.AUG_PRODUCT_UW_RULE__APPLICABILITY_VEHICLE_MODEL, m.AUG_PRODUCT_UW_RULE__APPLICABILITY_VEHICLE_TYPE, m.AUG_PRODUCT_UW_RULE__APPLICABLE_BUSINESS_TYPE, m.AUG_PRODUCT_UW_RULE__APPLICABLE_POLICY_PLAN_CODE, m.AUG_PRODUCT_UW_RULE__APPLICABLE_VEHICLE_CODE, m.AUG_PRODUCT_UW_RULE__APPLICABLE_VEHICLE_TYPE_CODE, m.AUG_PRODUCT_UW_RULE__CONFIGURATION_ROW_REFERENCE, m.AUG_PRODUCT_UW_RULE__EXPIRY_DATE, m.AUG_PRODUCT_UW_RULE__MINIMUM_RID_VALUE, m.AUG_PRODUCT_UW_RULE__RULE_ACTIVE_INDICATOR, m.AUG_PRODUCT_UW_RULE__RULE_STATUS) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.PRODUCT_BK) as AUG_PRODUCT_UW_RULE__LOAD_DATETIME,
+    -- SAT_PRODUCT_UW_RULE (ma_sat): one load time per PRODUCT_BK, so all its child rows share it
+    max(case when coalesce(m.PRODUCT_UW_RULE__ACTION, m.PRODUCT_UW_RULE__AUTHORITY_LEVEL_REQUIRED, m.PRODUCT_UW_RULE__EFFECTIVE_DATE) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.PRODUCT_BK) as PRODUCT_UW_RULE__LOAD_DATETIME
+from merged m

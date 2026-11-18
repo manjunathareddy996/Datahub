@@ -1,5 +1,5 @@
 -- Standard sat() for SAT_COMMON_ADMIN_GEOGRAPHY (parent HUB_LOCATION, history SCD2), fed whole from central view stitch_motor__v15_policy.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__common_admin_geography'

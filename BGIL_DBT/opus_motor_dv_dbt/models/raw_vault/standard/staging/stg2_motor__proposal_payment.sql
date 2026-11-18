@@ -13,7 +13,7 @@ hashed_columns:
 derived_columns:
   PROPOSAL_NK: "case when PROPOSAL_PAYMENT__PAYMENT_MODE is not null then 'HUB_PROPOSAL|' || PROPOSAL_BK end"
   PAYMENT_MODE: 'PROPOSAL_PAYMENT__PAYMENT_MODE'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!stitch_motor__v06_distribution_channel'
 {%- endset -%}
 

@@ -13,7 +13,7 @@ hashed_columns:
 derived_columns:
   LOSS_EVENT_NK: "case when AUG_LOSS_LOCATION_ADDRESS__LOCALITY is not null then 'HUB_LOSS_EVENT|' || LOSS_EVENT_BK end"
   LOCALITY: 'AUG_LOSS_LOCATION_ADDRESS__LOCALITY'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!stitch_motor__v02_claim'
 {%- endset -%}
 

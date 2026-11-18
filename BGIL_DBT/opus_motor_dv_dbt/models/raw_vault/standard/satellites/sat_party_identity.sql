@@ -1,6 +1,6 @@
 -- Standard sat() for SAT_PARTY_IDENTITY (parent HUB_PARTY, history SCD2), fed whole from central view stitch_motor__v09_party.
 -- SINGLE WRITER (G-3) BJAZ_MOT_ONLINE_POL_DTLS | SAT_PARTY_IDENTITY | Gender Code | proposer: emits GENDER; withheld YOUR_GENDER
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__party_identity'

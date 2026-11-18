@@ -142,6 +142,7 @@ with merged as (
         cast(null as varchar) as LNK_PARTY_ROLE_CORE__ROLE_CODE_CK,
         cast(null as varchar) as LNK_PARTY_ROLE_CORE__ROLE_SEQUENCE_CK,
         cast(null as varchar) as LNK_PARTY_ROLE_CORE__ROLE_START_DATE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_base_mot_ext') }} t0
@@ -165,6 +166,7 @@ with merged as (
         null, null, null, null,
         t0.workshop_status as CLAIM_MOTOR_DETAIL__WORKSHOP_REPAIR_STATUS,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_motor_intim_details') }} t0
@@ -182,6 +184,7 @@ with merged as (
         null, null, null, null, null, null, null,
         t0.vehicle_parked as CLAIM_MOTOR_DETAIL__VEHICLE_PARKED_INDICATOR,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_mot_tax_dtls') }} t0
@@ -225,6 +228,7 @@ with merged as (
         coalesce(t0.external_bidder1_amt, t0.external_bidder2_amt, t0.external_bidder3_amt, t0.highest_bidder_amount) as CLAIM_SALVAGE_BIDDER__BID_AMOUNT,
         coalesce(t0.external_rcvd_date1, t0.external_rcvd_date2, t0.external_rcvd_date3) as CLAIM_SALVAGE_BIDDER__BID_DATE,
         null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -244,6 +248,7 @@ with merged as (
         'ADVOCATE' as LNK_PARTY_ROLE_CORE__ROLE_CODE_CK,
         null,
         t0.adv_assign_date as LNK_PARTY_ROLE_CORE__ROLE_START_DATE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -267,6 +272,7 @@ with merged as (
         t0.wheel_rim as CLAIM_MOTOR_DETAIL__WHEEL_RIM_DAMAGE_INDICATOR,
         t0.windshield_code as CLAIM_MOTOR_DETAIL__WINDSHIELD_DAMAGE_CODE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_clm_cdc_dtls') }} t0
@@ -317,6 +323,7 @@ with merged as (
         t0.recovery_amt as FINTXN_CLAIM_PAYMENT__RECOVERY_AMOUNT,
         t0.salvage_amt as FINTXN_CLAIM_PAYMENT__SALVAGE_REALISATION_AMOUNT,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_clm_trans_extn') }} t0
@@ -336,6 +343,7 @@ with merged as (
         null,
         t0.available_rsv_amt as CLAIM_RESERVE__OUTSTANDING_RESERVE_AMOUNT,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_clm_trans_extn') }} t0
@@ -367,6 +375,7 @@ with merged as (
         null,
         t0.paid_amount as CLAIM_SETTLEMENT__SETTLEMENT_AMOUNT,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_paymotortheft_dtls') }} t0
@@ -406,6 +415,7 @@ with merged as (
         null, null, null,
         t0.settlement_type as CLAIM_SETTLEMENT__SETTLEMENT_TYPE,
         null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wb_clm_base_mot_ext') }} t0
@@ -433,6 +443,7 @@ with merged as (
         t0.estimation_no as CLAIM_MOTOR_DETAIL__REPAIR_ESTIMATE_REFERENCE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_ws_motclm_details') }} t0
@@ -451,6 +462,7 @@ with merged as (
         'PROVISION_AMT' as CLAIM_RESERVE__RESERVE_HEAD_CK,
         t0.provision_amt as CLAIM_RESERVE__CURRENT_RESERVE_AMOUNT,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_ws_motclm_details') }} t0
@@ -473,6 +485,7 @@ with merged as (
         t0.painting_asd_amt as CLAIM_MOTOR_DETAIL__PAINT_AMOUNT,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_ws_motclm_survey_dtls') }} t0
@@ -585,5 +598,19 @@ select
     first_value(FINTXN_CLAIM_PAYMENT__SALVAGE_REALISATION_AMOUNT) ignore nulls over (partition by FINANCIAL_TRANSACTION_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as FINTXN_CLAIM_PAYMENT__SALVAGE_REALISATION_AMOUNT,
     LNK_PARTY_ROLE_CORE__ROLE_CODE_CK,
     LNK_PARTY_ROLE_CORE__ROLE_SEQUENCE_CK,
-    first_value(LNK_PARTY_ROLE_CORE__ROLE_START_DATE) ignore nulls over (partition by PARTY_BK, LNK_PARTY_ROLE_CORE__ROLE_CODE_CK, LNK_PARTY_ROLE_CORE__ROLE_SEQUENCE_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as LNK_PARTY_ROLE_CORE__ROLE_START_DATE
-from merged
+    first_value(LNK_PARTY_ROLE_CORE__ROLE_START_DATE) ignore nulls over (partition by PARTY_BK, LNK_PARTY_ROLE_CORE__ROLE_CODE_CK, LNK_PARTY_ROLE_CORE__ROLE_SEQUENCE_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as LNK_PARTY_ROLE_CORE__ROLE_START_DATE,
+    -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
+    m.INC_JOB_UPDATED_AT,
+    -- SAT_CLAIM_RESERVE (ma_sat): one load time per CLAIM_BK, so all its child rows share it
+    max(case when coalesce(m.CLAIM_RESERVE__CURRENT_RESERVE_AMOUNT, m.CLAIM_RESERVE__OUTSTANDING_RESERVE_AMOUNT) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.CLAIM_BK) as CLAIM_RESERVE__LOAD_DATETIME,
+    -- SAT_CLAIM_SALVAGE_BIDDER (ma_sat): one load time per CLAIM_BK, so all its child rows share it
+    max(case when coalesce(m.CLAIM_SALVAGE_BIDDER__BIDDER_NAME, m.CLAIM_SALVAGE_BIDDER__BID_AMOUNT, m.CLAIM_SALVAGE_BIDDER__BID_DATE) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.CLAIM_BK) as CLAIM_SALVAGE_BIDDER__LOAD_DATETIME,
+    -- SAT_LNK_PARTY_ROLE_CORE (ma_sat): one load time per PARTY_BK, so all its child rows share it
+    max(case when m.LNK_PARTY_ROLE_CORE__ROLE_START_DATE is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.PARTY_BK) as LNK_PARTY_ROLE_CORE__LOAD_DATETIME
+from merged m

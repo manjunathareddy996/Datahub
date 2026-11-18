@@ -14,7 +14,7 @@ derived_columns:
   PARTY_BK: 'PARTY_BK'
   PARTY_NK: "'HUB_PARTY|' || PARTY_BK"
   PARTY_ROLE_NK: "case when ROLE_TYPE_CODE is not null then 'LNK_PARTY_ROLE|' || PARTY_BK || '|' || ROLE_TYPE_CODE end"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!stitch_motor__v07_location'
 {%- endset -%}
 

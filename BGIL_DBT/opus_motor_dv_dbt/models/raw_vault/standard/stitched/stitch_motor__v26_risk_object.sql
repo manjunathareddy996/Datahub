@@ -123,6 +123,7 @@ with merged as (
         t0.vehicle_subtype_code as RISK_MOTOR_VEHICLE__VEHICLE_SUB_CATEGORY,
         cast(null as varchar) as RISK_MOTOR_VEHICLE__VEHICLE_SUB_CLASS,
         t0.veh_usage_type as RISK_MOTOR_VEHICLE__VEHICLE_USAGE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_dtls') }} t0
@@ -159,6 +160,7 @@ with merged as (
         null, null,
         t0.vehicle_subtype_code as RISK_MOTOR_VEHICLE__VEHICLE_SUB_CLASS,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_webservice_info_eqm') }} t0
@@ -204,6 +206,7 @@ with merged as (
         t0.vehicle_subtype_code as RISK_MOTOR_VEHICLE__VEHICLE_SUB_CATEGORY,
         t0.vehicle_subtype as RISK_MOTOR_VEHICLE__VEHICLE_SUB_CLASS,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_ws_plan_details_eqm') }} t0
@@ -236,6 +239,7 @@ with merged as (
         t0.vehicle_type as RISK_MOTOR_VEHICLE__VEHICLE_CLASS,
         t0.invoice_no as RISK_MOTOR_VEHICLE__VEHICLE_INVOICE_NUMBER,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_agency_mot_war_dtls') }} t0
@@ -289,6 +293,7 @@ with merged as (
         t0.cvmisctype as RISK_MOTOR_VEHICLE__VEHICLE_SUB_CATEGORY,
         t0.vehiclesubclass as RISK_MOTOR_VEHICLE__VEHICLE_SUB_CLASS,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_cvtp_ws_data') }} t0
@@ -306,6 +311,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.class_of_vehicle as RISK_MOTOR_VEHICLE__VEHICLE_CLASS,
         null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_iib_sudars_policy_dtl_hst_qm') }} t0
@@ -323,6 +329,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.registration_date as RISK_MOTOR_VEHICLE__REGISTRATION_DATE,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -359,6 +366,7 @@ with merged as (
         null, null,
         t0.vehicle_subtype_code as RISK_MOTOR_VEHICLE__VEHICLE_SUB_CLASS,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_webservice_info') }} t0
@@ -404,6 +412,7 @@ with merged as (
         t0.vehicle_subtype_code as RISK_MOTOR_VEHICLE__VEHICLE_SUB_CATEGORY,
         t0.vehicle_subtype as RISK_MOTOR_VEHICLE__VEHICLE_SUB_CLASS,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_plan_details') }} t0
@@ -447,6 +456,7 @@ with merged as (
         null,
         t0.vehicle_subtype_code as RISK_MOTOR_VEHICLE__VEHICLE_SUB_CATEGORY,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -477,6 +487,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null,
         t0.vehicle_subtype as RISK_MOTOR_VEHICLE__VEHICLE_SUB_CLASS,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         10 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_renewal_extn') }} t0
@@ -508,6 +519,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null,
         t0.vehicle_subtype as RISK_MOTOR_VEHICLE__VEHICLE_SUB_CLASS,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         11 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_renewal_hist') }} t0
@@ -537,6 +549,7 @@ with merged as (
         t0.veh_type as RISK_MOTOR_VEHICLE__VEHICLE_CATEGORY_CODE,
         t0.veh_class_desc as RISK_MOTOR_VEHICLE__VEHICLE_CLASS,
         null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         12 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_rnw_validate_veh_dtls') }} t0
@@ -566,6 +579,7 @@ with merged as (
         t0.veh_type as RISK_MOTOR_VEHICLE__VEHICLE_CATEGORY_CODE,
         t0.veh_class_desc as RISK_MOTOR_VEHICLE__VEHICLE_CLASS,
         null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         13 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_rn_cls_veh_dtls_hist') }} t0
@@ -597,6 +611,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null,
         t0.invoice_no as RISK_MOTOR_VEHICLE__VEHICLE_INVOICE_NUMBER,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         14 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_war_child_dtls') }} t0
@@ -621,6 +636,7 @@ with merged as (
         null, null, null, null,
         t0.sub_type_code as RISK_MOTOR_VEHICLE__VEHICLE_SUB_CATEGORY,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         15 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_winback_dtls') }} t0
@@ -660,6 +676,7 @@ with merged as (
         null, null,
         t0.vehicle_subtype_code as RISK_MOTOR_VEHICLE__VEHICLE_SUB_CLASS,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         16 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -684,6 +701,7 @@ with merged as (
         null, null, null, null, null, null, null, null,
         t0.vehicle_type as RISK_MOTOR_VEHICLE__VEHICLE_CLASS,
         null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         17 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_paymotortheft_dtls') }} t0
@@ -737,6 +755,7 @@ with merged as (
         null, null,
         t0.vehicle_subtype_code as RISK_MOTOR_VEHICLE__VEHICLE_SUB_CATEGORY,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         18 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_scr_mot_veh_dtls') }} t0
@@ -754,6 +773,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null,
         t0.reg_no as RISK_MOTOR_VEHICLE__REGISTRATION_NUMBER,
         null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         19 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_vahan_auto_endt_log') }} t0
@@ -784,6 +804,7 @@ with merged as (
         null, null, null, null, null, null, null, null,
         t0.vehicle_class as RISK_MOTOR_VEHICLE__VEHICLE_CLASS,
         null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         20 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_vahan_motor_dtls') }} t0
@@ -803,6 +824,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null,
         t0.vehicle_type as RISK_MOTOR_VEHICLE__VEHICLE_CLASS,
         null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         21 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wap_mot_add_qstn_dtls') }} t0
@@ -823,6 +845,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null,
         t0.registration_no as RISK_MOTOR_VEHICLE__REGISTRATION_NUMBER,
         null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         22 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__vehicle_block_master') }} t0
@@ -916,5 +939,7 @@ select
     first_value(RISK_MOTOR_VEHICLE__VEHICLE_INVOICE_NUMBER) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_MOTOR_VEHICLE__VEHICLE_INVOICE_NUMBER,
     first_value(RISK_MOTOR_VEHICLE__VEHICLE_SUB_CATEGORY) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_MOTOR_VEHICLE__VEHICLE_SUB_CATEGORY,
     first_value(RISK_MOTOR_VEHICLE__VEHICLE_SUB_CLASS) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_MOTOR_VEHICLE__VEHICLE_SUB_CLASS,
-    first_value(RISK_MOTOR_VEHICLE__VEHICLE_USAGE) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_MOTOR_VEHICLE__VEHICLE_USAGE
-from merged
+    first_value(RISK_MOTOR_VEHICLE__VEHICLE_USAGE) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_MOTOR_VEHICLE__VEHICLE_USAGE,
+    -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
+    m.INC_JOB_UPDATED_AT
+from merged m

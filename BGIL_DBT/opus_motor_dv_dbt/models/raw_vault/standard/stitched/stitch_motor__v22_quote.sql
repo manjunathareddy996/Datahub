@@ -62,6 +62,7 @@ with merged as (
         cast(null as varchar) as AUG_RISK_MOTOR_USAGE_PLAN__PLAN_ELECTION_INDICATOR,
         cast(null as varchar) as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         cast(null as varchar) as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_part_quote_mot_prem') }} t0
@@ -78,6 +79,7 @@ with merged as (
         'OD' as AUG_QUOTE_PREMIUM_HEAD__SECTION_CK,
         t0.od as AUG_QUOTE_PREMIUM_HEAD__NET_HEAD_PREMIUM,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_part_quote_mot_prem') }} t0
@@ -94,6 +96,7 @@ with merged as (
         'ACT' as AUG_QUOTE_PREMIUM_HEAD__SECTION_CK,
         t0.act as AUG_QUOTE_PREMIUM_HEAD__NET_HEAD_PREMIUM,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_part_quote_mot_prem') }} t0
@@ -110,6 +113,7 @@ with merged as (
         'NET' as AUG_QUOTE_PREMIUM_HEAD__SECTION_CK,
         t0.net as AUG_QUOTE_PREMIUM_HEAD__NET_HEAD_PREMIUM,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_part_quote_mot_prem') }} t0
@@ -135,6 +139,7 @@ with merged as (
         t0.cover_prem as AUG_QUOTE_COVERAGE_LINE__PREMIUM_FOR_COVERAGE,
         t0.sgst_amt as AUG_QUOTE_COVERAGE_LINE__SGST_AMOUNT,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_covers') }} t0
@@ -151,6 +156,7 @@ with merged as (
         'ADDON' as AUG_QUOTE_PREMIUM_HEAD__SECTION_CK,
         t0.payc_premium as AUG_QUOTE_PREMIUM_HEAD__NET_HEAD_PREMIUM,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_dtls') }} t0
@@ -167,6 +173,7 @@ with merged as (
         'PAY_AS_YOU_CONSUME_PLAN_A' as AUG_RISK_MOTOR_USAGE_PLAN__PLAN_CODE_CK,
         t0.payc_plan_a as AUG_RISK_MOTOR_USAGE_PLAN__PLAN_ELECTION_INDICATOR,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_dtls') }} t0
@@ -183,6 +190,7 @@ with merged as (
         'PAY_AS_YOU_GO_PLAN_B' as AUG_RISK_MOTOR_USAGE_PLAN__PLAN_CODE_CK,
         t0.payg_plan_b as AUG_RISK_MOTOR_USAGE_PLAN__PLAN_ELECTION_INDICATOR,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_dtls') }} t0
@@ -199,6 +207,7 @@ with merged as (
         'PAY_AS_YOU_GO_PLAN_C' as AUG_RISK_MOTOR_USAGE_PLAN__PLAN_CODE_CK,
         t0.payg_plan_c as AUG_RISK_MOTOR_USAGE_PLAN__PLAN_ELECTION_INDICATOR,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_dtls') }} t0
@@ -214,6 +223,7 @@ with merged as (
         null, null, null, null, null, null,
         'OWNER_SR_FACTOR' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.owner_sr_factor as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_dtls') }} t0
@@ -229,6 +239,7 @@ with merged as (
         null, null, null, null, null, null,
         'CHDH_FACTOR' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.chdh_factor as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_dtls') }} t0
@@ -244,6 +255,7 @@ with merged as (
         null, null, null, null, null, null,
         'AGE_FACTOR' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.age_factor as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_dtls') }} t0
@@ -259,6 +271,7 @@ with merged as (
         null, null, null, null, null, null,
         'PRODUCT_CODE_FACTOR' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.product_code_factor as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_dtls') }} t0
@@ -274,6 +287,7 @@ with merged as (
         null, null, null, null, null, null,
         'IDV_FACTOR' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.idv_factor as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_dtls') }} t0
@@ -289,6 +303,7 @@ with merged as (
         null, null, null, null, null, null,
         'MV_FACTOR' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.mv_factor as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_dtls') }} t0
@@ -304,6 +319,7 @@ with merged as (
         null, null, null, null, null, null,
         'ADDON_MV_FACTOR' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.addon_mv_factor as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_dtls') }} t0
@@ -319,6 +335,7 @@ with merged as (
         null, null, null, null, null, null,
         'MV_OD_FACTOR' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.mv_od_factor as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_dtls') }} t0
@@ -334,6 +351,7 @@ with merged as (
         null, null, null, null, null, null,
         'OVL_MV_FACTOR' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.ovl_mv_factor as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_dtls') }} t0
@@ -352,6 +370,7 @@ with merged as (
         1 as __LNK_RISK_OBJECT_LOCATION,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_dtls') }} t0
@@ -369,6 +388,7 @@ with merged as (
         t0.param_type as AUG_QUOTE_PREMIUM_HEAD__PREMIUM_COMPONENT,
         t0.param_ref as AUG_QUOTE_PREMIUM_HEAD__PREMIUM_HEAD_CODE,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_prem') }} t0
@@ -385,6 +405,7 @@ with merged as (
         'OD' as AUG_QUOTE_PREMIUM_HEAD__SECTION_CK,
         t0.od as AUG_QUOTE_PREMIUM_HEAD__NET_HEAD_PREMIUM,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_prem') }} t0
@@ -401,6 +422,7 @@ with merged as (
         'ACT' as AUG_QUOTE_PREMIUM_HEAD__SECTION_CK,
         t0.act as AUG_QUOTE_PREMIUM_HEAD__NET_HEAD_PREMIUM,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_prem') }} t0
@@ -417,6 +439,7 @@ with merged as (
         'NET' as AUG_QUOTE_PREMIUM_HEAD__SECTION_CK,
         t0.net as AUG_QUOTE_PREMIUM_HEAD__NET_HEAD_PREMIUM,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_prem') }} t0
@@ -432,6 +455,7 @@ with merged as (
         null, null, null, null, null, null,
         'VEH_PURCHASE_TYPE' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.veh_purchase_type as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_ws_detariff_eqm') }} t0
@@ -447,6 +471,7 @@ with merged as (
         null, null, null, null, null, null,
         'VEH_PURCHASE_DATE' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.veh_purchase_date as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_ws_detariff_eqm') }} t0
@@ -462,6 +487,7 @@ with merged as (
         null, null, null, null, null, null,
         'MONTH_OF_MFG' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.month_of_mfg as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_ws_detariff_eqm') }} t0
@@ -477,6 +503,7 @@ with merged as (
         null, null, null, null, null, null,
         'BODY_TYPE' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.body_type as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_ws_detariff_eqm') }} t0
@@ -492,6 +519,7 @@ with merged as (
         null, null, null, null, null, null,
         'GOODS_TRANS_TYPE' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.goods_trans_type as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_ws_detariff_eqm') }} t0
@@ -507,6 +535,7 @@ with merged as (
         null, null, null, null, null, null,
         'NATURE_OF_GOODS' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.nature_of_goods as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_ws_detariff_eqm') }} t0
@@ -522,6 +551,7 @@ with merged as (
         null, null, null, null, null, null,
         'OTHER_GOODS_FREQUENCY' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.other_goods_frequency as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_ws_detariff_eqm') }} t0
@@ -537,6 +567,7 @@ with merged as (
         null, null, null, null, null, null,
         'PERMIT_TYPE' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.permit_type as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_ws_detariff_eqm') }} t0
@@ -552,6 +583,7 @@ with merged as (
         null, null, null, null, null, null,
         'ROAD_TYPE' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.road_type as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_ws_detariff_eqm') }} t0
@@ -567,6 +599,7 @@ with merged as (
         null, null, null, null, null, null,
         'VEH_DRIVEN_BY' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.veh_driven_by as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_ws_detariff_eqm') }} t0
@@ -582,6 +615,7 @@ with merged as (
         null, null, null, null, null, null,
         'DRIVER_EXPERIENCE' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.driver_experience as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_ws_detariff_eqm') }} t0
@@ -597,6 +631,7 @@ with merged as (
         null, null, null, null, null, null,
         'HIST_CODE' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.clm_hist_code as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_ws_detariff_eqm') }} t0
@@ -612,6 +647,7 @@ with merged as (
         null, null, null, null, null, null,
         'INCURRED_CLM_EXP_CODE' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.incurred_clm_exp_code as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_ws_detariff_eqm') }} t0
@@ -627,6 +663,7 @@ with merged as (
         null, null, null, null, null, null,
         'DRIVER_QUALIFICATION_CODE' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.driver_qualification_code as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_ws_detariff_eqm') }} t0
@@ -642,6 +679,7 @@ with merged as (
         null, null, null, null, null, null,
         'TAC_MAKE_CODE' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.tac_make_code as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_ws_detariff_eqm') }} t0
@@ -657,6 +695,7 @@ with merged as (
         null, null, null, null, null, null,
         'REGISTRATION_AUTH' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.registration_auth as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_ws_detariff_eqm') }} t0
@@ -672,6 +711,7 @@ with merged as (
         null, null, null, null, null, null,
         'OWNER_SR_FACTOR' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.owner_sr_factor as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motws_other_dtls_eqm') }} t0
@@ -687,6 +727,7 @@ with merged as (
         null, null, null, null, null, null,
         'CHDH_FACTOR' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.chdh_factor as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motws_other_dtls_eqm') }} t0
@@ -702,6 +743,7 @@ with merged as (
         null, null, null, null, null, null,
         'AGE_FACTOR' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.age_factor as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motws_other_dtls_eqm') }} t0
@@ -717,6 +759,7 @@ with merged as (
         null, null, null, null, null, null,
         'PRODUCT_CODE_FACTOR' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.product_code_factor as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motws_other_dtls_eqm') }} t0
@@ -732,6 +775,7 @@ with merged as (
         null, null, null, null, null, null,
         'IDV_FACTOR' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.idv_factor as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motws_other_dtls_eqm') }} t0
@@ -750,6 +794,7 @@ with merged as (
         1 as __LNK_QUOTE_RISK_OBJECT,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motws_other_dtls_eqm') }} t0
@@ -765,6 +810,7 @@ with merged as (
         null, null, null, null, null, null,
         'VEH_PURCHASE_TYPE' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.veh_purchase_type as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_detariff') }} t0
@@ -780,6 +826,7 @@ with merged as (
         null, null, null, null, null, null,
         'VEH_PURCHASE_DATE' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.veh_purchase_date as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_detariff') }} t0
@@ -795,6 +842,7 @@ with merged as (
         null, null, null, null, null, null,
         'MONTH_OF_MFG' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.month_of_mfg as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_detariff') }} t0
@@ -810,6 +858,7 @@ with merged as (
         null, null, null, null, null, null,
         'BODY_TYPE' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.body_type as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_detariff') }} t0
@@ -825,6 +874,7 @@ with merged as (
         null, null, null, null, null, null,
         'GOODS_TRANS_TYPE' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.goods_trans_type as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_detariff') }} t0
@@ -840,6 +890,7 @@ with merged as (
         null, null, null, null, null, null,
         'NATURE_OF_GOODS' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.nature_of_goods as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_detariff') }} t0
@@ -855,6 +906,7 @@ with merged as (
         null, null, null, null, null, null,
         'OTHER_GOODS_FREQUENCY' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.other_goods_frequency as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_detariff') }} t0
@@ -870,6 +922,7 @@ with merged as (
         null, null, null, null, null, null,
         'PERMIT_TYPE' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.permit_type as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_detariff') }} t0
@@ -885,6 +938,7 @@ with merged as (
         null, null, null, null, null, null,
         'ROAD_TYPE' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.road_type as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_detariff') }} t0
@@ -900,6 +954,7 @@ with merged as (
         null, null, null, null, null, null,
         'VEH_DRIVEN_BY' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.veh_driven_by as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_detariff') }} t0
@@ -915,6 +970,7 @@ with merged as (
         null, null, null, null, null, null,
         'DRIVER_EXPERIENCE' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.driver_experience as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_detariff') }} t0
@@ -930,6 +986,7 @@ with merged as (
         null, null, null, null, null, null,
         'HIST_CODE' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.clm_hist_code as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_detariff') }} t0
@@ -945,6 +1002,7 @@ with merged as (
         null, null, null, null, null, null,
         'INCURRED_CLM_EXP_CODE' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.incurred_clm_exp_code as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_detariff') }} t0
@@ -960,6 +1018,7 @@ with merged as (
         null, null, null, null, null, null,
         'DRIVER_QUALIFICATION_CODE' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.driver_qualification_code as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_detariff') }} t0
@@ -975,6 +1034,7 @@ with merged as (
         null, null, null, null, null, null,
         'TAC_MAKE_CODE' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.tac_make_code as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_detariff') }} t0
@@ -990,6 +1050,7 @@ with merged as (
         null, null, null, null, null, null,
         'REGISTRATION_AUTH' as QUOTE_RATING_INPUT__FACTOR_CODE_CK,
         t0.registration_auth as QUOTE_RATING_INPUT__FACTOR_VALUE,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_detariff') }} t0
@@ -1008,6 +1069,7 @@ with merged as (
         null, null,
         t0.sum_insured_pa as AUG_QUOTE_COVERAGE_LINE__SUM_INSURED,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_extra_covers') }} t0
@@ -1024,6 +1086,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null,
         t0.sum_insured_total_named_pa as AUG_QUOTE_COVERAGE_LINE__SUM_INSURED,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_extra_covers') }} t0
@@ -1040,6 +1103,7 @@ with merged as (
         null, null, null, null, null, null, null, null,
         t0.no_of_employees_lle as AUG_QUOTE_COVERAGE_LINE__PERSONS_COVERED_COUNT,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_extra_covers') }} t0
@@ -1056,6 +1120,7 @@ with merged as (
         null, null, null, null, null, null, null, null,
         t0.no_of_persons_llo as AUG_QUOTE_COVERAGE_LINE__PERSONS_COVERED_COUNT,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_extra_covers') }} t0
@@ -1072,6 +1137,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null,
         t0.total_trailer_value as AUG_QUOTE_COVERAGE_LINE__SUM_INSURED,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_extra_covers') }} t0
@@ -1088,6 +1154,7 @@ with merged as (
         null, null, null, null, null,
         t0.voluntary_excess as AUG_QUOTE_COVERAGE_LINE__EXCESS_AMOUNT,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_extra_covers') }} t0
@@ -1105,6 +1172,7 @@ with merged as (
         t0.side_car_value as AUG_QUOTE_VEHICLE_SPEC__SIDE_CAR_IDV,
         t0.no_of_trailers as AUG_QUOTE_VEHICLE_SPEC__TRAILER_COUNT,
         null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_extra_covers') }} t0
@@ -1123,6 +1191,7 @@ with merged as (
         t0.param_ref as AUG_QUOTE_PREMIUM_HEAD__PREMIUM_HEAD_CODE,
         t0.param_desc as AUG_QUOTE_PREMIUM_HEAD__PREMIUM_HEAD_NAME,
         null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_premium_summary') }} t0
@@ -1139,6 +1208,7 @@ with merged as (
         'OD' as AUG_QUOTE_PREMIUM_HEAD__SECTION_CK,
         t0.od as AUG_QUOTE_PREMIUM_HEAD__NET_HEAD_PREMIUM,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_premium_summary') }} t0
@@ -1155,6 +1225,7 @@ with merged as (
         'ACT' as AUG_QUOTE_PREMIUM_HEAD__SECTION_CK,
         t0.act as AUG_QUOTE_PREMIUM_HEAD__NET_HEAD_PREMIUM,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_premium_summary') }} t0
@@ -1171,6 +1242,7 @@ with merged as (
         'NET' as AUG_QUOTE_PREMIUM_HEAD__SECTION_CK,
         t0.net as AUG_QUOTE_PREMIUM_HEAD__NET_HEAD_PREMIUM,
         null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_ws_premium_summary') }} t0
@@ -1213,5 +1285,23 @@ select
     AUG_RISK_MOTOR_USAGE_PLAN__PLAN_CODE_CK,
     first_value(AUG_RISK_MOTOR_USAGE_PLAN__PLAN_ELECTION_INDICATOR) ignore nulls over (partition by RISK_OBJECT_BK, AUG_RISK_MOTOR_USAGE_PLAN__PLAN_CODE_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as AUG_RISK_MOTOR_USAGE_PLAN__PLAN_ELECTION_INDICATOR,
     QUOTE_RATING_INPUT__FACTOR_CODE_CK,
-    first_value(QUOTE_RATING_INPUT__FACTOR_VALUE) ignore nulls over (partition by QUOTE_BK, QUOTE_RATING_INPUT__FACTOR_CODE_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as QUOTE_RATING_INPUT__FACTOR_VALUE
-from merged
+    first_value(QUOTE_RATING_INPUT__FACTOR_VALUE) ignore nulls over (partition by QUOTE_BK, QUOTE_RATING_INPUT__FACTOR_CODE_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as QUOTE_RATING_INPUT__FACTOR_VALUE,
+    -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
+    m.INC_JOB_UPDATED_AT,
+    -- SAT_AUG_QUOTE_COVERAGE_LINE (ma_sat): one load time per QUOTE_BK, so all its child rows share it
+    max(case when coalesce(m.AUG_QUOTE_COVERAGE_LINE__CGST_AMOUNT, m.AUG_QUOTE_COVERAGE_LINE__COVERAGE_RATE, m.AUG_QUOTE_COVERAGE_LINE__COVERAGE_SEQUENCE, m.AUG_QUOTE_COVERAGE_LINE__DISCOUNT_AMOUNT, m.AUG_QUOTE_COVERAGE_LINE__DISCOUNT_ENABLED_INDICATOR, m.AUG_QUOTE_COVERAGE_LINE__EXCESS_AMOUNT, m.AUG_QUOTE_COVERAGE_LINE__IGST_AMOUNT, m.AUG_QUOTE_COVERAGE_LINE__LOADING_AMOUNT, m.AUG_QUOTE_COVERAGE_LINE__PERSONS_COVERED_COUNT, m.AUG_QUOTE_COVERAGE_LINE__PREMIUM_FOR_COVERAGE, m.AUG_QUOTE_COVERAGE_LINE__SGST_AMOUNT, m.AUG_QUOTE_COVERAGE_LINE__SUM_INSURED) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.QUOTE_BK) as AUG_QUOTE_COVERAGE_LINE__LOAD_DATETIME,
+    -- SAT_AUG_QUOTE_PREMIUM_HEAD (ma_sat): one load time per QUOTE_BK, so all its child rows share it
+    max(case when coalesce(m.AUG_QUOTE_PREMIUM_HEAD__NET_HEAD_PREMIUM, m.AUG_QUOTE_PREMIUM_HEAD__PREMIUM_COMPONENT, m.AUG_QUOTE_PREMIUM_HEAD__PREMIUM_HEAD_CODE, m.AUG_QUOTE_PREMIUM_HEAD__PREMIUM_HEAD_NAME) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.QUOTE_BK) as AUG_QUOTE_PREMIUM_HEAD__LOAD_DATETIME,
+    -- SAT_AUG_RISK_MOTOR_USAGE_PLAN (ma_sat): one load time per RISK_OBJECT_BK, so all its child rows share it
+    max(case when m.AUG_RISK_MOTOR_USAGE_PLAN__PLAN_ELECTION_INDICATOR is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.RISK_OBJECT_BK) as AUG_RISK_MOTOR_USAGE_PLAN__LOAD_DATETIME,
+    -- SAT_QUOTE_RATING_INPUT (ma_sat): one load time per QUOTE_BK, so all its child rows share it
+    max(case when m.QUOTE_RATING_INPUT__FACTOR_VALUE is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.QUOTE_BK) as QUOTE_RATING_INPUT__LOAD_DATETIME
+from merged m

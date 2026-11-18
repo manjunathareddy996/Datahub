@@ -1,5 +1,5 @@
 -- AUGMENTED track (not mapper-ratified) sat() for SAT_AUG_POLICY_TAX_BREAKUP (parent HUB_POLICY, history SCD2), fed whole from central view stitch_motor__v10_party.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__policy_tax_breakup'

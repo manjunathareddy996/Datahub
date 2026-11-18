@@ -41,7 +41,7 @@ derived_columns:
   FINTXN_CLAIM_NK: "case when __LNK_FINTXN_CLAIM = 1 then 'LNK_FINTXN_CLAIM|' || CLAIM_BK || '|' || FINANCIAL_TRANSACTION_BK end"
   POLICY_ORG_UNIT_NK: "case when __LNK_POLICY_ORG_UNIT = 1 then 'LNK_POLICY_ORG_UNIT|' || ORG_UNIT_BK || '|' || POLICY_BK end"
   POLICY_RISK_OBJECT_NK: "case when __LNK_POLICY_RISK_OBJECT = 1 then 'LNK_POLICY_RISK_OBJECT|' || POLICY_BK || '|' || RISK_OBJECT_BK end"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!stitch_motor__v03_claim'
 {%- endset -%}
 

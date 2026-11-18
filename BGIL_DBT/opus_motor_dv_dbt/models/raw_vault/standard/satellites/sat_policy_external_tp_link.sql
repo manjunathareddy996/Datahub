@@ -1,5 +1,5 @@
 -- Standard sat() for SAT_POLICY_EXTERNAL_TP_LINK (parent HUB_POLICY, history SCD2), fed whole from central view stitch_motor__v25_risk_object.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__policy_external_tp_link'

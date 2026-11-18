@@ -59,6 +59,7 @@ with merged as (
         cast(null as varchar) as LNK_ROLE_NOMINEE_BENEFICIARY__RELATIONSHIP_TO_INSURED,
         cast(null as varchar) as LOCATION_PROFILE__CONNECTIVITY_GRADE,
         cast(null as varchar) as LOCATION_PROFILE__LOCATION_NAME,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_dtls') }} t0
@@ -72,6 +73,7 @@ with merged as (
         null, null, null, null, null, null, null,
         t0.tp_prev_ins_address as COMMON_ADDRESS__ADDRESS_LINE_1,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_dtls') }} t0
@@ -89,6 +91,7 @@ with merged as (
         null,
         t0.nominee_relation as LNK_ROLE_NOMINEE_BENEFICIARY__RELATIONSHIP_TO_INSURED,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_dtls') }} t0
@@ -104,6 +107,7 @@ with merged as (
         null, null, null, null,
         t0.postal_code as COMMON_ADDRESS__POSTAL_CODE,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bgil_motor_webservice_info_eqm') }} t0
@@ -124,6 +128,7 @@ with merged as (
         null, null,
         t0.state as COMMON_ADDRESS__STATE_NAME,
         null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_agency_mot_war_dtls') }} t0
@@ -146,6 +151,7 @@ with merged as (
         null, null,
         t0.state as COMMON_ADDRESS__STATE_NAME,
         null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_base_mot_ext') }} t0
@@ -168,6 +174,7 @@ with merged as (
         t0.cp_state as COMMON_ADDRESS__STATE_NAME,
         t0.cp_street as COMMON_ADDRESS__STREET_NAME,
         null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_motor_intim_details') }} t0
@@ -189,6 +196,7 @@ with merged as (
         null,
         t0.statecode as COMMON_ADDRESS__STATE_CODE,
         null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_cvtp_ws_data') }} t0
@@ -206,6 +214,7 @@ with merged as (
         t0.paowndriverappointeename as LNK_ROLE_NOMINEE_BENEFICIARY__APPOINTEE_NAME,
         t0.paowndrivernomreleation as LNK_ROLE_NOMINEE_BENEFICIARY__RELATIONSHIP_TO_INSURED,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_cvtp_ws_data') }} t0
@@ -219,6 +228,7 @@ with merged as (
         null, null, null, null, null, null, null,
         t0.highest_bidder_address as COMMON_ADDRESS__ADDRESS_LINE_1,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -232,6 +242,7 @@ with merged as (
         null, null, null, null, null, null, null,
         t0.buyer_address as COMMON_ADDRESS__ADDRESS_LINE_1,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -247,6 +258,7 @@ with merged as (
         null, null, null, null, null, null, null,
         t0.so_map_state as COMMON_ADDRESS__STATE_NAME,
         null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -260,6 +272,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
         t0.court_location as LOCATION_PROFILE__LOCATION_NAME,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -273,6 +286,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
         t0.court_order_location as LOCATION_PROFILE__LOCATION_NAME,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -286,6 +300,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
         t0.bid_court_location as LOCATION_PROFILE__LOCATION_NAME,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -299,6 +314,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
         t0.vehicle_cur_loc as LOCATION_PROFILE__LOCATION_NAME,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
@@ -314,6 +330,7 @@ with merged as (
         null, null, null, null,
         t0.postal_code as COMMON_ADDRESS__POSTAL_CODE,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motor_webservice_info') }} t0
@@ -327,6 +344,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.stp_pin as COMMON_ADDRESS__POSTAL_CODE,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_add_qstn_dtls') }} t0
@@ -340,6 +358,7 @@ with merged as (
         null, null, null, null, null, null, null,
         t0.family_doc_add as COMMON_ADDRESS__ADDRESS_LINE_1,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -363,6 +382,7 @@ with merged as (
         null, null,
         t0.disp_state as COMMON_ADDRESS__STATE_NAME,
         null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -386,6 +406,7 @@ with merged as (
         null, null,
         t0.state as COMMON_ADDRESS__STATE_NAME,
         null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
@@ -410,6 +431,7 @@ with merged as (
         null,
         t0.loc_state as COMMON_ADDRESS__STATE_NAME,
         null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         10 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls_extn') }} t0
@@ -427,6 +449,7 @@ with merged as (
         null,
         t0.nom_relation as LNK_ROLE_NOMINEE_BENEFICIARY__RELATIONSHIP_TO_INSURED,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         10 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls_extn') }} t0
@@ -444,6 +467,7 @@ with merged as (
         null,
         t0.ass_relationn as LNK_ROLE_NOMINEE_BENEFICIARY__RELATIONSHIP_TO_INSURED,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         10 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls_extn') }} t0
@@ -461,6 +485,7 @@ with merged as (
         null,
         t0.od_nom_relation as LNK_ROLE_NOMINEE_BENEFICIARY__RELATIONSHIP_TO_INSURED,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         10 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls_extn') }} t0
@@ -478,6 +503,7 @@ with merged as (
         null, null, null, null, null, null,
         t0.postcode as COMMON_ADDRESS__POSTAL_CODE,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         11 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_renewal_extn') }} t0
@@ -495,6 +521,7 @@ with merged as (
         null,
         t0.pa_nominee_relation as LNK_ROLE_NOMINEE_BENEFICIARY__RELATIONSHIP_TO_INSURED,
         null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         11 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_renewal_extn') }} t0
@@ -508,6 +535,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null,
         t0.price_master_city as COMMON_ADDRESS__CITY,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         12 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_renewal_hist') }} t0
@@ -523,6 +551,7 @@ with merged as (
         null, null, null, null, null, null, null,
         t0.state as COMMON_ADDRESS__STATE_NAME,
         null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         13 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_war_child_dtls') }} t0
@@ -536,6 +565,7 @@ with merged as (
         null, null, null, null, null, null, null,
         t0.family_doc_add as COMMON_ADDRESS__ADDRESS_LINE_1,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         14 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -559,6 +589,7 @@ with merged as (
         null, null,
         t0.state as COMMON_ADDRESS__STATE_NAME,
         null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         14 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -582,6 +613,7 @@ with merged as (
         null, null,
         t0.disp_state as COMMON_ADDRESS__STATE_NAME,
         null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         14 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -595,6 +627,7 @@ with merged as (
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.mailing_pincode as COMMON_ADDRESS__POSTAL_CODE,
         null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         14 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
@@ -610,6 +643,7 @@ with merged as (
         null, null, null, null, null, null, null,
         t0.state as COMMON_ADDRESS__STATE_NAME,
         null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         15 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_vehicle_price_master') }} t0
@@ -625,6 +659,7 @@ with merged as (
         null, null, null, null,
         t0.rta_city as COMMON_ADDRESS__CITY,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         16 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__rta_cluster_preferred_decline') }} t0
@@ -651,6 +686,7 @@ with merged as (
         null, null, null, null, null, null, null, null,
         t0.area_infrastructure as LOCATION_PROFILE__CONNECTIVITY_GRADE,
         null,
+        t0.inc_job_updated_at as INC_JOB_UPDATED_AT,
         17 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__rto_master') }} t0
@@ -685,5 +721,11 @@ select
     first_value(LNK_ROLE_NOMINEE_BENEFICIARY__APPOINTEE_NAME) ignore nulls over (partition by PARTY_BK, LNK_ROLE_NOMINEE_BENEFICIARY__ROLE_TYPE_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as LNK_ROLE_NOMINEE_BENEFICIARY__APPOINTEE_NAME,
     first_value(LNK_ROLE_NOMINEE_BENEFICIARY__RELATIONSHIP_TO_INSURED) ignore nulls over (partition by PARTY_BK, LNK_ROLE_NOMINEE_BENEFICIARY__ROLE_TYPE_CK order by __PREC, __RID rows between unbounded preceding and unbounded following) as LNK_ROLE_NOMINEE_BENEFICIARY__RELATIONSHIP_TO_INSURED,
     first_value(LOCATION_PROFILE__CONNECTIVITY_GRADE) ignore nulls over (partition by LOCATION_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as LOCATION_PROFILE__CONNECTIVITY_GRADE,
-    first_value(LOCATION_PROFILE__LOCATION_NAME) ignore nulls over (partition by LOCATION_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as LOCATION_PROFILE__LOCATION_NAME
-from merged
+    first_value(LOCATION_PROFILE__LOCATION_NAME) ignore nulls over (partition by LOCATION_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as LOCATION_PROFILE__LOCATION_NAME,
+    -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
+    m.INC_JOB_UPDATED_AT,
+    -- SAT_LNK_ROLE_NOMINEE_BENEFICIARY (ma_sat): one load time per PARTY_BK, so all its child rows share it
+    max(case when coalesce(m.LNK_ROLE_NOMINEE_BENEFICIARY__APPOINTEE_NAME, m.LNK_ROLE_NOMINEE_BENEFICIARY__RELATIONSHIP_TO_INSURED) is not null
+             then m.INC_JOB_UPDATED_AT end)
+        over (partition by m.PARTY_BK) as LNK_ROLE_NOMINEE_BENEFICIARY__LOAD_DATETIME
+from merged m
