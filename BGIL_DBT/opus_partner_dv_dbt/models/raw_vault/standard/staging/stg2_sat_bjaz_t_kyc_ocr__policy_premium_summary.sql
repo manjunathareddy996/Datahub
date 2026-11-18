@@ -18,11 +18,11 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'GROSSPREMIUM'
+      - 'GROSS_PREMIUM'
 derived_columns:
   PARENT_BK: "case when upper(trim(field_type)) like 'POLICY%' then trim(field_value) end"
   PARENT_NK: "'HUB_POLICY|' || (case when upper(trim(field_type)) like 'POLICY%' then trim(field_value) end)"
-  GROSSPREMIUM: 'premium_amount'
+  GROSS_PREMIUM: 'premium_amount'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_KYC_OCR'
 {%- endset -%}

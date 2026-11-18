@@ -11,7 +11,7 @@
         'key_column': 'scheme_code',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'section_code', 'tgt': 'productcategory'},
+            {'src': 'section_code', 'tgt': 'product_category'},
             {'src': 'scheme_version', 'tgt': 'productgeneration'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_CTNGY_FF_DTLS_EXTN'
@@ -22,9 +22,9 @@
         'key_column': 'scheme_code',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'section_code', 'tgt': 'productcategory'},
+            {'src': 'section_code', 'tgt': 'product_category'},
             {'src': 'scheme_version', 'tgt': 'productgeneration'},
-            {'src': 'plan', 'tgt': 'productname'}
+            {'src': 'plan', 'tgt': 'product_name'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_CTNGY_PA_MEM_DTLS'
     },
@@ -34,18 +34,18 @@
         'key_column': 'product_code',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'plan_name', 'tgt': 'productname'}
+            {'src': 'plan_name', 'tgt': 'product_name'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_HM_MEMBER_DTLS'
     }
 ] -%}
 
-{%- set output_columns = ['productcategory', 'productgeneration', 'productname'] -%}
+{%- set output_columns = ['product_category', 'productgeneration', 'product_name'] -%}
 
 {%- set coalesce_rules = {
-    'productcategory':   ['t0', 't1'],
+    'product_category':   ['t0', 't1'],
     'productgeneration': ['t0', 't1'],
-    'productname':       ['t1', 't2']
+    'product_name':       ['t1', 't2']
 } %}
 
 {{ stitch_incremental(

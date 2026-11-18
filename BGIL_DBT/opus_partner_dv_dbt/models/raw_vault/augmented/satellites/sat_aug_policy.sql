@@ -26,7 +26,7 @@ src_pk: 'POLICY_HKEY'
 src_cdk:
   - 'MEMBER_SEQUENCE'
 src_payload:
-  - 'CUMMULATIVE_AMT'
+  - 'CUMULATIVE_AMT'
   - 'CUMM_BONUS'
   - 'CUMM_BONUS_AMT_COMP'
   - 'CUMM_BONUS_AMT_WIDER'
@@ -58,7 +58,7 @@ src_record_source_map:
                        src_column_map={
                            'stg2_aug_bjaz_hlt_ensure_mem_dtls__policy': ['PREVIOUS_CUM_AMOUNT'],
                            'stg2_aug_bjaz_hm_member_dtls__policy': ['CUMM_BONUS'],
-                           'stg2_aug_bjaz_pa_detl_extn__policy': ['CUMMULATIVE_AMT', 'CUMM_BONUS_AMT_COMP', 'CUMM_BONUS_AMT_WIDER', 'CUMM_BONUS_COMP', 'CUMM_BONUS_WIDER'],
+                           'stg2_aug_bjaz_pa_detl_extn__policy': ['CUMULATIVE_AMT', 'CUMM_BONUS_AMT_COMP', 'CUMM_BONUS_AMT_WIDER', 'CUMM_BONUS_COMP', 'CUMM_BONUS_WIDER'],
                            'stg2_aug_bjaz_ec_mem_dtls_extn__policy': ['INCEPTION_DATE'],
                            'stg2_aug_bjaz_sh_mem_dtls_extn__policy': ['INCEPTION_DATE']
                        }) }}

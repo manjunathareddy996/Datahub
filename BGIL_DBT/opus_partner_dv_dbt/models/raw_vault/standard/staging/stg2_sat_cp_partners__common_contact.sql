@@ -9,15 +9,15 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'EMAILADDRESS'
-      - 'FAXNUMBER'
-      - 'LANDLINENUMBER'
+      - 'EMAIL_ADDRESS'
+      - 'FAX_NUMBER'
+      - 'LANDLINE_NUMBER'
 derived_columns:
   PARENT_BK: 'part_id'
   PARENT_NK: "'HUB_PARTY|' || (part_id)"
-  EMAILADDRESS: 'email'
-  FAXNUMBER: 'fax'
-  LANDLINENUMBER: 'telephone2'
+  EMAIL_ADDRESS: 'email'
+  FAX_NUMBER: 'fax'
+  LANDLINE_NUMBER: 'telephone2'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_CP_PARTNERS'
 {%- endset -%}

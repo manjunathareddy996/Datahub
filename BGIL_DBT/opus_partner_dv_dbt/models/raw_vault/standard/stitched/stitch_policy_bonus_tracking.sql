@@ -11,7 +11,7 @@
         'key_column': 'contract_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'pre_pol_ncb_per', 'tgt': 'cumulativebonuspercentage'}
+            {'src': 'pre_pol_ncb_per', 'tgt': 'cumulative_bonus_percentage'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_EC_MEM_DTLS_EXTN'
     },
@@ -21,8 +21,8 @@
         'key_column': 'contract_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'cumulative_amt', 'tgt': 'bonusamount'},
-            {'src': 'cumulative_bnouz_per', 'tgt': 'cumulativebonuspercentage'}
+            {'src': 'cumulative_amt', 'tgt': 'bonus_amount'},
+            {'src': 'cumulative_bnouz_per', 'tgt': 'cumulative_bonus_percentage'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_HCF_MEMBER_DTLS'
     },
@@ -32,7 +32,7 @@
         'key_column': 'contract_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'previous_cum_bonus', 'tgt': 'bonusamount'}
+            {'src': 'previous_cum_bonus', 'tgt': 'bonus_amount'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_HLT_ENSURE_MEM_DTLS'
     },
@@ -42,8 +42,8 @@
         'key_column': 'contract_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'bonus_si', 'tgt': 'bonusamount'},
-            {'src': 'cumm_bonus_per', 'tgt': 'cumulativebonuspercentage'}
+            {'src': 'bonus_si', 'tgt': 'bonus_amount'},
+            {'src': 'cumm_bonus_per', 'tgt': 'cumulative_bonus_percentage'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_HM_MEMBER_DTLS'
     },
@@ -53,7 +53,7 @@
         'key_column': 'contract_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'cummulative_bonus', 'tgt': 'bonusamount'}
+            {'src': 'cummulative_bonus', 'tgt': 'bonus_amount'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_PA_DETL_EXTN'
     },
@@ -63,8 +63,8 @@
         'key_column': 'contract_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'cumm_bonus', 'tgt': 'bonusamount'},
-            {'src': 'cumm_bonus_per', 'tgt': 'cumulativebonuspercentage'}
+            {'src': 'cumm_bonus', 'tgt': 'bonus_amount'},
+            {'src': 'cumm_bonus_per', 'tgt': 'cumulative_bonus_percentage'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_SH_MEM_DTLS_EXTN'
     },
@@ -74,18 +74,18 @@
         'key_column': 'contract_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'cumulative_amt', 'tgt': 'bonusamount'},
-            {'src': 'cumulative_bnouz_per', 'tgt': 'cumulativebonuspercentage'}
+            {'src': 'cumulative_amt', 'tgt': 'bonus_amount'},
+            {'src': 'cumulative_bnouz_per', 'tgt': 'cumulative_bonus_percentage'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_SPP_MEMBER_DTLS'
     }
 ] -%}
 
-{%- set output_columns = ['bonusamount', 'cumulativebonuspercentage'] -%}
+{%- set output_columns = ['bonus_amount', 'cumulative_bonus_percentage'] -%}
 
 {%- set coalesce_rules = {
-    'bonusamount':               ['t1', 't2', 't3', 't4', 't5', 't6'],
-    'cumulativebonuspercentage': ['t0', 't1', 't3', 't5', 't6']
+    'bonus_amount':               ['t1', 't2', 't3', 't4', 't5', 't6'],
+    'cumulative_bonus_percentage': ['t0', 't1', 't3', 't5', 't6']
 } %}
 
 {{ stitch_incremental(

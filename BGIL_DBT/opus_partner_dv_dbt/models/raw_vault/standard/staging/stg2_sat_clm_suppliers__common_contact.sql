@@ -9,11 +9,11 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'LANDLINENUMBER'
+      - 'LANDLINE_NUMBER'
 derived_columns:
   PARENT_BK: 'part_id'
   PARENT_NK: "'HUB_PARTY|' || (part_id)"
-  LANDLINENUMBER: 'contact'
+  LANDLINE_NUMBER: 'contact'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_CLM_SUPPLIERS'
 {%- endset -%}

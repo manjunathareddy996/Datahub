@@ -24,29 +24,29 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'ANNUALHOUSEHOLDINCOME'
-      - 'ANNUALINCOME'
+      - 'ANNUAL_HOUSEHOLD_INCOME'
+      - 'ANNUAL_INCOME'
       - 'DESIGNATION'
-      - 'EDUCATIONALQUALIFICATION'
-      - 'FATHERNAME'
-      - 'MARITALSTATUS'
-      - 'NUMBEROFCHILDREN'
+      - 'EDUCATIONAL_QUALIFICATION'
+      - 'FATHER_NAME'
+      - 'MARITAL_STATUS'
+      - 'NUMBER_OF_CHILDREN'
       - 'OCCUPATIONCODE'
-      - 'OCCUPATIONDESCRIPTION'
-      - 'SPOUSENAME'
+      - 'OCCUPATION_DESCRIPTION'
+      - 'SPOUSE_NAME'
 derived_columns:
   PARENT_BK: 'part_id'
   PARENT_NK: "'HUB_PARTY|' || (part_id)"
-  ANNUALHOUSEHOLDINCOME: "cast(null as varchar)"
-  ANNUALINCOME: "cast(null as varchar)"
+  ANNUAL_HOUSEHOLD_INCOME: "cast(null as varchar)"
+  ANNUAL_INCOME: "cast(null as varchar)"
   DESIGNATION: "cast(null as varchar)"
-  EDUCATIONALQUALIFICATION: "cast(null as varchar)"
-  FATHERNAME: 'father_fullname'
-  MARITALSTATUS: 'marital_status'
-  NUMBEROFCHILDREN: "cast(null as varchar)"
+  EDUCATIONAL_QUALIFICATION: "cast(null as varchar)"
+  FATHER_NAME: 'father_fullname'
+  MARITAL_STATUS: 'marital_status'
+  NUMBER_OF_CHILDREN: "cast(null as varchar)"
   OCCUPATIONCODE: 'occupation'
-  OCCUPATIONDESCRIPTION: "cast(null as varchar)"
-  SPOUSENAME: "cast(null as varchar)"
+  OCCUPATION_DESCRIPTION: "cast(null as varchar)"
+  SPOUSE_NAME: "cast(null as varchar)"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_CKYC_PERSONAL_DTLS'
 {%- endset -%}

@@ -9,15 +9,15 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'GSTTAXPAYERTYPE'
-      - 'PANNUMBER'
-      - 'TANNUMBER'
+      - 'GST_TAXPAYER_TYPE'
+      - 'PAN_NUMBER'
+      - 'TAN_NUMBER'
 derived_columns:
   PARENT_BK: 'partner_id'
   PARENT_NK: "'HUB_PARTY|' || (partner_id)"
-  GSTTAXPAYERTYPE: 'taxpayer_type'
-  PANNUMBER: 'pan_no'
-  TANNUMBER: 'tan_number'
+  GST_TAXPAYER_TYPE: 'taxpayer_type'
+  PAN_NUMBER: 'pan_no'
+  TAN_NUMBER: 'tan_number'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_CLM_SUPP_EXTN'
 {%- endset -%}

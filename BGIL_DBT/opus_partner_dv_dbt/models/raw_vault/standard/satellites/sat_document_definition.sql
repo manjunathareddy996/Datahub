@@ -24,14 +24,14 @@ source_model:
   - 'stg2_sat_bjaz_t_kyc_poi_document__document_definition'
 src_pk: 'DOCUMENT_HKEY'
 src_payload:
-  - 'DOCUMENTCATEGORY'
+  - 'DOCUMENT_CATEGORY'
   - 'DOCUMENTFORMAT'
-  - 'DOCUMENTNAME'
-  - 'DOCUMENTREFERENCENUMBER'
-  - 'DOCUMENTSTATUS'
-  - 'DOCUMENTTYPE'
-  - 'EXPIRYDATE'
-  - 'STORAGEREFERENCE'
+  - 'DOCUMENT_NAME'
+  - 'DOCUMENT_REFERENCE_NUMBER'
+  - 'DOCUMENT_STATUS'
+  - 'DOCUMENT_TYPE'
+  - 'EXPIRY_DATE'
+  - 'STORAGE_REFERENCE'
   - 'VERIFICATIONSTATUS'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
@@ -52,7 +52,7 @@ src_record_source_map:
                     source_model=metadata_dict['source_model'],
                     src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
-                        'stg2_sat_bjaz_t_kyc_ocr__document_definition': ['DOCUMENTCATEGORY', 'DOCUMENTREFERENCENUMBER', 'DOCUMENTTYPE', 'VERIFICATIONSTATUS'],
-                        'stg2_sat_bjaz_t_kyc_poa_document__document_definition': ['DOCUMENTCATEGORY', 'DOCUMENTFORMAT', 'DOCUMENTNAME', 'DOCUMENTSTATUS', 'DOCUMENTTYPE', 'EXPIRYDATE', 'STORAGEREFERENCE', 'VERIFICATIONSTATUS'],
-                        'stg2_sat_bjaz_t_kyc_poi_document__document_definition': ['DOCUMENTCATEGORY', 'DOCUMENTFORMAT', 'DOCUMENTNAME', 'DOCUMENTSTATUS', 'DOCUMENTTYPE', 'EXPIRYDATE', 'STORAGEREFERENCE', 'VERIFICATIONSTATUS']
+                        'stg2_sat_bjaz_t_kyc_ocr__document_definition': ['DOCUMENT_CATEGORY', 'DOCUMENT_REFERENCE_NUMBER', 'DOCUMENT_TYPE', 'VERIFICATIONSTATUS'],
+                        'stg2_sat_bjaz_t_kyc_poa_document__document_definition': ['DOCUMENT_CATEGORY', 'DOCUMENTFORMAT', 'DOCUMENT_NAME', 'DOCUMENT_STATUS', 'DOCUMENT_TYPE', 'EXPIRY_DATE', 'STORAGE_REFERENCE', 'VERIFICATIONSTATUS'],
+                        'stg2_sat_bjaz_t_kyc_poi_document__document_definition': ['DOCUMENT_CATEGORY', 'DOCUMENTFORMAT', 'DOCUMENT_NAME', 'DOCUMENT_STATUS', 'DOCUMENT_TYPE', 'EXPIRY_DATE', 'STORAGE_REFERENCE', 'VERIFICATIONSTATUS']
                     }) }}

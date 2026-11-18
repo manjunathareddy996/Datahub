@@ -28,22 +28,22 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'CKYCNUMBER'
-      - 'CKYCREGISTRATIONSTATUS'
-      - 'KYCCOMPLETIONDATE'
+      - 'CKYC_NUMBER'
+      - 'CKYC_REGISTRATION_STATUS'
+      - 'KYC_COMPLETION_DATE'
       - 'KYCMODE'
-      - 'KYCSTATUS'
+      - 'KYC_STATUS'
       - 'KYCTYPE'
       - 'LASTKYCREVIEWDATE'
       - 'OVDSUBMITTEDCOUNT'
 derived_columns:
   PARENT_BK: 'part_id'
   PARENT_NK: "'HUB_PARTY|' || (part_id)"
-  CKYCNUMBER: 'ckyc_number'
-  CKYCREGISTRATIONSTATUS: 'ckyc_status'
-  KYCCOMPLETIONDATE: 'ckyc_kyc_date'
+  CKYC_NUMBER: 'ckyc_number'
+  CKYC_REGISTRATION_STATUS: 'ckyc_status'
+  KYC_COMPLETION_DATE: 'ckyc_kyc_date'
   KYCMODE: "cast(null as varchar)"
-  KYCSTATUS: "cast(null as varchar)"
+  KYC_STATUS: "cast(null as varchar)"
   KYCTYPE: "cast(null as varchar)"
   LASTKYCREVIEWDATE: 'ckyc_update_date'
   OVDSUBMITTEDCOUNT: "cast(null as varchar)"

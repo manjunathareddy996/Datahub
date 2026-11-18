@@ -15,14 +15,14 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'SUR_LICENSE_EXP_DATE'
+      - 'SUR_LICENCE_EXP_DATE'
       - 'IIISLA_MEM_NO'
       - 'IIISLA_MEM_STATUS'
       - 'HAS_IRDA_LICENCE_INDICATOR'
 derived_columns:
   PARENT_BK: 'partner_id'
   PARENT_NK: "'HUB_PARTY|' || (partner_id)"
-  SUR_LICENSE_EXP_DATE: 'sur_license_exp_date'
+  SUR_LICENCE_EXP_DATE: 'sur_license_exp_date'
   IIISLA_MEM_NO: 'iiisla_mem_no'
   IIISLA_MEM_STATUS: 'iiisla_mem_status'
   HAS_IRDA_LICENCE_INDICATOR: 'irda_license'

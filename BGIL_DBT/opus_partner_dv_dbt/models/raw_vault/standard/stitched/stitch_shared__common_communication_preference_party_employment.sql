@@ -11,20 +11,20 @@
         'key_column': 'part_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'language', 'tgt': 'correspondencelanguage'},
+            {'src': 'language', 'tgt': 'correspondence_language'},
             {'src': 'literature', 'tgt': 'marketingoptinindicator'},
-            {'src': 'employment_status', 'tgt': 'employmentstatus'}
+            {'src': 'employment_status', 'tgt': 'employment_status'}
         ],
         'source_tag': 'OPUS_PARTNER_CP_PARTNERS'
     }
 ] -%}
 
-{%- set output_columns = ['correspondencelanguage', 'marketingoptinindicator', 'employmentstatus'] -%}
+{%- set output_columns = ['correspondence_language', 'marketingoptinindicator', 'employment_status'] -%}
 
 {%- set coalesce_rules = {
-    'correspondencelanguage':  ['t1'],
+    'correspondence_language':  ['t1'],
     'marketingoptinindicator': ['t1'],
-    'employmentstatus':        ['t1']
+    'employment_status':        ['t1']
 } %}
 
 {{ stitch_incremental(

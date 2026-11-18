@@ -10,11 +10,11 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'PINCODE'
+      - 'PIN_CODE'
       - 'REGIONCODE'
-      - 'REGIONNAME'
+      - 'REGION_NAME'
       - 'SUBZONECODE'
-      - 'ZONECODE'
+      - 'ZONE_CODE'
 derived_columns:
   LOCATION_NK: "'HUB_LOCATION|' || PARENT_BK"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'

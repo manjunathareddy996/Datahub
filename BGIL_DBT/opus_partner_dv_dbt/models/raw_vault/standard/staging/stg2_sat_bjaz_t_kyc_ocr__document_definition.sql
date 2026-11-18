@@ -17,26 +17,26 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'DOCUMENTCATEGORY'
+      - 'DOCUMENT_CATEGORY'
       - 'DOCUMENTFORMAT'
-      - 'DOCUMENTNAME'
-      - 'DOCUMENTREFERENCENUMBER'
-      - 'DOCUMENTSTATUS'
-      - 'DOCUMENTTYPE'
-      - 'EXPIRYDATE'
-      - 'STORAGEREFERENCE'
+      - 'DOCUMENT_NAME'
+      - 'DOCUMENT_REFERENCE_NUMBER'
+      - 'DOCUMENT_STATUS'
+      - 'DOCUMENT_TYPE'
+      - 'EXPIRY_DATE'
+      - 'STORAGE_REFERENCE'
       - 'VERIFICATIONSTATUS'
 derived_columns:
   PARENT_BK: "upper(trim(field_type)) || ':' || trim(field_value) || '#' || upper(trim(image_type))"
   PARENT_NK: "'HUB_DOCUMENT|' || (upper(trim(field_type)) || ':' || trim(field_value) || '#' || upper(trim(image_type)))"
-  DOCUMENTCATEGORY: 'category'
+  DOCUMENT_CATEGORY: 'category'
   DOCUMENTFORMAT: "cast(null as varchar)"
-  DOCUMENTNAME: "cast(null as varchar)"
-  DOCUMENTREFERENCENUMBER: 'file_number'
-  DOCUMENTSTATUS: "cast(null as varchar)"
-  DOCUMENTTYPE: 'image_type'
-  EXPIRYDATE: "cast(null as varchar)"
-  STORAGEREFERENCE: "cast(null as varchar)"
+  DOCUMENT_NAME: "cast(null as varchar)"
+  DOCUMENT_REFERENCE_NUMBER: 'file_number'
+  DOCUMENT_STATUS: "cast(null as varchar)"
+  DOCUMENT_TYPE: 'image_type'
+  EXPIRY_DATE: "cast(null as varchar)"
+  STORAGE_REFERENCE: "cast(null as varchar)"
   VERIFICATIONSTATUS: 'ocr_status'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_KYC_OCR'

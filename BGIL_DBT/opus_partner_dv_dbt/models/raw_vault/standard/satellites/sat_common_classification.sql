@@ -13,7 +13,7 @@ source_model: 'stg2_common_classification'
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'PRIORITYCODE'
-  - 'SEGMENTCODE'
+  - 'SEGMENT_CODE'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

@@ -12,7 +12,7 @@
 source_model: 'stg2_shared__common_communication_preference_party_employment'
 src_pk: 'PARTY_HKEY'
 src_payload:
-  - 'CORRESPONDENCELANGUAGE'
+  - 'CORRESPONDENCE_LANGUAGE'
   - 'MARKETINGOPTININDICATOR'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'

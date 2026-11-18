@@ -23,26 +23,26 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'DOCUMENTCATEGORY'
+      - 'DOCUMENT_CATEGORY'
       - 'DOCUMENTFORMAT'
-      - 'DOCUMENTNAME'
-      - 'DOCUMENTREFERENCENUMBER'
-      - 'DOCUMENTSTATUS'
-      - 'DOCUMENTTYPE'
-      - 'EXPIRYDATE'
-      - 'STORAGEREFERENCE'
+      - 'DOCUMENT_NAME'
+      - 'DOCUMENT_REFERENCE_NUMBER'
+      - 'DOCUMENT_STATUS'
+      - 'DOCUMENT_TYPE'
+      - 'EXPIRY_DATE'
+      - 'STORAGE_REFERENCE'
       - 'VERIFICATIONSTATUS'
 derived_columns:
   PARENT_BK: "upper(trim(coalesce(docs_type,''))) || ':' || upper(trim(coalesce(docs_number,'')))"
   PARENT_NK: "'HUB_DOCUMENT|' || (upper(trim(coalesce(docs_type,''))) || ':' || upper(trim(coalesce(docs_number,''))))"
-  DOCUMENTCATEGORY: 'document_category'
+  DOCUMENT_CATEGORY: 'document_category'
   DOCUMENTFORMAT: 'doc_extension'
-  DOCUMENTNAME: 'doc_name'
-  DOCUMENTREFERENCENUMBER: "cast(null as varchar)"
-  DOCUMENTSTATUS: 'status'
-  DOCUMENTTYPE: 'docs_type'
-  EXPIRYDATE: 'expiry_date'
-  STORAGEREFERENCE: 'omni_doc_index'
+  DOCUMENT_NAME: 'doc_name'
+  DOCUMENT_REFERENCE_NUMBER: "cast(null as varchar)"
+  DOCUMENT_STATUS: 'status'
+  DOCUMENT_TYPE: 'docs_type'
+  EXPIRY_DATE: 'expiry_date'
+  STORAGE_REFERENCE: 'omni_doc_index'
   VERIFICATIONSTATUS: 'response_code'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_KYC_POI_DOCUMENT'

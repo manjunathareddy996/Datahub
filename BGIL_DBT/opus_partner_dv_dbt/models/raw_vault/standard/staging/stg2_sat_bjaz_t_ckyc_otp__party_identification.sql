@@ -30,30 +30,30 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'AADHAARNUMBER'
-      - 'AGEPROOFTYPE'
-      - 'EIANUMBER'
+      - 'AADHAAR_NUMBER'
+      - 'AGE_PROOF_TYPE'
+      - 'EIA_NUMBER'
       - 'GSTIN'
-      - 'GSTREGISTRATIONSTATUS'
-      - 'GSTTAXPAYERTYPE'
-      - 'IDENTIFICATIONNUMBER'
-      - 'PANNUMBER'
-      - 'PASSPORTNUMBER'
-      - 'TANNUMBER'
+      - 'GST_REGISTRATION_STATUS'
+      - 'GST_TAXPAYER_TYPE'
+      - 'IDENTIFICATION_NUMBER'
+      - 'PAN_NUMBER'
+      - 'PASSPORT_NUMBER'
+      - 'TAN_NUMBER'
       - 'VATREGISTRATIONNUMBER'
 derived_columns:
   PARENT_BK: 'part_id'
   PARENT_NK: "'HUB_PARTY|' || (part_id)"
-  AADHAARNUMBER: "cast(null as varchar)"
-  AGEPROOFTYPE: "cast(null as varchar)"
-  EIANUMBER: "cast(null as varchar)"
+  AADHAAR_NUMBER: "cast(null as varchar)"
+  AGE_PROOF_TYPE: "cast(null as varchar)"
+  EIA_NUMBER: "cast(null as varchar)"
   GSTIN: "cast(null as varchar)"
-  GSTREGISTRATIONSTATUS: "cast(null as varchar)"
-  GSTTAXPAYERTYPE: "cast(null as varchar)"
-  IDENTIFICATIONNUMBER: 'input'
-  PANNUMBER: "cast(null as varchar)"
-  PASSPORTNUMBER: "cast(null as varchar)"
-  TANNUMBER: "cast(null as varchar)"
+  GST_REGISTRATION_STATUS: "cast(null as varchar)"
+  GST_TAXPAYER_TYPE: "cast(null as varchar)"
+  IDENTIFICATION_NUMBER: 'input'
+  PAN_NUMBER: "cast(null as varchar)"
+  PASSPORT_NUMBER: "cast(null as varchar)"
+  TAN_NUMBER: "cast(null as varchar)"
   VATREGISTRATIONNUMBER: "cast(null as varchar)"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_CKYC_OTP'

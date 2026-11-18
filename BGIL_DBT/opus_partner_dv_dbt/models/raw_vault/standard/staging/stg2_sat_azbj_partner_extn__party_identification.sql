@@ -9,13 +9,13 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'IDENTIFICATIONNUMBER'
-      - 'EIANUMBER'
+      - 'IDENTIFICATION_NUMBER'
+      - 'EIA_NUMBER'
 derived_columns:
   PARENT_BK: 'part_id'
   PARENT_NK: "'HUB_PARTY|' || (part_id)"
-  IDENTIFICATIONNUMBER: 'unique_id'
-  EIANUMBER: 'eia_no'
+  IDENTIFICATION_NUMBER: 'unique_id'
+  EIA_NUMBER: 'eia_no'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_AZBJ_PARTNER_EXTN'
 {%- endset -%}

@@ -17,16 +17,16 @@ source_model:
   - 'stg2_sat_bjaz_t_kyc_ocr__party_individual_demographics'
 src_pk: 'PARTY_HKEY'
 src_payload:
-  - 'ANNUALHOUSEHOLDINCOME'
-  - 'ANNUALINCOME'
+  - 'ANNUAL_HOUSEHOLD_INCOME'
+  - 'ANNUAL_INCOME'
   - 'DESIGNATION'
-  - 'EDUCATIONALQUALIFICATION'
-  - 'FATHERNAME'
-  - 'MARITALSTATUS'
-  - 'NUMBEROFCHILDREN'
+  - 'EDUCATIONAL_QUALIFICATION'
+  - 'FATHER_NAME'
+  - 'MARITAL_STATUS'
+  - 'NUMBER_OF_CHILDREN'
   - 'OCCUPATIONCODE'
-  - 'OCCUPATIONDESCRIPTION'
-  - 'SPOUSENAME'
+  - 'OCCUPATION_DESCRIPTION'
+  - 'SPOUSE_NAME'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
@@ -49,7 +49,7 @@ src_record_source_map:
                     source_model=metadata_dict['source_model'],
                     src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
-                        'stg2_party_individual_demographics': ['ANNUALHOUSEHOLDINCOME', 'ANNUALINCOME', 'DESIGNATION', 'EDUCATIONALQUALIFICATION', 'FATHERNAME', 'MARITALSTATUS', 'NUMBEROFCHILDREN', 'OCCUPATIONCODE', 'OCCUPATIONDESCRIPTION', 'SPOUSENAME'],
-                        'stg2_sat_bjaz_t_ckyc_personal_dtls__party_individual_demographics': ['FATHERNAME', 'MARITALSTATUS', 'OCCUPATIONCODE'],
-                        'stg2_sat_bjaz_t_kyc_ocr__party_individual_demographics': ['FATHERNAME']
+                        'stg2_party_individual_demographics': ['ANNUAL_HOUSEHOLD_INCOME', 'ANNUAL_INCOME', 'DESIGNATION', 'EDUCATIONAL_QUALIFICATION', 'FATHER_NAME', 'MARITAL_STATUS', 'NUMBER_OF_CHILDREN', 'OCCUPATIONCODE', 'OCCUPATION_DESCRIPTION', 'SPOUSE_NAME'],
+                        'stg2_sat_bjaz_t_ckyc_personal_dtls__party_individual_demographics': ['FATHER_NAME', 'MARITAL_STATUS', 'OCCUPATIONCODE'],
+                        'stg2_sat_bjaz_t_kyc_ocr__party_individual_demographics': ['FATHER_NAME']
                     }) }}

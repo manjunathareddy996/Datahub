@@ -9,17 +9,17 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'ALTERNATEEMAILADDRESS'
-      - 'ALTERNATEMOBILENUMBER'
-      - 'LANDLINENUMBER'
-      - 'PREFERREDCONTACTTIME'
+      - 'ALTERNATE_EMAIL_ADDRESS'
+      - 'ALTERNATE_MOBILE_NUMBER'
+      - 'LANDLINE_NUMBER'
+      - 'PREFERRED_CONTACT_TIME'
 derived_columns:
   PARENT_BK: 'part_id'
   PARENT_NK: "'HUB_PARTY|' || (part_id)"
-  ALTERNATEEMAILADDRESS: 'email_2'
-  ALTERNATEMOBILENUMBER: 'alt_mobile_no'
-  LANDLINENUMBER: 'telephone3'
-  PREFERREDCONTACTTIME: 'preferred_contact_opt'
+  ALTERNATE_EMAIL_ADDRESS: 'email_2'
+  ALTERNATE_MOBILE_NUMBER: 'alt_mobile_no'
+  LANDLINE_NUMBER: 'telephone3'
+  PREFERRED_CONTACT_TIME: 'preferred_contact_opt'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_AZBJ_PARTNER_EXTN'
 {%- endset -%}

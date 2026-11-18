@@ -13,7 +13,7 @@
         'key_column': 'part_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'status', 'tgt': 'partystatus'},
+            {'src': 'status', 'tgt': 'party_status'},
             {'src': 'place_of_birth', 'tgt': 'placeofbirth'}
         ],
         'source_tag': 'OPUS_PARTNER_AZBJ_PARTNER_EXTN'
@@ -24,7 +24,7 @@
         'key_column': 'part_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'member_name', 'tgt': 'partyfullname'}
+            {'src': 'member_name', 'tgt': 'party_full_name'}
         ],
         'source_tag': 'OPUS_PARTNER_BA_HCP_DT_MEM'
     },
@@ -34,11 +34,11 @@
         'key_column': 'partner_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'owners_name', 'tgt': 'firstname'},
-            {'src': 'owners_sur_name', 'tgt': 'lastname'},
-            {'src': 'owners_middle_name', 'tgt': 'middlename'},
-            {'src': 'owners_full_name', 'tgt': 'partyfullname'},
-            {'src': 'mfg_co_name', 'tgt': 'partylegalname'}
+            {'src': 'owners_name', 'tgt': 'first_name'},
+            {'src': 'owners_sur_name', 'tgt': 'last_name'},
+            {'src': 'owners_middle_name', 'tgt': 'middle_name'},
+            {'src': 'owners_full_name', 'tgt': 'party_full_name'},
+            {'src': 'mfg_co_name', 'tgt': 'party_legal_name'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_CLM_SUPP_EXTN'
     },
@@ -48,9 +48,9 @@
         'key_column': 'partner_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'dob', 'tgt': 'dateofbirth'},
-            {'src': 'gender', 'tgt': 'gendercode'},
-            {'src': 'member_name', 'tgt': 'partyfullname'}
+            {'src': 'dob', 'tgt': 'date_of_birth'},
+            {'src': 'gender', 'tgt': 'gender_code'},
+            {'src': 'member_name', 'tgt': 'party_full_name'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_CTNGY_FF_DTLS_EXTN'
     },
@@ -61,9 +61,9 @@
         'ldts_column': 'inc_job_updated_at',
         'columns': [
             {'src': 'age', 'tgt': 'age'},
-            {'src': 'date_of_birth', 'tgt': 'dateofbirth'},
-            {'src': 'gender', 'tgt': 'gendercode'},
-            {'src': 'member_name', 'tgt': 'partyfullname'}
+            {'src': 'date_of_birth', 'tgt': 'date_of_birth'},
+            {'src': 'gender', 'tgt': 'gender_code'},
+            {'src': 'member_name', 'tgt': 'party_full_name'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_CTNGY_GC_MEM_DATA'
     },
@@ -74,11 +74,11 @@
         'ldts_column': 'inc_job_updated_at',
         'columns': [
             {'src': 'age', 'tgt': 'age'},
-            {'src': 'dob', 'tgt': 'dateofbirth'},
-            {'src': 'gender', 'tgt': 'gendercode'},
-            {'src': 'last_name', 'tgt': 'lastname'},
-            {'src': 'middle_name', 'tgt': 'middlename'},
-            {'src': 'member_name', 'tgt': 'partyfullname'}
+            {'src': 'dob', 'tgt': 'date_of_birth'},
+            {'src': 'gender', 'tgt': 'gender_code'},
+            {'src': 'last_name', 'tgt': 'last_name'},
+            {'src': 'middle_name', 'tgt': 'middle_name'},
+            {'src': 'member_name', 'tgt': 'party_full_name'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_CTNGY_PA_MEM_DTLS'
     },
@@ -89,10 +89,10 @@
         'ldts_column': 'inc_job_updated_at',
         'columns': [
             {'src': 'age', 'tgt': 'age'},
-            {'src': 'date_of_birth', 'tgt': 'dateofbirth'},
-            {'src': 'gender', 'tgt': 'gendercode'},
-            {'src': 'name', 'tgt': 'partyfullname'},
-            {'src': 'status', 'tgt': 'partystatus'}
+            {'src': 'date_of_birth', 'tgt': 'date_of_birth'},
+            {'src': 'gender', 'tgt': 'gender_code'},
+            {'src': 'name', 'tgt': 'party_full_name'},
+            {'src': 'status', 'tgt': 'party_status'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_EC_MEM_DTLS_EXTN'
     },
@@ -103,10 +103,10 @@
         'ldts_column': 'inc_job_updated_at',
         'columns': [
             {'src': 'age', 'tgt': 'age'},
-            {'src': 'date_of_birth', 'tgt': 'dateofbirth'},
-            {'src': 'gender', 'tgt': 'gendercode'},
-            {'src': 'insured_name', 'tgt': 'partyfullname'},
-            {'src': 'company_name', 'tgt': 'partylegalname'}
+            {'src': 'date_of_birth', 'tgt': 'date_of_birth'},
+            {'src': 'gender', 'tgt': 'gender_code'},
+            {'src': 'insured_name', 'tgt': 'party_full_name'},
+            {'src': 'company_name', 'tgt': 'party_legal_name'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_HCF_MEMBER_DTLS'
     },
@@ -117,10 +117,10 @@
         'ldts_column': 'inc_job_updated_at',
         'columns': [
             {'src': 'age', 'tgt': 'age'},
-            {'src': 'date_of_birth', 'tgt': 'dateofbirth'},
-            {'src': 'sex', 'tgt': 'gendercode'},
-            {'src': 'member_name', 'tgt': 'partyfullname'},
-            {'src': 'status', 'tgt': 'partystatus'}
+            {'src': 'date_of_birth', 'tgt': 'date_of_birth'},
+            {'src': 'sex', 'tgt': 'gender_code'},
+            {'src': 'member_name', 'tgt': 'party_full_name'},
+            {'src': 'status', 'tgt': 'party_status'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_HC_PART_EXTN'
     },
@@ -131,9 +131,9 @@
         'ldts_column': 'inc_job_updated_at',
         'columns': [
             {'src': 'age', 'tgt': 'age'},
-            {'src': 'date_of_birth', 'tgt': 'dateofbirth'},
-            {'src': 'gender', 'tgt': 'gendercode'},
-            {'src': 'name', 'tgt': 'partyfullname'}
+            {'src': 'date_of_birth', 'tgt': 'date_of_birth'},
+            {'src': 'gender', 'tgt': 'gender_code'},
+            {'src': 'name', 'tgt': 'party_full_name'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_HLT_ENSURE_MEM_DTLS'
     },
@@ -143,8 +143,8 @@
         'key_column': 'hosid',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'benname', 'tgt': 'partydisplayname'},
-            {'src': 'hospital_name', 'tgt': 'partyfullname'}
+            {'src': 'benname', 'tgt': 'party_display_name'},
+            {'src': 'hospital_name', 'tgt': 'party_full_name'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_HM_HOSPITAL_MASTER'
     },
@@ -155,9 +155,9 @@
         'ldts_column': 'inc_job_updated_at',
         'columns': [
             {'src': 'age', 'tgt': 'age'},
-            {'src': 'dob', 'tgt': 'dateofbirth'},
-            {'src': 'gender', 'tgt': 'gendercode'},
-            {'src': 'member_name', 'tgt': 'partyfullname'}
+            {'src': 'dob', 'tgt': 'date_of_birth'},
+            {'src': 'gender', 'tgt': 'gender_code'},
+            {'src': 'member_name', 'tgt': 'party_full_name'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_HM_MEMBER_DTLS'
     },
@@ -167,7 +167,7 @@
         'key_column': 'intermediary_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'intermediary_name', 'tgt': 'partyfullname'}
+            {'src': 'intermediary_name', 'tgt': 'party_full_name'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_INTERMEDIARY'
     },
@@ -178,8 +178,8 @@
         'ldts_column': 'inc_job_updated_at',
         'columns': [
             {'src': 'age', 'tgt': 'age'},
-            {'src': 'dob', 'tgt': 'dateofbirth'},
-            {'src': 'member_name', 'tgt': 'partyfullname'}
+            {'src': 'dob', 'tgt': 'date_of_birth'},
+            {'src': 'member_name', 'tgt': 'party_full_name'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_PA_DETL_EXTN'
     },
@@ -190,11 +190,11 @@
         'ldts_column': 'inc_job_updated_at',
         'columns': [
             {'src': 'age', 'tgt': 'age'},
-            {'src': 'date_of_birth', 'tgt': 'dateofbirth'},
-            {'src': 'gender', 'tgt': 'gendercode'},
-            {'src': 'name', 'tgt': 'partyfullname'},
-            {'src': 'company_name', 'tgt': 'partylegalname'},
-            {'src': 'status', 'tgt': 'partystatus'}
+            {'src': 'date_of_birth', 'tgt': 'date_of_birth'},
+            {'src': 'gender', 'tgt': 'gender_code'},
+            {'src': 'name', 'tgt': 'party_full_name'},
+            {'src': 'company_name', 'tgt': 'party_legal_name'},
+            {'src': 'status', 'tgt': 'party_status'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_SH_MEM_DTLS_EXTN'
     },
@@ -205,10 +205,10 @@
         'ldts_column': 'inc_job_updated_at',
         'columns': [
             {'src': 'age', 'tgt': 'age'},
-            {'src': 'date_of_birth', 'tgt': 'dateofbirth'},
-            {'src': 'gender', 'tgt': 'gendercode'},
-            {'src': 'insured_name', 'tgt': 'partyfullname'},
-            {'src': 'company_name', 'tgt': 'partylegalname'}
+            {'src': 'date_of_birth', 'tgt': 'date_of_birth'},
+            {'src': 'gender', 'tgt': 'gender_code'},
+            {'src': 'insured_name', 'tgt': 'party_full_name'},
+            {'src': 'company_name', 'tgt': 'party_legal_name'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_SPP_MEMBER_DTLS'
     },
@@ -219,9 +219,9 @@
         'ldts_column': 'inc_job_updated_at',
         'columns': [
             {'src': 'age', 'tgt': 'age'},
-            {'src': 'dob', 'tgt': 'dateofbirth'},
-            {'src': 'gender', 'tgt': 'gendercode'},
-            {'src': 'member_name', 'tgt': 'partyfullname'}
+            {'src': 'dob', 'tgt': 'date_of_birth'},
+            {'src': 'gender', 'tgt': 'gender_code'},
+            {'src': 'member_name', 'tgt': 'party_full_name'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_STARPKG_FF_DTLS'
     },
@@ -231,18 +231,18 @@
         'key_column': 'part_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'date_of_birth', 'tgt': 'dateofbirth'},
-            {'src': 'date_of_death', 'tgt': 'dateofdeath'},
-            {'src': 'first_name', 'tgt': 'firstname'},
-            {'src': 'sex', 'tgt': 'gendercode'},
-            {'src': 'surname', 'tgt': 'lastname'},
-            {'src': 'middle_name', 'tgt': 'middlename'},
-            {'src': 'after_title', 'tgt': 'namesuffix'},
+            {'src': 'date_of_birth', 'tgt': 'date_of_birth'},
+            {'src': 'date_of_death', 'tgt': 'date_of_death'},
+            {'src': 'first_name', 'tgt': 'first_name'},
+            {'src': 'sex', 'tgt': 'gender_code'},
+            {'src': 'surname', 'tgt': 'last_name'},
+            {'src': 'middle_name', 'tgt': 'middle_name'},
+            {'src': 'after_title', 'tgt': 'name_suffix'},
             {'src': 'nationality', 'tgt': 'nationality'},
-            {'src': 'name', 'tgt': 'partyfullname'},
-            {'src': 'institution_name', 'tgt': 'partylegalname'},
+            {'src': 'name', 'tgt': 'party_full_name'},
+            {'src': 'institution_name', 'tgt': 'party_legal_name'},
             {'src': 'short_name', 'tgt': 'partyshortname'},
-            {'src': 'partner_type', 'tgt': 'partytypecode'},
+            {'src': 'partner_type', 'tgt': 'party_type_code'},
             {'src': 'before_title', 'tgt': 'salutation'}
         ],
         'source_tag': 'OPUS_PARTNER_CP_PARTNERS'
@@ -253,30 +253,30 @@
         'key_column': 'partner_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'customer_name_text', 'tgt': 'partyfullname'}
+            {'src': 'customer_name_text', 'tgt': 'party_full_name'}
         ],
         'source_tag': 'OPUS_PARTNER_OCP_INTERESTED_PARTIES'
     }
 ] -%}
 
-{%- set output_columns = ['age', 'dateofbirth', 'dateofdeath', 'firstname', 'gendercode', 'lastname', 'middlename', 'namesuffix', 'nationality', 'partydisplayname', 'partyfullname', 'partylegalname', 'partyshortname', 'partystatus', 'partytypecode', 'placeofbirth', 'salutation'] -%}
+{%- set output_columns = ['age', 'date_of_birth', 'date_of_death', 'first_name', 'gender_code', 'last_name', 'middle_name', 'name_suffix', 'nationality', 'party_display_name', 'party_full_name', 'party_legal_name', 'partyshortname', 'party_status', 'party_type_code', 'placeofbirth', 'salutation'] -%}
 
 {%- set coalesce_rules = {
     'age':              ['t6', 't7', 't8', 't9', 't10', 't11', 't13', 't16', 't17', 't18', 't19'],
-    'dateofbirth':      ['t5', 't6', 't7', 't8', 't9', 't10', 't11', 't13', 't16', 't17', 't18', 't19', 't20'],
-    'dateofdeath':      ['t20'],
-    'firstname':        ['t3', 't20'],
-    'gendercode':       ['t5', 't6', 't7', 't8', 't9', 't10', 't11', 't13', 't17', 't18', 't19', 't20'],
-    'lastname':         ['t3', 't7', 't20'],
-    'middlename':       ['t3', 't7', 't20'],
-    'namesuffix':       ['t20'],
+    'date_of_birth':      ['t5', 't6', 't7', 't8', 't9', 't10', 't11', 't13', 't16', 't17', 't18', 't19', 't20'],
+    'date_of_death':      ['t20'],
+    'first_name':        ['t3', 't20'],
+    'gender_code':       ['t5', 't6', 't7', 't8', 't9', 't10', 't11', 't13', 't17', 't18', 't19', 't20'],
+    'last_name':         ['t3', 't7', 't20'],
+    'middle_name':       ['t3', 't7', 't20'],
+    'name_suffix':       ['t20'],
     'nationality':      ['t20'],
-    'partydisplayname': ['t12'],
-    'partyfullname':    ['t1', 't3', 't5', 't6', 't7', 't8', 't9', 't10', 't11', 't12', 't13', 't14', 't16', 't17', 't18', 't19', 't20', 't21'],
-    'partylegalname':   ['t3', 't9', 't17', 't18', 't20'],
+    'party_display_name': ['t12'],
+    'party_full_name':    ['t1', 't3', 't5', 't6', 't7', 't8', 't9', 't10', 't11', 't12', 't13', 't14', 't16', 't17', 't18', 't19', 't20', 't21'],
+    'party_legal_name':   ['t3', 't9', 't17', 't18', 't20'],
     'partyshortname':   ['t20'],
-    'partystatus':      ['t0', 't8', 't10', 't17'],
-    'partytypecode':    ['t20'],
+    'party_status':      ['t0', 't8', 't10', 't17'],
+    'party_type_code':    ['t20'],
     'placeofbirth':     ['t0'],
     'salutation':       ['t20']
 } %}

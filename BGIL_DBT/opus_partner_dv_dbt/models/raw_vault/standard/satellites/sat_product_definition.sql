@@ -12,9 +12,9 @@
 source_model: 'stg2_product_definition'
 src_pk: 'PRODUCT_HKEY'
 src_payload:
-  - 'PRODUCTCATEGORY'
+  - 'PRODUCT_CATEGORY'
   - 'PRODUCTGENERATION'
-  - 'PRODUCTNAME'
+  - 'PRODUCT_NAME'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

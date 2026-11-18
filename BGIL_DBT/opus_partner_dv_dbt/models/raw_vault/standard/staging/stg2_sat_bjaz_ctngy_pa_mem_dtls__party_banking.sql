@@ -9,13 +9,13 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'ACCOUNTNUMBERMASKED'
-      - 'BANKCODE'
+      - 'ACCOUNT_NUMBER_MASKED'
+      - 'BANK_CODE'
 derived_columns:
   PARENT_BK: 'partner_id'
   PARENT_NK: "'HUB_PARTY|' || (partner_id)"
-  ACCOUNTNUMBERMASKED: 'loan_account_no'
-  BANKCODE: 'bank_rm_code'
+  ACCOUNT_NUMBER_MASKED: 'loan_account_no'
+  BANK_CODE: 'bank_rm_code'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_CTNGY_PA_MEM_DTLS'
 {%- endset -%}

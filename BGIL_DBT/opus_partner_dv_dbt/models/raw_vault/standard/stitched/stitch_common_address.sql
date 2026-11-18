@@ -11,12 +11,12 @@
         'key_column': 'add_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'address_line6', 'tgt': 'addressline2'},
-            {'src': 'address_line7', 'tgt': 'addressline3'},
-            {'src': 'building_name', 'tgt': 'buildingname'},
-            {'src': 'residence_country', 'tgt': 'countryname'},
-            {'src': 'door_no', 'tgt': 'doornumber'},
-            {'src': 'plot_street_no', 'tgt': 'streetname'}
+            {'src': 'address_line6', 'tgt': 'address_line_2'},
+            {'src': 'address_line7', 'tgt': 'address_line_3'},
+            {'src': 'building_name', 'tgt': 'building_name'},
+            {'src': 'residence_country', 'tgt': 'country_name'},
+            {'src': 'door_no', 'tgt': 'door_number'},
+            {'src': 'plot_street_no', 'tgt': 'street_name'}
         ],
         'source_tag': 'OPUS_PARTNER_AZBJ_ADDRESS_EXTN'
     },
@@ -26,12 +26,12 @@
         'key_column': 'billing_loc',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'parent_co_add_line1', 'tgt': 'addressline1'},
-            {'src': 'parent_co_add_line2', 'tgt': 'addressline2'},
-            {'src': 'parent_co_add_line3', 'tgt': 'addressline3'},
-            {'src': 'country_code', 'tgt': 'countrycode'},
-            {'src': 'country', 'tgt': 'countryname'},
-            {'src': 'billing_state', 'tgt': 'statename'}
+            {'src': 'parent_co_add_line1', 'tgt': 'address_line_1'},
+            {'src': 'parent_co_add_line2', 'tgt': 'address_line_2'},
+            {'src': 'parent_co_add_line3', 'tgt': 'address_line_3'},
+            {'src': 'country_code', 'tgt': 'country_code'},
+            {'src': 'country', 'tgt': 'country_name'},
+            {'src': 'billing_state', 'tgt': 'state_name'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_CLM_SUPP_EXTN'
     },
@@ -42,8 +42,8 @@
         'ldts_column': 'inc_job_updated_at',
         'columns': [
             {'src': 'city', 'tgt': 'city'},
-            {'src': 'status', 'tgt': 'postalcode'},
-            {'src': 'state', 'tgt': 'statename'}
+            {'src': 'status', 'tgt': 'postal_code'},
+            {'src': 'state', 'tgt': 'state_name'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_PINCODE'
     },
@@ -54,7 +54,7 @@
         'ldts_column': 'inc_job_updated_at',
         'columns': [
             {'src': 'city', 'tgt': 'city'},
-            {'src': 'state', 'tgt': 'statename'}
+            {'src': 'state', 'tgt': 'state_name'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_PINCODE_MASTER'
     },
@@ -64,30 +64,30 @@
         'key_column': 'add_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'address_line1', 'tgt': 'addressline1'},
-            {'src': 'address_line2', 'tgt': 'addressline2'},
-            {'src': 'address_line3', 'tgt': 'addressline3'},
-            {'src': 'country_code', 'tgt': 'countrycode'},
-            {'src': 'postcode', 'tgt': 'postalcode'}
+            {'src': 'address_line1', 'tgt': 'address_line_1'},
+            {'src': 'address_line2', 'tgt': 'address_line_2'},
+            {'src': 'address_line3', 'tgt': 'address_line_3'},
+            {'src': 'country_code', 'tgt': 'country_code'},
+            {'src': 'postcode', 'tgt': 'postal_code'}
         ],
         'source_tag': 'OPUS_PARTNER_CP_ADDRESSES'
     }
 ] -%}
 
-{%- set output_columns = ['addressline1', 'addressline2', 'addressline3', 'buildingname', 'city', 'countrycode', 'countryname', 'doornumber', 'postalcode', 'statename', 'streetname'] -%}
+{%- set output_columns = ['address_line_1', 'address_line_2', 'address_line_3', 'building_name', 'city', 'country_code', 'country_name', 'door_number', 'postal_code', 'state_name', 'street_name'] -%}
 
 {%- set coalesce_rules = {
-    'addressline1': ['t1', 't5'],
-    'addressline2': ['t0', 't1', 't5'],
-    'addressline3': ['t0', 't1', 't5'],
-    'buildingname': ['t0'],
+    'address_line_1': ['t1', 't5'],
+    'address_line_2': ['t0', 't1', 't5'],
+    'address_line_3': ['t0', 't1', 't5'],
+    'building_name': ['t0'],
     'city': ['t3', 't4'],
-    'countrycode': ['t1', 't5'],
-    'countryname': ['t0', 't1'],
-    'doornumber': ['t0'],
-    'postalcode': ['t3', 't5'],
-    'statename': ['t1', 't3', 't4'],
-    'streetname': ['t0']
+    'country_code': ['t1', 't5'],
+    'country_name': ['t0', 't1'],
+    'door_number': ['t0'],
+    'postal_code': ['t3', 't5'],
+    'state_name': ['t1', 't3', 't4'],
+    'street_name': ['t0']
 } %}
 
 {{ stitch_incremental(

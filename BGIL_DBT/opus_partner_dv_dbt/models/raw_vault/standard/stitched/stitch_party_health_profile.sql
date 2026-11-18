@@ -23,7 +23,7 @@
         'key_column': 'partner_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'obesity_flag', 'tgt': 'bodymassindex'},
+            {'src': 'obesity_flag', 'tgt': 'body_mass_index'},
             {'src': 'height_flag', 'tgt': 'height'},
             {'src': 'smoker_flag', 'tgt': 'smokerindicator'},
             {'src': 'weight_flag', 'tgt': 'weight'}
@@ -46,17 +46,17 @@
         'key_column': 'partner_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'obesity', 'tgt': 'bodymassindex'},
+            {'src': 'obesity', 'tgt': 'body_mass_index'},
             {'src': 'weight', 'tgt': 'weight'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_SPP_MEMBER_DTLS'
     }
 ] -%}
 
-{%- set output_columns = ['bodymassindex', 'height', 'maternitystatus', 'smokerindicator', 'weight'] -%}
+{%- set output_columns = ['body_mass_index', 'height', 'maternitystatus', 'smokerindicator', 'weight'] -%}
 
 {%- set coalesce_rules = {
-    'bodymassindex': ['t1', 't3'],
+    'body_mass_index': ['t1', 't3'],
     'height': ['t0', 't1'],
     'maternitystatus': ['t0'],
     'smokerindicator': ['t0', 't1', 't2'],

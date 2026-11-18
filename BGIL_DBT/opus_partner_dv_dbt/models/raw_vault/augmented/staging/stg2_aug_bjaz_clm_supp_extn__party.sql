@@ -18,7 +18,7 @@ hashed_columns:
       - 'PAN_ACK_DT'
       - 'PAN_APP_NO'
       - 'TWO_YR_ITR_FLAG'
-      - 'ADHAAR_PAN_LINK_FLAG'
+      - 'AADHAAR_PAN_LINK_FLAG'
 derived_columns:
   PARENT_BK: 'partner_id'
   PARENT_NK: "'HUB_PARTY|' || (partner_id)"
@@ -27,7 +27,7 @@ derived_columns:
   PAN_ACK_DT: 'pan_ack_dt'
   PAN_APP_NO: 'pan_app_no'
   TWO_YR_ITR_FLAG: 'two_yr_itr_flag'
-  ADHAAR_PAN_LINK_FLAG: 'adhaar_pan_link_flag'
+  AADHAAR_PAN_LINK_FLAG: 'adhaar_pan_link_flag'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_CLM_SUPP_EXTN'
 {%- endset -%}

@@ -9,17 +9,17 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'EMAILADDRESS'
-      - 'FAXNUMBER'
-      - 'LANDLINENUMBER'
-      - 'STDCODE'
+      - 'EMAIL_ADDRESS'
+      - 'FAX_NUMBER'
+      - 'LANDLINE_NUMBER'
+      - 'STD_CODE'
 derived_columns:
   PARENT_BK: 'hosid'
   PARENT_NK: "'HUB_PARTY|' || (hosid)"
-  EMAILADDRESS: 'email'
-  FAXNUMBER: 'fax_no'
-  LANDLINENUMBER: 'phone_no'
-  STDCODE: 'std_code'
+  EMAIL_ADDRESS: 'email'
+  FAX_NUMBER: 'fax_no'
+  LANDLINE_NUMBER: 'phone_no'
+  STD_CODE: 'std_code'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_HM_HOSPITAL_MASTER'
 {%- endset -%}

@@ -9,17 +9,17 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'DISCOUNTPERCENTAGE'
-      - 'EFFECTIVEDATE'
-      - 'EXPIRYDATE'
-      - 'TARIFFRATE'
+      - 'DISCOUNT_PERCENTAGE'
+      - 'EFFECTIVE_DATE'
+      - 'EXPIRY_DATE'
+      - 'TARIFF_RATE'
 derived_columns:
   PARENT_BK: 'hosid'
   PARENT_NK: "'HUB_PARTY|' || (hosid)"
-  DISCOUNTPERCENTAGE: 'imps_discnt_on'
-  EFFECTIVEDATE: 'imps_tarif_frm'
-  EXPIRYDATE: 'imps_tarif_to'
-  TARIFFRATE: 'imps_payment_lmt'
+  DISCOUNT_PERCENTAGE: 'imps_discnt_on'
+  EFFECTIVE_DATE: 'imps_tarif_frm'
+  EXPIRY_DATE: 'imps_tarif_to'
+  TARIFF_RATE: 'imps_payment_lmt'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_HM_HOSPITAL_MASTER'
 {%- endset -%}

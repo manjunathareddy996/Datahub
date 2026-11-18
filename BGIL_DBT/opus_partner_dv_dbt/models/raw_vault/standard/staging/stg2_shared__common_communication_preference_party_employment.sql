@@ -10,9 +10,9 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'CORRESPONDENCELANGUAGE'
+      - 'CORRESPONDENCE_LANGUAGE'
       - 'MARKETINGOPTININDICATOR'
-      - 'EMPLOYMENTSTATUS'
+      - 'EMPLOYMENT_STATUS'
 derived_columns:
   PARTY_NK: "'HUB_PARTY|' || PARENT_BK"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'

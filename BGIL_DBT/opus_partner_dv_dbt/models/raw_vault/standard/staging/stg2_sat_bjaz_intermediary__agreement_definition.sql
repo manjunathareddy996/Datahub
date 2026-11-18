@@ -12,11 +12,11 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'AGREEMENTTYPE'
+      - 'AGREEMENT_TYPE'
 derived_columns:
   PARENT_BK: 'intermediary_id'
   PARENT_NK: "'HUB_AGREEMENT|' || (intermediary_id)"
-  AGREEMENTTYPE: 'nature_of_agreement'
+  AGREEMENT_TYPE: 'nature_of_agreement'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_INTERMEDIARY'
 {%- endset -%}

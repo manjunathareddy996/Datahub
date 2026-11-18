@@ -23,7 +23,7 @@ source_model:
   - 'stg2_sat_bjaz_t_kyc_ocr__policy_premium_summary'
 src_pk: 'POLICY_HKEY'
 src_payload:
-  - 'GROSSPREMIUM'
+  - 'GROSS_PREMIUM'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
@@ -42,6 +42,6 @@ src_record_source_map:
                     source_model=metadata_dict['source_model'],
                     src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
-                        'stg2_sat_bjaz_t_kyc_incoming__policy_premium_summary': ['GROSSPREMIUM'],
-                        'stg2_sat_bjaz_t_kyc_ocr__policy_premium_summary': ['GROSSPREMIUM']
+                        'stg2_sat_bjaz_t_kyc_incoming__policy_premium_summary': ['GROSS_PREMIUM'],
+                        'stg2_sat_bjaz_t_kyc_ocr__policy_premium_summary': ['GROSS_PREMIUM']
                     }) }}

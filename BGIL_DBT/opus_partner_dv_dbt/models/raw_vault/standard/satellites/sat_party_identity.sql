@@ -24,20 +24,20 @@ source_model:
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'AGE'
-  - 'DATEOFBIRTH'
-  - 'DATEOFDEATH'
-  - 'FIRSTNAME'
-  - 'GENDERCODE'
-  - 'LASTNAME'
-  - 'MIDDLENAME'
-  - 'NAMESUFFIX'
+  - 'DATE_OF_BIRTH'
+  - 'DATE_OF_DEATH'
+  - 'FIRST_NAME'
+  - 'GENDER_CODE'
+  - 'LAST_NAME'
+  - 'MIDDLE_NAME'
+  - 'NAME_SUFFIX'
   - 'NATIONALITY'
-  - 'PARTYDISPLAYNAME'
-  - 'PARTYFULLNAME'
-  - 'PARTYLEGALNAME'
+  - 'PARTY_DISPLAY_NAME'
+  - 'PARTY_FULL_NAME'
+  - 'PARTY_LEGAL_NAME'
   - 'PARTYSHORTNAME'
-  - 'PARTYSTATUS'
-  - 'PARTYTYPECODE'
+  - 'PARTY_STATUS'
+  - 'PARTY_TYPE_CODE'
   - 'PLACEOFBIRTH'
   - 'SALUTATION'
 src_hashdiff: 'HASHDIFF'
@@ -68,13 +68,13 @@ src_record_source_map:
                     source_model=metadata_dict['source_model'],
                     src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
-                        'stg2_party_identity': ['AGE', 'DATEOFBIRTH', 'DATEOFDEATH', 'FIRSTNAME', 'GENDERCODE', 'LASTNAME', 'MIDDLENAME', 'NAMESUFFIX', 'NATIONALITY', 'PARTYDISPLAYNAME', 'PARTYFULLNAME', 'PARTYLEGALNAME', 'PARTYSHORTNAME', 'PARTYSTATUS', 'PARTYTYPECODE', 'PLACEOFBIRTH', 'SALUTATION'],
-                        'stg2_sat_bjaz_t_ckyc_personal_dtls__party_identity': ['DATEOFBIRTH', 'FIRSTNAME', 'GENDERCODE', 'LASTNAME', 'MIDDLENAME', 'NATIONALITY', 'PARTYFULLNAME', 'PLACEOFBIRTH', 'SALUTATION'],
-                        'stg2_sat_bjaz_t_ckyc_rel_persion_dtls__party_identity__related_person': ['FIRSTNAME', 'LASTNAME', 'MIDDLENAME', 'SALUTATION'],
-                        'stg2_sat_bjaz_t_ckyc_search__party_identity': ['DATEOFBIRTH', 'GENDERCODE', 'PARTYFULLNAME'],
-                        'stg2_sat_bjaz_t_ekyc__party_identity': ['DATEOFBIRTH', 'GENDERCODE', 'PARTYFULLNAME'],
-                        'stg2_sat_bjaz_t_kyc_auth__party_identity': ['DATEOFBIRTH', 'GENDERCODE', 'PARTYFULLNAME'],
-                        'stg2_sat_bjaz_t_kyc_details__party_identity': ['DATEOFBIRTH', 'PARTYDISPLAYNAME', 'PARTYFULLNAME'],
-                        'stg2_sat_bjaz_t_kyc_incoming__party_identity': ['DATEOFBIRTH', 'GENDERCODE', 'PARTYFULLNAME', 'PARTYTYPECODE'],
-                        'stg2_sat_bjaz_t_kyc_ocr__party_identity': ['DATEOFBIRTH', 'GENDERCODE', 'LASTNAME', 'NATIONALITY', 'PLACEOFBIRTH']
+                        'stg2_party_identity': ['AGE', 'DATE_OF_BIRTH', 'DATE_OF_DEATH', 'FIRST_NAME', 'GENDER_CODE', 'LAST_NAME', 'MIDDLE_NAME', 'NAME_SUFFIX', 'NATIONALITY', 'PARTY_DISPLAY_NAME', 'PARTY_FULL_NAME', 'PARTY_LEGAL_NAME', 'PARTYSHORTNAME', 'PARTY_STATUS', 'PARTY_TYPE_CODE', 'PLACEOFBIRTH', 'SALUTATION'],
+                        'stg2_sat_bjaz_t_ckyc_personal_dtls__party_identity': ['DATE_OF_BIRTH', 'FIRST_NAME', 'GENDER_CODE', 'LAST_NAME', 'MIDDLE_NAME', 'NATIONALITY', 'PARTY_FULL_NAME', 'PLACEOFBIRTH', 'SALUTATION'],
+                        'stg2_sat_bjaz_t_ckyc_rel_persion_dtls__party_identity__related_person': ['FIRST_NAME', 'LAST_NAME', 'MIDDLE_NAME', 'SALUTATION'],
+                        'stg2_sat_bjaz_t_ckyc_search__party_identity': ['DATE_OF_BIRTH', 'GENDER_CODE', 'PARTY_FULL_NAME'],
+                        'stg2_sat_bjaz_t_ekyc__party_identity': ['DATE_OF_BIRTH', 'GENDER_CODE', 'PARTY_FULL_NAME'],
+                        'stg2_sat_bjaz_t_kyc_auth__party_identity': ['DATE_OF_BIRTH', 'GENDER_CODE', 'PARTY_FULL_NAME'],
+                        'stg2_sat_bjaz_t_kyc_details__party_identity': ['DATE_OF_BIRTH', 'PARTY_DISPLAY_NAME', 'PARTY_FULL_NAME'],
+                        'stg2_sat_bjaz_t_kyc_incoming__party_identity': ['DATE_OF_BIRTH', 'GENDER_CODE', 'PARTY_FULL_NAME', 'PARTY_TYPE_CODE'],
+                        'stg2_sat_bjaz_t_kyc_ocr__party_identity': ['DATE_OF_BIRTH', 'GENDER_CODE', 'LAST_NAME', 'NATIONALITY', 'PLACEOFBIRTH']
                     }) }}

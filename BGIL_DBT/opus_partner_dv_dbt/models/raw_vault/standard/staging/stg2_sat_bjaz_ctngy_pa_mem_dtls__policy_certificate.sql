@@ -9,11 +9,11 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'ENROLMENTDATE'
+      - 'ENROLMENT_DATE'
 derived_columns:
   PARENT_BK: 'contract_id'
   PARENT_NK: "'HUB_POLICY|' || (contract_id)"
-  ENROLMENTDATE: 'pm_pol_enrolment_date'
+  ENROLMENT_DATE: 'pm_pol_enrolment_date'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_CTNGY_PA_MEM_DTLS'
 {%- endset -%}

@@ -17,12 +17,12 @@ source_model:
   - 'stg2_sat_bjaz_hm_member_dtls__party_banking'
 src_pk: 'PARTY_HKEY'
 src_cdk:
-  - 'ACCOUNTNUMBERMASKED'
+  - 'ACCOUNT_NUMBER_MASKED'
 src_payload:
-  - 'BANKCODE'
-  - 'BANKNAME'
-  - 'IFSCCODE'
-  - 'MICRCODE'
+  - 'BANK_CODE'
+  - 'BANK_NAME'
+  - 'IFSC_CODE'
+  - 'MICR_CODE'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
@@ -44,8 +44,8 @@ src_record_source_map:
                        source_model=metadata_dict['source_model'],
                        src_record_source_map=metadata_dict['src_record_source_map'],
                        src_column_map={
-                        'stg2_sat_azbj_partner_extn__party_banking': ['ACCOUNTNUMBERMASKED', 'IFSCCODE', 'MICRCODE'],
-                        'stg2_sat_bjaz_clm_supp_extn__party_banking': ['ACCOUNTNUMBERMASKED', 'BANKNAME'],
-                        'stg2_sat_bjaz_ctngy_pa_mem_dtls__party_banking': ['ACCOUNTNUMBERMASKED', 'BANKCODE'],
-                        'stg2_sat_bjaz_hm_member_dtls__party_banking': ['ACCOUNTNUMBERMASKED', 'BANKNAME', 'MICRCODE']
+                        'stg2_sat_azbj_partner_extn__party_banking': ['ACCOUNT_NUMBER_MASKED', 'IFSC_CODE', 'MICR_CODE'],
+                        'stg2_sat_bjaz_clm_supp_extn__party_banking': ['ACCOUNT_NUMBER_MASKED', 'BANK_NAME'],
+                        'stg2_sat_bjaz_ctngy_pa_mem_dtls__party_banking': ['ACCOUNT_NUMBER_MASKED', 'BANK_CODE'],
+                        'stg2_sat_bjaz_hm_member_dtls__party_banking': ['ACCOUNT_NUMBER_MASKED', 'BANK_NAME', 'MICR_CODE']
                        }) }}

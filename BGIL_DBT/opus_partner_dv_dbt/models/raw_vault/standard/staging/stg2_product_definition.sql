@@ -10,9 +10,9 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'PRODUCTCATEGORY'
+      - 'PRODUCT_CATEGORY'
       - 'PRODUCTGENERATION'
-      - 'PRODUCTNAME'
+      - 'PRODUCT_NAME'
 derived_columns:
   PRODUCT_NK: "'HUB_PRODUCT|' || PARENT_BK"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'

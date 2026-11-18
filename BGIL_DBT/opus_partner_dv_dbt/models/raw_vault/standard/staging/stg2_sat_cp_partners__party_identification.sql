@@ -9,12 +9,12 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'IDENTIFICATIONNUMBER'
+      - 'IDENTIFICATION_NUMBER'
       - 'VATREGISTRATIONNUMBER'
 derived_columns:
   PARENT_BK: 'part_id'
   PARENT_NK: "'HUB_PARTY|' || (part_id)"
-  IDENTIFICATIONNUMBER: 'tax_id'
+  IDENTIFICATION_NUMBER: 'tax_id'
   VATREGISTRATIONNUMBER: 'vat_number'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_CP_PARTNERS'

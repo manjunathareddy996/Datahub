@@ -10,17 +10,17 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'ADDRESSLINE1'
-      - 'ADDRESSLINE2'
-      - 'ADDRESSLINE3'
-      - 'BUILDINGNAME'
+      - 'ADDRESS_LINE_1'
+      - 'ADDRESS_LINE_2'
+      - 'ADDRESS_LINE_3'
+      - 'BUILDING_NAME'
       - 'CITY'
-      - 'COUNTRYCODE'
-      - 'COUNTRYNAME'
-      - 'DOORNUMBER'
-      - 'POSTALCODE'
-      - 'STATENAME'
-      - 'STREETNAME'
+      - 'COUNTRY_CODE'
+      - 'COUNTRY_NAME'
+      - 'DOOR_NUMBER'
+      - 'POSTAL_CODE'
+      - 'STATE_NAME'
+      - 'STREET_NAME'
 derived_columns:
   LOCATION_NK: "'HUB_LOCATION|' || PARENT_BK"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'

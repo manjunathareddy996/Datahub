@@ -9,15 +9,15 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'ACCOUNTNUMBERMASKED'
-      - 'IFSCCODE'
-      - 'MICRCODE'
+      - 'ACCOUNT_NUMBER_MASKED'
+      - 'IFSC_CODE'
+      - 'MICR_CODE'
 derived_columns:
   PARENT_BK: 'part_id'
   PARENT_NK: "'HUB_PARTY|' || (part_id)"
-  ACCOUNTNUMBERMASKED: 'account_no'
-  IFSCCODE: 'ifsc_code'
-  MICRCODE: 'micr_code'
+  ACCOUNT_NUMBER_MASKED: 'account_no'
+  IFSC_CODE: 'ifsc_code'
+  MICR_CODE: 'micr_code'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_AZBJ_PARTNER_EXTN'
 {%- endset -%}

@@ -30,11 +30,11 @@ source_model:
   - 'stg2_sat_bjaz_t_kyc_incoming__party_kyc'
 src_pk: 'PARTY_HKEY'
 src_payload:
-  - 'CKYCNUMBER'
-  - 'CKYCREGISTRATIONSTATUS'
-  - 'KYCCOMPLETIONDATE'
+  - 'CKYC_NUMBER'
+  - 'CKYC_REGISTRATION_STATUS'
+  - 'KYC_COMPLETION_DATE'
   - 'KYCMODE'
-  - 'KYCSTATUS'
+  - 'KYC_STATUS'
   - 'KYCTYPE'
   - 'LASTKYCREVIEWDATE'
   - 'OVDSUBMITTEDCOUNT'
@@ -60,8 +60,8 @@ src_record_source_map:
                     src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
                         'stg2_sat_bjaz_t_ckyc_personal_dtls__party_kyc': ['KYCTYPE', 'OVDSUBMITTEDCOUNT'],
-                        'stg2_sat_bjaz_t_ckyc_rel_persion_dtls__party_kyc__related_person': ['KYCCOMPLETIONDATE'],
-                        'stg2_sat_bjaz_t_ckyc_search__party_kyc': ['CKYCNUMBER', 'CKYCREGISTRATIONSTATUS', 'KYCCOMPLETIONDATE', 'LASTKYCREVIEWDATE'],
-                        'stg2_sat_bjaz_t_kyc_details__party_kyc': ['KYCCOMPLETIONDATE', 'KYCSTATUS'],
+                        'stg2_sat_bjaz_t_ckyc_rel_persion_dtls__party_kyc__related_person': ['KYC_COMPLETION_DATE'],
+                        'stg2_sat_bjaz_t_ckyc_search__party_kyc': ['CKYC_NUMBER', 'CKYC_REGISTRATION_STATUS', 'KYC_COMPLETION_DATE', 'LASTKYCREVIEWDATE'],
+                        'stg2_sat_bjaz_t_kyc_details__party_kyc': ['KYC_COMPLETION_DATE', 'KYC_STATUS'],
                         'stg2_sat_bjaz_t_kyc_incoming__party_kyc': ['KYCMODE', 'KYCTYPE']
                     }) }}

@@ -24,25 +24,25 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'ANNUALTURNOVER'
-      - 'DATEOFINCORPORATION'
-      - 'GROUPNAME'
-      - 'INDUSTRYDESCRIPTION'
-      - 'LEGALCONSTITUTIONTYPE'
-      - 'MSMEINDICATOR'
-      - 'PAIDUPCAPITAL'
-      - 'PARENTENTITYNAME'
+      - 'ANNUAL_TURNOVER'
+      - 'DATE_OF_INCORPORATION'
+      - 'GROUP_NAME'
+      - 'INDUSTRY_DESCRIPTION'
+      - 'LEGAL_CONSTITUTION_TYPE'
+      - 'MSME_INDICATOR'
+      - 'PAID_UP_CAPITAL'
+      - 'PARENT_ENTITY_NAME'
 derived_columns:
   PARENT_BK: 'part_id'
   PARENT_NK: "'HUB_PARTY|' || (part_id)"
-  ANNUALTURNOVER: "cast(null as varchar)"
-  DATEOFINCORPORATION: "cast(null as varchar)"
-  GROUPNAME: "cast(null as varchar)"
-  INDUSTRYDESCRIPTION: "cast(null as varchar)"
-  LEGALCONSTITUTIONTYPE: "cast(null as varchar)"
-  MSMEINDICATOR: "cast(null as varchar)"
-  PAIDUPCAPITAL: "cast(null as varchar)"
-  PARENTENTITYNAME: "cast(null as varchar)"
+  ANNUAL_TURNOVER: "cast(null as varchar)"
+  DATE_OF_INCORPORATION: "cast(null as varchar)"
+  GROUP_NAME: "cast(null as varchar)"
+  INDUSTRY_DESCRIPTION: "cast(null as varchar)"
+  LEGAL_CONSTITUTION_TYPE: "cast(null as varchar)"
+  MSME_INDICATOR: "cast(null as varchar)"
+  PAID_UP_CAPITAL: "cast(null as varchar)"
+  PARENT_ENTITY_NAME: "cast(null as varchar)"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_CKYC_PERSONAL_DTLS'
 {%- endset -%}

@@ -12,7 +12,7 @@
 source_model: 'stg2_shared__common_admin_geography_common_geo'
 src_pk: 'LOCATION_HKEY'
 src_payload:
-  - 'PINCODE'
+  - 'PIN_CODE'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

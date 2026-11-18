@@ -9,11 +9,11 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'IDENTIFICATIONNUMBER'
+      - 'IDENTIFICATION_NUMBER'
 derived_columns:
   PARENT_BK: 'hosid'
   PARENT_NK: "'HUB_PARTY|' || (hosid)"
-  IDENTIFICATIONNUMBER: 'hospital_no'
+  IDENTIFICATION_NUMBER: 'hospital_no'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_HM_HOSPITAL_MASTER'
 {%- endset -%}

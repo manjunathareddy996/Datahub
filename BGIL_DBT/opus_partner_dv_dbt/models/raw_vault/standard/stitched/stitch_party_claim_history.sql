@@ -11,7 +11,7 @@
         'key_column': 'partner_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'claim_received', 'tgt': 'totalclaimcount'}
+            {'src': 'claim_received', 'tgt': 'total_claim_count'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_EC_MEM_DTLS_EXTN'
     },
@@ -21,7 +21,7 @@
         'key_column': 'partner_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'claim_dtls', 'tgt': 'totalclaimcount'}
+            {'src': 'claim_dtls', 'tgt': 'total_claim_count'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_HCF_MEMBER_DTLS'
     },
@@ -31,8 +31,8 @@
         'key_column': 'part_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'amount_claimed', 'tgt': 'totalclaimamount'},
-            {'src': 'claim_history', 'tgt': 'totalclaimcount'}
+            {'src': 'amount_claimed', 'tgt': 'total_claim_amount'},
+            {'src': 'claim_history', 'tgt': 'total_claim_count'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_HC_PART_EXTN'
     },
@@ -42,7 +42,7 @@
         'key_column': 'partner_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'claim_count', 'tgt': 'totalclaimcount'}
+            {'src': 'claim_count', 'tgt': 'total_claim_count'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_HM_MEMBER_DTLS'
     },
@@ -52,8 +52,8 @@
         'key_column': 'partner_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'amount_claimed', 'tgt': 'totalclaimamount'},
-            {'src': 'claim_history', 'tgt': 'totalclaimcount'}
+            {'src': 'amount_claimed', 'tgt': 'total_claim_amount'},
+            {'src': 'claim_history', 'tgt': 'total_claim_count'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_SH_MEM_DTLS_EXTN'
     },
@@ -63,17 +63,17 @@
         'key_column': 'partner_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'claim_dtls', 'tgt': 'totalclaimcount'}
+            {'src': 'claim_dtls', 'tgt': 'total_claim_count'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_SPP_MEMBER_DTLS'
     }
 ] -%}
 
-{%- set output_columns = ['totalclaimamount', 'totalclaimcount'] -%}
+{%- set output_columns = ['total_claim_amount', 'total_claim_count'] -%}
 
 {%- set coalesce_rules = {
-    'totalclaimamount': ['t2', 't4'],
-    'totalclaimcount':  ['t0', 't1', 't2', 't3', 't4', 't5']
+    'total_claim_amount': ['t2', 't4'],
+    'total_claim_count':  ['t0', 't1', 't2', 't3', 't4', 't5']
 } %}
 
 {{ stitch_incremental(

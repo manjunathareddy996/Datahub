@@ -12,12 +12,12 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'CLASSIFICATIONVALUE'
+      - 'CLASSIFICATION_VALUE'
 derived_columns:
   PARENT_BK: "upper(case when upper(trim(field_type)) like 'POLICY%' then trim(field_value) end)"
   PARENT_NK: "'HUB_POLICY|' || (upper(case when upper(trim(field_type)) like 'POLICY%' then trim(field_value) end))"
-  CLASSIFICATIONTYPE: "'BUSINESS_TYPE'"
-  CLASSIFICATIONVALUE: 'business_type'
+  CLASSIFICATION_TYPE: "'BUSINESS_TYPE'"
+  CLASSIFICATION_VALUE: 'business_type'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_KYC_DETAILS'
 {%- endset -%}

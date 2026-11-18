@@ -10,14 +10,14 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'ANNUALTURNOVER'
-      - 'DATEOFINCORPORATION'
-      - 'GROUPNAME'
-      - 'INDUSTRYDESCRIPTION'
-      - 'LEGALCONSTITUTIONTYPE'
-      - 'MSMEINDICATOR'
-      - 'PAIDUPCAPITAL'
-      - 'PARENTENTITYNAME'
+      - 'ANNUAL_TURNOVER'
+      - 'DATE_OF_INCORPORATION'
+      - 'GROUP_NAME'
+      - 'INDUSTRY_DESCRIPTION'
+      - 'LEGAL_CONSTITUTION_TYPE'
+      - 'MSME_INDICATOR'
+      - 'PAID_UP_CAPITAL'
+      - 'PARENT_ENTITY_NAME'
 derived_columns:
   PARTY_NK: "'HUB_PARTY|' || PARENT_BK"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'

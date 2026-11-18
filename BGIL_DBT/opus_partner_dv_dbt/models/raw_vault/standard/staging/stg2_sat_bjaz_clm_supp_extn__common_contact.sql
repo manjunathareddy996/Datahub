@@ -9,17 +9,17 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'EMAILADDRESS'
-      - 'LANDLINENUMBER'
-      - 'MOBILENUMBER'
-      - 'STDCODE'
+      - 'EMAIL_ADDRESS'
+      - 'LANDLINE_NUMBER'
+      - 'MOBILE_NUMBER'
+      - 'STD_CODE'
 derived_columns:
   PARENT_BK: 'partner_id'
   PARENT_NK: "'HUB_PARTY|' || (partner_id)"
-  EMAILADDRESS: 'supp_email'
-  LANDLINENUMBER: 'phone_details'
-  MOBILENUMBER: 'supp_mobile'
-  STDCODE: 'std_code'
+  EMAIL_ADDRESS: 'supp_email'
+  LANDLINE_NUMBER: 'phone_details'
+  MOBILE_NUMBER: 'supp_mobile'
+  STD_CODE: 'std_code'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_CLM_SUPP_EXTN'
 {%- endset -%}

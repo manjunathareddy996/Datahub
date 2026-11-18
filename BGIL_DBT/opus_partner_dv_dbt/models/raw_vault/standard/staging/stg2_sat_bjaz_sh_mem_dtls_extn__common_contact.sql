@@ -9,11 +9,11 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'EMAILADDRESS'
+      - 'EMAIL_ADDRESS'
 derived_columns:
   PARENT_BK: 'partner_id'
   PARENT_NK: "'HUB_PARTY|' || (partner_id)"
-  EMAILADDRESS: 'email_id'
+  EMAIL_ADDRESS: 'email_id'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_SH_MEM_DTLS_EXTN'
 {%- endset -%}

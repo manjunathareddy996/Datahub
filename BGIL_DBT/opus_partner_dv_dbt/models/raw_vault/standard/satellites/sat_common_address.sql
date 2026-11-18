@@ -16,17 +16,17 @@ source_model:
   - 'stg2_kyc_common_address'
 src_pk: 'LOCATION_HKEY'
 src_payload:
-  - 'ADDRESSLINE1'
-  - 'ADDRESSLINE2'
-  - 'ADDRESSLINE3'
-  - 'BUILDINGNAME'
+  - 'ADDRESS_LINE_1'
+  - 'ADDRESS_LINE_2'
+  - 'ADDRESS_LINE_3'
+  - 'BUILDING_NAME'
   - 'CITY'
-  - 'COUNTRYCODE'
-  - 'COUNTRYNAME'
-  - 'DOORNUMBER'
-  - 'POSTALCODE'
-  - 'STATENAME'
-  - 'STREETNAME'
+  - 'COUNTRY_CODE'
+  - 'COUNTRY_NAME'
+  - 'DOOR_NUMBER'
+  - 'POSTAL_CODE'
+  - 'STATE_NAME'
+  - 'STREET_NAME'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
@@ -48,6 +48,6 @@ src_record_source_map:
                     source_model=metadata_dict['source_model'],
                     src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
-                        'stg2_common_address': ['ADDRESSLINE1', 'ADDRESSLINE2', 'ADDRESSLINE3', 'BUILDINGNAME', 'CITY', 'COUNTRYCODE', 'COUNTRYNAME', 'DOORNUMBER', 'POSTALCODE', 'STATENAME', 'STREETNAME'],
-                        'stg2_kyc_common_address': ['ADDRESSLINE1', 'ADDRESSLINE2', 'ADDRESSLINE3', 'BUILDINGNAME', 'CITY', 'COUNTRYCODE', 'COUNTRYNAME', 'DOORNUMBER', 'POSTALCODE', 'STATENAME', 'STREETNAME']
+                        'stg2_common_address': ['ADDRESS_LINE_1', 'ADDRESS_LINE_2', 'ADDRESS_LINE_3', 'BUILDING_NAME', 'CITY', 'COUNTRY_CODE', 'COUNTRY_NAME', 'DOOR_NUMBER', 'POSTAL_CODE', 'STATE_NAME', 'STREET_NAME'],
+                        'stg2_kyc_common_address': ['ADDRESS_LINE_1', 'ADDRESS_LINE_2', 'ADDRESS_LINE_3', 'BUILDING_NAME', 'CITY', 'COUNTRY_CODE', 'COUNTRY_NAME', 'DOOR_NUMBER', 'POSTAL_CODE', 'STATE_NAME', 'STREET_NAME']
                     }) }}

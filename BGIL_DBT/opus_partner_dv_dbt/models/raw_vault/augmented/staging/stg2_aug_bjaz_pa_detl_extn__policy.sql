@@ -16,7 +16,7 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'CUMMULATIVE_AMT'
+      - 'CUMULATIVE_AMT'
       - 'CUMM_BONUS_COMP'
       - 'CUMM_BONUS_WIDER'
       - 'CUMM_BONUS_AMT_WIDER'
@@ -25,7 +25,7 @@ derived_columns:
   PARENT_BK: 'contract_id'
   PARENT_NK: "'HUB_POLICY|' || (contract_id)"
   MEMBER_SEQUENCE: '!0'
-  CUMMULATIVE_AMT: 'cummulative_amt'
+  CUMULATIVE_AMT: 'cummulative_amt'
   CUMM_BONUS_COMP: 'cumm_bonus_comp'
   CUMM_BONUS_WIDER: 'cumm_bonus_wider'
   CUMM_BONUS_AMT_WIDER: 'cumm_bonus_amt_wider'

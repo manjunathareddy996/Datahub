@@ -17,7 +17,7 @@ source_model:
   - 'stg2_sat_bjaz_t_ckyc_personal_dtls__party_health_profile'
 src_pk: 'PARTY_HKEY'
 src_payload:
-  - 'BODYMASSINDEX'
+  - 'BODY_MASS_INDEX'
   - 'HEIGHT'
   - 'MATERNITYSTATUS'
   - 'SMOKERINDICATOR'
@@ -44,7 +44,7 @@ src_record_source_map:
                     source_model=metadata_dict['source_model'],
                     src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
-                        'stg2_party_health_profile': ['BODYMASSINDEX', 'HEIGHT', 'MATERNITYSTATUS', 'SMOKERINDICATOR', 'WEIGHT'],
+                        'stg2_party_health_profile': ['BODY_MASS_INDEX', 'HEIGHT', 'MATERNITYSTATUS', 'SMOKERINDICATOR', 'WEIGHT'],
                         'stg2_sat_bjaz_m_kyc_driving_licence__party_health_profile': [],
                         'stg2_sat_bjaz_t_ckyc_personal_dtls__party_health_profile': []
                     }) }}

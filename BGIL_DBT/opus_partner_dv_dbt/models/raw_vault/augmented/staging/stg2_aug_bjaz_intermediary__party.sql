@@ -14,13 +14,13 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'WEBSITE_URL'
-      - 'PAN_AADHAR_LINKED'
+      - 'PAN_AADHAAR_LINKED'
       - 'IT_RETURN_2YR'
 derived_columns:
   PARENT_BK: 'intermediary_id'
   PARENT_NK: "'HUB_PARTY|' || (intermediary_id)"
   WEBSITE_URL: 'website_link'
-  PAN_AADHAR_LINKED: 'pan_aadhar_linked'
+  PAN_AADHAAR_LINKED: 'pan_aadhar_linked'
   IT_RETURN_2YR: 'it_return_2yr'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_INTERMEDIARY'

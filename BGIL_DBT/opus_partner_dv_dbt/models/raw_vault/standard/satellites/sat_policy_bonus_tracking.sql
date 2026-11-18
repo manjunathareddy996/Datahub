@@ -12,8 +12,8 @@
 source_model: 'stg2_policy_bonus_tracking'
 src_pk: 'POLICY_HKEY'
 src_payload:
-  - 'BONUSAMOUNT'
-  - 'CUMULATIVEBONUSPERCENTAGE'
+  - 'BONUS_AMOUNT'
+  - 'CUMULATIVE_BONUS_PERCENTAGE'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

@@ -11,12 +11,12 @@
         'key_column': 'part_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'family_monthly_income', 'tgt': 'annualhouseholdincome'},
-            {'src': 'education', 'tgt': 'educationalqualification'},
-            {'src': 'father_name', 'tgt': 'fathername'},
-            {'src': 'no_of_children', 'tgt': 'numberofchildren'},
-            {'src': 'occupation_desc_gen', 'tgt': 'occupationdescription'},
-            {'src': 'spouse_name', 'tgt': 'spousename'}
+            {'src': 'family_monthly_income', 'tgt': 'annual_household_income'},
+            {'src': 'education', 'tgt': 'educational_qualification'},
+            {'src': 'father_name', 'tgt': 'father_name'},
+            {'src': 'no_of_children', 'tgt': 'number_of_children'},
+            {'src': 'occupation_desc_gen', 'tgt': 'occupation_description'},
+            {'src': 'spouse_name', 'tgt': 'spouse_name'}
         ],
         'source_tag': 'OPUS_PARTNER_AZBJ_PARTNER_EXTN'
     },
@@ -26,7 +26,7 @@
         'key_column': 'partner_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'gross_income', 'tgt': 'annualincome'},
+            {'src': 'gross_income', 'tgt': 'annual_income'},
             {'src': 'occupation', 'tgt': 'occupationcode'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_EC_MEM_DTLS_EXTN'
@@ -37,7 +37,7 @@
         'key_column': 'partner_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'monthly_income', 'tgt': 'annualincome'},
+            {'src': 'monthly_income', 'tgt': 'annual_income'},
             {'src': 'member_occupation', 'tgt': 'occupationcode'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_HCF_MEMBER_DTLS'
@@ -58,7 +58,7 @@
         'key_column': 'partner_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'gross_income', 'tgt': 'annualincome'},
+            {'src': 'gross_income', 'tgt': 'annual_income'},
             {'src': 'designation', 'tgt': 'designation'},
             {'src': 'occupation', 'tgt': 'occupationcode'}
         ],
@@ -70,7 +70,7 @@
         'key_column': 'partner_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'gross_income', 'tgt': 'annualincome'},
+            {'src': 'gross_income', 'tgt': 'annual_income'},
             {'src': 'occupation', 'tgt': 'occupationcode'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_SH_MEM_DTLS_EXTN'
@@ -91,26 +91,26 @@
         'key_column': 'part_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'marital_status', 'tgt': 'maritalstatus'},
+            {'src': 'marital_status', 'tgt': 'marital_status'},
             {'src': 'occupation', 'tgt': 'occupationcode'}
         ],
         'source_tag': 'OPUS_PARTNER_CP_PARTNERS'
     }
 ] -%}
 
-{%- set output_columns = ['annualhouseholdincome', 'annualincome', 'designation', 'educationalqualification', 'fathername', 'maritalstatus', 'numberofchildren', 'occupationcode', 'occupationdescription', 'spousename'] -%}
+{%- set output_columns = ['annual_household_income', 'annual_income', 'designation', 'educational_qualification', 'father_name', 'marital_status', 'number_of_children', 'occupationcode', 'occupation_description', 'spouse_name'] -%}
 
 {%- set coalesce_rules = {
-    'annualhouseholdincome':    ['t0'],
-    'annualincome':             ['t3', 't4', 't6', 't7'],
+    'annual_household_income':    ['t0'],
+    'annual_income':             ['t3', 't4', 't6', 't7'],
     'designation':              ['t6'],
-    'educationalqualification': ['t0'],
-    'fathername':               ['t0'],
-    'maritalstatus':            ['t9'],
-    'numberofchildren':         ['t0'],
+    'educational_qualification': ['t0'],
+    'father_name':               ['t0'],
+    'marital_status':            ['t9'],
+    'number_of_children':         ['t0'],
     'occupationcode':           ['t3', 't4', 't5', 't6', 't7', 't8', 't9'],
-    'occupationdescription':    ['t0'],
-    'spousename':               ['t0']
+    'occupation_description':    ['t0'],
+    'spouse_name':               ['t0']
 } %}
 
 {{ stitch_incremental(

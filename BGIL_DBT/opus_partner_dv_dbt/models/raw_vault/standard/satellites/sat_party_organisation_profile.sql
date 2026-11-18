@@ -17,14 +17,14 @@ source_model:
   - 'stg2_sat_bjaz_t_ckyc_personal_dtls__party_organisation_profile'
 src_pk: 'PARTY_HKEY'
 src_payload:
-  - 'ANNUALTURNOVER'
-  - 'DATEOFINCORPORATION'
-  - 'GROUPNAME'
-  - 'INDUSTRYDESCRIPTION'
-  - 'LEGALCONSTITUTIONTYPE'
-  - 'MSMEINDICATOR'
-  - 'PAIDUPCAPITAL'
-  - 'PARENTENTITYNAME'
+  - 'ANNUAL_TURNOVER'
+  - 'DATE_OF_INCORPORATION'
+  - 'GROUP_NAME'
+  - 'INDUSTRY_DESCRIPTION'
+  - 'LEGAL_CONSTITUTION_TYPE'
+  - 'MSME_INDICATOR'
+  - 'PAID_UP_CAPITAL'
+  - 'PARENT_ENTITY_NAME'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
@@ -47,7 +47,7 @@ src_record_source_map:
                     source_model=metadata_dict['source_model'],
                     src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
-                        'stg2_party_organisation_profile': ['ANNUALTURNOVER', 'DATEOFINCORPORATION', 'GROUPNAME', 'INDUSTRYDESCRIPTION', 'LEGALCONSTITUTIONTYPE', 'MSMEINDICATOR', 'PAIDUPCAPITAL', 'PARENTENTITYNAME'],
-                        'stg2_sat_bjaz_m_kyc_gstn__party_organisation_profile': ['LEGALCONSTITUTIONTYPE'],
+                        'stg2_party_organisation_profile': ['ANNUAL_TURNOVER', 'DATE_OF_INCORPORATION', 'GROUP_NAME', 'INDUSTRY_DESCRIPTION', 'LEGAL_CONSTITUTION_TYPE', 'MSME_INDICATOR', 'PAID_UP_CAPITAL', 'PARENT_ENTITY_NAME'],
+                        'stg2_sat_bjaz_m_kyc_gstn__party_organisation_profile': ['LEGAL_CONSTITUTION_TYPE'],
                         'stg2_sat_bjaz_t_ckyc_personal_dtls__party_organisation_profile': []
                     }) }}

@@ -11,11 +11,11 @@
         'key_column': 'pincode',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'pincode', 'tgt': 'pincode'},
+            {'src': 'pincode', 'tgt': 'pin_code'},
             {'src': 'zone1', 'tgt': 'regioncode'},
-            {'src': 'state', 'tgt': 'regionname'},
+            {'src': 'state', 'tgt': 'region_name'},
             {'src': 'zone2', 'tgt': 'subzonecode'},
-            {'src': 'zone', 'tgt': 'zonecode'}
+            {'src': 'zone', 'tgt': 'zone_code'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_PINCODE'
     },
@@ -25,24 +25,24 @@
         'key_column': 'pincode',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'pincode', 'tgt': 'pincode'},
+            {'src': 'pincode', 'tgt': 'pin_code'},
             {'src': 'zone1', 'tgt': 'regioncode'},
-            {'src': 'state', 'tgt': 'regionname'},
+            {'src': 'state', 'tgt': 'region_name'},
             {'src': 'zone2', 'tgt': 'subzonecode'},
-            {'src': 'zone_pin', 'tgt': 'zonecode'}
+            {'src': 'zone_pin', 'tgt': 'zone_code'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_PINCODE_MASTER'
     }
 ] -%}
 
-{%- set output_columns = ['pincode', 'regioncode', 'regionname', 'subzonecode', 'zonecode'] -%}
+{%- set output_columns = ['pin_code', 'regioncode', 'region_name', 'subzonecode', 'zone_code'] -%}
 
 {%- set coalesce_rules = {
-    'pincode':      ['t0', 't1'],
+    'pin_code':      ['t0', 't1'],
     'regioncode':   ['t0', 't1'],
-    'regionname':   ['t0', 't1'],
+    'region_name':   ['t0', 't1'],
     'subzonecode':  ['t0', 't1'],
-    'zonecode':     ['t0', 't1']
+    'zone_code':     ['t0', 't1']
 } %}
 
 {{ stitch_incremental(

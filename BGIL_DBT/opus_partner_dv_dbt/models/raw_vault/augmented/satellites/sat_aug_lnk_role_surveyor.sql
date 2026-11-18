@@ -23,7 +23,7 @@ src_payload:
   - 'HAS_IRDA_LICENCE_INDICATOR'
   - 'IIISLA_MEM_NO'
   - 'IIISLA_MEM_STATUS'
-  - 'SUR_LICENSE_EXP_DATE'
+  - 'SUR_LICENCE_EXP_DATE'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

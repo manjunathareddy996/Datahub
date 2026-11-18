@@ -14,8 +14,8 @@ source_model:
   - 'stg2_sat_bjaz_hm_member_dtls__policy_certificate'
 src_pk: 'POLICY_HKEY'
 src_payload:
-  - 'ENROLMENTDATE'
-  - 'MEMBERSTATUS'
+  - 'ENROLMENT_DATE'
+  - 'MEMBER_STATUS'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
@@ -35,7 +35,7 @@ src_record_source_map:
                     source_model=metadata_dict['source_model'],
                     src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
-                        'stg2_sat_ba_hcp_dt_mem__policy_certificate': ['MEMBERSTATUS'],
-                        'stg2_sat_bjaz_ctngy_pa_mem_dtls__policy_certificate': ['ENROLMENTDATE'],
-                        'stg2_sat_bjaz_hm_member_dtls__policy_certificate': ['MEMBERSTATUS']
+                        'stg2_sat_ba_hcp_dt_mem__policy_certificate': ['MEMBER_STATUS'],
+                        'stg2_sat_bjaz_ctngy_pa_mem_dtls__policy_certificate': ['ENROLMENT_DATE'],
+                        'stg2_sat_bjaz_hm_member_dtls__policy_certificate': ['MEMBER_STATUS']
                     }) }}

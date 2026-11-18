@@ -9,11 +9,11 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'AGEPROOFTYPE'
+      - 'AGE_PROOF_TYPE'
 derived_columns:
   PARENT_BK: 'partner_id'
   PARENT_NK: "'HUB_PARTY|' || (partner_id)"
-  AGEPROOFTYPE: 'age_proof'
+  AGE_PROOF_TYPE: 'age_proof'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_EC_MEM_DTLS_EXTN'
 {%- endset -%}

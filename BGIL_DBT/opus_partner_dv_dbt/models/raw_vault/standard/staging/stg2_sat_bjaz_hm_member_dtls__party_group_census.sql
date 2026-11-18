@@ -9,16 +9,16 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'DESIGNATIONBAND'
-      - 'EMPLOYEEID'
-      - 'LOCATIONREFERENCE'
+      - 'DESIGNATION_BAND'
+      - 'EMPLOYEE_ID'
+      - 'LOCATION_REFERENCE'
       - 'MEMBERREFERENCE'
 derived_columns:
   PARENT_BK: 'partner_id'
   PARENT_NK: "'HUB_PARTY|' || (partner_id)"
-  DESIGNATIONBAND: 'grade'
-  EMPLOYEEID: 'hat_empcode'
-  LOCATIONREFERENCE: 'employee_location'
+  DESIGNATION_BAND: 'grade'
+  EMPLOYEE_ID: 'hat_empcode'
+  LOCATION_REFERENCE: 'employee_location'
   MEMBERREFERENCE: 'member_id'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_HM_MEMBER_DTLS'

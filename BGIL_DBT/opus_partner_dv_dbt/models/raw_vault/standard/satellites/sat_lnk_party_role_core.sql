@@ -9,7 +9,7 @@
 -- data_7: hist 'Multi-Active SCD2', childkey 'Role Code + Role Sequence', anchor parent 'HUB_PARTY'.
 -- Payload rendered GLUED (DEC-01, anchor kind HUB read from data_7's parent field).
 --
--- Multi-active: src_cdk ['ROLECODE', 'ROLESEQUENCE'] carries the model's declared child-key leg(s). The
+-- Multi-active: src_cdk ['ROLE_CODE', 'ROLESEQUENCE'] carries the model's declared child-key leg(s). The
 -- child-key VALUE is a literal derived from COLUMN IDENTITY, not from data
 -- ordering, so it cannot renumber between reloads (BUILD_RULES.md 5.1).
 --
@@ -19,7 +19,7 @@
 source_model: 'stg2_sat_bjaz_t_ckyc_rel_persion_dtls__lnk_party_role_core__related_person'
 src_pk: 'PARTY_HKEY'
 src_cdk:
-  - 'ROLECODE'
+  - 'ROLE_CODE'
   - 'ROLESEQUENCE'
 src_payload:
   - 'ROLESTATUS'

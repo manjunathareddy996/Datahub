@@ -24,7 +24,7 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'BODYMASSINDEX'
+      - 'BODY_MASS_INDEX'
       - 'HEIGHT'
       - 'MATERNITYSTATUS'
       - 'SMOKERINDICATOR'
@@ -32,7 +32,7 @@ hashed_columns:
 derived_columns:
   PARENT_BK: 'part_id'
   PARENT_NK: "'HUB_PARTY|' || (part_id)"
-  BODYMASSINDEX: "cast(null as varchar)"
+  BODY_MASS_INDEX: "cast(null as varchar)"
   HEIGHT: "cast(null as varchar)"
   MATERNITYSTATUS: "cast(null as varchar)"
   SMOKERINDICATOR: "cast(null as varchar)"

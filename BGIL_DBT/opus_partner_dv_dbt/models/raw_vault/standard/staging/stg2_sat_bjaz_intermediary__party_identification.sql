@@ -9,15 +9,15 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'GSTREGISTRATIONSTATUS'
+      - 'GST_REGISTRATION_STATUS'
       - 'GSTIN'
-      - 'PANNUMBER'
+      - 'PAN_NUMBER'
 derived_columns:
   PARENT_BK: 'intermediary_id'
   PARENT_NK: "'HUB_PARTY|' || (intermediary_id)"
-  GSTREGISTRATIONSTATUS: 'gst_status'
+  GST_REGISTRATION_STATUS: 'gst_status'
   GSTIN: 'gst_no'
-  PANNUMBER: 'pan_number'
+  PAN_NUMBER: 'pan_number'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_INTERMEDIARY'
 {%- endset -%}

@@ -11,7 +11,7 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'PRIORITYCODE'
-      - 'SEGMENTCODE'
+      - 'SEGMENT_CODE'
 derived_columns:
   PARTY_NK: "'HUB_PARTY|' || PARENT_BK"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'

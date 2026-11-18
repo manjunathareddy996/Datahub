@@ -10,11 +10,11 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'MASTERPOLICYREFERENCE'
-      - 'POLICYREFERENCENUMBER'
-      - 'POLICYTERM'
-      - 'RISKEXPIRYDATE'
-      - 'RISKINCEPTIONDATE'
+      - 'MASTER_POLICY_REFERENCE'
+      - 'POLICY_REFERENCE_NUMBER'
+      - 'POLICY_TERM'
+      - 'RISK_EXPIRY_DATE'
+      - 'RISK_INCEPTION_DATE'
 derived_columns:
   POLICY_NK: "'HUB_POLICY|' || PARENT_BK"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'

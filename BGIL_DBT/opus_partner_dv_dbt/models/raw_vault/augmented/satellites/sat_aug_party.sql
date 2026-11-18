@@ -24,7 +24,7 @@ source_model:
   - 'stg2_aug_bjaz_hm_hospital_master__party'
 src_pk: 'PARTY_HKEY'
 src_payload:
-  - 'ADHAAR_PAN_LINK_FLAG'
+  - 'AADHAAR_PAN_LINK_FLAG'
   - 'BMI'
   - 'BMI_FLAG'
   - 'CAUSE_OF_DEATH'
@@ -43,7 +43,7 @@ src_payload:
   - 'NUMBER_OF_DAUGHTERS'
   - 'NUMBER_OF_SONS'
   - 'OTHER_OCC'
-  - 'PAN_AADHAR_LINKED'
+  - 'PAN_AADHAAR_LINKED'
   - 'PAN_ACK_DT'
   - 'PAN_APP_NO'
   - 'PAN_STATUS'
@@ -82,13 +82,13 @@ src_record_source_map:
                     src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
                         'stg2_aug_azbj_partner_extn__party': ['ECS_MANDATE_STATUS', 'EXISTING_CUSTOMER_INDICATOR', 'HNI_FLAG', 'IT_STATUS', 'NUMBER_OF_DAUGHTERS', 'NUMBER_OF_SONS', 'PARENT_ENTITY_REFERENCE', 'WEBSITE_URL'],
-                        'stg2_aug_bjaz_intermediary__party': ['IT_RETURN_2YR', 'PAN_AADHAR_LINKED', 'WEBSITE_URL'],
+                        'stg2_aug_bjaz_intermediary__party': ['IT_RETURN_2YR', 'PAN_AADHAAR_LINKED', 'WEBSITE_URL'],
                         'stg2_aug_bjaz_ec_mem_dtls_extn__party': ['PREGNANT_MONTHS', 'PRIOR_CLAIM_REASON', 'SMOKE_CONSUMP'],
                         'stg2_aug_bjaz_hcf_member_dtls__party': ['BMI_FLAG'],
                         'stg2_aug_bjaz_spp_member_dtls__party': ['BMI', 'HEIGHT_FEET', 'HEIGHT_INCHES', 'OTHER_OCC'],
                         'stg2_aug_bjaz_hc_part_extn__party': ['DATE_OF_BIRTH_M'],
                         'stg2_aug_cp_partners__party': ['CAUSE_OF_DEATH', 'PROOF_OF_DEATH_TYPE'],
-                        'stg2_aug_bjaz_clm_supp_extn__party': ['ADHAAR_PAN_LINK_FLAG', 'MARRIAGE_ANNIVERSARY_DATE', 'PAN_ACK_DT', 'PAN_APP_NO', 'PAN_STATUS', 'TWO_YR_ITR_FLAG'],
+                        'stg2_aug_bjaz_clm_supp_extn__party': ['AADHAAR_PAN_LINK_FLAG', 'MARRIAGE_ANNIVERSARY_DATE', 'PAN_ACK_DT', 'PAN_APP_NO', 'PAN_STATUS', 'TWO_YR_ITR_FLAG'],
                         'stg2_aug_bjaz_hm_member_dtls__party': ['MONTHLY_SALARY'],
                         'stg2_aug_bjaz_hm_hospital_master__party': ['IMPS_ACTIVE_DATE', 'IMPS_END_DATE', 'PAYMENT_MODE']
                     }) }}

@@ -9,7 +9,7 @@
 -- data_7: hist 'Multi-Active SCD2', childkey 'Classification Type', anchor parent 'HUB_POLICY'.
 -- Payload rendered GLUED (DEC-01, anchor kind HUB read from data_7's parent field).
 --
--- Multi-active: src_cdk ['CLASSIFICATIONTYPE'] carries the model's declared child-key leg(s). The
+-- Multi-active: src_cdk ['CLASSIFICATION_TYPE'] carries the model's declared child-key leg(s). The
 -- child-key VALUE is a literal derived from COLUMN IDENTITY, not from data
 -- ordering, so it cannot renumber between reloads (BUILD_RULES.md 5.1).
 --
@@ -23,9 +23,9 @@ source_model:
   - 'stg2_sat_bjaz_t_kyc_poi_document__policy_classification'
 src_pk: 'POLICY_HKEY'
 src_cdk:
-  - 'CLASSIFICATIONTYPE'
+  - 'CLASSIFICATION_TYPE'
 src_payload:
-  - 'CLASSIFICATIONVALUE'
+  - 'CLASSIFICATION_VALUE'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
@@ -47,8 +47,8 @@ src_record_source_map:
                        source_model=metadata_dict['source_model'],
                        src_record_source_map=metadata_dict['src_record_source_map'],
                        src_column_map={
-                           'stg2_sat_bjaz_t_kyc_details__policy_classification': ['CLASSIFICATIONVALUE'],
-                           'stg2_sat_bjaz_t_kyc_incoming__policy_classification': ['CLASSIFICATIONVALUE'],
-                           'stg2_sat_bjaz_t_kyc_poa_document__policy_classification': ['CLASSIFICATIONVALUE'],
-                           'stg2_sat_bjaz_t_kyc_poi_document__policy_classification': ['CLASSIFICATIONVALUE']
+                           'stg2_sat_bjaz_t_kyc_details__policy_classification': ['CLASSIFICATION_VALUE'],
+                           'stg2_sat_bjaz_t_kyc_incoming__policy_classification': ['CLASSIFICATION_VALUE'],
+                           'stg2_sat_bjaz_t_kyc_poa_document__policy_classification': ['CLASSIFICATION_VALUE'],
+                           'stg2_sat_bjaz_t_kyc_poi_document__policy_classification': ['CLASSIFICATION_VALUE']
                        }) }}

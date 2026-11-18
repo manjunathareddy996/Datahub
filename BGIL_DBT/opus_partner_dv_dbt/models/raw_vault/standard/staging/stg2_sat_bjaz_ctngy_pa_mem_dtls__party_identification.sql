@@ -9,19 +9,19 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'AADHAARNUMBER'
-      - 'IDENTIFICATIONNUMBER'
-      - 'PANNUMBER'
-      - 'PASSPORTNUMBER'
-      - 'EIANUMBER'
+      - 'AADHAAR_NUMBER'
+      - 'IDENTIFICATION_NUMBER'
+      - 'PAN_NUMBER'
+      - 'PASSPORT_NUMBER'
+      - 'EIA_NUMBER'
 derived_columns:
   PARENT_BK: 'partner_id'
   PARENT_NK: "'HUB_PARTY|' || (partner_id)"
-  AADHAARNUMBER: 'aadhar_card_no'
-  IDENTIFICATIONNUMBER: 'member_ref_number'
-  PANNUMBER: 'pan_card_no'
-  PASSPORTNUMBER: 'passport_number'
-  EIANUMBER: 'eia_no'
+  AADHAAR_NUMBER: 'aadhar_card_no'
+  IDENTIFICATION_NUMBER: 'member_ref_number'
+  PAN_NUMBER: 'pan_card_no'
+  PASSPORT_NUMBER: 'passport_number'
+  EIA_NUMBER: 'eia_no'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_CTNGY_PA_MEM_DTLS'
 {%- endset -%}

@@ -11,7 +11,7 @@
         'key_column': 'existing_policy_pid',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'policy_ref', 'tgt': 'policyreferencenumber'}
+            {'src': 'policy_ref', 'tgt': 'policy_reference_number'}
         ],
         'source_tag': 'OPUS_PARTNER_AZBJ_PARTNER_EXTN'
     },
@@ -21,7 +21,7 @@
         'key_column': 'policy_ref',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'master_policy_ref', 'tgt': 'masterpolicyreference'}
+            {'src': 'master_policy_ref', 'tgt': 'master_policy_reference'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_CTNGY_GC_MEM_DATA'
     },
@@ -31,8 +31,8 @@
         'key_column': 'contract_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'member_risk_expiry_date', 'tgt': 'riskexpirydate'},
-            {'src': 'member_risk_inception_date', 'tgt': 'riskinceptiondate'}
+            {'src': 'member_risk_expiry_date', 'tgt': 'risk_expiry_date'},
+            {'src': 'member_risk_inception_date', 'tgt': 'risk_inception_date'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_CTNGY_PA_MEM_DTLS'
     },
@@ -42,9 +42,9 @@
         'key_column': 'contract_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'policy_ref', 'tgt': 'policyreferencenumber'},
-            {'src': 'expiry_date', 'tgt': 'riskexpirydate'},
-            {'src': 'effetive_date', 'tgt': 'riskinceptiondate'}
+            {'src': 'policy_ref', 'tgt': 'policy_reference_number'},
+            {'src': 'expiry_date', 'tgt': 'risk_expiry_date'},
+            {'src': 'effetive_date', 'tgt': 'risk_inception_date'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_EC_MEM_DTLS_EXTN'
     },
@@ -54,8 +54,8 @@
         'key_column': 'contract_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'to_date', 'tgt': 'riskexpirydate'},
-            {'src': 'from_date', 'tgt': 'riskinceptiondate'}
+            {'src': 'to_date', 'tgt': 'risk_expiry_date'},
+            {'src': 'from_date', 'tgt': 'risk_inception_date'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_HCF_MEMBER_DTLS'
     },
@@ -65,7 +65,7 @@
         'key_column': 'contract_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'inception_date', 'tgt': 'riskinceptiondate'}
+            {'src': 'inception_date', 'tgt': 'risk_inception_date'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_HC_PART_EXTN'
     },
@@ -75,9 +75,9 @@
         'key_column': 'contract_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'policy_ref', 'tgt': 'policyreferencenumber'},
-            {'src': 'term_end_date', 'tgt': 'riskexpirydate'},
-            {'src': 'term_start_date', 'tgt': 'riskinceptiondate'}
+            {'src': 'policy_ref', 'tgt': 'policy_reference_number'},
+            {'src': 'term_end_date', 'tgt': 'risk_expiry_date'},
+            {'src': 'term_start_date', 'tgt': 'risk_inception_date'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_HM_MEMBER_DTLS'
     },
@@ -87,7 +87,7 @@
         'key_column': 'contract_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'inception_date', 'tgt': 'riskinceptiondate'}
+            {'src': 'inception_date', 'tgt': 'risk_inception_date'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_PA_DETL_EXTN'
     },
@@ -97,10 +97,10 @@
         'key_column': 'contract_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'policy_ref', 'tgt': 'policyreferencenumber'},
-            {'src': 'period_of_insurance', 'tgt': 'policyterm'},
-            {'src': 'expiry_date', 'tgt': 'riskexpirydate'},
-            {'src': 'effetive_date', 'tgt': 'riskinceptiondate'}
+            {'src': 'policy_ref', 'tgt': 'policy_reference_number'},
+            {'src': 'period_of_insurance', 'tgt': 'policy_term'},
+            {'src': 'expiry_date', 'tgt': 'risk_expiry_date'},
+            {'src': 'effetive_date', 'tgt': 'risk_inception_date'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_SH_MEM_DTLS_EXTN'
     },
@@ -110,21 +110,21 @@
         'key_column': 'contract_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'to_date', 'tgt': 'riskexpirydate'},
-            {'src': 'from_date', 'tgt': 'riskinceptiondate'}
+            {'src': 'to_date', 'tgt': 'risk_expiry_date'},
+            {'src': 'from_date', 'tgt': 'risk_inception_date'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_SPP_MEMBER_DTLS'
     }
 ] -%}
 
-{%- set output_columns = ['masterpolicyreference', 'policyreferencenumber', 'policyterm', 'riskexpirydate', 'riskinceptiondate'] -%}
+{%- set output_columns = ['master_policy_reference', 'policy_reference_number', 'policy_term', 'risk_expiry_date', 'risk_inception_date'] -%}
 
 {%- set coalesce_rules = {
-    'masterpolicyreference':  ['t0b'],
-    'policyreferencenumber':  ['t0', 't2', 't5', 't7'],
-    'policyterm':             ['t7'],
-    'riskexpirydate':         ['t1', 't2', 't3', 't5', 't7', 't8'],
-    'riskinceptiondate':      ['t1', 't2', 't3', 't4', 't5', 't6', 't7', 't8']
+    'master_policy_reference':  ['t0b'],
+    'policy_reference_number':  ['t0', 't2', 't5', 't7'],
+    'policy_term':             ['t7'],
+    'risk_expiry_date':         ['t1', 't2', 't3', 't5', 't7', 't8'],
+    'risk_inception_date':      ['t1', 't2', 't3', 't4', 't5', 't6', 't7', 't8']
 } %}
 
 {{ stitch_incremental(

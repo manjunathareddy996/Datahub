@@ -10,7 +10,7 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'BODYMASSINDEX'
+      - 'BODY_MASS_INDEX'
       - 'HEIGHT'
       - 'MATERNITYSTATUS'
       - 'SMOKERINDICATOR'

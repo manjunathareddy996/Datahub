@@ -10,8 +10,8 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'BONUSAMOUNT'
-      - 'CUMULATIVEBONUSPERCENTAGE'
+      - 'BONUS_AMOUNT'
+      - 'CUMULATIVE_BONUS_PERCENTAGE'
 derived_columns:
   POLICY_NK: "'HUB_POLICY|' || PARENT_BK"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'

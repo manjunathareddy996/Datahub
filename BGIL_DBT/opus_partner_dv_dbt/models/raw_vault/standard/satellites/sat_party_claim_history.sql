@@ -12,8 +12,8 @@
 source_model: 'stg2_party_claim_history'
 src_pk: 'PARTY_HKEY'
 src_payload:
-  - 'TOTALCLAIMAMOUNT'
-  - 'TOTALCLAIMCOUNT'
+  - 'TOTAL_CLAIM_AMOUNT'
+  - 'TOTAL_CLAIM_COUNT'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

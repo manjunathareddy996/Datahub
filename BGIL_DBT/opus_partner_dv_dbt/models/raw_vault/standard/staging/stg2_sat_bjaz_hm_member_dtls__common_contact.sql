@@ -9,13 +9,13 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'EMAILADDRESS'
-      - 'LANDLINENUMBER'
+      - 'EMAIL_ADDRESS'
+      - 'LANDLINE_NUMBER'
 derived_columns:
   PARENT_BK: 'partner_id'
   PARENT_NK: "'HUB_PARTY|' || (partner_id)"
-  EMAILADDRESS: 'email_id'
-  LANDLINENUMBER: 'phone_no'
+  EMAIL_ADDRESS: 'email_id'
+  LANDLINE_NUMBER: 'phone_no'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_HM_MEMBER_DTLS'
 {%- endset -%}

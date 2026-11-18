@@ -22,7 +22,7 @@
         'ldts_column': 'inc_job_updated_at',
         'columns': [
             {'src': 'vip_cust', 'tgt': 'prioritycode'},
-            {'src': 'ucic_flag', 'tgt': 'segmentcode'}
+            {'src': 'ucic_flag', 'tgt': 'segment_code'}
         ],
         'source_tag': 'OPUS_PARTNER_AZBJ_PARTNER_EXTN'
     },
@@ -32,17 +32,17 @@
         'key_column': 'partner_id',
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': 'flagging', 'tgt': 'segmentcode'}
+            {'src': 'flagging', 'tgt': 'segment_code'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_INTERMEDIARY'
     }
 ] -%}
 
-{%- set output_columns = ['prioritycode', 'segmentcode'] -%}
+{%- set output_columns = ['prioritycode', 'segment_code'] -%}
 
 {%- set coalesce_rules = {
     'prioritycode': ['t0'],
-    'segmentcode':  ['t0', 't3']
+    'segment_code':  ['t0', 't3']
 } %}
 
 {{ stitch_incremental(

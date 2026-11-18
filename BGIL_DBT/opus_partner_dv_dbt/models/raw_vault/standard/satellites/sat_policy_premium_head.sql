@@ -13,7 +13,7 @@ source_model:
   - 'stg2_sat_bjaz_starpkg_ff_dtls__policy_premium_head'
 src_pk: 'POLICY_HKEY'
 src_payload:
-  - 'BASEAMOUNT'
+  - 'BASE_AMOUNT'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

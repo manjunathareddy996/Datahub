@@ -41,9 +41,9 @@
         'key_column': "case when nullif(upper(trim(to_varchar(address))), '') is not null or nullif(upper(trim(to_varchar(state))), '') is not null or nullif(upper(trim(to_varchar(zip_code))), '') is not null then coalesce(nullif(upper(trim(to_varchar(address))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(state))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(zip_code))), ''), '') end",
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': "upper(address)", 'tgt': 'addressline1'},
-            {'src': "upper(zip_code)", 'tgt': 'postalcode'},
-            {'src': "upper(state)", 'tgt': 'statename'},
+            {'src': "upper(address)", 'tgt': 'address_line_1'},
+            {'src': "upper(zip_code)", 'tgt': 'postal_code'},
+            {'src': "upper(state)", 'tgt': 'state_name'},
             {'src': "cast(null as varchar)", 'tgt': 'careofname'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_M_KYC_DRIVING_LICENCE'
@@ -54,7 +54,7 @@
         'key_column': "case when nullif(upper(trim(to_varchar(business_place))), '') is not null then coalesce(nullif(upper(trim(to_varchar(business_place))), ''), '') end",
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': "upper(business_place)", 'tgt': 'addressline1'}
+            {'src': "upper(business_place)", 'tgt': 'address_line_1'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_M_KYC_GSTN'
     },
@@ -64,7 +64,7 @@
         'key_column': "case when nullif(upper(trim(to_varchar(state))), '') is not null then coalesce(nullif(upper(trim(to_varchar(part_name))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(district))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(state))), ''), '') end",
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': "upper(state)", 'tgt': 'statename'}
+            {'src': "upper(state)", 'tgt': 'state_name'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_M_KYC_VOTER'
     },
@@ -74,13 +74,13 @@
         'key_column': "case when nullif(upper(trim(to_varchar(corres_city))), '') is not null or nullif(upper(trim(to_varchar(corres_country))), '') is not null or nullif(upper(trim(to_varchar(corres_line1))), '') is not null or nullif(upper(trim(to_varchar(corres_line2))), '') is not null or nullif(upper(trim(to_varchar(corres_line3))), '') is not null or nullif(upper(trim(to_varchar(corres_pin))), '') is not null or nullif(upper(trim(to_varchar(corres_state))), '') is not null then coalesce(nullif(upper(trim(to_varchar(corres_line1))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(corres_line2))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(corres_line3))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(corres_city))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(corres_dist))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(corres_state))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(corres_pin))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(corres_country))), ''), '') end",
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': "upper(corres_line1)", 'tgt': 'addressline1'},
-            {'src': "upper(corres_line2)", 'tgt': 'addressline2'},
-            {'src': "upper(corres_line3)", 'tgt': 'addressline3'},
+            {'src': "upper(corres_line1)", 'tgt': 'address_line_1'},
+            {'src': "upper(corres_line2)", 'tgt': 'address_line_2'},
+            {'src': "upper(corres_line3)", 'tgt': 'address_line_3'},
             {'src': "upper(corres_city)", 'tgt': 'city'},
-            {'src': "upper(corres_country)", 'tgt': 'countryname'},
-            {'src': "upper(corres_pin)", 'tgt': 'postalcode'},
-            {'src': "upper(corres_state)", 'tgt': 'statename'}
+            {'src': "upper(corres_country)", 'tgt': 'country_name'},
+            {'src': "upper(corres_pin)", 'tgt': 'postal_code'},
+            {'src': "upper(corres_state)", 'tgt': 'state_name'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_T_CKYC_PERSONAL_DTLS'
     },
@@ -90,12 +90,12 @@
         'key_column': "case when nullif(upper(trim(to_varchar(juri_city))), '') is not null or nullif(upper(trim(to_varchar(juri_country))), '') is not null or nullif(upper(trim(to_varchar(juri_line1))), '') is not null or nullif(upper(trim(to_varchar(juri_line2))), '') is not null or nullif(upper(trim(to_varchar(juri_line3))), '') is not null or nullif(upper(trim(to_varchar(juri_state))), '') is not null then coalesce(nullif(upper(trim(to_varchar(juri_line1))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(juri_line2))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(juri_line3))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(juri_city))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(juri_dist))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(juri_state))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(juri_country))), ''), '') end",
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': "upper(juri_line1)", 'tgt': 'addressline1'},
-            {'src': "upper(juri_line2)", 'tgt': 'addressline2'},
-            {'src': "upper(juri_line3)", 'tgt': 'addressline3'},
+            {'src': "upper(juri_line1)", 'tgt': 'address_line_1'},
+            {'src': "upper(juri_line2)", 'tgt': 'address_line_2'},
+            {'src': "upper(juri_line3)", 'tgt': 'address_line_3'},
             {'src': "upper(juri_city)", 'tgt': 'city'},
-            {'src': "upper(juri_country)", 'tgt': 'countryname'},
-            {'src': "upper(juri_state)", 'tgt': 'statename'}
+            {'src': "upper(juri_country)", 'tgt': 'country_name'},
+            {'src': "upper(juri_state)", 'tgt': 'state_name'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_T_CKYC_PERSONAL_DTLS'
     },
@@ -105,13 +105,13 @@
         'key_column': "case when nullif(upper(trim(to_varchar(perm_city))), '') is not null or nullif(upper(trim(to_varchar(perm_country))), '') is not null or nullif(upper(trim(to_varchar(perm_line1))), '') is not null or nullif(upper(trim(to_varchar(perm_line2))), '') is not null or nullif(upper(trim(to_varchar(perm_line3))), '') is not null or nullif(upper(trim(to_varchar(perm_pin))), '') is not null or nullif(upper(trim(to_varchar(perm_state))), '') is not null then coalesce(nullif(upper(trim(to_varchar(perm_line1))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(perm_line2))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(perm_line3))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(perm_city))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(perm_dist))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(perm_state))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(perm_pin))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(perm_country))), ''), '') end",
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': "upper(perm_line1)", 'tgt': 'addressline1'},
-            {'src': "upper(perm_line2)", 'tgt': 'addressline2'},
-            {'src': "upper(perm_line3)", 'tgt': 'addressline3'},
+            {'src': "upper(perm_line1)", 'tgt': 'address_line_1'},
+            {'src': "upper(perm_line2)", 'tgt': 'address_line_2'},
+            {'src': "upper(perm_line3)", 'tgt': 'address_line_3'},
             {'src': "upper(perm_city)", 'tgt': 'city'},
-            {'src': "upper(perm_country)", 'tgt': 'countryname'},
-            {'src': "upper(perm_pin)", 'tgt': 'postalcode'},
-            {'src': "upper(perm_state)", 'tgt': 'statename'}
+            {'src': "upper(perm_country)", 'tgt': 'country_name'},
+            {'src': "upper(perm_pin)", 'tgt': 'postal_code'},
+            {'src': "upper(perm_state)", 'tgt': 'state_name'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_T_CKYC_PERSONAL_DTLS'
     },
@@ -122,11 +122,11 @@
         'ldts_column': 'inc_job_updated_at',
         'columns': [
             {'src': "upper(vtc_name)", 'tgt': 'city'},
-            {'src': "upper(country)", 'tgt': 'countryname'},
-            {'src': "upper(house_number)", 'tgt': 'doornumber'},
-            {'src': "upper(pin_code)", 'tgt': 'postalcode'},
-            {'src': "upper(state)", 'tgt': 'statename'},
-            {'src': "upper(street)", 'tgt': 'streetname'}
+            {'src': "upper(country)", 'tgt': 'country_name'},
+            {'src': "upper(house_number)", 'tgt': 'door_number'},
+            {'src': "upper(pin_code)", 'tgt': 'postal_code'},
+            {'src': "upper(state)", 'tgt': 'state_name'},
+            {'src': "upper(street)", 'tgt': 'street_name'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_T_EKYC'
     },
@@ -136,32 +136,32 @@
         'key_column': "case when nullif(upper(trim(to_varchar(building))), '') is not null or nullif(upper(trim(to_varchar(country_code))), '') is not null or nullif(upper(trim(to_varchar(house_number))), '') is not null or nullif(upper(trim(to_varchar(pin_code))), '') is not null or nullif(upper(trim(to_varchar(state))), '') is not null or nullif(upper(trim(to_varchar(street))), '') is not null then coalesce(nullif(upper(trim(to_varchar(house_number))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(building))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(street))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(location))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(post_office))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(district))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(state))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(pin_code))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(country_code))), ''), '') end",
         'ldts_column': 'inc_job_updated_at',
         'columns': [
-            {'src': "upper(building)", 'tgt': 'buildingname'},
-            {'src': "upper(country_code)", 'tgt': 'countrycode'},
-            {'src': "upper(house_number)", 'tgt': 'doornumber'},
-            {'src': "upper(pin_code)", 'tgt': 'postalcode'},
-            {'src': "upper(state)", 'tgt': 'statename'},
-            {'src': "upper(street)", 'tgt': 'streetname'}
+            {'src': "upper(building)", 'tgt': 'building_name'},
+            {'src': "upper(country_code)", 'tgt': 'country_code'},
+            {'src': "upper(house_number)", 'tgt': 'door_number'},
+            {'src': "upper(pin_code)", 'tgt': 'postal_code'},
+            {'src': "upper(state)", 'tgt': 'state_name'},
+            {'src': "upper(street)", 'tgt': 'street_name'}
         ],
         'source_tag': 'OPUS_PARTNER_BJAZ_T_KYC_OCR'
     }
 ] -%}
 
-{%- set output_columns = ['addressline1', 'addressline2', 'addressline3', 'buildingname', 'careofname', 'city', 'countrycode', 'countryname', 'doornumber', 'postalcode', 'statename', 'streetname'] -%}
+{%- set output_columns = ['address_line_1', 'address_line_2', 'address_line_3', 'building_name', 'careofname', 'city', 'country_code', 'country_name', 'door_number', 'postal_code', 'state_name', 'street_name'] -%}
 
 {%- set coalesce_rules = {
-    'addressline1': ['t0', 't1', 't3', 't4', 't5'],
-    'addressline2': ['t3', 't4', 't5'],
-    'addressline3': ['t3', 't4', 't5'],
-    'buildingname': ['t7'],
+    'address_line_1': ['t0', 't1', 't3', 't4', 't5'],
+    'address_line_2': ['t3', 't4', 't5'],
+    'address_line_3': ['t3', 't4', 't5'],
+    'building_name': ['t7'],
     'careofname': ['t0'],
     'city': ['t3', 't4', 't5', 't6'],
-    'countrycode': ['t7'],
-    'countryname': ['t3', 't4', 't5', 't6'],
-    'doornumber': ['t6', 't7'],
-    'postalcode': ['t0', 't3', 't5', 't6', 't7'],
-    'statename': ['t0', 't2', 't3', 't4', 't5', 't6', 't7'],
-    'streetname': ['t6', 't7']
+    'country_code': ['t7'],
+    'country_name': ['t3', 't4', 't5', 't6'],
+    'door_number': ['t6', 't7'],
+    'postal_code': ['t0', 't3', 't5', 't6', 't7'],
+    'state_name': ['t0', 't2', 't3', 't4', 't5', 't6', 't7'],
+    'street_name': ['t6', 't7']
 } %}
 
 {{ stitch_incremental(

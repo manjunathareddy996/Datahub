@@ -21,10 +21,10 @@ source_model:
   - 'stg2_sat_bjaz_spp_member_dtls__party_group_census'
 src_pk: 'PARTY_HKEY'
 src_payload:
-  - 'ACTIVEINDICATOR'
-  - 'DESIGNATIONBAND'
-  - 'EMPLOYEEID'
-  - 'LOCATIONREFERENCE'
+  - 'ACTIVE_INDICATOR'
+  - 'DESIGNATION_BAND'
+  - 'EMPLOYEE_ID'
+  - 'LOCATION_REFERENCE'
   - 'MEMBERREFERENCE'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
@@ -52,13 +52,13 @@ src_record_source_map:
                     source_model=metadata_dict['source_model'],
                     src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
-                        'stg2_sat_azbj_partner_extn__party_group_census': ['EMPLOYEEID'],
-                        'stg2_sat_bjaz_clm_supp_extn__party_group_census': ['EMPLOYEEID'],
-                        'stg2_sat_bjaz_ctngy_pa_mem_dtls__party_group_census': ['ACTIVEINDICATOR'],
+                        'stg2_sat_azbj_partner_extn__party_group_census': ['EMPLOYEE_ID'],
+                        'stg2_sat_bjaz_clm_supp_extn__party_group_census': ['EMPLOYEE_ID'],
+                        'stg2_sat_bjaz_ctngy_pa_mem_dtls__party_group_census': ['ACTIVE_INDICATOR'],
                         'stg2_sat_bjaz_ec_mem_dtls_extn__party_group_census': ['MEMBERREFERENCE'],
                         'stg2_sat_bjaz_hcf_member_dtls__party_group_census': ['MEMBERREFERENCE'],
                         'stg2_sat_bjaz_hlt_ensure_mem_dtls__party_group_census': ['MEMBERREFERENCE'],
-                        'stg2_sat_bjaz_hm_member_dtls__party_group_census': ['DESIGNATIONBAND', 'EMPLOYEEID', 'LOCATIONREFERENCE', 'MEMBERREFERENCE'],
+                        'stg2_sat_bjaz_hm_member_dtls__party_group_census': ['DESIGNATION_BAND', 'EMPLOYEE_ID', 'LOCATION_REFERENCE', 'MEMBERREFERENCE'],
                         'stg2_sat_bjaz_pa_detl_extn__party_group_census': ['MEMBERREFERENCE'],
                         'stg2_sat_bjaz_sh_mem_dtls_extn__party_group_census': ['MEMBERREFERENCE'],
                         'stg2_sat_bjaz_spp_member_dtls__party_group_census': ['MEMBERREFERENCE']

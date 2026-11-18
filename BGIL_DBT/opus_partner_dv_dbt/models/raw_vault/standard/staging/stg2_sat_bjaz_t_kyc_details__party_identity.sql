@@ -31,40 +31,40 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'AGE'
-      - 'DATEOFBIRTH'
-      - 'DATEOFDEATH'
-      - 'FIRSTNAME'
-      - 'GENDERCODE'
-      - 'LASTNAME'
-      - 'MIDDLENAME'
-      - 'NAMESUFFIX'
+      - 'DATE_OF_BIRTH'
+      - 'DATE_OF_DEATH'
+      - 'FIRST_NAME'
+      - 'GENDER_CODE'
+      - 'LAST_NAME'
+      - 'MIDDLE_NAME'
+      - 'NAME_SUFFIX'
       - 'NATIONALITY'
-      - 'PARTYDISPLAYNAME'
-      - 'PARTYFULLNAME'
-      - 'PARTYLEGALNAME'
+      - 'PARTY_DISPLAY_NAME'
+      - 'PARTY_FULL_NAME'
+      - 'PARTY_LEGAL_NAME'
       - 'PARTYSHORTNAME'
-      - 'PARTYSTATUS'
-      - 'PARTYTYPECODE'
+      - 'PARTY_STATUS'
+      - 'PARTY_TYPE_CODE'
       - 'PLACEOFBIRTH'
       - 'SALUTATION'
 derived_columns:
   PARENT_BK: 'part_id'
   PARENT_NK: "'HUB_PARTY|' || (part_id)"
   AGE: "cast(null as varchar)"
-  DATEOFBIRTH: 'request_dob'
-  DATEOFDEATH: "cast(null as varchar)"
-  FIRSTNAME: "cast(null as varchar)"
-  GENDERCODE: "cast(null as varchar)"
-  LASTNAME: "cast(null as varchar)"
-  MIDDLENAME: "cast(null as varchar)"
-  NAMESUFFIX: "cast(null as varchar)"
+  DATE_OF_BIRTH: 'request_dob'
+  DATE_OF_DEATH: "cast(null as varchar)"
+  FIRST_NAME: "cast(null as varchar)"
+  GENDER_CODE: "cast(null as varchar)"
+  LAST_NAME: "cast(null as varchar)"
+  MIDDLE_NAME: "cast(null as varchar)"
+  NAME_SUFFIX: "cast(null as varchar)"
   NATIONALITY: "cast(null as varchar)"
-  PARTYDISPLAYNAME: 'policy_name'
-  PARTYFULLNAME: 'request_full_name'
-  PARTYLEGALNAME: "cast(null as varchar)"
+  PARTY_DISPLAY_NAME: 'policy_name'
+  PARTY_FULL_NAME: 'request_full_name'
+  PARTY_LEGAL_NAME: "cast(null as varchar)"
   PARTYSHORTNAME: "cast(null as varchar)"
-  PARTYSTATUS: "cast(null as varchar)"
-  PARTYTYPECODE: "cast(null as varchar)"
+  PARTY_STATUS: "cast(null as varchar)"
+  PARTY_TYPE_CODE: "cast(null as varchar)"
   PLACEOFBIRTH: "cast(null as varchar)"
   SALUTATION: "cast(null as varchar)"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'

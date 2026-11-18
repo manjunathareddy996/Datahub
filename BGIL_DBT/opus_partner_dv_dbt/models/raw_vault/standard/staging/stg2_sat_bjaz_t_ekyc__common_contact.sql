@@ -30,25 +30,25 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'ALTERNATEEMAILADDRESS'
-      - 'ALTERNATEMOBILENUMBER'
-      - 'EMAILADDRESS'
-      - 'FAXNUMBER'
-      - 'LANDLINENUMBER'
-      - 'MOBILENUMBER'
-      - 'PREFERREDCONTACTTIME'
-      - 'STDCODE'
+      - 'ALTERNATE_EMAIL_ADDRESS'
+      - 'ALTERNATE_MOBILE_NUMBER'
+      - 'EMAIL_ADDRESS'
+      - 'FAX_NUMBER'
+      - 'LANDLINE_NUMBER'
+      - 'MOBILE_NUMBER'
+      - 'PREFERRED_CONTACT_TIME'
+      - 'STD_CODE'
 derived_columns:
   PARENT_BK: 'part_id'
   PARENT_NK: "'HUB_PARTY|' || (part_id)"
-  ALTERNATEEMAILADDRESS: "cast(null as varchar)"
-  ALTERNATEMOBILENUMBER: "cast(null as varchar)"
-  EMAILADDRESS: "cast(null as varchar)"
-  FAXNUMBER: "cast(null as varchar)"
-  LANDLINENUMBER: "cast(null as varchar)"
-  MOBILENUMBER: 'mobile_number'
-  PREFERREDCONTACTTIME: "cast(null as varchar)"
-  STDCODE: "cast(null as varchar)"
+  ALTERNATE_EMAIL_ADDRESS: "cast(null as varchar)"
+  ALTERNATE_MOBILE_NUMBER: "cast(null as varchar)"
+  EMAIL_ADDRESS: "cast(null as varchar)"
+  FAX_NUMBER: "cast(null as varchar)"
+  LANDLINE_NUMBER: "cast(null as varchar)"
+  MOBILE_NUMBER: 'mobile_number'
+  PREFERRED_CONTACT_TIME: "cast(null as varchar)"
+  STD_CODE: "cast(null as varchar)"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_EKYC'
 {%- endset -%}
