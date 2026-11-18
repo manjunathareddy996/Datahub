@@ -7,7 +7,7 @@
 -- so withdrawing a proposal is deleting a model rather than editing the standard
 -- track's wide stage. Nothing here feeds a standard satellite.
 --
--- 29 payload column(s); the child key is COVERAGE_REFERENCE, COVERAGE_SEQUENCE.
+-- 29 payload column(s); the child key is COVERAGE_REFERENCE_CK, COVERAGE_SEQUENCE_CK.
 
 {%- set yaml_metadata -%}
 source_model: 'resolved_mt__uwr_pol_ins_rskp_sp_pv'
@@ -24,8 +24,8 @@ hashed_columns:
       - 'COVERAGE_BASE_CURRENCY_CODE'
       - 'COVERAGE_LEVEL_EXCHANGE_RATE'
       - 'COVERAGE_MANUAL_DESCRIPTION'
-      - 'COVERAGE_REFERENCE'
-      - 'COVERAGE_SEQUENCE'
+      - 'COVERAGE_REFERENCE_CK'
+      - 'COVERAGE_SEQUENCE_CK'
       - 'COVERAGE_SUM_INSURED_CURRENCY_CODE'
       - 'COVERAGE_TERM'
       - 'COVERAGE_TRANSACTION_CURRENCY_CODE'
@@ -50,8 +50,8 @@ hashed_columns:
 derived_columns:
   POLICY_BK: "nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim(foreign_key), '')) end),'')"
   POLICY_NK: "'HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim(foreign_key), '')) end),''))"
-  COVERAGE_REFERENCE: "coalesce(nullif(trim(cover_code), ''),'')"
-  COVERAGE_SEQUENCE: "coalesce(nullif(trim(w1_pol_risk_id), ''),'')"
+  COVERAGE_REFERENCE_CK: "coalesce(nullif(trim(cover_code), ''),'')"
+  COVERAGE_SEQUENCE_CK: "coalesce(nullif(trim(w1_pol_risk_id), ''),'')"
   ACE_VARIANT_DEDUCTIBLE_AMOUNT: 'cast(null as varchar)'
   AMBULANCE_SUB_COVER_VALUE: 'cast(null as varchar)'
   BENEFIT_UNIT_IN_HOURS: 'cast(null as varchar)'

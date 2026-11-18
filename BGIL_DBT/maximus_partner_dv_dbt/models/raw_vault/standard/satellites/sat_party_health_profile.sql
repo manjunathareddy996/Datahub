@@ -9,10 +9,10 @@
 source_model: 'satfeed_mp_sat__party_health_profile'
 src_pk: 'PARTY_HKEY'
 src_payload:
-  - 'DISABILITYINDICATOR'
-  - 'DISABILITYPERCENTAGE'
+  - 'DISABILITY_INDICATOR'
+  - 'DISABILITY_PERCENTAGE'
   - 'HEIGHT'
-  - 'PREEXISTINGDISEASEDESCRIPTION'
+  - 'PRE_EXISTING_DISEASE_DESCRIPTION'
   - 'WEIGHT'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'

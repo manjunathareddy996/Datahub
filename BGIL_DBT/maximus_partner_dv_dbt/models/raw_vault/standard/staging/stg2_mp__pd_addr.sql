@@ -12,29 +12,29 @@ hashed_columns:
   HASHDIFF_COMMON_ADDRESS:
     is_hashdiff: true
     columns:
-      - 'ADDRESSLINE1'
-      - 'ADDRESSLINE2'
-      - 'ADDRESSLINE3'
-      - 'CAREOFNAME'
+      - 'ADDRESS_LINE_1'
+      - 'ADDRESS_LINE_2'
+      - 'ADDRESS_LINE_3'
+      - 'CARE_OF_NAME'
       - 'CITY'
-      - 'COUNTRYNAME'
+      - 'COUNTRY_NAME'
       - 'DISTRICT'
       - 'LANDMARK'
       - 'LOCALITY'
-      - 'POSTALCODE'
-      - 'POSTOFFICENAME'
-      - 'STATENAME'
+      - 'POSTAL_CODE'
+      - 'POST_OFFICE_NAME'
+      - 'STATE_NAME'
   HASHDIFF_COMMON_CONTACT:
     is_hashdiff: true
     columns:
-      - 'ALTERNATEEMAILADDRESS'
-      - 'ALTERNATEMOBILENUMBER'
-      - 'EMAILADDRESS'
-      - 'FAXNUMBER'
-      - 'LANDLINENUMBER'
-      - 'MOBILENUMBER'
+      - 'ALTERNATE_EMAIL_ADDRESS'
+      - 'ALTERNATE_MOBILE_NUMBER'
+      - 'EMAIL_ADDRESS'
+      - 'FAX_NUMBER'
+      - 'LANDLINE_NUMBER'
+      - 'MOBILE_NUMBER'
       - 'SOCIALMEDIAHANDLE'
-      - 'STDCODE'
+      - 'STD_CODE'
 derived_columns:
   LOCATION_BK: "case when coalesce(upper(trim(to_varchar(address1))), upper(trim(to_varchar(address2))), upper(trim(to_varchar(address3))), upper(trim(to_varchar(city))), upper(trim(to_varchar(district))), upper(trim(to_varchar(state))), upper(trim(to_varchar(pincode))), upper(trim(to_varchar(country)))) is null then null else md5(concat_ws('|', coalesce(upper(trim(to_varchar(address1))), ''), coalesce(upper(trim(to_varchar(address2))), ''), coalesce(upper(trim(to_varchar(address3))), ''), coalesce(upper(trim(to_varchar(city))), ''), coalesce(upper(trim(to_varchar(district))), ''), coalesce(upper(trim(to_varchar(state))), ''), coalesce(upper(trim(to_varchar(pincode))), ''), coalesce(upper(trim(to_varchar(country))), ''))) end"
   LOCATION_NK: "'HUB_LOCATION|' || (case when coalesce(upper(trim(to_varchar(address1))), upper(trim(to_varchar(address2))), upper(trim(to_varchar(address3))), upper(trim(to_varchar(city))), upper(trim(to_varchar(district))), upper(trim(to_varchar(state))), upper(trim(to_varchar(pincode))), upper(trim(to_varchar(country)))) is null then null else md5(concat_ws('|', coalesce(upper(trim(to_varchar(address1))), ''), coalesce(upper(trim(to_varchar(address2))), ''), coalesce(upper(trim(to_varchar(address3))), ''), coalesce(upper(trim(to_varchar(city))), ''), coalesce(upper(trim(to_varchar(district))), ''), coalesce(upper(trim(to_varchar(state))), ''), coalesce(upper(trim(to_varchar(pincode))), ''), coalesce(upper(trim(to_varchar(country))), ''))) end)"
@@ -42,26 +42,26 @@ derived_columns:
   PARTY_NK: "'HUB_PARTY|' || (foreign_key)"
   PARTY_LOCATION_BK: "(foreign_key) || '||' || (case when coalesce(upper(trim(to_varchar(address1))), upper(trim(to_varchar(address2))), upper(trim(to_varchar(address3))), upper(trim(to_varchar(city))), upper(trim(to_varchar(district))), upper(trim(to_varchar(state))), upper(trim(to_varchar(pincode))), upper(trim(to_varchar(country)))) is null then null else md5(concat_ws('|', coalesce(upper(trim(to_varchar(address1))), ''), coalesce(upper(trim(to_varchar(address2))), ''), coalesce(upper(trim(to_varchar(address3))), ''), coalesce(upper(trim(to_varchar(city))), ''), coalesce(upper(trim(to_varchar(district))), ''), coalesce(upper(trim(to_varchar(state))), ''), coalesce(upper(trim(to_varchar(pincode))), ''), coalesce(upper(trim(to_varchar(country))), ''))) end)"
   PARTY_LOCATION_NK: "'LNK_PARTY_LOCATION|' || ((foreign_key) || '||' || (case when coalesce(upper(trim(to_varchar(address1))), upper(trim(to_varchar(address2))), upper(trim(to_varchar(address3))), upper(trim(to_varchar(city))), upper(trim(to_varchar(district))), upper(trim(to_varchar(state))), upper(trim(to_varchar(pincode))), upper(trim(to_varchar(country)))) is null then null else md5(concat_ws('|', coalesce(upper(trim(to_varchar(address1))), ''), coalesce(upper(trim(to_varchar(address2))), ''), coalesce(upper(trim(to_varchar(address3))), ''), coalesce(upper(trim(to_varchar(city))), ''), coalesce(upper(trim(to_varchar(district))), ''), coalesce(upper(trim(to_varchar(state))), ''), coalesce(upper(trim(to_varchar(pincode))), ''), coalesce(upper(trim(to_varchar(country))), ''))) end))"
-  ADDRESSLINE1: "address1"
-  ADDRESSLINE2: "address2"
-  ADDRESSLINE3: "address3"
+  ADDRESS_LINE_1: "address1"
+  ADDRESS_LINE_2: "address2"
+  ADDRESS_LINE_3: "address3"
   CITY: "city"
-  COUNTRYNAME: "country"
+  COUNTRY_NAME: "country"
   DISTRICT: "district"
-  POSTALCODE: "pincode"
-  STATENAME: "state"
-  POSTOFFICENAME: "cast(null as varchar)"
-  CAREOFNAME: "cast(null as varchar)"
+  POSTAL_CODE: "pincode"
+  STATE_NAME: "state"
+  POST_OFFICE_NAME: "cast(null as varchar)"
+  CARE_OF_NAME: "cast(null as varchar)"
   LOCALITY: "cast(null as varchar)"
   LANDMARK: "cast(null as varchar)"
-  ALTERNATEEMAILADDRESS: "alternate_email_id"
-  EMAILADDRESS: "email_id"
-  FAXNUMBER: "fax"
-  LANDLINENUMBER: "coalesce(landline_no, phone_no, work_no)"
-  MOBILENUMBER: "mobile_no"
-  STDCODE: "std_code"
+  ALTERNATE_EMAIL_ADDRESS: "alternate_email_id"
+  EMAIL_ADDRESS: "email_id"
+  FAX_NUMBER: "fax"
+  LANDLINE_NUMBER: "coalesce(landline_no, phone_no, work_no)"
+  MOBILE_NUMBER: "mobile_no"
+  STD_CODE: "std_code"
   SOCIALMEDIAHANDLE: "cast(null as varchar)"
-  ALTERNATEMOBILENUMBER: "cast(null as varchar)"
+  ALTERNATE_MOBILE_NUMBER: "cast(null as varchar)"
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS'
 {%- endset -%}

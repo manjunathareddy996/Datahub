@@ -9,9 +9,9 @@
 source_model: 'stg2_mp__pd_doc'
 src_pk: 'DOCUMENT_HKEY'
 src_payload:
-  - 'DOCUMENTNAME'
-  - 'DOCUMENTTYPE'
-  - 'ISSUEDATE'
+  - 'DOCUMENT_NAME'
+  - 'DOCUMENT_TYPE'
+  - 'ISSUE_DATE'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

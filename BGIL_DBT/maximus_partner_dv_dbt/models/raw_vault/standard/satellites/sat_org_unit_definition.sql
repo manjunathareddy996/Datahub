@@ -9,8 +9,8 @@
 source_model: 'satfeed_mp_sat__org_unit_definition'
 src_pk: 'ORG_UNIT_HKEY'
 src_payload:
-  - 'BRANCHTYPE'
-  - 'ORGUNITNAME'
+  - 'BRANCH_TYPE'
+  - 'ORG_UNIT_NAME'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

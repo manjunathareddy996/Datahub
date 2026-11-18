@@ -10,8 +10,8 @@
 source_model: 'satfeed_mp_sat__aug_party_group_scheme'
 src_pk: 'PARTY_HKEY'
 src_payload:
-  - 'GROUPBUFFERAMOUNT'
-  - 'GROUPHEALTHUSERTYPE'
+  - 'GROUP_BUFFER_AMOUNT'
+  - 'GROUP_HEALTH_USER_TYPE'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

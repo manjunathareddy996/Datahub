@@ -24,7 +24,7 @@ hashed_columns:
   HASHDIFF_AUG_COMMON_CONTACT:
     is_hashdiff: true
     columns:
-      - 'CONTACTPERSONNAME'
+      - 'CONTACT_PERSON_NAME'
       - 'CONTACTVERIFICATIONREQUIREDINDICATOR'
       - 'WEBSITEURL'
   HASHDIFF_AUG_LNK_PARTY_ROLE_CORE:
@@ -38,7 +38,7 @@ hashed_columns:
       - 'AFFINITYPARTNEREMPLOYEEINDICATOR'
       - 'AUTHORISEDPERSONNUMBER'
       - 'DSAINDICATOR'
-      - 'INTERMEDIARYLICENCENUMBER'
+      - 'INTERMEDIARY_LICENCE_NUMBER'
       - 'IRDAICATEGORY'
       - 'IRDAIPRIMARYPROFESSION'
       - 'IRDAIUNIQUEIDENTIFIER'
@@ -47,7 +47,7 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'INSUREDTYPE'
-      - 'MEMBERTYPE'
+      - 'MEMBER_TYPE'
       - 'PREMIUMPAYERTYPE'
   HASHDIFF_AUG_LNK_ROLE_NOMINEE_BENEFICIARY:
     is_hashdiff: true
@@ -63,11 +63,11 @@ hashed_columns:
       - 'ASSESSMENTDATE'
       - 'AUTHORISINGMANUFACTURERNAME'
       - 'BLACKLISTREASON'
-      - 'CONEXPERTISE'
-      - 'CONTACTPERSONDESIGNATION'
-      - 'CONTACTPERSONNAME'
-      - 'COVEREDAREA'
-      - 'DEALERCODE'
+      - 'CON_EXPERTISE'
+      - 'CONTACT_PERSON_DESIGNATION'
+      - 'CONTACT_PERSON_NAME'
+      - 'COVERED_AREA'
+      - 'DEALER_CODE'
       - 'DEALERPROGRAMMETYPE'
       - 'DEALERTYPE'
       - 'DELISTINGREASON'
@@ -91,7 +91,7 @@ hashed_columns:
       - 'MOUVALIDITYENDDATE'
       - 'MOUVALIDITYSTARTDATE'
       - 'NABHACCREDITATIONLEVEL'
-      - 'NATIONALTIEUPINFORMATION'
+      - 'NATIONAL_TIE_UP_INFORMATION'
       - 'NEARESTSERVICINGBRANCHREFERENCE'
       - 'NETWORKSTATUSREMARK'
       - 'NONDISCLOSUREAGREEMENTSTATUS'
@@ -102,10 +102,10 @@ hashed_columns:
       - 'OPERATINGHOURSDESCRIPTION'
       - 'OPERATINGLOCATIONRESTRICTION'
       - 'OPERATIONBASETYPE'
-      - 'OPERATIONPLACE'
+      - 'OPERATION_PLACE'
       - 'OPERATIONPLACEFORINSURERWORK'
-      - 'ORIGINCOMP'
-      - 'ORIGINCONT'
+      - 'ORIGIN_COMP'
+      - 'ORIGIN_CONT'
       - 'OTHERSERVICESDESCRIPTION'
       - 'PANELDOCTORDETAILS'
       - 'PARTNERDESCRIPTION'
@@ -136,8 +136,8 @@ hashed_columns:
       - 'VENDOREVALUATIONTEMPLATEREFERENCE'
       - 'VISITINGCONSULTANTCOUNT'
       - 'VISITINGSURGEONCOUNT'
-      - 'WORKSHOPCATEGORY'
-      - 'WORKSHOPCLASS'
+      - 'WORKSHOP_CATEGORY'
+      - 'WORKSHOP_CLASS'
   HASHDIFF_AUG_LNK_ROLE_SURVEYOR:
     is_hashdiff: true
     columns:
@@ -167,7 +167,7 @@ hashed_columns:
   HASHDIFF_AUG_PARTY_CONTACT_ADDRESS_LINK:
     is_hashdiff: true
     columns:
-      - 'SAMEASCORRESPONDENCEADDRESSINDICATOR'
+      - 'SAME_AS_CORRESPONDENCE_ADDRESS_INDICATOR'
   HASHDIFF_AUG_PARTY_CORRESPONDENCE:
     is_hashdiff: true
     columns:
@@ -175,9 +175,9 @@ hashed_columns:
   HASHDIFF_AUG_PARTY_DIGITAL_IDENTITY:
     is_hashdiff: true
     columns:
-      - 'DEVICEMAKEANDMODEL'
+      - 'DEVICE_MAKE_AND_MODEL'
       - 'PORTALACCESSSTATUS'
-      - 'USERTYPE'
+      - 'USER_TYPE'
   HASHDIFF_AUG_PARTY_DRIVING:
     is_hashdiff: true
     columns:
@@ -193,56 +193,56 @@ hashed_columns:
       - 'OVERALLEXPERIENCEDESCRIPTION'
       - 'SKILLSETDESCRIPTION'
       - 'TOTALWORKEXPERIENCEYEARS'
-      - 'TOTALYEARSOFEXPERIENCE'
+      - 'TOTAL_YEARS_OF_EXPERIENCE'
   HASHDIFF_AUG_PARTY_FINANCIAL_PROFILE:
     is_hashdiff: true
     columns:
-      - 'CHEQUERECEIPTINGBLOCKEDINDICATOR'
-      - 'CHEQUERECEIPTINGBLOCKREASON'
+      - 'CHEQUE_RECEIPTING_BLOCKED_INDICATOR'
+      - 'CHEQUE_RECEIPTING_BLOCK_REASON'
       - 'DECLAREDINCOMEAMOUNT'
-      - 'INCOMETAXRETURNFILEDLASTTWOYEARSINDICATOR'
+      - 'INCOME_TAX_RETURN_FILED_LAST_TWO_YEARS_INDICATOR'
   HASHDIFF_AUG_PARTY_FRAUD_PROFILE:
     is_hashdiff: true
     columns:
       - 'BLACKLISTDATE'
       - 'FRAUDSUSPICIONENDDATE'
-      - 'FRAUDSUSPICIONREASON'
+      - 'FRAUD_SUSPICION_REASON'
       - 'FRAUDSUSPICIONSTARTDATE'
   HASHDIFF_AUG_PARTY_GROUP_SCHEME:
     is_hashdiff: true
     columns:
-      - 'GROUPBUFFERAMOUNT'
-      - 'GROUPHEALTHUSERTYPE'
+      - 'GROUP_BUFFER_AMOUNT'
+      - 'GROUP_HEALTH_USER_TYPE'
   HASHDIFF_AUG_PARTY_HEALTH_PROFILE:
     is_hashdiff: true
     columns:
-      - 'DISABILITYBODYLOCATION'
+      - 'DISABILITY_BODY_LOCATION'
   HASHDIFF_AUG_PARTY_HIERARCHY:
     is_hashdiff: true
     columns:
       - 'BRANCHMANAGERUSERIDENTIFIER'
       - 'DISTRIBUTIONCLASSIFICATION'
       - 'DISTRIBUTORCODE'
-      - 'RELATIONSHIPASSOCIATEEMPLOYEECODE'
+      - 'RELATIONSHIP_ASSOCIATE_EMPLOYEE_CODE'
       - 'SELLINGDEALERREFERENCE'
       - 'SERVICINGAGENTREFERENCE'
       - 'TECHNICALSECTIONCODE'
       - 'TRANSFERCASEINDICATOR'
-      - 'TRANSFERINDICATOR'
+      - 'TRANSFER_INDICATOR'
       - 'ZONECODE'
   HASHDIFF_AUG_PARTY_IDENTIFICATION:
     is_hashdiff: true
     columns:
       - 'ADDRESSPROOFTYPE'
       - 'EIAACCOUNTDETAILS'
-      - 'EIAAVAILABLEINDICATOR'
-      - 'EIACREDITREQUIREDINDICATOR'
-      - 'EIALINKEDDATE'
-      - 'EIAREQUIREDINDICATOR'
+      - 'EIA_AVAILABLE_INDICATOR'
+      - 'EIA_CREDIT_REQUIRED_INDICATOR'
+      - 'EIA_LINKED_DATE'
+      - 'EIA_REQUIRED_INDICATOR'
       - 'NAMEASPERIDENTIFICATION'
       - 'OVDCATEGORYOTHERDETAIL'
-      - 'PASSPORTFILENUMBER'
-      - 'PASSPORTISSUINGCOUNTRY'
+      - 'PASSPORT_FILE_NUMBER'
+      - 'PASSPORT_ISSUING_COUNTRY'
   HASHDIFF_AUG_PARTY_IDENTITY:
     is_hashdiff: true
     columns:
@@ -262,28 +262,28 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'BASICQUALIFICATIONDETAILS'
-      - 'BASICQUALIFICATIONROLLNUMBER'
+      - 'BASIC_QUALIFICATION_ROLL_NUMBER'
       - 'EDUCATIONINSTITUTENAME'
       - 'FATHERORSPOUSENAME'
       - 'INCOMEBANDLOWERBOUND'
       - 'INCOMEBANDUPPERBOUND'
-      - 'MARRIAGEANNIVERSARYDATE'
+      - 'MARRIAGE_ANNIVERSARY_DATE'
       - 'MATRICULATIONQUALIFICATIONDETAIL'
       - 'MONTHLYGROSSINCOME'
       - 'MOTHERSMAIDENNAME'
-      - 'NUMBEROFDAUGHTERS'
-      - 'NUMBEROFSONS'
+      - 'NUMBER_OF_DAUGHTERS'
+      - 'NUMBER_OF_SONS'
       - 'OCCUPATIONLIST'
       - 'OTHEROCCUPATION'
       - 'OTHERQUALIFICATION'
-      - 'PERSONALDETAILSDESCRIPTION'
-      - 'POSTGRADUATEQUALIFICATION'
-      - 'PROFESSIONALQUALIFICATION'
+      - 'PERSONAL_DETAILS_DESCRIPTION'
+      - 'POSTGRADUATE_QUALIFICATION'
+      - 'PROFESSIONAL_QUALIFICATION'
       - 'QUALIFICATIONBOARDNAME'
       - 'QUALIFICATIONDETAIL'
       - 'QUALIFICATIONPASSINGMONTH'
-      - 'UNDERGRADUATEQUALIFICATION'
-      - 'YEAROFPASSINGQUALIFICATION'
+      - 'UNDERGRADUATE_QUALIFICATION'
+      - 'YEAR_OF_PASSING_QUALIFICATION'
   HASHDIFF_AUG_PARTY_INTERACTION:
     is_hashdiff: true
     columns:
@@ -296,11 +296,11 @@ hashed_columns:
       - 'HOSPITALDOCUMENTSAVAILABLEINDICATOR'
       - 'KYCDETAIL'
       - 'KYCRELATEDDETAIL'
-      - 'OPTIONALPROOFOFPOSSESSIONTYPE'
-      - 'PANAADHARLINKED'
+      - 'OPTIONAL_PROOF_OF_POSSESSION_TYPE'
+      - 'PANAADHAARLINKED'
       - 'PANAPPLIEDINDICATOR'
       - 'PANAPPNO'
-      - 'PRIMARYPROOFOFPOSSESSIONTYPE'
+      - 'PRIMARY_PROOF_OF_POSSESSION_TYPE'
       - 'PROOFOFADDRESSSTATUS'
       - 'PROOFOFIDENTITYSTATUS'
       - 'REQUIREDDOCUMENTSSUBMITTEDINDICATOR'
@@ -313,7 +313,7 @@ hashed_columns:
       - 'COURTBENCHNAME'
       - 'COURTNAME'
       - 'ECOURTMAPPEDINDICATOR'
-      - 'MACTCASESHANDLEDOTHERCOMPANYCOUNT'
+      - 'MACT_CASES_HANDLED_OTHER_COMPANY_COUNT'
       - 'NOOFBRIEFS'
   HASHDIFF_AUG_PARTY_MARKETING:
     is_hashdiff: true
@@ -324,12 +324,12 @@ hashed_columns:
   HASHDIFF_AUG_PARTY_ONBOARDING_JOURNEY:
     is_hashdiff: true
     columns:
-      - 'APPLICATIONREJECTIONREASON'
+      - 'APPLICATION_REJECTION_REASON'
       - 'APPOINTMENTLETTERISSUEDATE'
       - 'APPROVEDBYREFERENCE'
       - 'ASSIGNEDTOILMINDICATOR'
       - 'CALCULATORURNNUMBER'
-      - 'CANDIDATEBACKGROUNDDESCRIPTION'
+      - 'CANDIDATE_BACKGROUND_DESCRIPTION'
       - 'CLAIMSTEAMRECOMMENDATION'
       - 'CLOSUREBYREFERENCE'
       - 'COMMUNICATIONSKILLSRATING'
@@ -339,12 +339,12 @@ hashed_columns:
       - 'INITIATEDBYREFERENCE'
       - 'INSURANCEBANKINGFINANCIALSERVICESEXPERIENCE'
       - 'MANDATORYDOCUMENTSUBMITTEDINDICATOR'
-      - 'PREVIOUSEMPLOYERLOCATION'
-      - 'PREVIOUSEMPLOYERPARENTINTERMEDIARYCODE'
-      - 'PREVIOUSEMPLOYERPARENTSUBINTERMEDIARYCODE'
+      - 'PREVIOUS_EMPLOYER_LOCATION'
+      - 'PREVIOUS_EMPLOYER_PARENT_INTERMEDIARY_CODE'
+      - 'PREVIOUS_EMPLOYER_PARENT_SUB_INTERMEDIARY_CODE'
       - 'PREVIOUSENGAGEMENTDETAIL'
-      - 'PREVIOUSNONGENERALINSURERNAME'
-      - 'REASONFORLEAVINGPREVIOUSEMPLOYER'
+      - 'PREVIOUS_NON_GENERAL_INSURER_NAME'
+      - 'REASON_FOR_LEAVING_PREVIOUS_EMPLOYER'
       - 'REGISTEREDINDICATOR'
       - 'TRAINEDPRODUCTREFERENCE'
       - 'TRAININGREQUIREDINDICATOR'
@@ -352,7 +352,7 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'ALTERNATELOCATIONDETAILS'
-      - 'BUSINESSDESCRIPTION'
+      - 'BUSINESS_DESCRIPTION'
       - 'BUSINESSSECTORCODE'
       - 'CLIENTGEOGRAPHY'
       - 'COORDINATINGOFFICEADDRESS'
@@ -360,12 +360,12 @@ hashed_columns:
       - 'DEDICATEDSTAFFCOUNTFORINSURER'
       - 'DEDICATEDTEAMLEADERCOUNTFORINSURER'
       - 'GOVERNMENTBODYTYPE'
-      - 'INFRASTRUCTURESUBSECTOR'
+      - 'INFRASTRUCTURE_SUB_SECTOR'
       - 'OTHERRELATEDENTITIES'
       - 'OWNERSHIPTYPE'
-      - 'REGISTEREDBUSINESSTRUSTINDICATOR'
-      - 'REGISTEREDCOMPANYINDICATOR'
-      - 'REPRESENTEDBUSINESSNAME'
+      - 'REGISTERED_BUSINESS_TRUST_INDICATOR'
+      - 'REGISTERED_COMPANY_INDICATOR'
+      - 'REPRESENTED_BUSINESS_NAME'
       - 'TOTALTEAMLEADERCOUNT'
       - 'TOTALTEAMSTRENGTH'
       - 'YEAROFESTABLISHMENT'
@@ -378,33 +378,33 @@ hashed_columns:
     columns:
       - 'DEFAULTCREDITGLACCOUNTCODE'
       - 'DEFAULTDEBITGLACCOUNTCODE'
-      - 'FLOATACCOUNTACCESSINDICATOR'
+      - 'FLOAT_ACCOUNT_ACCESS_INDICATOR'
       - 'FLOATREPLENISHMENTCONDITION'
       - 'INTERIMPAYMENTINDICATOR'
-      - 'LOWERTDSCERTIFICATEREFERENCE'
+      - 'LOWER_TDS_CERTIFICATE_REFERENCE'
       - 'PAYCLAIMSCANCELMONTHLYINDICATOR'
       - 'PAYEECODE'
       - 'PAYEENAME'
       - 'PAYEETYPE'
       - 'PAYMENTDETAILSDESCRIPTION'
-      - 'PAYMENTMODE'
+      - 'PAYMENT_MODE'
       - 'PAYMENTPLAN'
       - 'PAYMENTSCHEDULE'
-      - 'REWARDSCHEMEAPPLICABLEINDICATOR'
+      - 'REWARD_SCHEME_APPLICABLE_INDICATOR'
       - 'SERVICETAXAPPLICABLEINDICATOR'
       - 'TDSCERTIFICATEISSUEDATE'
       - 'TDSCERTIFICATENUMBER'
       - 'TDSCERTIFICATETYPE'
-      - 'TDSCODE'
-      - 'TDSCODEDESCRIPTION'
+      - 'TDS_CODE'
+      - 'TDS_CODE_DESCRIPTION'
       - 'TDSDETAILDESCRIPTION'
       - 'TDSSECTIONCODE'
   HASHDIFF_AUG_PARTY_PREFERENCE_PROFILE:
     is_hashdiff: true
     columns:
-      - 'ELECTRONICPOLICYISSUANCEPREFERENCEINDICATOR'
+      - 'ELECTRONIC_POLICY_ISSUANCE_PREFERENCE_INDICATOR'
       - 'PREFERREDLOCATION'
-      - 'PROPAGATECONTACTUPDATETOALLPOLICIESINDICATOR'
+      - 'PROPAGATE_CONTACT_UPDATE_TO_ALL_POLICIES_INDICATOR'
   HASHDIFF_AUG_PARTY_PROVIDER_CAPABILITY:
     is_hashdiff: true
     columns:
@@ -470,11 +470,11 @@ hashed_columns:
     columns:
       - 'ASSESSMENTERRORDESCRIPTION'
       - 'ASSESSMENTREPORTQUALITYSCORE'
-      - 'AVERAGEADMISSIONTIME'
-      - 'AVERAGEDISCHARGETIME'
+      - 'AVERAGE_ADMISSION_TIME'
+      - 'AVERAGE_DISCHARGE_TIME'
       - 'AVERAGELENGTHOFSTAYMEDICALCASES'
       - 'AVERAGELENGTHOFSTAYSURGICALCASES'
-      - 'BEDOCCUPANCYRATE'
+      - 'BED_OCCUPANCY_RATE'
       - 'CERTIFICATIONNUMBER'
       - 'CERTIFICATIONTYPE'
       - 'CITYSCORE'
@@ -540,7 +540,7 @@ derived_columns:
   AGREEDREPORTSUBMISSIONTAT: "tat_to_submit_report"
   ALLOCATIONTHRESHOLDLEVEL: "threshold_level"
   ALTERNATELOCATIONDETAILS: "alternate_location_details"
-  APPLICATIONREJECTIONREASON: "rejected_reason"
+  APPLICATION_REJECTION_REASON: "rejected_reason"
   APPOINTMENTLETTERISSUEDATE: "date_of_issue_of_appointment"
   APPRECIATIONDISPLAYCOUNTER: "appreciation_display_counter"
   APPROVEDBYREFERENCE: "approved_by"
@@ -551,8 +551,8 @@ derived_columns:
   AUTHORISEDPERSONNUMBER: "ap_number"
   AUTHORISINGMANUFACTURERNAME: "authorized_by_mfg_co_name"
   AUTOMOBILEASSOCIATIONMEMBERSHIPNUMBER: "automobile_association_membership_no"
-  AVERAGEADMISSIONTIME: "average_admission_time"
-  AVERAGEDISCHARGETIME: "average_discharge_time"
+  AVERAGE_ADMISSION_TIME: "average_admission_time"
+  AVERAGE_DISCHARGE_TIME: "average_discharge_time"
   AVERAGEINSURERCASEALLOCATIONCOUNT: "average_bagic_allocationfor_bagic"
   AVERAGELENGTHOFSTAYMEDICALCASES: "average_length_of_stay_for_medical_cases"
   AVERAGELENGTHOFSTAYSURGICALCASES: "average_length_of_stay_for_surgical_cases"
@@ -560,25 +560,25 @@ derived_columns:
   BANKACCOUNTDETAILTEXT: "provider_bank_details"
   BANKINGDETAILSDESCRIPTION: "banking_details"
   BASICQUALIFICATIONDETAILS: "basic_qualifications_details"
-  BASICQUALIFICATIONROLLNUMBER: "roll_no_for_basic_qualification"
-  BEDOCCUPANCYRATE: "bed_occupancy_rate_in_hospital"
+  BASIC_QUALIFICATION_ROLL_NUMBER: "roll_no_for_basic_qualification"
+  BED_OCCUPANCY_RATE: "bed_occupancy_rate_in_hospital"
   BENEFICIARYNAMELIST: "beneficiary_names"
   BLACKLISTDATE: "date_of_blacklisting"
   BLACKLISTREASON: "reason_for_blacklisting"
   BLOCKUNBLOCKSTATUS: "blockunblock_status"
   BRANCHMANAGERUSERIDENTIFIER: "bm_username"
-  BUSINESSDESCRIPTION: "business_details"
+  BUSINESS_DESCRIPTION: "business_details"
   BUSINESSSECTORCODE: "sector_selection"
   CALCULATORURNNUMBER: "calculator_urn_number"
   CANCELLATIONPORTION: "cancel_portion"
-  CANDIDATEBACKGROUNDDESCRIPTION: "background_of_candidate"
+  CANDIDATE_BACKGROUND_DESCRIPTION: "background_of_candidate"
   CASHBACKOFFER: "cash_back_offer"
   CATEGORYVALUE: "category_value"
   CERTIFICATIONNUMBER: "certification_no"
   CERTIFICATIONTYPE: "certification"
   CHARGEFILEREFERENCE: "charge_file_details"
-  CHEQUERECEIPTINGBLOCKEDINDICATOR: "cheque_receipting_blocked"
-  CHEQUERECEIPTINGBLOCKREASON: "remarks_for_cheque_receipting_blocked"
+  CHEQUE_RECEIPTING_BLOCKED_INDICATOR: "cheque_receipting_blocked"
+  CHEQUE_RECEIPTING_BLOCK_REASON: "remarks_for_cheque_receipting_blocked"
   CITYSCORE: "score_of_city"
   CKYCDETAILS: "claim_ckyc_details"
   CKYCNUMBERHELDINDICATOR: "do_you_have_ckyc_number"
@@ -590,9 +590,9 @@ derived_columns:
   CLIENTGEOGRAPHY: "client_geography"
   CLOSUREBYREFERENCE: "closure_by"
   COMMUNICATIONSKILLSRATING: "communication_skills"
-  CONEXPERTISE: "contractors_expertise_in_structureproject"
-  CONTACTPERSONDESIGNATION: "designation_of_the_person"
-  CONTACTPERSONNAME: "contact_person_name"
+  CON_EXPERTISE: "contractors_expertise_in_structureproject"
+  CONTACT_PERSON_DESIGNATION: "designation_of_the_person"
+  CONTACT_PERSON_NAME: "contact_person_name"
   CONTACTVERIFICATIONREQUIREDINDICATOR: "number_validation_required"
   COORDINATINGOFFICEADDRESS: "address_of_the_coordinating_office"
   COUNTRYOFCITIZENSHIP: "country_of_citizenship"
@@ -600,13 +600,13 @@ derived_columns:
   COUPONTYPE: "coupon_type"
   COURTBENCHNAME: "court_bench_name"
   COURTNAME: "court_name"
-  COVEREDAREA: "covered_area_in_kms"
+  COVERED_AREA: "covered_area_in_kms"
   CREDITCARDACCEPTEDINDICATOR: "credit_card_accepted"
   CREDITLIMITAMOUNT: "credit_limit"
   CREDITLIMITCINNUMBER: "credit_limit_cin_no"
   CREDITTERMSDETAIL: "credit_details"
   CSECTIONRATE: "c_section_rate"
-  DEALERCODE: "dealer_code"
+  DEALER_CODE: "dealer_code"
   DEALERPROGRAMMETYPE: "dealer_on_program_type"
   DEALERTYPE: "dealer_type"
   DECLARATIONTEXT: "declaration"
@@ -619,9 +619,9 @@ derived_columns:
   DEFAULTDEBITGLACCOUNTCODE: "cast(null as varchar)"
   DELAYEDSUBMISSIONDISCOUNTAPPLICABLEINDICATOR: "delayed_submission_discount_applicable"
   DELISTINGREASON: "reason_for_delisting"
-  DEVICEMAKEANDMODEL: "smart_phone_company_namemodel_name"
+  DEVICE_MAKE_AND_MODEL: "smart_phone_company_namemodel_name"
   DIRECTORANDPARTNERDETAIL: "director_and_partner_details"
-  DISABILITYBODYLOCATION: "location_of_disability"
+  DISABILITY_BODY_LOCATION: "location_of_disability"
   DISCOUNTANDLOADINGTERMS: "discount_and_loading"
   DISCOUNTSCORE: "score_of_discount"
   DISCOUNTTYPE: "discount_type"
@@ -636,11 +636,11 @@ derived_columns:
   ECOURTMAPPEDINDICATOR: "mapped_with_ecourt"
   EDUCATIONINSTITUTENAME: "institute_name"
   EIAACCOUNTDETAILS: "eia_details"
-  EIAAVAILABLEINDICATOR: "eia_available"
-  EIACREDITREQUIREDINDICATOR: "eia_credit_required"
-  EIALINKEDDATE: "eia_when_linked"
-  EIAREQUIREDINDICATOR: "eia_required"
-  ELECTRONICPOLICYISSUANCEPREFERENCEINDICATOR: "issue_all_policies_in_electronic_format"
+  EIA_AVAILABLE_INDICATOR: "eia_available"
+  EIA_CREDIT_REQUIRED_INDICATOR: "eia_credit_required"
+  EIA_LINKED_DATE: "eia_when_linked"
+  EIA_REQUIRED_INDICATOR: "eia_required"
+  ELECTRONIC_POLICY_ISSUANCE_PREFERENCE_INDICATOR: "issue_all_policies_in_electronic_format"
   EMPANELLEDCOMPANIESCOUNT: "no_of_companies_empanelled_with"
   EMPANELLEDINSURERCOUNT: "no_of_insurance_companies_empanelled_with"
   EMPANELMENTRECOMMENDATION: "recommendation"
@@ -658,17 +658,17 @@ derived_columns:
   EXISTINGCUSTOMERINDICATOR: "are_you_an_existing_bajaj_allianz_customer"
   FATHERORSPOUSENAME: "fatherspouse_name"
   FLATRATEBASISINDICATOR: "flat_rate_basis"
-  FLOATACCOUNTACCESSINDICATOR: "agent_float_access"
+  FLOAT_ACCOUNT_ACCESS_INDICATOR: "agent_float_access"
   FLOATREPLENISHMENTCONDITION: "nf_balance_will_be_replenished_after_clearance_of_receipts"
   FRAUDSUSPICIONENDDATE: "suspected_fraud_expiry_date"
-  FRAUDSUSPICIONREASON: "reason_suspected_fraud"
+  FRAUD_SUSPICION_REASON: "reason_suspected_fraud"
   FRAUDSUSPICIONSTARTDATE: "suspected_fraud_effective_date"
   GENERALREMARKS: "remarks"
   GOVERNMENTBODYTYPE: "type_of_government"
-  GROUPBUFFERAMOUNT: "group_buffer"
+  GROUP_BUFFER_AMOUNT: "group_buffer"
   GROUPCOMPANYRELATIONSHIPDECLARATION: "provide_a_declaration_to_confirm_that_the_service_provider_relationship_with_any_bajaj_group"
   GROUPCOMPANYSOURCEDINDICATOR: "search_from_gc"
-  GROUPHEALTHUSERTYPE: "gh_type_of_user"
+  GROUP_HEALTH_USER_TYPE: "gh_type_of_user"
   HNIFLAG: "hni_flag"
   HNIRELATIONSHIPDETAIL: "relationship_with_hni"
   HOSPITALDOCUMENTSAVAILABLEINDICATOR: "view_hospital_docs"
@@ -680,8 +680,8 @@ derived_columns:
   ILMREVIEWREMARKS: "ilm_remarks"
   INCOMEBANDLOWERBOUND: "cast(null as varchar)"
   INCOMEBANDUPPERBOUND: "cast(null as varchar)"
-  INCOMETAXRETURNFILEDLASTTWOYEARSINDICATOR: "filed_it_last_2_years"
-  INFRASTRUCTURESUBSECTOR: "infrastructure_subsector"
+  INCOME_TAX_RETURN_FILED_LAST_TWO_YEARS_INDICATOR: "filed_it_last_2_years"
+  INFRASTRUCTURE_SUB_SECTOR: "infrastructure_subsector"
   INITIATEDBYREFERENCE: "initiated_by"
   INSURANCEBANKINGFINANCIALSERVICESEXPERIENCE: "insurancebankingfinancial_experience"
   INSURANCEINDUSTRYEXPERIENCEINDICATOR: "whether_you_have_worked_with_insurance_or_not"
@@ -689,7 +689,7 @@ derived_columns:
   INSUREDTYPE: "type_of_insured"
   INSURERVISITCONDUCTEDINDICATOR: "visited_by_bagic_person"
   INTERIMPAYMENTINDICATOR: "interim_payment"
-  INTERMEDIARYLICENCENUMBER: "license_number"
+  INTERMEDIARY_LICENCE_NUMBER: "license_number"
   INVESTIGATIONFIELDEXPERIENCEYEARS: "total_working_experience_in_investigation_field"
   IRDAICATEGORY: "irda_category"
   IRDAIPRIMARYPROFESSION: "irda_list_primary_profession"
@@ -698,16 +698,16 @@ derived_columns:
   KYCRELATEDDETAIL: "kyc_related_details"
   LICENCEDETAIL: "license_details"
   LKQPARTSACCEPTEDINDICATOR: "lkq_parts_accepted"
-  LOWERTDSCERTIFICATEREFERENCE: "lower_tds_certificate"
-  MACTCASESHANDLEDOTHERCOMPANYCOUNT: "no_of_mact_case_handled_other_company"
+  LOWER_TDS_CERTIFICATE_REFERENCE: "lower_tds_certificate"
+  MACT_CASES_HANDLED_OTHER_COMPANY_COUNT: "no_of_mact_case_handled_other_company"
   MANAGERCONFIDENTIALREPORT: "manager_confidential_report"
   MANAGERRECOMMENDATIONONVENDOR: "manager_recommendation_on_vendor"
   MANDATORYDOCUMENTSUBMITTEDINDICATOR: "mandatory_document"
   MANUALREMARK: "manual_remark"
-  MARRIAGEANNIVERSARYDATE: "date_of_marriage"
+  MARRIAGE_ANNIVERSARY_DATE: "date_of_marriage"
   MATRICULATIONQUALIFICATIONDETAIL: "matriculat"
   MEDICALRECORDSCODINGPROCEDURE: "coding_procedure_followed_by_medical_records_department"
-  MEMBERTYPE: "member_type"
+  MEMBER_TYPE: "member_type"
   MINIMUMSALESCOMMITMENT: "min_sales"
   MONTHLYCASEVOLUMEOTHERINDUSTRYDEDICATED: "volume_of_cases_from_other_industry_monthlyfor_bagic"
   MONTHLYCASEVOLUMEOTHERINDUSTRYTOTAL: "volume_of_cases_from_other_industry_monthly_total"
@@ -722,7 +722,7 @@ derived_columns:
   MOUVALIDITYSTARTDATE: "mou_validity_start_date"
   NABHACCREDITATIONLEVEL: "nabh_accreditation_level"
   NAMEASPERIDENTIFICATION: "coalesce(name_as_per_aadhaar, name_as_per_ckyc, name_as_per_pan)"
-  NATIONALTIEUPINFORMATION: "national_tieup_information"
+  NATIONAL_TIE_UP_INFORMATION: "national_tieup_information"
   NEARESTSERVICINGBRANCHREFERENCE: "nearest_dm_branch"
   NEFTREGISTRATIONSTATUS: "cast(null as varchar)"
   NEGOTIATIONENDDATE: "hospital_tariff_under_negotiation_end_date"
@@ -733,8 +733,8 @@ derived_columns:
   NONDISCLOSUREAGREEMENTSTATUS: "nondisclosure_initiated"
   NOOFBRIEFS: "no_of_briefs"
   NORMALOFFER: "normal_offer"
-  NUMBEROFDAUGHTERS: "number_of_daughters"
-  NUMBEROFSONS: "number_of_son"
+  NUMBER_OF_DAUGHTERS: "number_of_daughters"
+  NUMBER_OF_SONS: "number_of_son"
   OCCUPATIONLIST: "occupation_list"
   OFFICEFIREINSURANCEINDICATOR: "does_the_service_provider_have_fire_insurance_policy_for_his_office"
   OFFICEMANAGERNAME: "office_manager"
@@ -742,11 +742,11 @@ derived_columns:
   OPERATINGHOURSDESCRIPTION: "operating_hrs"
   OPERATINGLOCATIONRESTRICTION: "location_restriction"
   OPERATIONBASETYPE: "operation_from_office_or_residence_or_office_cum_residence_total"
-  OPERATIONPLACE: "place_of_operation"
+  OPERATION_PLACE: "place_of_operation"
   OPERATIONPLACEFORINSURERWORK: "operation_from_office_or_residence_or_office_cum_residence_for_bagic"
-  OPTIONALPROOFOFPOSSESSIONTYPE: "pop_optional"
-  ORIGINCOMP: "origin_of_the_company"
-  ORIGINCONT: "origin_of_the_contractor"
+  OPTIONAL_PROOF_OF_POSSESSION_TYPE: "pop_optional"
+  ORIGIN_COMP: "origin_of_the_company"
+  ORIGIN_CONT: "origin_of_the_contractor"
   OTHEROCCUPATION: "other_occupation"
   OTHERQUALIFICATION: "other_qualification"
   OTHERRELATEDENTITIES: "other_entities"
@@ -757,7 +757,7 @@ derived_columns:
   OWNERSHIPTYPE: "ownership"
   PACKAGEACCEPTANCEDATE: "package_acceptance_date"
   PACKAGETYPE: "package_type"
-  PANAADHARLINKED: "pan_aadhaar_linked"
+  PANAADHAARLINKED: "pan_aadhaar_linked"
   PANAPPLIEDINDICATOR: "pan_applied_for"
   PANAPPNO: "pan_application_no"
   PANELDOCTORDETAILS: "provider_doctor_details"
@@ -765,43 +765,43 @@ derived_columns:
   PARTYENDDATE: "cast(null as varchar)"
   PARTYENDORSEMENTTYPE: "type_of_endorsement_for_party"
   PARTYREMARKS: "additional_remarks"
-  PASSPORTFILENUMBER: "passport_file_no"
-  PASSPORTISSUINGCOUNTRY: "passport_issue_country"
+  PASSPORT_FILE_NUMBER: "passport_file_no"
+  PASSPORT_ISSUING_COUNTRY: "passport_issue_country"
   PAYCLAIMSCANCELMONTHLYINDICATOR: "pay_claims_cancel_monthly"
   PAYEECODE: "pay_code"
   PAYEENAME: "payee"
   PAYEETYPE: "cast(null as varchar)"
   PAYMENTDETAILSDESCRIPTION: "payment_details"
-  PAYMENTMODE: "payment_mode"
+  PAYMENT_MODE: "payment_mode"
   PAYMENTPLAN: "payment_plan"
   PAYMENTSCHEDULE: "payment_schedule"
   PERFORMANCEEVALUATIONFORMREFERENCE: "surveyor_performance_evaluation_form"
   PERFORMANCEEVALUATIONOUTCOME: "surveyor_performance_evaluation_report"
-  PERSONALDETAILSDESCRIPTION: "personal_details"
+  PERSONAL_DETAILS_DESCRIPTION: "personal_details"
   PORTALACCESSSTATUS: "repairer_portal_status"
-  POSTGRADUATEQUALIFICATION: "postgrad"
+  POSTGRADUATE_QUALIFICATION: "postgrad"
   PPNTYPE: "ppn_types"
   PREFERREDALERTMODE: "preferred_mode_of_alert"
   PREFERREDLOCATION: "preferred_location"
   PREMIUMPAYERTYPE: "premium_payer"
-  PREVIOUSEMPLOYERLOCATION: "previous_company_location"
-  PREVIOUSEMPLOYERPARENTINTERMEDIARYCODE: "previous_company_parent_imd_code"
-  PREVIOUSEMPLOYERPARENTSUBINTERMEDIARYCODE: "previous_company_parent_subimd_code"
+  PREVIOUS_EMPLOYER_LOCATION: "previous_company_location"
+  PREVIOUS_EMPLOYER_PARENT_INTERMEDIARY_CODE: "previous_company_parent_imd_code"
+  PREVIOUS_EMPLOYER_PARENT_SUB_INTERMEDIARY_CODE: "previous_company_parent_subimd_code"
   PREVIOUSENGAGEMENTDETAIL: "previous_details"
-  PREVIOUSNONGENERALINSURERNAME: "name_of_nongeneral_insurer_worked_for"
+  PREVIOUS_NON_GENERAL_INSURER_NAME: "name_of_nongeneral_insurer_worked_for"
   PREVIOUSPROVIDERREFERENCE: "previous_provider_reference"
-  PRIMARYPROOFOFPOSSESSIONTYPE: "pop_primary"
+  PRIMARY_PROOF_OF_POSSESSION_TYPE: "pop_primary"
   PRINTZONECODE: "print_zone"
   PRIORITY: "provider_priority"
   PRIVEFLAG: "prive_flag"
   PRIVERELATIONSHIPDETAIL: "relationship_with_prive"
   PROACTIVEDECISIONMAKINGSCORE: "proactive_approach_in_decision_making"
   PROFESSIONALINDEMNITYCOVERINDICATOR: "medical_establishment_indemnity_cover_present"
-  PROFESSIONALQUALIFICATION: "professional_qualification"
+  PROFESSIONAL_QUALIFICATION: "professional_qualification"
   PROFILECODE: "profile"
   PROOFOFADDRESSSTATUS: "poa_status"
   PROOFOFIDENTITYSTATUS: "poi_status"
-  PROPAGATECONTACTUPDATETOALLPOLICIESINDICATOR: "update_contact_details_in_all_policies"
+  PROPAGATE_CONTACT_UPDATE_TO_ALL_POLICIES_INDICATOR: "update_contact_details_in_all_policies"
   PROVIDERGRADE: "hospital_grade"
   PROVIDERPROFILEDESCRIPTION: "profile_of_the_service_provider"
   PROVIDERQUALIFIER: "hospital_qualifier"
@@ -815,29 +815,29 @@ derived_columns:
   QUALITYCHECKSTAFFCOUNTTOTAL: "quality_check_total"
   REACTIVATIONDATE: "reactivation_date"
   REACTIVATIONREASON: "reason_for_reactivation"
-  REASONFORLEAVINGPREVIOUSEMPLOYER: "reason_for_leaving_remarks"
+  REASON_FOR_LEAVING_PREVIOUS_EMPLOYER: "reason_for_leaving_remarks"
   RECORDEFFECTIVEDATE: "effective_date"
   RECORDENDDATE: "end_date"
   REFERENCECODE: "reference_code"
   REFERENCENAME: "reference"
   REFUNDBENEFICIARYPARTYREFERENCE: "refund_to_pid_of_bg_holder_ac"
   REGIONALCOORDINATORREMARK: "rc_regional_coordinators_remark"
-  REGISTEREDBUSINESSTRUSTINDICATOR: "is_the_organisation_a_registered_business_trust"
-  REGISTEREDCOMPANYINDICATOR: "are_you_registered_company"
+  REGISTERED_BUSINESS_TRUST_INDICATOR: "is_the_organisation_a_registered_business_trust"
+  REGISTERED_COMPANY_INDICATOR: "are_you_registered_company"
   REGISTEREDINDICATOR: "register_flag"
   REGULARMEDICALAUDITINDICATOR: "medical_audit_on_regular_basis"
   RELATEDPARTYRELATIONSHIPTYPE: "relationship"
   RELATEDTOINSURERGROUPINDICATOR: "any_relation_with_bajaj_group"
-  RELATIONSHIPASSOCIATEEMPLOYEECODE: "ra_ecode"
+  RELATIONSHIP_ASSOCIATE_EMPLOYEE_CODE: "ra_ecode"
   RELATIONSHIPOTHERDETAIL: "other_relationship"
   RELATIONSHIPOWNERMANAGERNAME: "name_of_the_zonal_or_national_manager"
   REPAIRERCONDUCTFEEDBACK: "feed_back_from_repairer_behavior"
   REPORTTIMELINESSRATING: "timely_submission_of_report"
-  REPRESENTEDBUSINESSNAME: "business_company"
+  REPRESENTED_BUSINESS_NAME: "business_company"
   REQUIREDDOCUMENTSSUBMITTEDINDICATOR: "submission_of_required_documents"
   RESIGNATIONSUBMITTEDDATE: "date_of_submitting_resignation"
-  REWARDSCHEMEAPPLICABLEINDICATOR: "applicable_for_reward"
-  SAMEASCORRESPONDENCEADDRESSINDICATOR: "flag_indicating_if_current_permanent_overseas_address_is_same_as_correspondence_local_address"
+  REWARD_SCHEME_APPLICABLE_INDICATOR: "applicable_for_reward"
+  SAME_AS_CORRESPONDENCE_ADDRESS_INDICATOR: "flag_indicating_if_current_permanent_overseas_address_is_same_as_correspondence_local_address"
   SELLINGDEALERREFERENCE: "selling_dealer"
   SERVICEENGAGEMENTSTATUS: "service_status"
   SERVICELOCATORPROVIDERINDICATOR: "is_a_service_locator_provider"
@@ -874,8 +874,8 @@ derived_columns:
   TDSCERTIFICATEISSUEDATE: "cast(null as varchar)"
   TDSCERTIFICATENUMBER: "cast(null as varchar)"
   TDSCERTIFICATETYPE: "cast(null as varchar)"
-  TDSCODE: "tds_code"
-  TDSCODEDESCRIPTION: "tds_code_desc"
+  TDS_CODE: "tds_code"
+  TDS_CODE_DESCRIPTION: "tds_code_desc"
   TDSDETAILDESCRIPTION: "tds_details"
   TDSSECTIONCODE: "cast(null as varchar)"
   TEACHINGINSTITUTIONINDICATOR: "teaching_or_training"
@@ -884,7 +884,7 @@ derived_columns:
   TOTALTEAMLEADERCOUNT: "team_leader_total"
   TOTALTEAMSTRENGTH: "total_team_strength"
   TOTALWORKEXPERIENCEYEARS: "no_of_years_of_work_experience"
-  TOTALYEARSOFEXPERIENCE: "years_of_experience"
+  TOTAL_YEARS_OF_EXPERIENCE: "years_of_experience"
   TPACOORDINATOREMAILADDRESS: "tpa_coordinator_email_id"
   TPACOORDINATORMOBILENUMBER: "tpa_coordinator_mobile_no"
   TPACOORDINATORNAME: "tpa_coordinator_name"
@@ -895,20 +895,20 @@ derived_columns:
   TRAININGREQUIREDINDICATOR: "requirement_of_training"
   TRANSACTSWITHOTHEROFFICEINDICATOR: "transacts_business_with_other_bagic_office_also"
   TRANSFERCASEINDICATOR: "transfer_case"
-  TRANSFERINDICATOR: "transfer"
-  UNDERGRADUATEQUALIFICATION: "undergrad"
+  TRANSFER_INDICATOR: "transfer"
+  UNDERGRADUATE_QUALIFICATION: "undergrad"
   USEDCARDEALERINDICATOR: "used_car_dealer"
-  USERTYPE: "type_of_user"
+  USER_TYPE: "type_of_user"
   VEHICLEMAKESHANDLED: "makes_sold"
   VENDOREVALUATIONOUTCOME: "vendor_evaluation"
   VENDOREVALUATIONTEMPLATEREFERENCE: "vendor_evaluation_template"
   VISITINGCONSULTANTCOUNT: "no_of_consultant_who_are_not_on_rolls_of_the_hospital"
   VISITINGSURGEONCOUNT: "no_of_surgeons_or_interventionistsnot_on_full_time_roll_of_hospital"
   WEBSITEURL: "webaddress"
-  WORKSHOPCATEGORY: "workshop_category"
-  WORKSHOPCLASS: "workshop_class"
+  WORKSHOP_CATEGORY: "workshop_category"
+  WORKSHOP_CLASS: "workshop_class"
   YEAROFESTABLISHMENT: "year_of_establishment_of_contractors_firm"
-  YEAROFPASSINGQUALIFICATION: "year_of_passing"
+  YEAR_OF_PASSING_QUALIFICATION: "year_of_passing"
   YEAROFPURCHASE: "year_of_purchase"
   ZEROCHARGEBACKPROGRAMMEENROLLEDINDICATOR: "enrolled_in_zero_chargeback_pgrm"
   ZONECODE: "zone"

@@ -9,8 +9,8 @@
 source_model: 'satfeed_mp_sat__instrument_definition'
 src_pk: 'PAYMENT_INSTRUMENT_HKEY'
 src_payload:
-  - 'CARDNUMBERMASKED'
-  - 'CARDTYPE'
+  - 'CARD_NUMBER_MASKED'
+  - 'CARD_TYPE'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

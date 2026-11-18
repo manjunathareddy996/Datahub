@@ -6,7 +6,7 @@
 select
     PARTY_HKEY,
     HASHDIFF_AUG_PARTY_HEALTH_PROFILE as HASHDIFF,
-    DISABILITYBODYLOCATION,
+    DISABILITY_BODY_LOCATION,
     LOAD_DATETIME,
     RECORD_SOURCE
 from {{ ref('stg2_aug_mp__pd_prop_sp_pv__party') }}

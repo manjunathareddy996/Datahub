@@ -12,7 +12,7 @@ src_cdk:
   - 'PERSONROLE'
 src_payload:
   - 'CESSATIONDATE'
-  - 'DIRECTORNAME'
+  - 'DIRECTOR_NAME'
   - 'PERSONROLE'
 src_hashdiff: 'HASHDIFF_PARTY_ORG_DIRECTORS'
 src_ldts: 'LOAD_DATETIME'

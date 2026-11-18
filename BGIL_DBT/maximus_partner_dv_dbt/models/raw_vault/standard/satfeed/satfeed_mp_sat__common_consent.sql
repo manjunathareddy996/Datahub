@@ -6,7 +6,7 @@
 select
     PARTY_HKEY,
     HASHDIFF_COMMON_CONSENT as HASHDIFF,
-    CONSENTGIVENINDICATOR,
+    CONSENT_GIVEN_INDICATOR,
     LOAD_DATETIME,
     RECORD_SOURCE
 from {{ ref('stg2_mp__pd_prop_sp_pv') }}

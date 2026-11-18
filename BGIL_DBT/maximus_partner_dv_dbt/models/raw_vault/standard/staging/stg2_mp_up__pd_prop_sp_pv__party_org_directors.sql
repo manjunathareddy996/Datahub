@@ -10,7 +10,7 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'CESSATIONDATE'
-      - 'DIRECTORNAME'
+      - 'DIRECTOR_NAME'
       - 'PERSONROLE'
 derived_columns:
   PARTY_BK: "parent_bk"

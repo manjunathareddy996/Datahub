@@ -9,9 +9,9 @@
 source_model: 'satfeed_mp_sat__party_onboarding_journey'
 src_pk: 'PARTY_HKEY'
 src_payload:
-  - 'ONBOARDINGSTARTDATE'
-  - 'PREVIOUSEMPLOYERNAME'
-  - 'PRIORWORKEXPERIENCEYEARS'
+  - 'ONBOARDING_START_DATE'
+  - 'PREVIOUS_EMPLOYER_NAME'
+  - 'PRIOR_WORK_EXPERIENCE_YEARS'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

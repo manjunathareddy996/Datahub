@@ -7,7 +7,7 @@
 select
     LOCATION_HKEY,
     HASHDIFF_AUG_COMMON_ADDRESS as HASHDIFF,
-    FULLADDRESSTEXT,
+    FULL_ADDRESS_TEXT,
     LOAD_DATETIME,
     RECORD_SOURCE
 from {{ ref('stg2_aug_mp__pd_prop_sp_pv__location') }}

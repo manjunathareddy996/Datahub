@@ -7,7 +7,7 @@
 -- so withdrawing a proposal is deleting a model rather than editing the standard
 -- track's wide stage. Nothing here feeds a standard satellite.
 --
--- 2 payload column(s); the child key is INTERMEDIARY_REFERENCE.
+-- 2 payload column(s); the child key is INTERMEDIARY_REFERENCE_CK.
 
 {%- set yaml_metadata -%}
 source_model: 'resolved_mt__uwr_pol_polp_sp_pv'
@@ -17,12 +17,12 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'COMMISSION_CHANGE_EFFECTIVE_DATE'
-      - 'INTERMEDIARY_REFERENCE'
+      - 'INTERMEDIARY_REFERENCE_CK'
       - 'SUB_CHANNEL_NAME'
 derived_columns:
   POLICY_BK: "nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim(foreign_key), '')) end),'')"
   POLICY_NK: "'HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim(foreign_key), '')) end),''))"
-  INTERMEDIARY_REFERENCE: "coalesce(nullif(trim(imd_code), ''),'')"
+  INTERMEDIARY_REFERENCE_CK: "coalesce(nullif(trim(imd_code), ''),'')"
   COMMISSION_CHANGE_EFFECTIVE_DATE: 'date_for_commission_change'
   SUB_CHANNEL_NAME: 'cast(null as varchar)'
   RECORD_SOURCE: '!MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'

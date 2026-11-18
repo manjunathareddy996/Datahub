@@ -9,7 +9,7 @@
 source_model: 'stg2_mp__pd_prop_sp_pv'
 src_pk: 'ORG_UNIT_HKEY'
 src_payload:
-  - 'GSTREGISTRATIONNUMBER'
+  - 'GST_REGISTRATION_NUMBER'
 src_hashdiff: 'HASHDIFF_ORG_UNIT_LICENCE'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

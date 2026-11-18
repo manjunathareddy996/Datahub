@@ -7,7 +7,7 @@
 -- so withdrawing a proposal is deleting a model rather than editing the standard
 -- track's wide stage. Nothing here feeds a standard satellite.
 --
--- 1 payload column(s); the child key is DISPATCH_REFERENCE.
+-- 1 payload column(s); the child key is DISPATCH_REFERENCE_CK.
 
 {%- set yaml_metadata -%}
 source_model: 'resolved_mt__clm_clmd_clmap_pv'
@@ -16,12 +16,12 @@ hashed_columns:
   HASHDIFF_PARTY_CORRESPONDENCE:
     is_hashdiff: true
     columns:
-      - 'DISPATCH_REFERENCE'
+      - 'DISPATCH_REFERENCE_CK'
       - 'SENDER_NAME'
 derived_columns:
   PARTY_BK__INSURED_CUSTOMER: "nullif(trim(case when coalesce(nullif(trim(unique_customer_id),''), nullif(trim(customerid),'')) is not null then coalesce(nullif(trim(unique_customer_id), ''), nullif(trim(customerid), '')) end),'')"
   PARTY_NK__INSURED_CUSTOMER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(unique_customer_id),''), nullif(trim(customerid),'')) is not null then coalesce(nullif(trim(unique_customer_id), ''), nullif(trim(customerid), '')) end),''))"
-  DISPATCH_REFERENCE: "coalesce(nullif(trim(pod_number), ''),'')"
+  DISPATCH_REFERENCE_CK: "coalesce(nullif(trim(pod_number), ''),'')"
   SENDER_NAME: 'sender_name'
   RECORD_SOURCE: '!MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW'
   LOAD_DATETIME: 'REC_REFRESH_AT'

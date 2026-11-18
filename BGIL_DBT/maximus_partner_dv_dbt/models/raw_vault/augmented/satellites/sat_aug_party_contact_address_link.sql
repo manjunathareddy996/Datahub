@@ -10,7 +10,7 @@
 source_model: 'stg2_aug_mp__pd_prop_sp_pv__party'
 src_pk: 'PARTY_HKEY'
 src_payload:
-  - 'SAMEASCORRESPONDENCEADDRESSINDICATOR'
+  - 'SAME_AS_CORRESPONDENCE_ADDRESS_INDICATOR'
 src_hashdiff: 'HASHDIFF_AUG_PARTY_CONTACT_ADDRESS_LINK'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

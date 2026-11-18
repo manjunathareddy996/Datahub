@@ -8,7 +8,7 @@
     select
         bagic_employee_code as parent_bk,
         'PORTAL_LOGIN' as activesequencenumber,
-        login_id as loginidentifier,
+        login_id as login_identifier,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
@@ -17,7 +17,7 @@
     select
         bagic_employee_code as parent_bk,
         'REPAIRER_PORTAL' as activesequencenumber,
-        repairer_portal_id as loginidentifier,
+        repairer_portal_id as login_identifier,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
@@ -26,7 +26,7 @@
     select
         bagic_employee_code as parent_bk,
         'SURVEYOR_MODULE' as activesequencenumber,
-        sur_module_login_id as loginidentifier,
+        sur_module_login_id as login_identifier,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
@@ -35,7 +35,7 @@
     select
         bagic_employee_code as parent_bk,
         'USER_CODE' as activesequencenumber,
-        user_code as loginidentifier,
+        user_code as login_identifier,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
@@ -44,7 +44,7 @@
     select
         bagic_employee_code as parent_bk,
         'WEB_PORTAL' as activesequencenumber,
-        user_web_id as loginidentifier,
+        user_web_id as login_identifier,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}

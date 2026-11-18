@@ -9,7 +9,7 @@
 --
 -- Reads the fan-out model up_mt__uwr_pol_ins_mbr_pp_sp_pv__aug_sat_aug_party_identification: 9 instance(s) on this view.
 --
--- 15 payload column(s); the child key is IDENTIFICATION_TYPE_CODE.
+-- 15 payload column(s); the child key is IDENTIFICATION_TYPE_CODE_CK.
 
 {%- set yaml_metadata -%}
 source_model: 'up_mt__uwr_pol_ins_mbr_pp_sp_pv__aug_sat_aug_party_identification'
@@ -24,7 +24,7 @@ hashed_columns:
       - 'EIA_LINKED_DATE'
       - 'EIA_REQUIRED_INDICATOR'
       - 'IDENTIFICATION_DETAILS_NARRATIVE'
-      - 'IDENTIFICATION_TYPE_CODE'
+      - 'IDENTIFICATION_TYPE_CODE_CK'
       - 'IDENTIFICATION_VERIFICATION_STATUS'
       - 'NAME_AS_PER_IDENTIFICATION_DOCUMENT'
       - 'OVD_CATEGORY_OTHER_DESCRIPTION'
@@ -37,7 +37,7 @@ hashed_columns:
 derived_columns:
   PARTY_NK__INSURED_MEMBER: "'HUB_PARTY|' || (PARTY_BK__INSURED_MEMBER)"
   PARTY_BK__INSURED_MEMBER: 'PARTY_BK__INSURED_MEMBER'
-  IDENTIFICATION_TYPE_CODE: 'IDENTIFICATION_TYPE_CODE'
+  IDENTIFICATION_TYPE_CODE_CK: 'IDENTIFICATION_TYPE_CODE'
   EIA_CREDIT_REQUIRED_INDICATOR: 'EIA_CREDIT_REQUIRED_INDICATOR'
   EIA_DETAILS_NARRATIVE: 'EIA_DETAILS_NARRATIVE'
   EIA_HELD_INDICATOR: 'EIA_HELD_INDICATOR'

@@ -7,11 +7,11 @@
 
     select
         foreign_key as parent_bk,
-        stake_code as rolecode,
+        stake_code as role_code,
         '1' as rolesequence,
-        cast(null as varchar) as roleenddate,
-        cast(null as varchar) as rolestartdate,
-        cast(null as varchar) as roletype,
+        cast(null as varchar) as role_end_date,
+        cast(null as varchar) as role_start_date,
+        cast(null as varchar) as role_type,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_RELATED_PARTY' as record_source
     from {{ ref('stg_maximus__pd_relparty') }}

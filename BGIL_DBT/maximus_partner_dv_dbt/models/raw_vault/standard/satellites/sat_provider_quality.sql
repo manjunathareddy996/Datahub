@@ -11,7 +11,7 @@ src_pk: 'PARTY_HKEY'
 src_payload:
   - 'AVERAGECLAIMAMOUNT'
   - 'CLAIMVOLUME'
-  - 'QUALITYRATING'
+  - 'QUALITY_RATING'
 src_hashdiff: 'HASHDIFF_PROVIDER_QUALITY'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

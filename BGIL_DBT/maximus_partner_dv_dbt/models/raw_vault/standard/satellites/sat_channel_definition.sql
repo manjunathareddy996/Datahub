@@ -9,8 +9,8 @@
 source_model: 'satfeed_mp_sat__channel_definition'
 src_pk: 'DISTRIBUTION_CHANNEL_HKEY'
 src_payload:
-  - 'SUBCHANNELCODE'
-  - 'SUBCHANNELEFFECTIVEDATE'
+  - 'SUB_CHANNEL_CODE'
+  - 'SUB_CHANNEL_EFFECTIVE_DATE'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

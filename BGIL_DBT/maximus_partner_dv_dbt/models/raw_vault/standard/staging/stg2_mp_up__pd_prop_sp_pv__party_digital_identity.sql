@@ -9,7 +9,7 @@ hashed_columns:
   HASHDIFF_PARTY_DIGITAL_IDENTITY:
     is_hashdiff: true
     columns:
-      - 'LOGINIDENTIFIER'
+      - 'LOGIN_IDENTIFIER'
 derived_columns:
   PARTY_BK: "parent_bk"
   PARTY_NK: "'HUB_PARTY|' || (parent_bk)"

@@ -11,40 +11,40 @@ hashed_columns:
   HASHDIFF_COMMON_ADDRESS:
     is_hashdiff: true
     columns:
-      - 'ADDRESSLINE1'
-      - 'ADDRESSLINE2'
-      - 'ADDRESSLINE3'
-      - 'CAREOFNAME'
+      - 'ADDRESS_LINE_1'
+      - 'ADDRESS_LINE_2'
+      - 'ADDRESS_LINE_3'
+      - 'CARE_OF_NAME'
       - 'CITY'
-      - 'COUNTRYNAME'
+      - 'COUNTRY_NAME'
       - 'DISTRICT'
       - 'LANDMARK'
       - 'LOCALITY'
-      - 'POSTALCODE'
-      - 'POSTOFFICENAME'
-      - 'STATENAME'
+      - 'POSTAL_CODE'
+      - 'POST_OFFICE_NAME'
+      - 'STATE_NAME'
   HASHDIFF_COMMON_CONTACT:
     is_hashdiff: true
     columns:
-      - 'ALTERNATEEMAILADDRESS'
-      - 'ALTERNATEMOBILENUMBER'
-      - 'EMAILADDRESS'
-      - 'FAXNUMBER'
-      - 'LANDLINENUMBER'
-      - 'MOBILENUMBER'
+      - 'ALTERNATE_EMAIL_ADDRESS'
+      - 'ALTERNATE_MOBILE_NUMBER'
+      - 'EMAIL_ADDRESS'
+      - 'FAX_NUMBER'
+      - 'LANDLINE_NUMBER'
+      - 'MOBILE_NUMBER'
       - 'SOCIALMEDIAHANDLE'
-      - 'STDCODE'
+      - 'STD_CODE'
   HASHDIFF_COMMON_GEO:
     is_hashdiff: true
     columns:
       - 'LATITUDE'
       - 'LONGITUDE'
       - 'REGIONCODE'
-      - 'REGIONNAME'
+      - 'REGION_NAME'
   HASHDIFF_LOCATION_PROFILE:
     is_hashdiff: true
     columns:
-      - 'LOCATIONNAME'
+      - 'LOCATION_NAME'
       - 'LOCATIONTYPE'
 derived_columns:
   LOCATION_BK: "case when coalesce(upper(trim(to_varchar(land_mark))), upper(trim(to_varchar(area))), upper(trim(to_varchar(post_office))), upper(trim(to_varchar(city))), upper(trim(to_varchar(state))), upper(trim(to_varchar(pincode)))) is null then null else md5(concat_ws('|', coalesce(upper(trim(to_varchar(land_mark))), ''), coalesce(upper(trim(to_varchar(area))), ''), coalesce(upper(trim(to_varchar(post_office))), ''), coalesce(upper(trim(to_varchar(city))), ''), coalesce(upper(trim(to_varchar(state))), ''), coalesce(upper(trim(to_varchar(pincode))), ''))) end"
@@ -54,29 +54,29 @@ derived_columns:
   LOCALITY: "area"
   CITY: "city"
   LANDMARK: "land_mark"
-  POSTALCODE: "pincode"
-  POSTOFFICENAME: "post_office"
-  STATENAME: "state"
-  ADDRESSLINE2: "cast(null as varchar)"
-  ADDRESSLINE1: "cast(null as varchar)"
-  CAREOFNAME: "cast(null as varchar)"
-  ADDRESSLINE3: "cast(null as varchar)"
-  COUNTRYNAME: "cast(null as varchar)"
+  POSTAL_CODE: "pincode"
+  POST_OFFICE_NAME: "post_office"
+  STATE_NAME: "state"
+  ADDRESS_LINE_2: "cast(null as varchar)"
+  ADDRESS_LINE_1: "cast(null as varchar)"
+  CARE_OF_NAME: "cast(null as varchar)"
+  ADDRESS_LINE_3: "cast(null as varchar)"
+  COUNTRY_NAME: "cast(null as varchar)"
   DISTRICT: "cast(null as varchar)"
-  ALTERNATEMOBILENUMBER: "alternate_mob_numberlandline_number"
+  ALTERNATE_MOBILE_NUMBER: "alternate_mob_numberlandline_number"
   SOCIALMEDIAHANDLE: "coalesce(facebook_id, instagram_id, linked_in_id, twitter_id)"
-  MOBILENUMBER: "whatsapp_no"
-  LANDLINENUMBER: "cast(null as varchar)"
-  EMAILADDRESS: "cast(null as varchar)"
-  FAXNUMBER: "cast(null as varchar)"
-  STDCODE: "cast(null as varchar)"
-  ALTERNATEEMAILADDRESS: "cast(null as varchar)"
+  MOBILE_NUMBER: "whatsapp_no"
+  LANDLINE_NUMBER: "cast(null as varchar)"
+  EMAIL_ADDRESS: "cast(null as varchar)"
+  FAX_NUMBER: "cast(null as varchar)"
+  STD_CODE: "cast(null as varchar)"
+  ALTERNATE_EMAIL_ADDRESS: "cast(null as varchar)"
   LATITUDE: "geo_coordinate_latitude"
   LONGITUDE: "geo_coordinate_longitude"
-  REGIONNAME: "cast(null as varchar)"
+  REGION_NAME: "cast(null as varchar)"
   REGIONCODE: "cast(null as varchar)"
   LOCATIONTYPE: "location_type"
-  LOCATIONNAME: "cast(null as varchar)"
+  LOCATION_NAME: "cast(null as varchar)"
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW'
 {%- endset -%}

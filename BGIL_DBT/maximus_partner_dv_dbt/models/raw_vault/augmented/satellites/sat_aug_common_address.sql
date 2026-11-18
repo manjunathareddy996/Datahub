@@ -10,7 +10,7 @@
 source_model: 'satfeed_mp_sat__aug_common_address'
 src_pk: 'LOCATION_HKEY'
 src_payload:
-  - 'FULLADDRESSTEXT'
+  - 'FULL_ADDRESS_TEXT'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

@@ -9,10 +9,10 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'ROLECODE'
-      - 'ROLEENDDATE'
-      - 'ROLESTARTDATE'
-      - 'ROLETYPE'
+      - 'ROLE_CODE'
+      - 'ROLE_END_DATE'
+      - 'ROLE_START_DATE'
+      - 'ROLE_TYPE'
 derived_columns:
   PARTY_BK: "parent_bk"
   PARTY_NK: "'HUB_PARTY|' || (parent_bk)"

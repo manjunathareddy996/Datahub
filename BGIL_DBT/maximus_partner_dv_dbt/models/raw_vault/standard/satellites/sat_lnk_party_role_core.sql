@@ -13,13 +13,13 @@ source_model:
   - 'stg2_mp_up__pd_relparty__lnk_party_role_core'
 src_pk: 'PARTY_HKEY'
 src_cdk:
-  - 'ROLECODE'
+  - 'ROLE_CODE'
   - 'ROLESEQUENCE'
 src_payload:
-  - 'ROLECODE'
-  - 'ROLEENDDATE'
-  - 'ROLESTARTDATE'
-  - 'ROLETYPE'
+  - 'ROLE_CODE'
+  - 'ROLE_END_DATE'
+  - 'ROLE_START_DATE'
+  - 'ROLE_TYPE'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
@@ -41,8 +41,8 @@ src_record_source_map:
                        source_model=metadata_dict['source_model'],
                        src_record_source_map=metadata_dict['src_record_source_map'],
                        src_column_map={
-                        'stg2_mp_up__pd_prop_msdp_pv__lnk_party_role_core': ['ROLECODE', 'ROLEENDDATE', 'ROLESTARTDATE', 'ROLETYPE'],
-                        'stg2_mp_up__pd_prop_sp_pv__lnk_party_role_core': ['ROLECODE', 'ROLEENDDATE', 'ROLESTARTDATE', 'ROLETYPE'],
-                        'stg2_mp_up__pd_rel__lnk_party_role_core': ['ROLECODE', 'ROLEENDDATE', 'ROLESTARTDATE', 'ROLETYPE'],
-                        'stg2_mp_up__pd_relparty__lnk_party_role_core': ['ROLECODE', 'ROLEENDDATE', 'ROLESTARTDATE', 'ROLETYPE']
+                        'stg2_mp_up__pd_prop_msdp_pv__lnk_party_role_core': ['ROLE_CODE', 'ROLE_END_DATE', 'ROLE_START_DATE', 'ROLE_TYPE'],
+                        'stg2_mp_up__pd_prop_sp_pv__lnk_party_role_core': ['ROLE_CODE', 'ROLE_END_DATE', 'ROLE_START_DATE', 'ROLE_TYPE'],
+                        'stg2_mp_up__pd_rel__lnk_party_role_core': ['ROLE_CODE', 'ROLE_END_DATE', 'ROLE_START_DATE', 'ROLE_TYPE'],
+                        'stg2_mp_up__pd_relparty__lnk_party_role_core': ['ROLE_CODE', 'ROLE_END_DATE', 'ROLE_START_DATE', 'ROLE_TYPE']
                        }) }}

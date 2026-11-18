@@ -7,7 +7,7 @@
 -- so withdrawing a proposal is deleting a model rather than editing the standard
 -- track's wide stage. Nothing here feeds a standard satellite.
 --
--- 15 payload column(s); the child key is IDENTIFICATION_TYPE_CODE.
+-- 15 payload column(s); the child key is IDENTIFICATION_TYPE_CODE_CK.
 
 {%- set yaml_metadata -%}
 source_model: 'resolved_mt__uwr_pol_ins_mbr_pp_msp_msd_prop_pv'
@@ -22,7 +22,7 @@ hashed_columns:
       - 'EIA_LINKED_DATE'
       - 'EIA_REQUIRED_INDICATOR'
       - 'IDENTIFICATION_DETAILS_NARRATIVE'
-      - 'IDENTIFICATION_TYPE_CODE'
+      - 'IDENTIFICATION_TYPE_CODE_CK'
       - 'IDENTIFICATION_VERIFICATION_STATUS'
       - 'NAME_AS_PER_IDENTIFICATION_DOCUMENT'
       - 'OVD_CATEGORY_OTHER_DESCRIPTION'
@@ -35,7 +35,7 @@ hashed_columns:
 derived_columns:
   PARTY_BK__INSURED_MEMBER: "nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')"
   PARTY_NK__INSURED_MEMBER: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''))"
-  IDENTIFICATION_TYPE_CODE: "'PASSPORT'"
+  IDENTIFICATION_TYPE_CODE_CK: "'PASSPORT'"
   EIA_CREDIT_REQUIRED_INDICATOR: 'cast(null as varchar)'
   EIA_DETAILS_NARRATIVE: 'cast(null as varchar)'
   EIA_HELD_INDICATOR: 'cast(null as varchar)'

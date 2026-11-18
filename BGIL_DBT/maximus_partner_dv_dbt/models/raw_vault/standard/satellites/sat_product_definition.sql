@@ -9,7 +9,7 @@
 source_model: 'satfeed_mp_sat__product_definition'
 src_pk: 'PRODUCT_HKEY'
 src_payload:
-  - 'PRODUCTDESCRIPTION'
+  - 'PRODUCT_DESCRIPTION'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

@@ -9,7 +9,7 @@
         bagic_employee_code as parent_bk,
         'AUTHORISED_SIGNATORY' as personrole,
         cast(null as varchar) as cessationdate,
-        authorized_signature as directorname,
+        authorized_signature as director_name,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
@@ -19,7 +19,7 @@
         bagic_employee_code as parent_bk,
         'EMPLOYEE' as personrole,
         cast(null as varchar) as cessationdate,
-        name_of_the_employee as directorname,
+        name_of_the_employee as director_name,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
@@ -29,7 +29,7 @@
         bagic_employee_code as parent_bk,
         'HEAD_FRAUD_PREVENTION_LOSS_MITIGATION' as personrole,
         cast(null as varchar) as cessationdate,
-        name_of_the_head_fraud_prevention_and_loss_mitigation as directorname,
+        name_of_the_head_fraud_prevention_and_loss_mitigation as director_name,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
@@ -39,7 +39,7 @@
         bagic_employee_code as parent_bk,
         'INVESTIGATION_OFFICER' as personrole,
         cast(null as varchar) as cessationdate,
-        name_of_the_investigation_officer as directorname,
+        name_of_the_investigation_officer as director_name,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
@@ -49,7 +49,7 @@
         bagic_employee_code as parent_bk,
         'MARKETING_HEAD' as personrole,
         cast(null as varchar) as cessationdate,
-        marketing_head_name as directorname,
+        marketing_head_name as director_name,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
@@ -59,7 +59,7 @@
         bagic_employee_code as parent_bk,
         'MEDICAL_DIRECTOR' as personrole,
         cast(null as varchar) as cessationdate,
-        medical_director_name as directorname,
+        medical_director_name as director_name,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
@@ -69,7 +69,7 @@
         bagic_employee_code as parent_bk,
         'MEDICAL_SUPERINTENDENT' as personrole,
         cast(null as varchar) as cessationdate,
-        medical_superintendent_name as directorname,
+        medical_superintendent_name as director_name,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
@@ -79,7 +79,7 @@
         bagic_employee_code as parent_bk,
         'OWNER' as personrole,
         cast(null as varchar) as cessationdate,
-        owners_full_name as directorname,
+        owners_full_name as director_name,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
@@ -89,7 +89,7 @@
         bagic_employee_code as parent_bk,
         type_of_principal as personrole,
         date_of_acceptance_of_resignation as cessationdate,
-        cast(null as varchar) as directorname,
+        cast(null as varchar) as director_name,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}

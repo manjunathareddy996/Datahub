@@ -11,7 +11,7 @@ source_model:
   - 'stg2_mp__pd_prop_sp_pv'
 src_pk: 'LOCATION_HKEY'
 src_payload:
-  - 'LOCATIONNAME'
+  - 'LOCATION_NAME'
   - 'LOCATIONTYPE'
 src_hashdiff: 'HASHDIFF_LOCATION_PROFILE'
 src_ldts: 'LOAD_DATETIME'
@@ -32,5 +32,5 @@ src_record_source_map:
                     src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
                         'stg2_mp__pd_party_addr_prop_pv': ['LOCATIONTYPE'],
-                        'stg2_mp__pd_prop_sp_pv': ['LOCATIONNAME']
+                        'stg2_mp__pd_prop_sp_pv': ['LOCATION_NAME']
                     }) }}

@@ -11,10 +11,10 @@ source_model:
   - 'stg2_mp__pd_prop_sp_pv'
 src_pk: 'PARTY_HKEY'
 src_payload:
-  - 'GSTAPPLICABLEINDICATOR'
+  - 'GST_APPLICABLE_INDICATOR'
   - 'PAYOUTHOLDREASON'
   - 'TDSAPPLICABLEINDICATOR'
-  - 'TDSRATE'
+  - 'TDS_RATE'
 src_hashdiff: 'HASHDIFF_PARTY_PAYOUT_PROFILE'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
@@ -34,6 +34,6 @@ src_record_source_map:
                     source_model=metadata_dict['source_model'],
                     src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
-                        'stg2_mp__pd_prop_msdp_pv': ['TDSAPPLICABLEINDICATOR', 'TDSRATE'],
-                        'stg2_mp__pd_prop_sp_pv': ['GSTAPPLICABLEINDICATOR', 'PAYOUTHOLDREASON']
+                        'stg2_mp__pd_prop_msdp_pv': ['TDSAPPLICABLEINDICATOR', 'TDS_RATE'],
+                        'stg2_mp__pd_prop_sp_pv': ['GST_APPLICABLE_INDICATOR', 'PAYOUTHOLDREASON']
                     }) }}

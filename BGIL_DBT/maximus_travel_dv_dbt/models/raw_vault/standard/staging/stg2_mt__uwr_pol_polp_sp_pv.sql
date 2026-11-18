@@ -205,7 +205,7 @@ hashed_columns:
       - 'GROUP_NAME'
       - 'GROUP_TYPE'
       - 'INSURED_EMPLOYEE_CODE'
-      - 'PROGRAM_IDENTIFIER'
+      - 'PROGRAMME_IDENTIFIER'
   HASHDIFF_POLICY_HEADER:
     is_hashdiff: true
     columns:
@@ -432,7 +432,7 @@ derived_columns:
   GLOBAL_ACCOUNT_INDICATOR: 'global_account_policy'
   GROUP_NAME: 'group_name'
   INSURED_EMPLOYEE_CODE: 'employee_code'
-  PROGRAM_IDENTIFIER: 'program_id'
+  PROGRAMME_IDENTIFIER: 'program_id'
   GST_BIFURCATION: 'gst_bifurcation'
   GST_TDS_AMOUNT: 'gst_tds'
   GST_TYPE: 'gst_type'

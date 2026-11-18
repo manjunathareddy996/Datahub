@@ -7,11 +7,11 @@
 
     select
         bagic_employee_code as parent_bk,
-        'DFADVOCATE#1' as rolecode,
+        'DFADVOCATE#1' as role_code,
         '1' as rolesequence,
-        cast(null as varchar) as roleenddate,
-        date_of_joiningdfadvocate as rolestartdate,
-        cast(null as varchar) as roletype,
+        cast(null as varchar) as role_end_date,
+        date_of_joiningdfadvocate as role_start_date,
+        cast(null as varchar) as role_type,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
@@ -19,11 +19,11 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'HCADVOCATE#1' as rolecode,
+        'HCADVOCATE#1' as role_code,
         '1' as rolesequence,
-        cast(null as varchar) as roleenddate,
-        date_of_joininghcadvocate as rolestartdate,
-        cast(null as varchar) as roletype,
+        cast(null as varchar) as role_end_date,
+        date_of_joininghcadvocate as role_start_date,
+        cast(null as varchar) as role_type,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
@@ -31,11 +31,11 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'LAWYER#1' as rolecode,
+        'LAWYER#1' as role_code,
         '1' as rolesequence,
-        cast(null as varchar) as roleenddate,
-        date_of_joininglawyer as rolestartdate,
-        cast(null as varchar) as roletype,
+        cast(null as varchar) as role_end_date,
+        date_of_joininglawyer as role_start_date,
+        cast(null as varchar) as role_type,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
@@ -43,11 +43,11 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'RETAINER#1' as rolecode,
+        'RETAINER#1' as role_code,
         '1' as rolesequence,
-        cast(null as varchar) as roleenddate,
-        date_of_joiningretainer as rolestartdate,
-        cast(null as varchar) as roletype,
+        cast(null as varchar) as role_end_date,
+        date_of_joiningretainer as role_start_date,
+        cast(null as varchar) as role_type,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
@@ -55,11 +55,11 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'STADVOCATE#1' as rolecode,
+        'STADVOCATE#1' as role_code,
         '1' as rolesequence,
-        cast(null as varchar) as roleenddate,
-        date_of_joiningstadvocate as rolestartdate,
-        cast(null as varchar) as roletype,
+        cast(null as varchar) as role_end_date,
+        date_of_joiningstadvocate as role_start_date,
+        cast(null as varchar) as role_type,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
@@ -67,11 +67,11 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        'TRADVOCATE#1' as rolecode,
+        'TRADVOCATE#1' as role_code,
         '1' as rolesequence,
-        cast(null as varchar) as roleenddate,
-        date_of_joiningtradvocate as rolestartdate,
-        cast(null as varchar) as roletype,
+        cast(null as varchar) as role_end_date,
+        date_of_joiningtradvocate as role_start_date,
+        cast(null as varchar) as role_type,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
@@ -79,11 +79,11 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        '{COALESCE(PARTY_FUNCTION,DEFAULT_ROLE)}#1' as rolecode,
+        '{COALESCE(PARTY_FUNCTION,DEFAULT_ROLE)}#1' as role_code,
         '1' as rolesequence,
-        cancel_on as roleenddate,
-        date_of_start as rolestartdate,
-        intermediary_type as roletype,
+        cancel_on as role_end_date,
+        date_of_start as role_start_date,
+        intermediary_type as role_type,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
@@ -91,11 +91,11 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        default_role as rolecode,
+        default_role as role_code,
         '1' as rolesequence,
-        cast(null as varchar) as roleenddate,
-        cast(null as varchar) as rolestartdate,
-        cast(null as varchar) as roletype,
+        cast(null as varchar) as role_end_date,
+        cast(null as varchar) as role_start_date,
+        cast(null as varchar) as role_type,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
@@ -103,11 +103,11 @@
     union all
     select
         bagic_employee_code as parent_bk,
-        party_function as rolecode,
+        party_function as role_code,
         '1' as rolesequence,
-        cast(null as varchar) as roleenddate,
-        cast(null as varchar) as rolestartdate,
-        cast(null as varchar) as roletype,
+        cast(null as varchar) as role_end_date,
+        cast(null as varchar) as role_start_date,
+        cast(null as varchar) as role_type,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}

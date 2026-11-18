@@ -6,8 +6,8 @@
 select
     ORG_UNIT_HKEY,
     HASHDIFF_ORG_UNIT_DEFINITION as HASHDIFF,
-    BRANCHTYPE,
-    ORGUNITNAME,
+    BRANCH_TYPE,
+    ORG_UNIT_NAME,
     LOAD_DATETIME,
     RECORD_SOURCE
 from {{ ref('stg2_mp__pd_prop_sp_pv') }}

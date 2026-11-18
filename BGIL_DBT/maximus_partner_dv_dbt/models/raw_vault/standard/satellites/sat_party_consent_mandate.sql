@@ -15,7 +15,7 @@ src_payload:
   - 'FREQUENCY'
   - 'MANDATEREFERENCE'
   - 'MANDATESTARTDATE'
-  - 'MANDATETYPE'
+  - 'MANDATE_TYPE'
   - 'MAXIMUMAMOUNT'
 src_hashdiff: 'HASHDIFF_PARTY_CONSENT_MANDATE'
 src_ldts: 'LOAD_DATETIME'
@@ -35,6 +35,6 @@ src_record_source_map:
                     source_model=metadata_dict['source_model'],
                     src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
-                        'stg2_mp__pd_prop_msdp_pv': ['BANKREFERENCE', 'MANDATEREFERENCE', 'MANDATESTARTDATE', 'MANDATETYPE', 'MAXIMUMAMOUNT'],
+                        'stg2_mp__pd_prop_msdp_pv': ['BANKREFERENCE', 'MANDATEREFERENCE', 'MANDATESTARTDATE', 'MANDATE_TYPE', 'MAXIMUMAMOUNT'],
                         'stg2_mp__pd_prop_sp_pv': ['FREQUENCY']
                     }) }}

@@ -17,14 +17,14 @@ source_model:
   - 'satfeed_mt_sat_party_banking'
 src_pk: 'PARTY_HKEY'
 src_cdk:
-  - 'ACCOUNTNUMBERMASKED'
+  - 'ACCOUNT_NUMBER_MASKED'
 src_payload:
-  - 'ACCOUNTHOLDERNAME'
-  - 'ACCOUNTTYPE'
-  - 'BANKNAME'
-  - 'BRANCHNAME'
-  - 'IFSCCODE'
-  - 'MICRCODE'
+  - 'ACCOUNT_HOLDER_NAME'
+  - 'ACCOUNT_TYPE'
+  - 'BANK_NAME'
+  - 'BRANCH_NAME'
+  - 'IFSC_CODE'
+  - 'MICR_CODE'
   - 'PRIMARYACCOUNTINDICATOR'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
@@ -44,5 +44,5 @@ src_record_source_map:
                        source_model=metadata_dict['source_model'],
                        src_record_source_map=metadata_dict['src_record_source_map'],
                        src_column_map={
-                        'satfeed_mt_sat_party_banking': ['ACCOUNTHOLDERNAME', 'ACCOUNTTYPE', 'BANKNAME', 'BRANCHNAME', 'IFSCCODE', 'MICRCODE', 'PRIMARYACCOUNTINDICATOR']
+                        'satfeed_mt_sat_party_banking': ['ACCOUNT_HOLDER_NAME', 'ACCOUNT_TYPE', 'BANK_NAME', 'BRANCH_NAME', 'IFSC_CODE', 'MICR_CODE', 'PRIMARYACCOUNTINDICATOR']
                        }) }}

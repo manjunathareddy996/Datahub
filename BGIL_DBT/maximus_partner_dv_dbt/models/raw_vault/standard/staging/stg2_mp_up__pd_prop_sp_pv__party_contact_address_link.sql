@@ -10,7 +10,7 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'ADDRESSUSAGETYPE'
-      - 'PRIMARYADDRESSINDICATOR'
+      - 'PRIMARY_ADDRESS_INDICATOR'
 derived_columns:
   PARTY_LOCATION_BK: "parent_bk"
   PARTY_LOCATION_NK: "'LNK_PARTY_LOCATION|' || (parent_bk)"

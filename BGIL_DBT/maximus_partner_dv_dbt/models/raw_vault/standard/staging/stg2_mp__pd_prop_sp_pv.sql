@@ -17,23 +17,23 @@ hashed_columns:
   HASHDIFF_CHANNEL_DEFINITION:
     is_hashdiff: true
     columns:
-      - 'SUBCHANNELCODE'
-      - 'SUBCHANNELEFFECTIVEDATE'
+      - 'SUB_CHANNEL_CODE'
+      - 'SUB_CHANNEL_EFFECTIVE_DATE'
   HASHDIFF_COMMON_ADDRESS:
     is_hashdiff: true
     columns:
-      - 'ADDRESSLINE1'
-      - 'ADDRESSLINE2'
-      - 'ADDRESSLINE3'
-      - 'CAREOFNAME'
+      - 'ADDRESS_LINE_1'
+      - 'ADDRESS_LINE_2'
+      - 'ADDRESS_LINE_3'
+      - 'CARE_OF_NAME'
       - 'CITY'
-      - 'COUNTRYNAME'
+      - 'COUNTRY_NAME'
       - 'DISTRICT'
       - 'LANDMARK'
       - 'LOCALITY'
-      - 'POSTALCODE'
-      - 'POSTOFFICENAME'
-      - 'STATENAME'
+      - 'POSTAL_CODE'
+      - 'POST_OFFICE_NAME'
+      - 'STATE_NAME'
   HASHDIFF_COMMON_ADMIN_GEOGRAPHY:
     is_hashdiff: true
     columns:
@@ -41,37 +41,37 @@ hashed_columns:
   HASHDIFF_COMMON_CLASSIFICATION:
     is_hashdiff: true
     columns:
-      - 'CATEGORYCODE'
-      - 'TIERCODE'
+      - 'CATEGORY_CODE'
+      - 'TIER_CODE'
   HASHDIFF_COMMON_COMMUNICATION_PREFERENCE:
     is_hashdiff: true
     columns:
-      - 'CORRESPONDENCELANGUAGE'
-      - 'GOGREENOPTININDICATOR'
-      - 'PREFERREDCHANNELCODE'
-      - 'PREFERREDLANGUAGECODE'
+      - 'CORRESPONDENCE_LANGUAGE'
+      - 'GO_GREEN_OPT_IN_INDICATOR'
+      - 'PREFERRED_CHANNEL_CODE'
+      - 'PREFERRED_LANGUAGE_CODE'
   HASHDIFF_COMMON_CONSENT:
     is_hashdiff: true
     columns:
-      - 'CONSENTGIVENINDICATOR'
+      - 'CONSENT_GIVEN_INDICATOR'
   HASHDIFF_COMMON_CONTACT:
     is_hashdiff: true
     columns:
-      - 'ALTERNATEEMAILADDRESS'
-      - 'ALTERNATEMOBILENUMBER'
-      - 'EMAILADDRESS'
-      - 'FAXNUMBER'
-      - 'LANDLINENUMBER'
-      - 'MOBILENUMBER'
+      - 'ALTERNATE_EMAIL_ADDRESS'
+      - 'ALTERNATE_MOBILE_NUMBER'
+      - 'EMAIL_ADDRESS'
+      - 'FAX_NUMBER'
+      - 'LANDLINE_NUMBER'
+      - 'MOBILE_NUMBER'
       - 'SOCIALMEDIAHANDLE'
-      - 'STDCODE'
+      - 'STD_CODE'
   HASHDIFF_COMMON_GEO:
     is_hashdiff: true
     columns:
       - 'LATITUDE'
       - 'LONGITUDE'
       - 'REGIONCODE'
-      - 'REGIONNAME'
+      - 'REGION_NAME'
   HASHDIFF_LNK_ROLE_AGENT:
     is_hashdiff: true
     columns:
@@ -88,7 +88,7 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'DEPARTMENT'
-      - 'EMPLOYEECODE'
+      - 'EMPLOYEE_CODE'
       - 'FUNCTION'
   HASHDIFF_LNK_ROLE_INVESTIGATOR:
     is_hashdiff: true
@@ -97,65 +97,65 @@ hashed_columns:
   HASHDIFF_LNK_ROLE_NOMINEE_BENEFICIARY:
     is_hashdiff: true
     columns:
-      - 'RELATIONSHIPTOINSURED'
+      - 'RELATIONSHIP_TO_INSURED'
   HASHDIFF_LNK_ROLE_PROVIDER:
     is_hashdiff: true
     columns:
       - 'DEEMPANELMENTDATE'
       - 'DELISTINGDATE'
       - 'DELISTINGINDICATOR'
-      - 'EMPANELMENTDATE'
+      - 'EMPANELMENT_DATE'
       - 'EVALUATIONDATE'
       - 'ICUNURSECOUNT'
       - 'MOUREFERENCE'
-      - 'MOUSTATUS'
+      - 'MOU_STATUS'
       - 'NABHACCREDITEDINDICATOR'
       - 'NURSETOBEDRATIO'
-      - 'NURSETOPATIENTRATIO'
+      - 'NURSE_TO_PATIENT_RATIO'
       - 'PROVIDERCATEGORY'
-      - 'PROVIDERCODE'
-      - 'PROVIDERTYPE'
+      - 'PROVIDER_CODE'
+      - 'PROVIDER_TYPE'
       - 'SERVICESCOPEDESCRIPTION'
       - 'SPECIALISATION'
   HASHDIFF_LNK_ROLE_SURVEYOR:
     is_hashdiff: true
     columns:
       - 'DEPARTMENTAUTHORISED'
-      - 'IRDAISURVEYORLICENCENUMBER'
-      - 'LICENCECATEGORY'
+      - 'IRDAI_SURVEYOR_LICENCE_NUMBER'
+      - 'LICENCE_CATEGORY'
   HASHDIFF_LOCATION_PROFILE:
     is_hashdiff: true
     columns:
-      - 'LOCATIONNAME'
+      - 'LOCATION_NAME'
       - 'LOCATIONTYPE'
   HASHDIFF_ORG_UNIT_DEFINITION:
     is_hashdiff: true
     columns:
-      - 'BRANCHTYPE'
-      - 'ORGUNITNAME'
+      - 'BRANCH_TYPE'
+      - 'ORG_UNIT_NAME'
   HASHDIFF_ORG_UNIT_LICENCE:
     is_hashdiff: true
     columns:
-      - 'GSTREGISTRATIONNUMBER'
+      - 'GST_REGISTRATION_NUMBER'
   HASHDIFF_PARTY_AGENT_LICENCE_LINE:
     is_hashdiff: true
     columns:
       - 'AUTHORISEDINDICATOR'
-      - 'EXAMINATIONREFERENCE'
+      - 'EXAMINATION_REFERENCE'
   HASHDIFF_PARTY_AML_SCREENING:
     is_hashdiff: true
     columns:
-      - 'SCREENINGSTATUS'
+      - 'SCREENING_STATUS'
   HASHDIFF_PARTY_BANKING:
     is_hashdiff: true
     columns:
-      - 'ACCOUNTHOLDERNAME'
-      - 'ACCOUNTNUMBERMASKED'
-      - 'ACCOUNTTYPE'
-      - 'BANKNAME'
-      - 'BRANCHNAME'
-      - 'IFSCCODE'
-      - 'MICRCODE'
+      - 'ACCOUNT_HOLDER_NAME'
+      - 'ACCOUNT_NUMBER_MASKED'
+      - 'ACCOUNT_TYPE'
+      - 'BANK_NAME'
+      - 'BRANCH_NAME'
+      - 'IFSC_CODE'
+      - 'MICR_CODE'
       - 'PENNYDROPVERIFIEDINDICATOR'
       - 'PRIMARYACCOUNTINDICATOR'
   HASHDIFF_PARTY_CONSENT_MANDATE:
@@ -165,144 +165,144 @@ hashed_columns:
       - 'FREQUENCY'
       - 'MANDATEREFERENCE'
       - 'MANDATESTARTDATE'
-      - 'MANDATETYPE'
+      - 'MANDATE_TYPE'
       - 'MAXIMUMAMOUNT'
   HASHDIFF_PARTY_EMPLOYMENT:
     is_hashdiff: true
     columns:
-      - 'EMPLOYERNAME'
-      - 'EMPLOYMENTSTATUS'
+      - 'EMPLOYER_NAME'
+      - 'EMPLOYMENT_STATUS'
   HASHDIFF_PARTY_FINANCIAL_PROFILE:
     is_hashdiff: true
     columns:
-      - 'INCOMESOURCE'
+      - 'INCOME_SOURCE'
   HASHDIFF_PARTY_FRAUD_PROFILE:
     is_hashdiff: true
     columns:
-      - 'FRAUDSUSPICIONINDICATOR'
-      - 'NEGATIVELISTINDICATOR'
-      - 'NEGATIVELISTREASON'
+      - 'FRAUD_SUSPICION_INDICATOR'
+      - 'NEGATIVE_LIST_INDICATOR'
+      - 'NEGATIVE_LIST_REASON'
       - 'WATCHENDDATE'
-      - 'WATCHSTARTDATE'
+      - 'WATCH_START_DATE'
   HASHDIFF_PARTY_HEALTH_PROFILE:
     is_hashdiff: true
     columns:
-      - 'DISABILITYINDICATOR'
-      - 'DISABILITYPERCENTAGE'
+      - 'DISABILITY_INDICATOR'
+      - 'DISABILITY_PERCENTAGE'
       - 'HEIGHT'
-      - 'PREEXISTINGDISEASEDESCRIPTION'
+      - 'PRE_EXISTING_DISEASE_DESCRIPTION'
       - 'WEIGHT'
   HASHDIFF_PARTY_HIERARCHY:
     is_hashdiff: true
     columns:
-      - 'HIERARCHYLEVEL'
-      - 'REPORTINGPARENTREFERENCE'
+      - 'HIERARCHY_LEVEL'
+      - 'REPORTING_PARENT_REFERENCE'
   HASHDIFF_PARTY_IDENTIFICATION:
     is_hashdiff: true
     columns:
-      - 'AADHAARNUMBER'
-      - 'AADHAARVERIFICATIONSTATUS'
-      - 'AGEPROOFTYPE'
-      - 'CINNUMBER'
-      - 'DRIVINGLICENCEEXPIRYDATE'
-      - 'DRIVINGLICENCENUMBER'
-      - 'EIANUMBER'
+      - 'AADHAAR_NUMBER'
+      - 'AADHAAR_VERIFICATION_STATUS'
+      - 'AGE_PROOF_TYPE'
+      - 'CIN_NUMBER'
+      - 'DRIVING_LICENCE_EXPIRY_DATE'
+      - 'DRIVING_LICENCE_NUMBER'
+      - 'EIA_NUMBER'
       - 'FORM60INDICATOR'
       - 'GSTIN'
-      - 'GSTREGISTRATIONSTATUS'
-      - 'GSTTAXPAYERTYPE'
-      - 'IDENTIFICATIONEXPIRYDATE'
-      - 'IDENTIFICATIONISSUEDATE'
-      - 'IDENTIFICATIONISSUINGAUTHORITY'
-      - 'IDENTIFICATIONNUMBER'
-      - 'IDENTIFICATIONTYPECODE'
-      - 'IDENTIFICATIONVERIFIEDINDICATOR'
+      - 'GST_REGISTRATION_STATUS'
+      - 'GST_TAXPAYER_TYPE'
+      - 'IDENTIFICATION_EXPIRY_DATE'
+      - 'IDENTIFICATION_ISSUE_DATE'
+      - 'IDENTIFICATION_ISSUING_AUTHORITY'
+      - 'IDENTIFICATION_NUMBER'
+      - 'IDENTIFICATION_TYPE_CODE'
+      - 'IDENTIFICATION_VERIFIED_INDICATOR'
       - 'INSURANCEREPOSITORYNAME'
-      - 'NREGACARDNUMBER'
-      - 'OVDCATEGORY'
-      - 'PANNUMBER'
-      - 'PANVERIFICATIONSTATUS'
+      - 'NREGA_CARD_NUMBER'
+      - 'OVD_CATEGORY'
+      - 'PAN_NUMBER'
+      - 'PAN_VERIFICATION_STATUS'
       - 'PASSPORTEXPIRYDATE'
-      - 'PASSPORTNUMBER'
-      - 'TANNUMBER'
-      - 'VOTERIDNUMBER'
+      - 'PASSPORT_NUMBER'
+      - 'TAN_NUMBER'
+      - 'VOTER_ID_NUMBER'
   HASHDIFF_PARTY_IDENTITY:
     is_hashdiff: true
     columns:
       - 'AGE'
-      - 'COUNTRYOFBIRTH'
-      - 'COUNTRYOFRESIDENCE'
-      - 'DATEOFBIRTH'
-      - 'DATEOFDEATH'
-      - 'FIRSTNAME'
-      - 'GENDERCODE'
-      - 'LASTNAME'
-      - 'MIDDLENAME'
+      - 'COUNTRY_OF_BIRTH'
+      - 'COUNTRY_OF_RESIDENCE'
+      - 'DATE_OF_BIRTH'
+      - 'DATE_OF_DEATH'
+      - 'FIRST_NAME'
+      - 'GENDER_CODE'
+      - 'LAST_NAME'
+      - 'MIDDLE_NAME'
       - 'NATIONALITY'
-      - 'PARTYFULLNAME'
-      - 'PARTYLEGALNAME'
-      - 'PARTYORIGINATIONDATE'
-      - 'PARTYSTATUS'
-      - 'PARTYSUBTYPECODE'
-      - 'PARTYTYPECODE'
+      - 'PARTY_FULL_NAME'
+      - 'PARTY_LEGAL_NAME'
+      - 'PARTY_ORIGINATION_DATE'
+      - 'PARTY_STATUS'
+      - 'PARTY_SUB_TYPE_CODE'
+      - 'PARTY_TYPE_CODE'
       - 'SALUTATION'
   HASHDIFF_PARTY_INDIVIDUAL_DEMOGRAPHICS:
     is_hashdiff: true
     columns:
-      - 'ANNUALINCOME'
+      - 'ANNUAL_INCOME'
       - 'DESIGNATION'
-      - 'EDUCATIONALQUALIFICATION'
-      - 'FATHERNAME'
-      - 'HIGHESTDEGREE'
-      - 'MARITALSTATUS'
+      - 'EDUCATIONAL_QUALIFICATION'
+      - 'FATHER_NAME'
+      - 'HIGHEST_DEGREE'
+      - 'MARITAL_STATUS'
       - 'OCCUPATIONCODE'
-      - 'OCCUPATIONDESCRIPTION'
-      - 'SPOUSENAME'
-      - 'VEHICLEOWNEDINDICATOR'
-      - 'YEARSINCITY'
+      - 'OCCUPATION_DESCRIPTION'
+      - 'SPOUSE_NAME'
+      - 'VEHICLE_OWNED_INDICATOR'
+      - 'YEARS_IN_CITY'
   HASHDIFF_PARTY_KYC:
     is_hashdiff: true
     columns:
-      - 'CKYCNUMBER'
-      - 'CKYCREGISTRATIONSTATUS'
+      - 'CKYC_NUMBER'
+      - 'CKYC_REGISTRATION_STATUS'
   HASHDIFF_PARTY_LEGAL_PANEL:
     is_hashdiff: true
     columns:
-      - 'ADVOCATETYPE'
-      - 'BARCOUNCILNAME'
-      - 'BARENROLMENTNUMBER'
-      - 'JUNIORSCOUNT'
-      - 'PANELCATEGORY'
+      - 'ADVOCATE_TYPE'
+      - 'BAR_COUNCIL_NAME'
+      - 'BAR_ENROLMENT_NUMBER'
+      - 'JUNIORS_COUNT'
+      - 'PANEL_CATEGORY'
       - 'PENDINGCASESCOUNT'
   HASHDIFF_PARTY_ONBOARDING_JOURNEY:
     is_hashdiff: true
     columns:
-      - 'ONBOARDINGSTARTDATE'
-      - 'PREVIOUSEMPLOYERNAME'
-      - 'PRIORWORKEXPERIENCEYEARS'
+      - 'ONBOARDING_START_DATE'
+      - 'PREVIOUS_EMPLOYER_NAME'
+      - 'PRIOR_WORK_EXPERIENCE_YEARS'
   HASHDIFF_PARTY_ORGANISATION_PROFILE:
     is_hashdiff: true
     columns:
-      - 'ANNUALTURNOVER'
-      - 'BUSINESSREGISTRATIONNUMBER'
-      - 'DATEOFINCORPORATION'
-      - 'GROUPNAME'
-      - 'INDUSTRYCODE'
-      - 'INDUSTRYDESCRIPTION'
-      - 'LEGALCONSTITUTIONTYPE'
-      - 'MSMECATEGORY'
-      - 'MSMEINDICATOR'
-      - 'NATUREOFBUSINESS'
+      - 'ANNUAL_TURNOVER'
+      - 'BUSINESS_REGISTRATION_NUMBER'
+      - 'DATE_OF_INCORPORATION'
+      - 'GROUP_NAME'
+      - 'INDUSTRY_CODE'
+      - 'INDUSTRY_DESCRIPTION'
+      - 'LEGAL_CONSTITUTION_TYPE'
+      - 'MSME_CATEGORY'
+      - 'MSME_INDICATOR'
+      - 'NATURE_OF_BUSINESS'
       - 'NUMBEROFEMPLOYEES'
-      - 'PAIDUPCAPITAL'
-      - 'PARENTENTITYNAME'
+      - 'PAID_UP_CAPITAL'
+      - 'PARENT_ENTITY_NAME'
   HASHDIFF_PARTY_PAYOUT_PROFILE:
     is_hashdiff: true
     columns:
-      - 'GSTAPPLICABLEINDICATOR'
+      - 'GST_APPLICABLE_INDICATOR'
       - 'PAYOUTHOLDREASON'
       - 'TDSAPPLICABLEINDICATOR'
-      - 'TDSRATE'
+      - 'TDS_RATE'
   HASHDIFF_PARTY_RELATIONSHIP_PROFILE:
     is_hashdiff: true
     columns:
@@ -310,7 +310,7 @@ hashed_columns:
   HASHDIFF_PRODUCT_DEFINITION:
     is_hashdiff: true
     columns:
-      - 'PRODUCTDESCRIPTION'
+      - 'PRODUCT_DESCRIPTION'
   HASHDIFF_PROVIDER_BANKING:
     is_hashdiff: true
     columns:
@@ -320,18 +320,18 @@ hashed_columns:
     columns:
       - 'AVERAGECLAIMAMOUNT'
       - 'CLAIMVOLUME'
-      - 'QUALITYRATING'
+      - 'QUALITY_RATING'
   HASHDIFF_PROVIDER_TARIFF:
     is_hashdiff: true
     columns:
-      - 'DISCOUNTPERCENTAGE'
-      - 'EFFECTIVEDATE'
-      - 'EXPIRYDATE'
+      - 'DISCOUNT_PERCENTAGE'
+      - 'EFFECTIVE_DATE'
+      - 'EXPIRY_DATE'
       - 'NEGOTIATEDINDICATOR'
-      - 'PACKAGERATE'
+      - 'PACKAGE_RATE'
       - 'ROOMCATEGORY'
-      - 'SERVICEDESCRIPTION'
-      - 'TARIFFRATE'
+      - 'SERVICE_DESCRIPTION'
+      - 'TARIFF_RATE'
       - 'TARIFFTIER'
 derived_columns:
   DISTRIBUTION_CHANNEL_BK: "agent_channel"
@@ -350,204 +350,206 @@ derived_columns:
   PARTY_LOCATION_NK: "'LNK_PARTY_LOCATION|' || (foreign_key)"
   PARTY_ROLE_BK: "foreign_key"
   PARTY_ROLE_NK: "'LNK_PARTY_ROLE|' || (foreign_key)"
-  SUBCHANNELCODE: "sub_channel"
-  SUBCHANNELEFFECTIVEDATE: "sub_channel_effective_date"
-  CAREOFNAME: "addressee"
+  SUB_CHANNEL_CODE: "sub_channel"
+  SUB_CHANNEL_EFFECTIVE_DATE: "sub_channel_effective_date"
+  CARE_OF_NAME: "addressee"
   CITY: "coalesce(correspondence_local_address_city_town_village, current_permanent_overseas_address_city_town_village)"
-  COUNTRYNAME: "coalesce(correspondence_local_address_country, country, current_permanent_overseas_address_country)"
+  COUNTRY_NAME: "coalesce(correspondence_local_address_country, country, current_permanent_overseas_address_country)"
   DISTRICT: "correspondence_local_address_district"
-  ADDRESSLINE1: "coalesce(correspondence_local_address_line_1, current_permanent_overseas_address_line_1, our_office_address)"
-  ADDRESSLINE2: "coalesce(correspondence_local_address_line_2, current_permanent_overseas_address_line_2)"
-  ADDRESSLINE3: "coalesce(correspondence_local_address_line_3, current_permanent_overseas_address_line_3)"
-  STATENAME: "coalesce(correspondence_local_address_state, current_permanent_overseas_address_state_ut)"
-  POSTALCODE: "coalesce(current_permanent_overseas_address_pin_code, local_address_pin_code)"
-  POSTOFFICENAME: "cast(null as varchar)"
+  ADDRESS_LINE_1: "coalesce(correspondence_local_address_line_1, current_permanent_overseas_address_line_1, our_office_address)"
+  ADDRESS_LINE_2: "coalesce(correspondence_local_address_line_2, current_permanent_overseas_address_line_2)"
+  ADDRESS_LINE_3: "coalesce(correspondence_local_address_line_3, current_permanent_overseas_address_line_3)"
+  STATE_NAME: "coalesce(correspondence_local_address_state, current_permanent_overseas_address_state_ut)"
+  POSTAL_CODE: "coalesce(current_permanent_overseas_address_pin_code, local_address_pin_code)"
+  POST_OFFICE_NAME: "cast(null as varchar)"
   LOCALITY: "cast(null as varchar)"
   LANDMARK: "cast(null as varchar)"
   CITYCLASSCODE: "city_class"
-  CATEGORYCODE: "category"
-  TIERCODE: "tier_level"
-  CORRESPONDENCELANGUAGE: "communication_and_preferred_language"
-  GOGREENOPTININDICATOR: "epolicy_required"
-  PREFERREDLANGUAGECODE: "party_language"
-  PREFERREDCHANNELCODE: "preferred_mode_of_communication"
-  CONSENTGIVENINDICATOR: "customer_consent"
-  EMAILADDRESS: "coalesce(administrator_email_id, billing_persons_email_id, ceo_email_id, finance_officer_email_id, marketing_head_email_id, medical_director_email_id, medical_superintendent_email_id)"
-  MOBILENUMBER: "coalesce(administrator_mobile_no, billing_persons_mobile_no, ceo_mobile_no, claim_mobile_number, contact_person_mobile_no_1, contact_person_mobile_no_2, finance_officer_mobile_number, marketing_head_mobile_no, medical_director_mobile_no, medical_superintendent_mobile_no, registered_mobile_number)"
-  ALTERNATEMOBILENUMBER: "alternate_mob_numberlandline_number"
-  LANDLINENUMBER: "coalesce(company_contact, emergency_phone_number_val, landline_no, phone_detailsdfadvocate, phone_detailshcadvocate, phone_detailslawyer, phone_detailsretainer, phone_detailsstadvocate, phone_detailstradvocate, phone_no_1, phone_no_2)"
-  STDCODE: "std_code"
+  CATEGORY_CODE: "category"
+  TIER_CODE: "tier_level"
+  CORRESPONDENCE_LANGUAGE: "communication_and_preferred_language"
+  GO_GREEN_OPT_IN_INDICATOR: "epolicy_required"
+  PREFERRED_LANGUAGE_CODE: "party_language"
+  PREFERRED_CHANNEL_CODE: "preferred_mode_of_communication"
+  CONSENT_GIVEN_INDICATOR: "customer_consent"
+  EMAIL_ADDRESS: "coalesce(administrator_email_id, billing_persons_email_id, ceo_email_id, finance_officer_email_id, marketing_head_email_id, medical_director_email_id, medical_superintendent_email_id)"
+  MOBILE_NUMBER: "coalesce(administrator_mobile_no, billing_persons_mobile_no, ceo_mobile_no, claim_mobile_number, contact_person_mobile_no_1, contact_person_mobile_no_2, finance_officer_mobile_number, marketing_head_mobile_no, medical_director_mobile_no, medical_superintendent_mobile_no, registered_mobile_number)"
+  ALTERNATE_MOBILE_NUMBER: "alternate_mob_numberlandline_number"
+  LANDLINE_NUMBER: "coalesce(company_contact, emergency_phone_number_val, landline_no, phone_detailsdfadvocate, phone_detailshcadvocate, phone_detailslawyer, phone_detailsretainer, phone_detailsstadvocate, phone_detailstradvocate, phone_no_1, phone_no_2)"
+  STD_CODE: "std_code"
   SOCIALMEDIAHANDLE: "cast(null as varchar)"
-  FAXNUMBER: "cast(null as varchar)"
-  ALTERNATEEMAILADDRESS: "cast(null as varchar)"
-  REGIONNAME: "area"
+  FAX_NUMBER: "cast(null as varchar)"
+  ALTERNATE_EMAIL_ADDRESS: "cast(null as varchar)"
+  REGION_NAME: "area"
   LATITUDE: "latitude"
   LONGITUDE: "longitude"
   REGIONCODE: "region"
   AGENTCODE: "irda_code"
   LICENCEEXPIRYDATE: "license_expiry_date"
   LICENCEISSUEDATE: "license_issue_date"
-  LICENCECATEGORY: "sur_license_type"
+  LICENCECATEGORY: "sur_license_type"
+  LICENCE_CATEGORY: "sur_license_type"
   CONSENTFORDATASHARINGINDICATOR: "customer_consent_for_data_sharing"
   PREFERREDCUSTOMERINDICATOR: "priority_customer"
   DEPARTMENT: "department"
-  EMPLOYEECODE: "employee_code"
+  EMPLOYEE_CODE: "employee_code"
   FUNCTION: "function"
   SPECIALISATIONAREA: "investigation_skills"
-  RELATIONSHIPTOINSURED: "nominee_relationship"
+  RELATIONSHIP_TO_INSURED: "nominee_relationship"
   DEEMPANELMENTDATE: "deempanel_date"
   DELISTINGINDICATOR: "delisted"
   DELISTINGDATE: "delisted_date"
-  EMPANELMENTDATE: "empanel_date"
+  EMPANELMENT_DATE: "empanel_date"
   EVALUATIONDATE: "evaluation_date"
   SPECIALISATION: "medical_speciality"
   MOUREFERENCE: "mou_documents"
-  MOUSTATUS: "mou_status"
+  MOU_STATUS: "mou_status"
   NABHACCREDITEDINDICATOR: "nabh_certified"
   ICUNURSECOUNT: "no_of_qualified_nurses_available_exclusively_in_icu_taking_all_the_shifts_together"
   NURSETOBEDRATIO: "nursebed_ratio_no_of_qualified_and_registered_nurses_gnm_post_bsc_bsc_msc_nursing_as_proportion_of_occupied_beds"
   PROVIDERCATEGORY: "provider_category"
   SERVICESCOPEDESCRIPTION: "scope_of_supplier"
-  NURSETOPATIENTRATIO: "span_of_control_nurse_to_patient"
-  PROVIDERCODE: "supplier_id"
-  PROVIDERTYPE: "type_of_provider"
+  NURSE_TO_PATIENT_RATIO: "span_of_control_nurse_to_patient"
+  PROVIDER_CODE: "supplier_id"
+  PROVIDER_TYPE: "type_of_provider"
   DEPARTMENTAUTHORISED: "surveyor_department"
-  IRDAISURVEYORLICENCENUMBER: "sur_license_no"
-  LOCATIONNAME: "location"
+  IRDAI_SURVEYOR_LICENCE_NUMBER: "sur_license_no"
+  LOCATION_NAME: "location"
   LOCATIONTYPE: "cast(null as varchar)"
-  ORGUNITNAME: "branch_name"
-  BRANCHTYPE: "branch_type"
-  GSTREGISTRATIONNUMBER: "bagic_gstin"
-  EXAMINATIONREFERENCE: "examinations_details_for_irda_code"
+  ORG_UNIT_NAME: "branch_name"
+  BRANCH_TYPE: "branch_type"
+  GST_REGISTRATION_NUMBER: "bagic_gstin"
+  EXAMINATION_REFERENCE: "examinations_details_for_irda_code"
   AUTHORISEDINDICATOR: "cast(null as varchar)"
-  SCREENINGSTATUS: "aml_verification_status"
-  ACCOUNTTYPE: "account_category_code"
-  ACCOUNTNUMBERMASKED: "coalesce(account_no, owner_acct)"
-  BANKNAME: "cast(null as varchar)"
-  BRANCHNAME: "cast(null as varchar)"
+  SCREENING_STATUS: "aml_verification_status"
+  ACCOUNT_TYPE: "account_category_code"
+  ACCOUNT_NUMBER_MASKED: "coalesce(account_no, owner_acct)"
+  BANK_NAME: "cast(null as varchar)"
+  BRANCH_NAME: "cast(null as varchar)"
   PENNYDROPVERIFIEDINDICATOR: "cast(null as varchar)"
-  ACCOUNTHOLDERNAME: "cast(null as varchar)"
+  ACCOUNT_HOLDER_NAME: "cast(null as varchar)"
   PRIMARYACCOUNTINDICATOR: "cast(null as varchar)"
-  MICRCODE: "cast(null as varchar)"
-  IFSCCODE: "cast(null as varchar)"
+  MICR_CODE: "cast(null as varchar)"
+  IFSC_CODE: "cast(null as varchar)"
   FREQUENCY: "frequency"
   BANKREFERENCE: "cast(null as varchar)"
-  MANDATETYPE: "cast(null as varchar)"
+  MANDATE_TYPE: "cast(null as varchar)"
   MAXIMUMAMOUNT: "cast(null as varchar)"
   MANDATEREFERENCE: "cast(null as varchar)"
   MANDATESTARTDATE: "cast(null as varchar)"
-  EMPLOYMENTSTATUS: "employee_status"
-  EMPLOYERNAME: "employer_name"
-  INCOMESOURCE: "income_source"
-  NEGATIVELISTINDICATOR: "blacklisted"
-  WATCHSTARTDATE: "blacklisted_effective_date"
+  EMPLOYMENT_STATUS: "employee_status"
+  EMPLOYER_NAME: "employer_name"
+  INCOME_SOURCE: "income_source"
+  NEGATIVE_LIST_INDICATOR: "blacklisted"
+  WATCH_START_DATE: "blacklisted_effective_date"
   WATCHENDDATE: "blacklisted_expiry_date"
-  NEGATIVELISTREASON: "blacklist_details"
-  FRAUDSUSPICIONINDICATOR: "suspected_fraud"
-  DISABILITYPERCENTAGE: "disability_percentage"
-  PREEXISTINGDISEASEDESCRIPTION: "disease_name"
+  NEGATIVE_LIST_REASON: "blacklist_details"
+  FRAUD_SUSPICION_INDICATOR: "suspected_fraud"
+  DISABILITY_PERCENTAGE: "disability_percentage"
+  PRE_EXISTING_DISEASE_DESCRIPTION: "disease_name"
   HEIGHT: "height"
-  DISABILITYINDICATOR: "physically_challenged"
+  DISABILITY_INDICATOR: "physically_challenged"
   WEIGHT: "weight"
-  HIERARCHYLEVEL: "level"
-  REPORTINGPARENTREFERENCE: "parent_party_code"
-  IDENTIFICATIONNUMBER: "coalesce(aadhaar_enrollment_no, abha_id, existing_partner_id, hospital_id, identifier, id_number, partner_ref, registration_no, sepz_registration_no, sez_registration_no, service_tax_no, rohini_code, vid)"
-  AADHAARNUMBER: "aadhaar_number"
-  IDENTIFICATIONISSUEDATE: "coalesce(address_proof_effective_date, driving_license_issue_date, gstin_issuance_dt, identification_proof_effective_date, passport_issue_date, sepz_registration_date, sez_registration_date)"
-  CINNUMBER: "cin_number"
-  IDENTIFICATIONVERIFIEDINDICATOR: "coalesce(claim_poa_status, claim_poi_status, e_insurance_demat_account_verified, poa_driving_license_status, poa_nrega_job_card_status, poa_passport_status)"
-  GSTTAXPAYERTYPE: "taxpayer_type"
-  IDENTIFICATIONEXPIRYDATE: "coalesce(date_of_expiry, expiry_date, sez_expiry_date)"
-  AGEPROOFTYPE: "dob_proof"
-  DRIVINGLICENCEEXPIRYDATE: "driving_license_expiry_date"
-  DRIVINGLICENCENUMBER: "driving_license_number"
-  IDENTIFICATIONISSUINGAUTHORITY: "driving_license_place_of_issue"
-  EIANUMBER: "eia_number"
+  HIERARCHY_LEVEL: "level"
+  REPORTING_PARENT_REFERENCE: "parent_party_code"
+  IDENTIFICATION_NUMBER: "coalesce(aadhaar_enrollment_no, abha_id, existing_partner_id, hospital_id, identifier, id_number, partner_ref, registration_no, sepz_registration_no, sez_registration_no, service_tax_no, rohini_code, vid)"
+  AADHAAR_NUMBER: "aadhaar_number"
+  IDENTIFICATION_ISSUE_DATE: "coalesce(address_proof_effective_date, driving_license_issue_date, gstin_issuance_dt, identification_proof_effective_date, passport_issue_date, sepz_registration_date, sez_registration_date)"
+  CIN_NUMBER: "cin_number"
+  IDENTIFICATION_VERIFIED_INDICATOR: "coalesce(claim_poa_status, claim_poi_status, e_insurance_demat_account_verified, poa_driving_license_status, poa_nrega_job_card_status, poa_passport_status)"
+  GST_TAXPAYER_TYPE: "taxpayer_type"
+  IDENTIFICATION_EXPIRY_DATE: "coalesce(date_of_expiry, expiry_date, sez_expiry_date)"
+  AGE_PROOF_TYPE: "dob_proof"
+  DRIVING_LICENCE_EXPIRY_DATE: "driving_license_expiry_date"
+  DRIVING_LICENCE_NUMBER: "driving_license_number"
+  IDENTIFICATION_ISSUING_AUTHORITY: "driving_license_place_of_issue"
+  EIA_NUMBER: "eia_number"
   GSTIN: "gstinuin"
-  GSTREGISTRATIONSTATUS: "gstn_regn_status"
-  IDENTIFICATIONTYPECODE: "coalesce(identification_proof, id_type, id_type1)"
+  GST_REGISTRATION_STATUS: "gstn_regn_status"
+  IDENTIFICATION_TYPE_CODE: "coalesce(identification_proof, id_type, id_type1)"
   INSURANCEREPOSITORYNAME: "insurance_repository_code"
-  PANNUMBER: "pan_no"
-  NREGACARDNUMBER: "nrega_job_card"
+  PAN_NUMBER: "pan_no"
+  NREGA_CARD_NUMBER: "nrega_job_card"
   PASSPORTEXPIRYDATE: "passport_expiry_date"
-  PASSPORTNUMBER: "passport_number"
-  AADHAARVERIFICATIONSTATUS: "poa_aadhar_card_status"
-  PANVERIFICATIONSTATUS: "poi_pan_card_status"
+  PASSPORT_NUMBER: "passport_number"
+  AADHAAR_VERIFICATION_STATUS: "poa_aadhar_card_status"
+  PAN_VERIFICATION_STATUS: "poi_pan_card_status"
   FORM60INDICATOR: "poi_form_60_status"
-  OVDCATEGORY: "proof_of_address_submitted_for_current_permanent_overseas_address"
-  TANNUMBER: "tan_number"
-  VOTERIDNUMBER: "voter_id"
+  OVD_CATEGORY: "proof_of_address_submitted_for_current_permanent_overseas_address"
+  TAN_NUMBER: "tan_number"
+  VOTER_ID_NUMBER: "voter_id"
   AGE: "age"
-  PARTYFULLNAME: "coalesce(bagic_employee_name, beneficiary_name, hospital_name)"
-  COUNTRYOFBIRTH: "country_of_birth"
-  COUNTRYOFRESIDENCE: "country_of_residence"
-  PARTYORIGINATIONDATE: "creation_date"
-  DATEOFBIRTH: "date_of_birth"
-  DATEOFDEATH: "date_of_death"
-  PARTYLEGALNAME: "firms_name"
-  FIRSTNAME: "first_name"
-  GENDERCODE: "gender"
-  LASTNAME: "last_name"
-  MIDDLENAME: "middle_name"
+  PARTY_FULL_NAME: "coalesce(bagic_employee_name, beneficiary_name, hospital_name)"
+  COUNTRY_OF_BIRTH: "country_of_birth"
+  COUNTRY_OF_RESIDENCE: "country_of_residence"
+  PARTY_ORIGINATION_DATE: "creation_date"
+  DATE_OF_BIRTH: "date_of_birth"
+  DATE_OF_DEATH: "date_of_death"
+  PARTY_LEGAL_NAME: "firms_name"
+  FIRST_NAME: "first_name"
+  GENDER_CODE: "gender"
+  LAST_NAME: "last_name"
+  MIDDLE_NAME: "middle_name"
   NATIONALITY: "nationality"
-  PARTYSUBTYPECODE: "partner_type"
-  PARTYSTATUS: "status"
-  PARTYTYPECODE: "cast(null as varchar)"
+  PARTY_SUB_TYPE_CODE: "partner_type"
+  PARTY_STATUS: "status"
+  PARTY_TYPE_CODE: "cast(null as varchar)"
   SALUTATION: "cast(null as varchar)"
-  EDUCATIONALQUALIFICATION: "educational_qualification"
+  EDUCATIONAL_QUALIFICATION: "educational_qualification"
   DESIGNATION: "designation"
-  VEHICLEOWNEDINDICATOR: "do_you_have_2_wheeler4_wheeler"
-  FATHERNAME: "father_name"
-  HIGHESTDEGREE: "highest_qualification_details"
-  MARITALSTATUS: "marital_status"
-  ANNUALINCOME: "monthly_income"
-  YEARSINCITY: "number_of_years_residing_in_the_city_of_residence"
+  VEHICLE_OWNED_INDICATOR: "do_you_have_2_wheeler4_wheeler"
+  FATHER_NAME: "father_name"
+  HIGHEST_DEGREE: "highest_qualification_details"
+  MARITAL_STATUS: "marital_status"
+  ANNUAL_INCOME: "monthly_income"
+  YEARS_IN_CITY: "number_of_years_residing_in_the_city_of_residence"
   OCCUPATIONCODE: "occupation"
-  OCCUPATIONDESCRIPTION: "primary_profession"
-  SPOUSENAME: "spouse_name"
-  CKYCNUMBER: "ckyc_number"
-  CKYCREGISTRATIONSTATUS: "ckyc_status"
-  PANELCATEGORY: "category_of_appointment"
-  BARCOUNCILNAME: "enrolled_with_name_of_state_bar_association"
-  BARENROLMENTNUMBER: "enrollment_id"
+  OCCUPATION_DESCRIPTION: "primary_profession"
+  SPOUSE_NAME: "spouse_name"
+  CKYCNUMBER: "ckyc_number"
+  CKYC_NUMBER: "ckyc_number"
+  CKYC_REGISTRATION_STATUS: "ckyc_status"
+  PANEL_CATEGORY: "category_of_appointment"
+  BAR_COUNCIL_NAME: "enrolled_with_name_of_state_bar_association"
+  BAR_ENROLMENT_NUMBER: "enrollment_id"
   PENDINGCASESCOUNT: "no_of_current_cases"
-  JUNIORSCOUNT: "no_of_juniors"
-  ADVOCATETYPE: "type_of_lawyer"
-  ONBOARDINGSTARTDATE: "application_date"
-  PRIORWORKEXPERIENCEYEARS: "experiencein_yrs"
-  PREVIOUSEMPLOYERNAME: "previous_company_name"
-  ANNUALTURNOVER: "annual_turnover"
-  NATUREOFBUSINESS: "business_type"
-  BUSINESSREGISTRATIONNUMBER: "company_no"
-  DATEOFINCORPORATION: "date_of_registration_or_incorporation"
-  GROUPNAME: "global_co_name"
-  INDUSTRYCODE: "industry_code"
-  INDUSTRYDESCRIPTION: "industry_type"
-  LEGALCONSTITUTIONTYPE: "legal_constitution"
+  JUNIORS_COUNT: "no_of_juniors"
+  ADVOCATE_TYPE: "type_of_lawyer"
+  ONBOARDING_START_DATE: "application_date"
+  PRIOR_WORK_EXPERIENCE_YEARS: "experiencein_yrs"
+  PREVIOUS_EMPLOYER_NAME: "previous_company_name"
+  ANNUAL_TURNOVER: "annual_turnover"
+  NATURE_OF_BUSINESS: "business_type"
+  BUSINESS_REGISTRATION_NUMBER: "company_no"
+  DATE_OF_INCORPORATION: "date_of_registration_or_incorporation"
+  GROUP_NAME: "global_co_name"
+  INDUSTRY_CODE: "industry_code"
+  INDUSTRY_DESCRIPTION: "industry_type"
+  LEGAL_CONSTITUTION_TYPE: "legal_constitution"
   NUMBEROFEMPLOYEES: "staff_strength_total"
-  MSMEINDICATOR: "msme_applicable"
-  MSMECATEGORY: "msme_classification"
-  PAIDUPCAPITAL: "paid_up_capital"
-  PARENTENTITYNAME: "parent_co"
-  GSTAPPLICABLEINDICATOR: "gst_payment_flag"
+  MSME_INDICATOR: "msme_applicable"
+  MSME_CATEGORY: "msme_classification"
+  PAID_UP_CAPITAL: "paid_up_capital"
+  PARENT_ENTITY_NAME: "parent_co"
+  GST_APPLICABLE_INDICATOR: "gst_payment_flag"
   PAYOUTHOLDREASON: "hold_payment_info"
-  TDSRATE: "cast(null as varchar)"
+  TDS_RATE: "cast(null as varchar)"
   TDSAPPLICABLEINDICATOR: "cast(null as varchar)"
   REFERREDBYREFERENCE: "referral_by"
-  PRODUCTDESCRIPTION: "product_details"
+  PRODUCT_DESCRIPTION: "product_details"
   CREDITPERIOD: "credit_days"
   CLAIMVOLUME: "average_claims"
   AVERAGECLAIMAMOUNT: "claims_size"
-  QUALITYRATING: "overall_rating"
+  QUALITY_RATING: "overall_rating"
   TARIFFTIER: "coalesce(bagic_package_class, package_class)"
-  TARIFFRATE: "coalesce(cd_or_photo_charges, labor_ot, labor_rate, neuro_icu_charges, parts_rate, per_visit_charges_outside_city_limit, per_visit_charges_within_city_limit, private, semi_private_room_ac, semi_private_room_non_ac, singleprivate_room_ac, singleprivate_room_non_ac, rate_per_km, service_charge, single_deluxe_room, special_rate, special_tariff, suite, triple_sharing_ac, triple_sharing_non_ac)"
+  TARIFF_RATE: "coalesce(cd_or_photo_charges, labor_ot, labor_rate, neuro_icu_charges, parts_rate, per_visit_charges_outside_city_limit, per_visit_charges_within_city_limit, private, semi_private_room_ac, semi_private_room_non_ac, singleprivate_room_ac, singleprivate_room_non_ac, rate_per_km, service_charge, single_deluxe_room, special_rate, special_tariff, suite, triple_sharing_ac, triple_sharing_non_ac)"
   NEGOTIATEDINDICATOR: "coalesce(cost_negotiation, special_rate_applicable, special_tariff_applicable)"
-  EXPIRYDATE: "coalesce(cost_negotiation_end_date, package_expiry_date, step_down_option_for_room_rent_end_date)"
-  EFFECTIVEDATE: "coalesce(cost_negotiation_start_date, step_down_option_for_room_rent_start_date)"
-  DISCOUNTPERCENTAGE: "coalesce(discount_on_services, discount_percentage, early_payment_offer, msrp_less_)"
+  EXPIRY_DATE: "coalesce(cost_negotiation_end_date, package_expiry_date, step_down_option_for_room_rent_end_date)"
+  EFFECTIVE_DATE: "coalesce(cost_negotiation_start_date, step_down_option_for_room_rent_start_date)"
+  DISCOUNT_PERCENTAGE: "coalesce(discount_on_services, discount_percentage, early_payment_offer, msrp_less_)"
   ROOMCATEGORY: "coalesce(hospital_room_master, other_room, rooms_allowed_for_step_down, type_of_room_applicable)"
-  SERVICEDESCRIPTION: "coalesce(medicine_name, service_name)"
-  PACKAGERATE: "package_rate"
+  SERVICE_DESCRIPTION: "coalesce(medicine_name, service_name)"
+  PACKAGE_RATE: "package_rate"
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'
 {%- endset -%}

@@ -6,7 +6,7 @@
 select
     PARTY_HKEY,
     HASHDIFF_PARTY_FINANCIAL_PROFILE as HASHDIFF,
-    INCOMESOURCE,
+    INCOME_SOURCE,
     LOAD_DATETIME,
     RECORD_SOURCE
 from {{ ref('stg2_mp__pd_prop_sp_pv') }}

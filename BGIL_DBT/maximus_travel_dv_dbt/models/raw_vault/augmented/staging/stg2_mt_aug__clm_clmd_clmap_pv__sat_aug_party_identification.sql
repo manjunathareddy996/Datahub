@@ -7,7 +7,7 @@
 -- so withdrawing a proposal is deleting a model rather than editing the standard
 -- track's wide stage. Nothing here feeds a standard satellite.
 --
--- 15 payload column(s); the child key is IDENTIFICATION_TYPE_CODE.
+-- 15 payload column(s); the child key is IDENTIFICATION_TYPE_CODE_CK.
 
 {%- set yaml_metadata -%}
 source_model: 'resolved_mt__clm_clmd_clmap_pv'
@@ -22,7 +22,7 @@ hashed_columns:
       - 'EIA_LINKED_DATE'
       - 'EIA_REQUIRED_INDICATOR'
       - 'IDENTIFICATION_DETAILS_NARRATIVE'
-      - 'IDENTIFICATION_TYPE_CODE'
+      - 'IDENTIFICATION_TYPE_CODE_CK'
       - 'IDENTIFICATION_VERIFICATION_STATUS'
       - 'NAME_AS_PER_IDENTIFICATION_DOCUMENT'
       - 'OVD_CATEGORY_OTHER_DESCRIPTION'
@@ -35,7 +35,7 @@ hashed_columns:
 derived_columns:
   PARTY_BK__INSURED_CUSTOMER: "nullif(trim(case when coalesce(nullif(trim(unique_customer_id),''), nullif(trim(customerid),'')) is not null then coalesce(nullif(trim(unique_customer_id), ''), nullif(trim(customerid), '')) end),'')"
   PARTY_NK__INSURED_CUSTOMER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(unique_customer_id),''), nullif(trim(customerid),'')) is not null then coalesce(nullif(trim(unique_customer_id), ''), nullif(trim(customerid), '')) end),''))"
-  IDENTIFICATION_TYPE_CODE: "'PAN'"
+  IDENTIFICATION_TYPE_CODE_CK: "'PAN'"
   EIA_CREDIT_REQUIRED_INDICATOR: 'cast(null as varchar)'
   EIA_DETAILS_NARRATIVE: 'cast(null as varchar)'
   EIA_HELD_INDICATOR: 'cast(null as varchar)'

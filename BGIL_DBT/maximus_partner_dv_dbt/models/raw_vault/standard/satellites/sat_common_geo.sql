@@ -14,7 +14,7 @@ src_payload:
   - 'LATITUDE'
   - 'LONGITUDE'
   - 'REGIONCODE'
-  - 'REGIONNAME'
+  - 'REGION_NAME'
 src_hashdiff: 'HASHDIFF_COMMON_GEO'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
@@ -35,5 +35,5 @@ src_record_source_map:
                     src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
                         'stg2_mp__pd_party_addr_prop_pv': ['LATITUDE', 'LONGITUDE'],
-                        'stg2_mp__pd_prop_sp_pv': ['LATITUDE', 'LONGITUDE', 'REGIONCODE', 'REGIONNAME']
+                        'stg2_mp__pd_prop_sp_pv': ['LATITUDE', 'LONGITUDE', 'REGIONCODE', 'REGION_NAME']
                     }) }}

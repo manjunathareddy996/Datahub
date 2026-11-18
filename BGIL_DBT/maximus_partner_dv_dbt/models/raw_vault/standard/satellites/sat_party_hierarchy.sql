@@ -11,8 +11,8 @@ source_model:
   - 'stg2_mp__pd_prop_sp_pv'
 src_pk: 'PARTY_HKEY'
 src_payload:
-  - 'HIERARCHYLEVEL'
-  - 'REPORTINGPARENTREFERENCE'
+  - 'HIERARCHY_LEVEL'
+  - 'REPORTING_PARENT_REFERENCE'
 src_hashdiff: 'HASHDIFF_PARTY_HIERARCHY'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
@@ -31,6 +31,6 @@ src_record_source_map:
                     source_model=metadata_dict['source_model'],
                     src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
-                        'stg2_mp__pd': ['REPORTINGPARENTREFERENCE'],
-                        'stg2_mp__pd_prop_sp_pv': ['HIERARCHYLEVEL', 'REPORTINGPARENTREFERENCE']
+                        'stg2_mp__pd': ['REPORTING_PARENT_REFERENCE'],
+                        'stg2_mp__pd_prop_sp_pv': ['HIERARCHY_LEVEL', 'REPORTING_PARENT_REFERENCE']
                     }) }}

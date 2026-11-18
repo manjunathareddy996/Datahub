@@ -13,14 +13,14 @@ source_model:
   - 'stg2_mp__pd_prop_sp_pv'
 src_pk: 'PARTY_HKEY'
 src_payload:
-  - 'ALTERNATEEMAILADDRESS'
-  - 'ALTERNATEMOBILENUMBER'
-  - 'EMAILADDRESS'
-  - 'FAXNUMBER'
-  - 'LANDLINENUMBER'
-  - 'MOBILENUMBER'
+  - 'ALTERNATE_EMAIL_ADDRESS'
+  - 'ALTERNATE_MOBILE_NUMBER'
+  - 'EMAIL_ADDRESS'
+  - 'FAX_NUMBER'
+  - 'LANDLINE_NUMBER'
+  - 'MOBILE_NUMBER'
   - 'SOCIALMEDIAHANDLE'
-  - 'STDCODE'
+  - 'STD_CODE'
 src_hashdiff: 'HASHDIFF_COMMON_CONTACT'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
@@ -41,10 +41,10 @@ src_record_source_map:
                     src_source=metadata_dict['src_source'],
                     source_model=metadata_dict['source_model'],
                     src_record_source_map=metadata_dict['src_record_source_map'],
-                    src_object_columns=['MOBILENUMBER'],
+                    src_object_columns=['MOBILE_NUMBER'],
                     src_column_map={
-                        'stg2_mp__pd_addr': ['ALTERNATEEMAILADDRESS', 'EMAILADDRESS', 'FAXNUMBER', 'LANDLINENUMBER', 'MOBILENUMBER', 'STDCODE'],
-                        'stg2_mp__pd_party_addr_prop_pv': ['ALTERNATEMOBILENUMBER', 'MOBILENUMBER', 'SOCIALMEDIAHANDLE'],
-                        'stg2_mp__pd_prop_msdp_pv': ['EMAILADDRESS', 'MOBILENUMBER'],
-                        'stg2_mp__pd_prop_sp_pv': ['ALTERNATEMOBILENUMBER', 'EMAILADDRESS', 'LANDLINENUMBER', 'MOBILENUMBER', 'STDCODE']
+                        'stg2_mp__pd_addr': ['ALTERNATE_EMAIL_ADDRESS', 'EMAIL_ADDRESS', 'FAX_NUMBER', 'LANDLINE_NUMBER', 'MOBILE_NUMBER', 'STD_CODE'],
+                        'stg2_mp__pd_party_addr_prop_pv': ['ALTERNATE_MOBILE_NUMBER', 'MOBILE_NUMBER', 'SOCIALMEDIAHANDLE'],
+                        'stg2_mp__pd_prop_msdp_pv': ['EMAIL_ADDRESS', 'MOBILE_NUMBER'],
+                        'stg2_mp__pd_prop_sp_pv': ['ALTERNATE_MOBILE_NUMBER', 'EMAIL_ADDRESS', 'LANDLINE_NUMBER', 'MOBILE_NUMBER', 'STD_CODE']
                     }) }}

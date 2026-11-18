@@ -9,7 +9,7 @@
         foreign_key as parent_bk,
         'COMMUNICATION' as address_usage_type,
         cast(null as varchar) as addressusagetype,
-        is_the_mailingcommunication_address_same_as_the_primary_address as primaryaddressindicator,
+        is_the_mailingcommunication_address_same_as_the_primary_address as primary_address_indicator,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
@@ -19,7 +19,7 @@
         foreign_key as parent_bk,
         '{CURRENT_PERMANENT_OVERSEAS_ADDRESS_TYPE}' as address_usage_type,
         current_permanent_overseas_address_type as addressusagetype,
-        cast(null as varchar) as primaryaddressindicator,
+        cast(null as varchar) as primary_address_indicator,
         rec_refresh_at as rec_refresh_at,
         'MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}

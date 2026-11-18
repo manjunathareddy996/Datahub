@@ -6,7 +6,7 @@
 select
     PRODUCT_HKEY,
     HASHDIFF_PRODUCT_DEFINITION as HASHDIFF,
-    PRODUCTDESCRIPTION,
+    PRODUCT_DESCRIPTION,
     LOAD_DATETIME,
     RECORD_SOURCE
 from {{ ref('stg2_mp__pd_prop_sp_pv') }}

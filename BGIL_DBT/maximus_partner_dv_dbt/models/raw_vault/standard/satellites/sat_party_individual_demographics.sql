@@ -11,17 +11,17 @@ source_model:
   - 'stg2_mp__pd_prop_sp_pv'
 src_pk: 'PARTY_HKEY'
 src_payload:
-  - 'ANNUALINCOME'
+  - 'ANNUAL_INCOME'
   - 'DESIGNATION'
-  - 'EDUCATIONALQUALIFICATION'
-  - 'FATHERNAME'
-  - 'HIGHESTDEGREE'
-  - 'MARITALSTATUS'
+  - 'EDUCATIONAL_QUALIFICATION'
+  - 'FATHER_NAME'
+  - 'HIGHEST_DEGREE'
+  - 'MARITAL_STATUS'
   - 'OCCUPATIONCODE'
-  - 'OCCUPATIONDESCRIPTION'
-  - 'SPOUSENAME'
-  - 'VEHICLEOWNEDINDICATOR'
-  - 'YEARSINCITY'
+  - 'OCCUPATION_DESCRIPTION'
+  - 'SPOUSE_NAME'
+  - 'VEHICLE_OWNED_INDICATOR'
+  - 'YEARS_IN_CITY'
 src_hashdiff: 'HASHDIFF_PARTY_INDIVIDUAL_DEMOGRAPHICS'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
@@ -42,5 +42,5 @@ src_record_source_map:
                     src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
                         'stg2_mp__pd': ['OCCUPATIONCODE'],
-                        'stg2_mp__pd_prop_sp_pv': ['ANNUALINCOME', 'DESIGNATION', 'EDUCATIONALQUALIFICATION', 'FATHERNAME', 'HIGHESTDEGREE', 'MARITALSTATUS', 'OCCUPATIONCODE', 'OCCUPATIONDESCRIPTION', 'SPOUSENAME', 'VEHICLEOWNEDINDICATOR', 'YEARSINCITY']
+                        'stg2_mp__pd_prop_sp_pv': ['ANNUAL_INCOME', 'DESIGNATION', 'EDUCATIONAL_QUALIFICATION', 'FATHER_NAME', 'HIGHEST_DEGREE', 'MARITAL_STATUS', 'OCCUPATIONCODE', 'OCCUPATION_DESCRIPTION', 'SPOUSE_NAME', 'VEHICLE_OWNED_INDICATOR', 'YEARS_IN_CITY']
                     }) }}

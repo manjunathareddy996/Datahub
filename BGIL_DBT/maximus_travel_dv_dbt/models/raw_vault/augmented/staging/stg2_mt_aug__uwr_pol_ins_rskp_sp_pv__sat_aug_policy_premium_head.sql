@@ -7,7 +7,7 @@
 -- so withdrawing a proposal is deleting a model rather than editing the standard
 -- track's wide stage. Nothing here feeds a standard satellite.
 --
--- 1 payload column(s); the child key is ADJUSTED_INDICATOR, COVERAGE_REFERENCE, PREMIUM_HEAD_CODE, SECTION.
+-- 1 payload column(s); the child key is ADJUSTED_INDICATOR_CK, COVERAGE_REFERENCE_CK, PREMIUM_HEAD_CODE_CK, SECTION_CK.
 
 {%- set yaml_metadata -%}
 source_model: 'resolved_mt__uwr_pol_ins_rskp_sp_pv'
@@ -16,18 +16,18 @@ hashed_columns:
   HASHDIFF_POLICY_PREMIUM_HEAD:
     is_hashdiff: true
     columns:
-      - 'ADJUSTED_INDICATOR'
-      - 'COVERAGE_REFERENCE'
+      - 'ADJUSTED_INDICATOR_CK'
+      - 'COVERAGE_REFERENCE_CK'
       - 'GROSS_HEAD_PREMIUM'
-      - 'PREMIUM_HEAD_CODE'
-      - 'SECTION'
+      - 'PREMIUM_HEAD_CODE_CK'
+      - 'SECTION_CK'
 derived_columns:
   POLICY_BK: "nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim(foreign_key), '')) end),'')"
   POLICY_NK: "'HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim(foreign_key), '')) end),''))"
-  ADJUSTED_INDICATOR: "'N'"
-  COVERAGE_REFERENCE: "coalesce(nullif(trim(w1_pol_risk_id), '') || '#ALL','')"
-  PREMIUM_HEAD_CODE: "'GROSS_PREMIUM'"
-  SECTION: "'RISK'"
+  ADJUSTED_INDICATOR_CK: "'N'"
+  COVERAGE_REFERENCE_CK: "coalesce(nullif(trim(w1_pol_risk_id), '') || '#ALL','')"
+  PREMIUM_HEAD_CODE_CK: "'GROSS_PREMIUM'"
+  SECTION_CK: "'RISK'"
   GROSS_HEAD_PREMIUM: 'gross_premium'
   RECORD_SOURCE: '!MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'
   LOAD_DATETIME: 'REC_REFRESH_AT'

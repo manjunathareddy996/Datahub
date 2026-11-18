@@ -18,10 +18,10 @@ source_model:
   - 'stg2_party_identification_bjaz_trv_loader_log_table_5'
 src_pk: 'PARTY_HKEY'
 src_payload:
-  - 'AADHAARNUMBER'
-  - 'EIANUMBER'
+  - 'AADHAAR_NUMBER'
+  - 'EIA_NUMBER'
   - 'GSTIN'
-  - 'PASSPORTNUMBER'
+  - 'PASSPORT_NUMBER'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
@@ -43,12 +43,12 @@ src_record_source_map:
                     src_source=metadata_dict['src_source'],
                     source_model=metadata_dict['source_model'],
                     src_record_source_map=metadata_dict['src_record_source_map'],
-                    src_object_columns=['AADHAARNUMBER', 'GSTIN', 'PASSPORTNUMBER'],
+                    src_object_columns=['AADHAAR_NUMBER', 'GSTIN', 'PASSPORT_NUMBER'],
                     src_column_map={
-                        'stg2_party_identification_ba_trv_data_policy_dtls_0': ['PASSPORTNUMBER'],
-                        'stg2_party_identification_bjaz_trv_loader_data_1': ['AADHAARNUMBER'],
-                        'stg2_party_identification_bjaz_trv_loader_data_2': ['EIANUMBER'],
+                        'stg2_party_identification_ba_trv_data_policy_dtls_0': ['PASSPORT_NUMBER'],
+                        'stg2_party_identification_bjaz_trv_loader_data_1': ['AADHAAR_NUMBER'],
+                        'stg2_party_identification_bjaz_trv_loader_data_2': ['EIA_NUMBER'],
                         'stg2_party_identification_bjaz_trv_loader_data_3': ['GSTIN'],
-                        'stg2_party_identification_bjaz_trv_loader_data_4': ['PASSPORTNUMBER'],
-                        'stg2_party_identification_bjaz_trv_loader_log_table_5': ['PASSPORTNUMBER']
+                        'stg2_party_identification_bjaz_trv_loader_data_4': ['PASSPORT_NUMBER'],
+                        'stg2_party_identification_bjaz_trv_loader_log_table_5': ['PASSPORT_NUMBER']
                     }) }}

@@ -10,7 +10,7 @@
 source_model: 'stg2_aug_mp__pd_prop_sp_pv__party'
 src_pk: 'PARTY_HKEY'
 src_payload:
-  - 'CONTACTPERSONNAME'
+  - 'CONTACT_PERSON_NAME'
   - 'CONTACTVERIFICATIONREQUIREDINDICATOR'
   - 'WEBSITEURL'
 src_hashdiff: 'HASHDIFF_AUG_COMMON_CONTACT'

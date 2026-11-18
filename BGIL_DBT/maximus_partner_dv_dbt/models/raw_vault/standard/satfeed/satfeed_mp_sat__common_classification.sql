@@ -6,8 +6,8 @@
 select
     PARTY_HKEY,
     HASHDIFF_COMMON_CLASSIFICATION as HASHDIFF,
-    CATEGORYCODE,
-    TIERCODE,
+    CATEGORY_CODE,
+    TIER_CODE,
     LOAD_DATETIME,
     RECORD_SOURCE
 from {{ ref('stg2_mp__pd_prop_sp_pv') }}

@@ -6,13 +6,13 @@
 -- sources and only the payload it populates -- it does not union the sibling's models.
 --
 -- The sibling does not build this satellite, so this build ESTABLISHES its contract
--- (BUILD_RULES 7.3): bare HASHDIFF, POLICY_HKEY, multi-active on INTERMEDIARY_REFERENCE.
+-- (BUILD_RULES 7.3): bare HASHDIFF, POLICY_HKEY, multi-active on INTERMEDIARY_REFERENCE_CK.
 
 {%- set yaml_metadata -%}
 source_model: 'satfeed_mt_aug_sat_aug_policy_intermediary_split'
 src_pk: 'POLICY_HKEY'
 src_cdk:
-  - 'INTERMEDIARY_REFERENCE'
+  - 'INTERMEDIARY_REFERENCE_CK'
 src_payload:
   - 'COMMISSION_CHANGE_EFFECTIVE_DATE'
   - 'SUB_CHANNEL_NAME'

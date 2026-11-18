@@ -10,7 +10,7 @@ source_model: 'satfeed_mp_sat__lnk_role_employee'
 src_pk: 'PARTY_ROLE_HKEY'
 src_payload:
   - 'DEPARTMENT'
-  - 'EMPLOYEECODE'
+  - 'EMPLOYEE_CODE'
   - 'FUNCTION'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'

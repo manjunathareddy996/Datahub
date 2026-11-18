@@ -12,7 +12,7 @@ src_cdk:
   - 'ADDRESS_USAGE_TYPE'
 src_payload:
   - 'ADDRESSUSAGETYPE'
-  - 'PRIMARYADDRESSINDICATOR'
+  - 'PRIMARY_ADDRESS_INDICATOR'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

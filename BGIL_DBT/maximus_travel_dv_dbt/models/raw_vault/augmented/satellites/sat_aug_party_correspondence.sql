@@ -6,13 +6,13 @@
 -- sources and only the payload it populates -- it does not union the sibling's models.
 --
 -- The sibling does not build this satellite, so this build ESTABLISHES its contract
--- (BUILD_RULES 7.3): bare HASHDIFF, PARTY_HKEY, multi-active on DISPATCH_REFERENCE.
+-- (BUILD_RULES 7.3): bare HASHDIFF, PARTY_HKEY, multi-active on DISPATCH_REFERENCE_CK.
 
 {%- set yaml_metadata -%}
 source_model: 'satfeed_mt_aug_sat_aug_party_correspondence'
 src_pk: 'PARTY_HKEY'
 src_cdk:
-  - 'DISPATCH_REFERENCE'
+  - 'DISPATCH_REFERENCE_CK'
 src_payload:
   - 'SENDER_NAME'
 src_hashdiff: 'HASHDIFF'

@@ -11,7 +11,7 @@ source_model: 'stg2_aug_mp_sat__lnk_role_customer'
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'INSUREDTYPE'
-  - 'MEMBERTYPE'
+  - 'MEMBER_TYPE'
   - 'PREMIUMPAYERTYPE'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'

@@ -9,7 +9,7 @@
 source_model: 'satfeed_mp_sat__common_consent'
 src_pk: 'PARTY_HKEY'
 src_payload:
-  - 'CONSENTGIVENINDICATOR'
+  - 'CONSENT_GIVEN_INDICATOR'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

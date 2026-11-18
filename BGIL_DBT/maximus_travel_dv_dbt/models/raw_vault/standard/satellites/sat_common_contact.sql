@@ -24,15 +24,15 @@ source_model:
   - 'satfeed_mt_sat_common_contact__uwr_pol_prp_pp_sp_pv'
 src_pk: 'PARTY_HKEY'
 src_payload:
-  - 'ALTERNATEEMAILADDRESS'
-  - 'ALTERNATEMOBILENUMBER'
+  - 'ALTERNATE_EMAIL_ADDRESS'
+  - 'ALTERNATE_MOBILE_NUMBER'
   - 'CONTACT_POINT_USAGE'
-  - 'EMAILADDRESS'
-  - 'FAXNUMBER'
-  - 'LANDLINENUMBER'
-  - 'MOBILENUMBER'
+  - 'EMAIL_ADDRESS'
+  - 'FAX_NUMBER'
+  - 'LANDLINE_NUMBER'
+  - 'MOBILE_NUMBER'
   - 'SOCIALMEDIAHANDLE'
-  - 'STDCODE'
+  - 'STD_CODE'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
@@ -56,14 +56,14 @@ src_record_source_map:
                     src_source=metadata_dict['src_source'],
                     source_model=metadata_dict['source_model'],
                     src_record_source_map=metadata_dict['src_record_source_map'],
-                    src_object_columns=['MOBILENUMBER'],
+                    src_object_columns=['MOBILE_NUMBER'],
                     src_column_map={
-                        'satfeed_mt_sat_common_contact__clm_clmd_clmap_pv': ['ALTERNATEEMAILADDRESS', 'ALTERNATEMOBILENUMBER', 'CONTACT_POINT_USAGE', 'EMAILADDRESS', 'FAXNUMBER', 'LANDLINENUMBER', 'MOBILENUMBER', 'SOCIALMEDIAHANDLE', 'STDCODE'],
-                        'satfeed_mt_sat_common_contact__clm_clmd_clmrsk_rska_properties_pv': ['ALTERNATEEMAILADDRESS', 'ALTERNATEMOBILENUMBER', 'CONTACT_POINT_USAGE', 'EMAILADDRESS', 'FAXNUMBER', 'LANDLINENUMBER', 'MOBILENUMBER', 'SOCIALMEDIAHANDLE', 'STDCODE'],
-                        'satfeed_mt_sat_common_contact__uwr_pol_ins_mbr_pa': ['ALTERNATEEMAILADDRESS', 'ALTERNATEMOBILENUMBER', 'CONTACT_POINT_USAGE', 'EMAILADDRESS', 'FAXNUMBER', 'LANDLINENUMBER', 'MOBILENUMBER', 'SOCIALMEDIAHANDLE', 'STDCODE'],
-                        'satfeed_mt_sat_common_contact__uwr_pol_ins_mbr_pa_address_prop_pv': ['ALTERNATEEMAILADDRESS', 'ALTERNATEMOBILENUMBER', 'CONTACT_POINT_USAGE', 'EMAILADDRESS', 'FAXNUMBER', 'LANDLINENUMBER', 'MOBILENUMBER', 'SOCIALMEDIAHANDLE', 'STDCODE'],
-                        'satfeed_mt_sat_common_contact__uwr_pol_ins_mbr_pp_sp_pv': ['ALTERNATEEMAILADDRESS', 'ALTERNATEMOBILENUMBER', 'CONTACT_POINT_USAGE', 'EMAILADDRESS', 'FAXNUMBER', 'LANDLINENUMBER', 'MOBILENUMBER', 'SOCIALMEDIAHANDLE', 'STDCODE'],
-                        'satfeed_mt_sat_common_contact__uwr_pol_prp_pa': ['ALTERNATEEMAILADDRESS', 'ALTERNATEMOBILENUMBER', 'CONTACT_POINT_USAGE', 'EMAILADDRESS', 'FAXNUMBER', 'LANDLINENUMBER', 'MOBILENUMBER', 'SOCIALMEDIAHANDLE', 'STDCODE'],
-                        'satfeed_mt_sat_common_contact__uwr_pol_prp_pa_address_prop_pv': ['ALTERNATEEMAILADDRESS', 'ALTERNATEMOBILENUMBER', 'CONTACT_POINT_USAGE', 'EMAILADDRESS', 'FAXNUMBER', 'LANDLINENUMBER', 'MOBILENUMBER', 'SOCIALMEDIAHANDLE', 'STDCODE'],
-                        'satfeed_mt_sat_common_contact__uwr_pol_prp_pp_sp_pv': ['ALTERNATEEMAILADDRESS', 'ALTERNATEMOBILENUMBER', 'CONTACT_POINT_USAGE', 'EMAILADDRESS', 'FAXNUMBER', 'LANDLINENUMBER', 'MOBILENUMBER', 'SOCIALMEDIAHANDLE', 'STDCODE']
+                        'satfeed_mt_sat_common_contact__clm_clmd_clmap_pv': ['ALTERNATE_EMAIL_ADDRESS', 'ALTERNATE_MOBILE_NUMBER', 'CONTACT_POINT_USAGE', 'EMAIL_ADDRESS', 'FAX_NUMBER', 'LANDLINE_NUMBER', 'MOBILE_NUMBER', 'SOCIALMEDIAHANDLE', 'STD_CODE'],
+                        'satfeed_mt_sat_common_contact__clm_clmd_clmrsk_rska_properties_pv': ['ALTERNATE_EMAIL_ADDRESS', 'ALTERNATE_MOBILE_NUMBER', 'CONTACT_POINT_USAGE', 'EMAIL_ADDRESS', 'FAX_NUMBER', 'LANDLINE_NUMBER', 'MOBILE_NUMBER', 'SOCIALMEDIAHANDLE', 'STD_CODE'],
+                        'satfeed_mt_sat_common_contact__uwr_pol_ins_mbr_pa': ['ALTERNATE_EMAIL_ADDRESS', 'ALTERNATE_MOBILE_NUMBER', 'CONTACT_POINT_USAGE', 'EMAIL_ADDRESS', 'FAX_NUMBER', 'LANDLINE_NUMBER', 'MOBILE_NUMBER', 'SOCIALMEDIAHANDLE', 'STD_CODE'],
+                        'satfeed_mt_sat_common_contact__uwr_pol_ins_mbr_pa_address_prop_pv': ['ALTERNATE_EMAIL_ADDRESS', 'ALTERNATE_MOBILE_NUMBER', 'CONTACT_POINT_USAGE', 'EMAIL_ADDRESS', 'FAX_NUMBER', 'LANDLINE_NUMBER', 'MOBILE_NUMBER', 'SOCIALMEDIAHANDLE', 'STD_CODE'],
+                        'satfeed_mt_sat_common_contact__uwr_pol_ins_mbr_pp_sp_pv': ['ALTERNATE_EMAIL_ADDRESS', 'ALTERNATE_MOBILE_NUMBER', 'CONTACT_POINT_USAGE', 'EMAIL_ADDRESS', 'FAX_NUMBER', 'LANDLINE_NUMBER', 'MOBILE_NUMBER', 'SOCIALMEDIAHANDLE', 'STD_CODE'],
+                        'satfeed_mt_sat_common_contact__uwr_pol_prp_pa': ['ALTERNATE_EMAIL_ADDRESS', 'ALTERNATE_MOBILE_NUMBER', 'CONTACT_POINT_USAGE', 'EMAIL_ADDRESS', 'FAX_NUMBER', 'LANDLINE_NUMBER', 'MOBILE_NUMBER', 'SOCIALMEDIAHANDLE', 'STD_CODE'],
+                        'satfeed_mt_sat_common_contact__uwr_pol_prp_pa_address_prop_pv': ['ALTERNATE_EMAIL_ADDRESS', 'ALTERNATE_MOBILE_NUMBER', 'CONTACT_POINT_USAGE', 'EMAIL_ADDRESS', 'FAX_NUMBER', 'LANDLINE_NUMBER', 'MOBILE_NUMBER', 'SOCIALMEDIAHANDLE', 'STD_CODE'],
+                        'satfeed_mt_sat_common_contact__uwr_pol_prp_pp_sp_pv': ['ALTERNATE_EMAIL_ADDRESS', 'ALTERNATE_MOBILE_NUMBER', 'CONTACT_POINT_USAGE', 'EMAIL_ADDRESS', 'FAX_NUMBER', 'LANDLINE_NUMBER', 'MOBILE_NUMBER', 'SOCIALMEDIAHANDLE', 'STD_CODE']
                     }) }}

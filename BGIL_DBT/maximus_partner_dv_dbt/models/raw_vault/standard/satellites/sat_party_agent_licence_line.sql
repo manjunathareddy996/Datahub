@@ -12,7 +12,7 @@ source_model:
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'AUTHORISEDINDICATOR'
-  - 'EXAMINATIONREFERENCE'
+  - 'EXAMINATION_REFERENCE'
 src_hashdiff: 'HASHDIFF_PARTY_AGENT_LICENCE_LINE'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
@@ -32,5 +32,5 @@ src_record_source_map:
                     src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
                         'stg2_mp__pd_prop_msdp_pv': ['AUTHORISEDINDICATOR'],
-                        'stg2_mp__pd_prop_sp_pv': ['EXAMINATIONREFERENCE']
+                        'stg2_mp__pd_prop_sp_pv': ['EXAMINATION_REFERENCE']
                     }) }}

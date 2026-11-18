@@ -9,7 +9,7 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'EMAILADDRESS'
+      - 'EMAIL_ADDRESS'
       - 'CONTACT_POINT_TYPE'
       - 'CONTACT_PRIORITY_ORDER'
 derived_columns:
@@ -17,7 +17,7 @@ derived_columns:
   PARENT_NK: "'HUB_PARTY|' || (intermediary)"
   CONTACT_POINT_TYPE: '!email'
   CONTACT_PRIORITY_ORDER: '!1'
-  EMAILADDRESS: 'agentemailid'
+  EMAIL_ADDRESS: 'agentemailid'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
 {%- endset -%}

@@ -9,7 +9,7 @@
 source_model: 'satfeed_mp_sat__lnk_role_nominee_beneficiary'
 src_pk: 'PARTY_HKEY'
 src_payload:
-  - 'RELATIONSHIPTOINSURED'
+  - 'RELATIONSHIP_TO_INSURED'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

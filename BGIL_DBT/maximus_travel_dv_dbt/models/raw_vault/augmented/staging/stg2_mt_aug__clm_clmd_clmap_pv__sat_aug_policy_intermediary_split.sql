@@ -7,7 +7,7 @@
 -- so withdrawing a proposal is deleting a model rather than editing the standard
 -- track's wide stage. Nothing here feeds a standard satellite.
 --
--- 2 payload column(s); the child key is INTERMEDIARY_REFERENCE.
+-- 2 payload column(s); the child key is INTERMEDIARY_REFERENCE_CK.
 
 {%- set yaml_metadata -%}
 source_model: 'resolved_mt__clm_clmd_clmap_pv'
@@ -17,12 +17,12 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'COMMISSION_CHANGE_EFFECTIVE_DATE'
-      - 'INTERMEDIARY_REFERENCE'
+      - 'INTERMEDIARY_REFERENCE_CK'
       - 'SUB_CHANNEL_NAME'
 derived_columns:
   POLICY_BK: "nullif(trim(case when nullif(trim(w1_policyno),'') is not null then nullif(trim(w1_policyno), '') end),'')"
   POLICY_NK: "'HUB_POLICY|' || (nullif(trim(case when nullif(trim(w1_policyno),'') is not null then nullif(trim(w1_policyno), '') end),''))"
-  INTERMEDIARY_REFERENCE: "coalesce(nullif(trim(sub_imd_code), ''),'')"
+  INTERMEDIARY_REFERENCE_CK: "coalesce(nullif(trim(sub_imd_code), ''),'')"
   COMMISSION_CHANGE_EFFECTIVE_DATE: 'cast(null as varchar)'
   SUB_CHANNEL_NAME: 'subchannel_name'
   RECORD_SOURCE: '!MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW'

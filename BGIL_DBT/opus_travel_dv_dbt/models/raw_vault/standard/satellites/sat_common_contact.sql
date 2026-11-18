@@ -21,10 +21,10 @@ source_model:
   - 'stg2_common_contact_bjaz_trv_loader_log_table_8'
 src_pk: 'PARTY_HKEY'
 src_payload:
-  - 'EMAILADDRESS'
-  - 'FAXNUMBER'
-  - 'LANDLINENUMBER'
-  - 'MOBILENUMBER'
+  - 'EMAIL_ADDRESS'
+  - 'FAX_NUMBER'
+  - 'LANDLINE_NUMBER'
+  - 'MOBILE_NUMBER'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
@@ -49,15 +49,15 @@ src_record_source_map:
                     src_source=metadata_dict['src_source'],
                     source_model=metadata_dict['source_model'],
                     src_record_source_map=metadata_dict['src_record_source_map'],
-                    src_object_columns=['MOBILENUMBER'],
+                    src_object_columns=['MOBILE_NUMBER'],
                     src_column_map={
-                        'stg2_common_contact_bjaz_trv_loader_data_0': ['EMAILADDRESS'],
-                        'stg2_common_contact_bjaz_trv_loader_data_1': ['EMAILADDRESS'],
-                        'stg2_common_contact_bjaz_trv_loader_data_2': ['FAXNUMBER'],
-                        'stg2_common_contact_bjaz_trv_loader_data_3': ['MOBILENUMBER'],
-                        'stg2_common_contact_bjaz_trv_loader_data_4': ['LANDLINENUMBER'],
-                        'stg2_common_contact_bjaz_trv_loader_log_table_5': ['EMAILADDRESS'],
-                        'stg2_common_contact_bjaz_trv_loader_log_table_6': ['FAXNUMBER'],
-                        'stg2_common_contact_bjaz_trv_loader_log_table_7': ['MOBILENUMBER'],
-                        'stg2_common_contact_bjaz_trv_loader_log_table_8': ['LANDLINENUMBER']
+                        'stg2_common_contact_bjaz_trv_loader_data_0': ['EMAIL_ADDRESS'],
+                        'stg2_common_contact_bjaz_trv_loader_data_1': ['EMAIL_ADDRESS'],
+                        'stg2_common_contact_bjaz_trv_loader_data_2': ['FAX_NUMBER'],
+                        'stg2_common_contact_bjaz_trv_loader_data_3': ['MOBILE_NUMBER'],
+                        'stg2_common_contact_bjaz_trv_loader_data_4': ['LANDLINE_NUMBER'],
+                        'stg2_common_contact_bjaz_trv_loader_log_table_5': ['EMAIL_ADDRESS'],
+                        'stg2_common_contact_bjaz_trv_loader_log_table_6': ['FAX_NUMBER'],
+                        'stg2_common_contact_bjaz_trv_loader_log_table_7': ['MOBILE_NUMBER'],
+                        'stg2_common_contact_bjaz_trv_loader_log_table_8': ['LANDLINE_NUMBER']
                     }) }}

@@ -6,8 +6,8 @@
 select
     PARTY_HKEY,
     HASHDIFF_PARTY_EMPLOYMENT as HASHDIFF,
-    EMPLOYERNAME,
-    EMPLOYMENTSTATUS,
+    EMPLOYER_NAME,
+    EMPLOYMENT_STATUS,
     LOAD_DATETIME,
     RECORD_SOURCE
 from {{ ref('stg2_mp__pd_prop_sp_pv') }}

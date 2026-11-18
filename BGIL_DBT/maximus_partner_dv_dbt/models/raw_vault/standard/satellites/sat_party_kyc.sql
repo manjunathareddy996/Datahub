@@ -9,8 +9,8 @@
 source_model: 'satfeed_mp_sat__party_kyc'
 src_pk: 'PARTY_HKEY'
 src_payload:
-  - 'CKYCNUMBER'
-  - 'CKYCREGISTRATIONSTATUS'
+  - 'CKYC_NUMBER'
+  - 'CKYC_REGISTRATION_STATUS'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

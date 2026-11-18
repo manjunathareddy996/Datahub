@@ -6,13 +6,13 @@
 -- sources and only the payload it populates -- it does not union the sibling's models.
 --
 -- The sibling does not build this satellite, so this build ESTABLISHES its contract
--- (BUILD_RULES 7.3): bare HASHDIFF, PARTY_LOCATION_HKEY, multi-active on ADDRESS_USAGE_TYPE.
+-- (BUILD_RULES 7.3): bare HASHDIFF, PARTY_LOCATION_HKEY, multi-active on ADDRESS_USAGE_TYPE_CK.
 
 {%- set yaml_metadata -%}
 source_model: 'satfeed_mt_aug_sat_aug_party_contact_address_link'
 src_pk: 'PARTY_LOCATION_HKEY'
 src_cdk:
-  - 'ADDRESS_USAGE_TYPE'
+  - 'ADDRESS_USAGE_TYPE_CK'
 src_payload:
   - 'ADDRESS_PROOF_EFFECTIVE_DATE'
   - 'SAME_AS_CORRESPONDENCE_ADDRESS_INDICATOR'

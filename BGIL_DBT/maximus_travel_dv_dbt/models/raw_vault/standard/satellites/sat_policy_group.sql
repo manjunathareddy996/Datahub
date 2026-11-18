@@ -18,7 +18,7 @@ src_payload:
   - 'GROUP_NAME'
   - 'GROUP_TYPE'
   - 'INSURED_EMPLOYEE_CODE'
-  - 'PROGRAM_IDENTIFIER'
+  - 'PROGRAMME_IDENTIFIER'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

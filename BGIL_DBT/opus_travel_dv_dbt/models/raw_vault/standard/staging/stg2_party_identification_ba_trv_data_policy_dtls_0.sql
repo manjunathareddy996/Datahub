@@ -9,13 +9,13 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'PASSPORTNUMBER'
+      - 'PASSPORT_NUMBER'
       - 'IDENTIFICATION_TYPE_CODE'
 derived_columns:
   PARENT_BK: 'payer_part_id'
   PARENT_NK: "'HUB_PARTY|' || (payer_part_id)"
   IDENTIFICATION_TYPE_CODE: '!passport'
-  PASSPORTNUMBER: 'passport_no'
+  PASSPORT_NUMBER: 'passport_no'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
 {%- endset -%}

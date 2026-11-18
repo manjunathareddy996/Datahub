@@ -10,15 +10,15 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'DOCUMENTNAME'
-      - 'DOCUMENTTYPE'
-      - 'ISSUEDATE'
+      - 'DOCUMENT_NAME'
+      - 'DOCUMENT_TYPE'
+      - 'ISSUE_DATE'
 derived_columns:
   DOCUMENT_BK: "document_id"
   DOCUMENT_NK: "'HUB_DOCUMENT|' || (document_id)"
-  ISSUEDATE: "document_generation_date"
-  DOCUMENTNAME: "document_name"
-  DOCUMENTTYPE: "document_type"
+  ISSUE_DATE: "document_generation_date"
+  DOCUMENT_NAME: "document_name"
+  DOCUMENT_TYPE: "document_type"
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_PARTNER_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_DOCUMENT_DETAIL'
 {%- endset -%}

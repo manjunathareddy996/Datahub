@@ -9,12 +9,12 @@ hashed_columns:
   HASHDIFF_PARTY_PROVIDER_CAPABILITY:
     is_hashdiff: true
     columns:
-      - 'ACCREDITATIONINDICATOR'
-      - 'ACCREDITATIONREFERENCE'
-      - 'AVAILABLEINDICATOR'
-      - 'CAPABILITYREMARKS'
+      - 'ACCREDITATION_INDICATOR'
+      - 'ACCREDITATION_REFERENCE'
+      - 'AVAILABLE_INDICATOR'
+      - 'CAPABILITY_REMARKS'
       - 'CAPACITY'
-      - 'FACILITYCOUNT'
+      - 'FACILITY_COUNT'
 derived_columns:
   PARTY_BK: "parent_bk"
   PARTY_NK: "'HUB_PARTY|' || (parent_bk)"

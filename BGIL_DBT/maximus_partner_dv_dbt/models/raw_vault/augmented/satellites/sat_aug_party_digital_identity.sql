@@ -10,9 +10,9 @@
 source_model: 'stg2_aug_mp__pd_prop_sp_pv__party'
 src_pk: 'PARTY_HKEY'
 src_payload:
-  - 'DEVICEMAKEANDMODEL'
+  - 'DEVICE_MAKE_AND_MODEL'
   - 'PORTALACCESSSTATUS'
-  - 'USERTYPE'
+  - 'USER_TYPE'
 src_hashdiff: 'HASHDIFF_AUG_PARTY_DIGITAL_IDENTITY'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

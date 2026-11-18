@@ -13,7 +13,7 @@ src_pk: 'PARTY_HKEY'
 src_cdk:
   - 'ACTIVESEQUENCENUMBER'
 src_payload:
-  - 'LOGINIDENTIFIER'
+  - 'LOGIN_IDENTIFIER'
 src_hashdiff: 'HASHDIFF_PARTY_DIGITAL_IDENTITY'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
@@ -33,6 +33,6 @@ src_record_source_map:
                        source_model=metadata_dict['source_model'],
                        src_record_source_map=metadata_dict['src_record_source_map'],
                        src_column_map={
-                        'stg2_mp_up__pd_prop_msdp_pv__party_digital_identity': ['LOGINIDENTIFIER'],
-                        'stg2_mp_up__pd_prop_sp_pv__party_digital_identity': ['LOGINIDENTIFIER']
+                        'stg2_mp_up__pd_prop_msdp_pv__party_digital_identity': ['LOGIN_IDENTIFIER'],
+                        'stg2_mp_up__pd_prop_sp_pv__party_digital_identity': ['LOGIN_IDENTIFIER']
                        }) }}

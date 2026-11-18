@@ -23,6 +23,7 @@ Output (overwritten): BGIL_DBT/validation/SAT_COLUMN_CONSISTENCY_ALL_LOBS.xlsx, 
 from __future__ import annotations
 
 import datetime as dt
+import json
 import math
 import re
 from collections import Counter, OrderedDict, defaultdict, namedtuple
@@ -36,6 +37,7 @@ from openpyxl.utils import get_column_letter
 
 ROOT = Path(__file__).resolve().parents[2]  # BGIL_DBT
 OUT = ROOT / "validation" / "SAT_COLUMN_CONSISTENCY_ALL_LOBS.xlsx"
+DONE_FILE = Path(__file__).with_name("sat_column_done.json")  # finished sats with their pre-fix rows
 LOB_ORDER = ("PARTNER", "TRAVEL", "HEALTH", "MOTOR")  # also the baseline order of the LOB comparisons
 SYSTEM_ORDER = ("OPUS", "MAXIMUS")
 SHARED_SCHEMA = "BGIL_DATA_MODEL"
@@ -762,7 +764,7 @@ def single_project_findings(projects, defs, lex, matcher):
             for names in groups.values():
                 if len(names) > 1:
                     shown = " + ".join(n + (" [cdk]" if "CDK" in s.cols[n] else "") for n in names)
-                    rows.append((sat, shown, p.code, "Same column twice in this satellite, only underscores differ"))
+                    rows.append((sat, shown, p.code, "Two columns in one satellite whose names differ only by underscores. Check what each holds: they can be different values (child key vs payload), so renaming one to the other's name would collide"))
 
     # 2. a rare word one keystroke away from a common word (in 3+ names of 2+ projects)
     common = defaultdict(list)
@@ -1035,6 +1037,14 @@ def main():
                                 Cell("Two columns in same table", AMBER) if inf["split"] else "Name only",
                                 "; ".join(inf["differs"]), " | ".join(detail)])
 
+    # Finished columns: sat_column_done.json maps SAT -> the Name-differences rows (one per column) as they were
+    # before the fix. They are always listed, marked Done. Rows still found in the models are live and open.
+    done = json.loads(DONE_FILE.read_text()) if DONE_FILE.exists() else {}
+    for r in diff_rows:
+        r.append("")
+    for rows in done.values():
+        diff_rows.extend([list(r) + ["Done"] for r in rows])
+    diff_rows.sort(key=lambda r: (r[0], r[-1] != "Done"))
     extra = single_project_findings(projects, defs, lex, matcher)
 
     # ==================================================================== workbook
@@ -1044,7 +1054,7 @@ def main():
     wb.active.title = "Summary"
     proj_headers = [p.label for p in projects]
     widths = {"Satellite": 30, "Layer": 10, "Difference": 14, "Status": 16, "Use this name": 16, "Rename in": 11,
-              "Action": 12, "Effect": 14, "Differs between": 18, "Detail": 40, "Defined in": 11,
+              "Action": 12, "Effect": 14, "Differs between": 18, "Detail": 40, "Done": 8, "Defined in": 11,
               "Not defined in": 14, **{h: 18 for h in proj_headers}}
     data_sheet(
         wb, "Name differences",
@@ -1052,7 +1062,7 @@ def main():
         "Grey = this project does not build the satellite.  Blank = builds it, but has no such column.  "
         "[cdk] = child key.",
         ["Satellite", "Layer", "Difference"] + proj_headers
-        + ["Use this name", "Rename in", "Action", "Effect", "Differs between", "Detail"],
+        + ["Use this name", "Rename in", "Action", "Effect", "Differs between", "Detail", "Done"],
         diff_rows, widths, "D3", wrap=["Differs between"])
     data_sheet(
         wb, "All columns",
