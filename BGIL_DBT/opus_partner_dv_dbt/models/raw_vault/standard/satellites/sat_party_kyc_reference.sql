@@ -7,7 +7,7 @@
 
 -- PARTNER STANDARD-MODEL sat() for SAT_PARTY_KYC_REFERENCE (HUB_PARTY grain) -- single source.
 -- KYC: 3 KYC feeds added; converted automate_dv.sat -> sat_multi_source (same payload,
--- grain and hashdiff). The 3 KYC stages carry KYCREFERENCETYPE as NULL (merged mapping).
+-- grain and hashdiff). The 3 KYC stages carry KYC_REFERENCE_TYPE as NULL (merged mapping).
 -- KYC PARTY KEY: part_id resolved through BJAZ_T_KYC_DETAILS, same key as CP_PARTNERS:
 --   BJAZ_T_CKYC_OTP              FIELD_TYPE, FIELD_VALUE   (stage_kyc__bjaz_t_ckyc_otp)
 --   BJAZ_T_CKYC_SEARCH           SEARCH_ID                 (stage_kyc__bjaz_t_ckyc_search)
@@ -21,7 +21,7 @@ source_model:
   - 'stg2_sat_bjaz_t_ckyc_rel_persion_dtls__party_kyc_reference__related_person'
 src_pk: 'PARTY_HKEY'
 src_payload:
-  - 'KYCREFERENCETYPE'
+  - 'KYC_REFERENCE_TYPE'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
@@ -42,7 +42,7 @@ src_record_source_map:
                     source_model=metadata_dict['source_model'],
                     src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
-                        'stg2_sat_cp_partners__party_kyc_reference': ['KYCREFERENCETYPE'],
+                        'stg2_sat_cp_partners__party_kyc_reference': ['KYC_REFERENCE_TYPE'],
                         'stg2_sat_bjaz_t_ckyc_otp__party_kyc_reference': [],
                         'stg2_sat_bjaz_t_ckyc_search__party_kyc_reference': [],
                         'stg2_sat_bjaz_t_ckyc_rel_persion_dtls__party_kyc_reference__related_person': []

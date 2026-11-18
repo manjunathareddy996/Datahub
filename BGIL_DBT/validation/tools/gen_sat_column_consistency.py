@@ -42,10 +42,7 @@ LOB_ORDER = ("PARTNER", "TRAVEL", "HEALTH", "MOTOR")  # also the baseline order 
 SYSTEM_ORDER = ("OPUS", "MAXIMUS")
 SHARED_SCHEMA = "BGIL_DATA_MODEL"
 # Decisions already taken by the team that override the general rule (modeller-learnings, 2026-11-16).
-EXCEPTIONS = {
-    ("SAT_PARTY_KYC_REFERENCE", "KYCREFERENCETYPE"):
-        "team decision 2026-11-16: travel and partner keep KYCREFERENCETYPE unless you decide otherwise",
-}
+EXCEPTIONS = {}  # (satellite, name) -> note, for names the team decided to keep. None at the moment.
 
 # =====================================================================================================
 # Naming knowledge. Used only to RECOGNISE a variant; nothing is renamed by this script.

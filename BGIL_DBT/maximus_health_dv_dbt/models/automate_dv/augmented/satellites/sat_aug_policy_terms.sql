@@ -5,7 +5,7 @@
 source_model: 'stg2_aug_policy_terms'
 src_pk: 'POLICY_HKEY'
 src_payload:
-  - 'POLICY_EXCLUSION_DESCRIPTION'
+  - 'POLICY_EXCLUSIONS_DESCRIPTION'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

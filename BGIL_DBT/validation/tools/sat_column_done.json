@@ -997,6 +997,24 @@
    "Two columns in same table",
    "Travel vs Partner; Health vs Partner",
    null
+  ],
+  [
+   "SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS",
+   "augmented",
+   "Extra word",
+   null,
+   null,
+   null,
+   "RELATIONSHIP_TO_PRIMARY_INSURED",
+   "RELATIONSHIP_TO_INSURED",
+   "RELATIONSHIP_TO_PRIMARY_INSURED",
+   null,
+   "RELATIONSHIP_TO_PRIMARY_INSURED",
+   "OH",
+   "Check, then rename",
+   "Two columns in same table",
+   "Health vs Travel; Health: MAXIMUS vs OPUS",
+   "RELATIONSHIP_TO_PRIMARY_INSURED / RELATIONSHIP_TO_INSURED: extra word PRIMARY"
   ]
  ],
  "SAT_AUG_PARTY_KYC": [
@@ -5625,6 +5643,66 @@
    "Two columns in same table",
    "Health vs Travel",
    "MEMBER_SEQUENCE / MEMBER_SEQUENCE_CK: _CK on one side only | MEMBER_SEQUENCE_CK and MEMBER_SEQUENCE are used equally, MEMBER_SEQUENCE_CK picked"
+  ]
+ ],
+ "SAT_PARTY_KYC_REFERENCE": [
+  [
+   "SAT_PARTY_KYC_REFERENCE",
+   "standard",
+   "Underscores",
+   "KYCREFERENCETYPE",
+   null,
+   null,
+   "KYCREFERENCETYPE [cdk]",
+   null,
+   null,
+   "KYC_REFERENCE_TYPE",
+   "KYC_REFERENCE_TYPE",
+   "OP, MT",
+   "Check, then rename",
+   "Two columns in same table",
+   "Motor vs Partner; Motor vs Travel",
+   "team decision 2026-11-16: travel and partner keep KYCREFERENCETYPE unless you decide otherwise"
+  ]
+ ],
+ "SAT_AUG_DOCUMENT_DEFINITION": [
+  [
+   "SAT_AUG_DOCUMENT_DEFINITION",
+   "augmented",
+   "Extra word",
+   null,
+   null,
+   null,
+   null,
+   "PROOF_OF_DELIVERY_NUMBER",
+   "COURIER_PROOF_OF_DELIVERY_NUMBER",
+   null,
+   "PROOF_OF_DELIVERY_NUMBER",
+   "MH",
+   "Check, then rename",
+   "Name only",
+   "Health: MAXIMUS vs OPUS",
+   "PROOF_OF_DELIVERY_NUMBER / COURIER_PROOF_OF_DELIVERY_NUMBER: extra word COURIER"
+  ]
+ ],
+ "SAT_AUG_POLICY_TERMS": [
+  [
+   "SAT_AUG_POLICY_TERMS",
+   "augmented",
+   "Spelling",
+   null,
+   null,
+   null,
+   null,
+   "POLICY_EXCLUSIONS_DESCRIPTION",
+   "POLICY_EXCLUSION_DESCRIPTION",
+   null,
+   "POLICY_EXCLUSIONS_DESCRIPTION",
+   "MH",
+   "Check, then rename",
+   "Name only",
+   "Health: MAXIMUS vs OPUS",
+   "POLICY_EXCLUSIONS_DESCRIPTION / POLICY_EXCLUSION_DESCRIPTION: EXCLUSIONS / EXCLUSION (singular/plural)"
   ]
  ]
 }

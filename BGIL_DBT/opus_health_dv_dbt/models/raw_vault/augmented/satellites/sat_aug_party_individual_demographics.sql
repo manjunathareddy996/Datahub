@@ -5,7 +5,7 @@
 source_model: 'stg2_aug_party_individual_demographics'
 src_pk: 'PARTY_HKEY'
 src_payload:
-  - 'RELATIONSHIP_TO_INSURED'
+  - 'RELATIONSHIP_TO_PRIMARY_INSURED'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

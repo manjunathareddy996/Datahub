@@ -8,7 +8,7 @@
 -- Null-padded TO THE SATELLITE, not to this feeder (BUILD_RULES.md 6): 1 of 1
 -- payload column(s) are not carried by BJAZ_T_CKYC_OTP and are emitted as a typed NULL so
 -- the HASHDIFF column list is identical across every branch of the union.
--- Padded: KYCREFERENCETYPE.
+-- Padded: KYC_REFERENCE_TYPE.
 --
 -- DEC-08 / BDEC-01: this scope's grain for SAT_PARTY_KYC_REFERENCE is BASELINE_GRAIN_SINGLE_ACTIVE_UNDER_KEYED.
 -- data_7 declares this satellite MULTI-ACTIVE on childkey 'KYC Reference Type', and this scope
@@ -30,11 +30,11 @@ hashed_columns:
   HASHDIFF:
     is_hashdiff: true
     columns:
-      - 'KYCREFERENCETYPE'
+      - 'KYC_REFERENCE_TYPE'
 derived_columns:
   PARENT_BK: 'part_id'
   PARENT_NK: "'HUB_PARTY|' || (part_id)"
-  KYCREFERENCETYPE: "cast(null as varchar)"
+  KYC_REFERENCE_TYPE: "cast(null as varchar)"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_CKYC_OTP'
 {%- endset -%}

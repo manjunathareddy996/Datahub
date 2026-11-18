@@ -17,6 +17,8 @@ other (shared upstream file) are applied together or not at all.  Files are read
 line endings stay as they are.  Finished rows are appended to sat_column_done.json.
 
     apply_sat_renames.py [--kinds "Underscores,_CK suffix"] [--limit N] [--fix PROJ:SAT:OLD:NEW ...] [--apply]
+    apply_sat_renames.py --differs "MAXIMUS vs OPUS" --kinds "Extra word,Spelling" [--apply]
+        only rows whose 'Differs between' cell contains the text (any --kinds value works with it)
     apply_sat_renames.py --drop-ck [--apply]     rows whose Difference involves _CK: every project that has
         the name with _CK (or with other underscore differences) is renamed to the plain name WITHOUT _CK.
         A row is skipped when the plain name already exists in that satellite (collision).
@@ -38,7 +40,7 @@ DIRS = {"OP": "opus_partner_dv_dbt", "MP": "maximus_partner_dv_dbt", "OT": "opus
 CODES = list(DIRS)
 UPSTREAM = ("stg2", "satfeed", "stitch", "unpivot")
 # Team decisions that override the sheet (modeller-learnings 2026-11-16): never rename these automatically.
-KEEP = {("SAT_PARTY_KYC_REFERENCE", "KYCREFERENCETYPE")}
+KEEP = set()   # 2026-11-18: user lifted the SAT_PARTY_KYC_REFERENCE / KYCREFERENCETYPE exception
 
 
 def arg(name, default=None):
@@ -247,7 +249,10 @@ def main():
     wbrows = [r for r in ws.iter_rows(min_row=3, values_only=True) if not r[-1]][:limit]
     work = []                                            # (key, row or None, [(code, sat, old, new)])
     drop_ck = "--drop-ck" in sys.argv
+    differs = arg("--differs")
     for r in wbrows:
+        if differs and differs not in (r[14] or ""):
+            continue
         sat, kind, new, rin = r[0], r[2], r[10], r[11]
         cells = {c: (r[3 + i] or "").replace(" [cdk]", "") for i, c in enumerate(CODES) if r[3 + i]}
         if drop_ck:
@@ -272,6 +277,10 @@ def main():
             print("KEEP", sat, "(team decision, not renamed)")
             continue
         items = [(c.strip(), sat, cells[c.strip()], new) for c in rin.split(",")]
+        clash = [c for c, _, _, n in items if n in sat_columns(c, sat)]
+        if clash:
+            print(f"CLASH {sat}: {new} already exists in {clash}; row left open")
+            continue
         work.append((len(work), r, items))
     for spec in args("--fix"):
         code, sat, old, new = spec.split(":")

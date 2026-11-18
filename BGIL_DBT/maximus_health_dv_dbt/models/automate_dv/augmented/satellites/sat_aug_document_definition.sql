@@ -5,7 +5,7 @@
 source_model: 'stg2_aug_document_definition'
 src_pk: 'DOCUMENT_HKEY'
 src_payload:
-  - 'COURIER_PROOF_OF_DELIVERY_NUMBER'
+  - 'PROOF_OF_DELIVERY_NUMBER'
   - 'SECONDARY_DOCUMENT_TYPE'
   - 'SENDER_DISPATCH_REFERENCE_NUMBER'
 src_hashdiff: 'HASHDIFF'

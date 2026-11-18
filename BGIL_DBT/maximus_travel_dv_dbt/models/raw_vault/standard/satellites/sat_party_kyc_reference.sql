@@ -16,7 +16,7 @@ source_model:
   - 'satfeed_mt_sat_party_kyc_reference__uwr_pol_prp_pp_sp_pv'
 src_pk: 'PARTY_HKEY'
 src_cdk:
-  - 'KYCREFERENCETYPE'
+  - 'KYC_REFERENCE_TYPE'
 src_payload:
   - 'VERIFICATION_STATUS'
 src_hashdiff: 'HASHDIFF'
