@@ -190,7 +190,7 @@ union and stitch families in the project.
 - **Satellite file naming: `sat_<name>.sql`** — do **not** prefix the satellite model name with the
   source/LOB segment (no `sat_<source>_<name>`, e.g. use `sat_party`, `sat_aug_location`, not
   `sat_partner_party`). The source/LOB is **not** carried in the model name; it is carried only in
-  the `RECORD_SOURCE` value (see the record-source prefix rule below). When two projects share a
+  the `RECORD_SOURCE` value (`<SYSTEM>_<LOB>_<SOURCE_TABLE>` — see the record-source format rule below). When two projects share a
   tree and write the same physical satellite, they use the same un-prefixed model name — the
   per-source disambiguation lives entirely in `RECORD_SOURCE`, not the file name.
 - **Multi-source satellites — prefer the custom `sat_multi_source` / `ma_sat_multi_source`
@@ -466,24 +466,27 @@ source ~6 times. Collapse all deltas into a single `affected_keys` set and do ex
 pass.
 
 **Watermark is scoped per source system (when `target_sat` is passed).** A stitch is
-single-system by design — every `source_tag` in one stitch shares the same `<SYSTEM>_` prefix
-(`OPUS_AZBJ_...`, `OPUS_BJAZ_...` → system `OPUS`). The macro derives that group as the text
-before the first `_` in `source_tag`, **validates every source shares it** (mixed prefixes or a
+single-system, single-LOB by design — every `source_tag` in one stitch shares the same
+`<SYSTEM>_<LOB>_` prefix (`OPUS_PARTNER_AZBJ_...`, `OPUS_PARTNER_BJAZ_...` → group `OPUS_PARTNER`;
+`OPUS_TRAVEL_BJAZ_...` → group `OPUS_TRAVEL`). The macro derives that group as the system + LOB
+tokens at the start of `source_tag` (matching the `src_record_source_map` group used by the
+downstream sat), **validates every source shares it** (mixed prefixes or a
 malformed `source_tag` raise a compile error), and scopes the `from_date` watermark query to that
 system's rows in the shared target sat:
 ```sql
 SELECT COALESCE(MAX(DBT_RUN_TS), TO_TIMESTAMP_NTZ('1900-01-01')) AS mx
 FROM {{ target_sat }}
-WHERE RECORD_SOURCE LIKE '<GROUP>_%'
+WHERE RECORD_SOURCE LIKE '<GROUP>_%'      -- <GROUP> = <SYSTEM>_<LOB>, e.g. 'OPUS_PARTNER'
 ```
-This matters because the target sat is written by **multiple** stitches (one per system) through
-`sat_multi_source`. Without the `LIKE '<GROUP>_%'` filter, an OPUS stitch's `MAX(DBT_RUN_TS)` would
-pick up a more-recent MAXIMUS load into the same sat and wrongly conclude OPUS is caught up,
-skipping its own new source rows. The filter keeps each stitch reading only its own system's
-high-water mark. No new parameter is needed — the group comes from the `source_tag` you already
-pass. This pairs with the `sat_multi_source` change that **stopped re-prepending** the group to
-`RECORD_SOURCE` (the value already carries the system prefix, so stored values are `OPUS_<TABLE>`,
-not `OPUS_OPUS_<TABLE>`), so both layers' `LIKE '<GROUP>_%'` filters match the stored values.
+This matters because the target sat is written by **multiple** stitches (one per system and LOB)
+through `sat_multi_source`. Without the `LIKE '<GROUP>_%'` filter, an OPUS_PARTNER stitch's
+`MAX(DBT_RUN_TS)` would pick up a more-recent OPUS_TRAVEL or MAXIMUS_PARTNER load into the same
+sat and wrongly conclude OPUS_PARTNER is caught up, skipping its own new source rows. The filter
+keeps each stitch reading only its own system+LOB high-water mark. No new parameter is needed —
+the group comes from the `source_tag` you already pass. The macro **does not re-prepend** the
+group to `RECORD_SOURCE` (the value already carries the `<SYSTEM>_<LOB>_` prefix, so stored values
+are `OPUS_PARTNER_<TABLE>`, not `OPUS_PARTNER_OPUS_PARTNER_<TABLE>`), so both layers'
+`LIKE '<GROUP>_%'` filters match the stored values.
 
 > Open item (deferred): `sat_multi_source` re-applies a `LOAD_DATETIME` window on top of the one
 > the stitch already applied. For a steady-state stitch input that time window is largely
@@ -717,7 +720,8 @@ contributes its own rows to the sat (one row per `(src_pk, record_source)`). Whe
 tables each hold *one logical value* of the same attribute for a party and you want them folded
 into a single row keyed by source table rather than fanned out as separate record-source rows,
 pass those payload columns as `src_object_columns`. The macro then:
-- regroups to one row per `(src_pk, source group)` (record source becomes `'<GROUP>_MULTI'`),
+- regroups to one row per `(src_pk, source group)` (record source becomes `'<GROUP>_MULTI'`, e.g.
+  `OPUS_PARTNER_MULTI`),
 - first collapses each `(src_pk, group, source_table)` to one value (`MAX`) so `OBJECT_AGG` never
   sees a duplicate key,
 - emits each object column as `OBJECT_AGG(source_table, TO_VARIANT(value))` — a map from
@@ -733,13 +737,16 @@ source provides the full `src_payload`. Deriving the map from the mapping workbo
 whatever columns happen to exist) is what keeps the §2b reconciliation gate honest.
 
 **`src_record_source_map` is now REQUIRED for `sat_multi_source` whenever `source_model` is a list.**
-It maps each source model to its logical source-system group (`model → 'OPUS'` / `'MAXIMUS'` / …).
+It maps each source model to its logical source-system **+ LOB** group (`model → 'OPUS_PARTNER'` /
+`'OPUS_TRAVEL'` / `'MAXIMUS_PARTNER'` / `'MAXIMUS_TRAVEL'` / …).
 The macro uses it to
-(a) compute the per-source-system `MAX(DBT_RUN_TS)` watermark (see above) and (b) prefix the emitted
-`RECORD_SOURCE` as `'<GROUP>_' || <source's RECORD_SOURCE>`. The map must cover every entry in
+(a) compute the per-source-system `MAX(DBT_RUN_TS)` watermark (see above) and (b) identify the source
+table inside the OBJECT branch (`REGEXP_REPLACE(RECORD_SOURCE, '^<GROUP>_', '')`). The emitted
+`RECORD_SOURCE` is the stg2 value passed through unchanged — the macro does **not** prepend the group. The map must cover every entry in
 `source_model` with a non-empty value or the macro raises a compile error. Derive the group from the
-source's `RECORD_SOURCE` literal in its stg2 model (`!OPUS_...` → `'OPUS'`, `!MAXIMUS_...` →
-`'MAXIMUS'`). A single-string `source_model` (the `automate_dv.sat()` delegation path) does not need
+source's `RECORD_SOURCE` literal in its stg2 model (`!OPUS_PARTNER_...` → `'OPUS_PARTNER'`,
+`!OPUS_TRAVEL_...` → `'OPUS_TRAVEL'`, `!MAXIMUS_PARTNER_...` → `'MAXIMUS_PARTNER'`,
+`!MAXIMUS_TRAVEL_...` → `'MAXIMUS_TRAVEL'`). A single-string `source_model` (the `automate_dv.sat()` delegation path) does not need
 it. **`ma_sat_multi_source` requires it too** — it is always a list path, and the macro raises the
 same compile error if the map is missing or does not cover every source; it drives the per-source-
 group watermark scope identically.
@@ -764,8 +771,8 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_..._a: 'OPUS'
-  stg2_..._b: 'OPUS'
+  stg2_..._a: 'OPUS_PARTNER'
+  stg2_..._b: 'OPUS_PARTNER'
 {%- endset -%}
 {% set metadata_dict = fromyaml(yaml_metadata) %}
 {{ sat_multi_source(src_pk=metadata_dict['src_pk'],
@@ -810,7 +817,7 @@ is missing or not a mapping — and uses it to scope the per-source-group `MAX(D
 | `src_ldts` | yes | Load-datetime / watermark column on each source, usually `'LOAD_DATETIME'` |
 | `src_source` | yes | Record-source column, usually `'RECORD_SOURCE'` |
 | `source_model` | yes | String (→ delegates to `automate_dv.sat()`) or list of stg2 model names |
-| `src_record_source_map` | yes (both macros) | `model → source-system group` (`'OPUS'`/`'MAXIMUS'`/…); drives the per-source-system watermark (`LIKE '<GROUP>_%'`) and, for `sat_multi_source`, the `RECORD_SOURCE` prefix. Required for `sat_multi_source`'s list path and **always** for `ma_sat_multi_source` |
+| `src_record_source_map` | yes (both macros) | `model → source-system group` (`'OPUS_PARTNER'`/`'OPUS_TRAVEL'`/`'MAXIMUS_PARTNER'`/`'MAXIMUS_TRAVEL'`/…); drives the per-source-system watermark (`LIKE '<GROUP>_%'`) and, for `sat_multi_source`, the `RECORD_SOURCE` prefix. Required for `sat_multi_source`'s list path and **always** for `ma_sat_multi_source` |
 | `src_column_map` | recommended | `model → [columns it provides]`; skips per-source introspection and is how §2b fan-in is made explicit |
 | `src_extra_columns` | no | Extra non-payload columns to carry through |
 | `src_eff` | `sat_` only | Effective-from column if the satellite is effectivity-tracked |
@@ -826,7 +833,7 @@ is missing or not a mapping — and uses it to scope the per-source-group `MAX(D
   per-source-group), unlike a plain single-source `automate_dv.sat()`.
 - `src_record_source_map` must map **every** list entry to a non-empty group, or the macro raises a
   compile error. The group value must match the `RECORD_SOURCE` literal prefix in the source's stg2
-  model (`!OPUS_...` → `'OPUS'`), because the watermark lookup filters `RECORD_SOURCE LIKE '<GROUP>_%'` —
+  model (`!OPUS_PARTNER_...` → `'OPUS_PARTNER'`), because the watermark lookup filters `RECORD_SOURCE LIKE '<GROUP>_%'` —
   a mismatched group silently reads a `1900-01-01` watermark and reprocesses everything each run.
 - Keep `src_payload` the authoritative superset and let `src_column_map` say who provides what —
   don't rely on relation introspection for the source-of-truth column set, or a mapped column that
@@ -890,15 +897,18 @@ is missing or not a mapping — and uses it to scope the per-source-group `MAX(D
     every sibling target, and the file no longer matches its generator. Symptom: a file whose
     content cannot be reproduced from the mapping. Fix: change the generator or its mapping
     input, regenerate, re-verify.
-12. **Record-source prefix drift (missing source-system prefix)** — a `RECORD_SOURCE` (`!`-derived
+12. **Record-source prefix drift (missing `<SYSTEM>_<LOB>_` prefix)** — a `RECORD_SOURCE` (`!`-derived
     column in `stg2` stages) or `source_tag` (stitch source dicts) literal built without the
-    project's standard source-system prefix, e.g. `!CP_PARTNERS` instead of `!OPUS_CP_PARTNERS`.
-    Every record-source literal in a project must carry the **same** prefix (`OPUS_` here — the
-    source system feeding the raw layer); one un-prefixed value pollutes lineage/audit and breaks
+    project's standard `<SYSTEM>_<LOB>_` prefix, e.g. `!CP_PARTNERS` or the legacy `!OPUS_CP_PARTNERS`
+    instead of `!OPUS_PARTNER_CP_PARTNERS`. Every record-source literal in a project must carry the
+    **same** prefix (e.g. `OPUS_PARTNER_` for `opus_partner_dv_dbt`, `OPUS_TRAVEL_` for
+    `opus_travel_dv_dbt`, `MAXIMUS_PARTNER_` / `MAXIMUS_TRAVEL_` for the Maximus projects — the
+    raw-ingestion source system plus the project's LOB); one un-prefixed value pollutes lineage/audit and breaks
     any downstream filter or dedupe keyed on record source. It passes every structural check
     silently because the value is still a valid string. Fix: normalize to the project's prefix.
-    Confirm the prefix per project (it's the raw-ingestion source system, not a universal
-    constant) and add it as a build-gate: the distinct set of record-source literals across
+    Confirm the prefix per project (source system + LOB, not a universal
+    constant; the old `<SYSTEM>_<TABLE>` form is legacy and must be backfilled — see
+    `validation/record_source_lob_backfill.sql`) and add it as a build-gate: the distinct set of record-source literals across
     `stg2_*` (`RECORD_SOURCE:`) and stitch (`'source_tag':`) files must all begin with that one
     prefix — any literal without it fails the build, naming the file.
 13. **Redundant `_HIST` source built alongside its current counterpart** — a source table exists
@@ -925,11 +935,21 @@ is missing or not a mapping — and uses it to scope the per-source-group `MAX(D
 - Parent business-key column naming: `PARENT_BK`/`PARENT_NK` vs project-specific naming.
 - Satellite file naming: `sat_<name>.sql` (NO source/LOB prefix, e.g. `sat_party` not `sat_partner_party`). The source/LOB is carried only in `RECORD_SOURCE`, never in the model name.
 - Namespaced hashing formula: `hash('{CODE}|' || raw_key)`.
-- Record-source prefix: every `RECORD_SOURCE` literal (`stg2` stages) and `source_tag` (stitch
-  source dicts) must carry the project's source-system prefix (`OPUS_` here — the raw-ingestion
-  source system, `!OPUS_<TABLE>` in stages / `OPUS_<TABLE>` in stitch tags). One un-prefixed
-  literal breaks record-source lineage silently (defect class #12). Confirm the prefix from the
-  project's existing stages and gate that the distinct set of record-source literals all share it.
+- Record-source format: **`<SYSTEM>_<LOB>_<SOURCE_TABLE>`** (e.g. `OPUS_PARTNER_BJAZ_INTERMEDIARY`,
+  `OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA`, `MAXIMUS_TRAVEL_<TABLE>`). The last segment is the raw source
+  table, **not** the satellite name — several sats can share one source table. Every `RECORD_SOURCE`
+  literal (`stg2` stages: `!OPUS_TRAVEL_<TABLE>`) and `source_tag` (stitch source dicts:
+  `OPUS_TRAVEL_<TABLE>`) must carry the project's `<SYSTEM>_<LOB>_` prefix, and
+  `src_record_source_map` values are that same `<SYSTEM>_<LOB>` group. Valid groups today:
+  `OPUS_PARTNER`, `OPUS_TRAVEL`, `MAXIMUS_PARTNER`, `MAXIMUS_TRAVEL`. One un-prefixed or
+  old-format (`<SYSTEM>_<TABLE>`) literal breaks record-source lineage and the per-group watermark
+  silently (defect class #12). Confirm the prefix from the project's existing stages and gate that
+  the distinct set of record-source literals all share it.
+  **Migration:** when switching an existing build from `<SYSTEM>_<TABLE>` to this format, run
+  `validation/record_source_lob_backfill.sql` (and the travel variant under
+  `validation/travel/backfill/`) on every vault table first. Otherwise the `LIKE '<GROUP>_%'`
+  watermark finds no rows, falls back to `1900-01-01`, reprocesses everything and writes duplicate
+  rows under the new prefix next to the legacy ones.
 - `_HIST` vs current source: when a source table exists in both a history (`*_HIST`) and a current
   form, **do not build the `_HIST` table** — it is a redundant snapshot of the same keys the
   current table carries (defect class #13). Map every `_HIST` source to its de-`hist` counterpart,
