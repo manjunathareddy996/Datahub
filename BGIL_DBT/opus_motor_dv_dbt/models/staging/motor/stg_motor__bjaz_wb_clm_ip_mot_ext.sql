@@ -24,7 +24,7 @@ with source as (
         nullif(trim(to_varchar("CLM_TYPE")), '') as clm_type,
         nullif(trim(to_varchar("CLAIMANT_STATUS")), '') as claimant_status,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_WB_CLM_IP_MOT_EXT') }}
+    from {{ source('motor_test_raw', 'BJAZ_WB_CLM_IP_MOT_EXT') }}
 
 )
 

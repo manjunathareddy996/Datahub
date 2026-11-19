@@ -20,7 +20,7 @@ with source as (
         nullif(trim(to_varchar("EFFECTIVE_DATE")), '') as effective_date,
         nullif(trim(to_varchar("STATUS")), '') as status,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_MOT_COMM_CAPPPING_MASTER') }}
+    from {{ source('motor_test_raw', 'BJAZ_MOT_COMM_CAPPPING_MASTER') }}
 
 )
 

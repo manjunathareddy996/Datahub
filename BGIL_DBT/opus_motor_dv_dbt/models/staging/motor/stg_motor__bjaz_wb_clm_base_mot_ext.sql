@@ -105,7 +105,7 @@ with source as (
         nullif(trim(to_varchar("REQ_FULFILLED_CUST")), '') as req_fulfilled_cust,
         nullif(trim(to_varchar("REQ_FULFILLED_DATE")), '') as req_fulfilled_date,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_WB_CLM_BASE_MOT_EXT') }}
+    from {{ source('motor_test_raw', 'BJAZ_WB_CLM_BASE_MOT_EXT') }}
 
 )
 

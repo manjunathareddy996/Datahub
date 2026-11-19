@@ -52,7 +52,7 @@ with source as (
         nullif(trim(to_varchar("LOSS_TYPE")), '') as loss_type,
         nullif(trim(to_varchar("CAUSE_TYPE")), '') as cause_type,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_WS_MOTCLM_DETAILS') }}
+    from {{ source('motor_test_raw', 'BJAZ_WS_MOTCLM_DETAILS') }}
 
 )
 

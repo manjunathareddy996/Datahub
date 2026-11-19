@@ -22,7 +22,7 @@ with source as (
         nullif(trim(to_varchar("VEHICLE_TYPE_CODE")), '') as vehicle_type_code,
         nullif(trim(to_varchar("DM_RECORD_DATE")), '') as dm_record_date,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_RTA_STATUS_MASTER') }}
+    from {{ source('motor_test_raw', 'BJAZ_RTA_STATUS_MASTER') }}
 
 )
 

@@ -33,7 +33,7 @@ with source as (
         nullif(trim(to_varchar("NET_PREM")), '') as net_prem,
         nullif(trim(to_varchar("NCB_CLAIM")), '') as ncb_claim,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_MOT_RNW_LOADER_DATA') }}
+    from {{ source('motor_test_raw', 'BJAZ_MOT_RNW_LOADER_DATA') }}
 
 )
 

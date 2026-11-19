@@ -31,7 +31,7 @@ with source as (
         nullif(trim(to_varchar("EXT_COL11")), '') as ext_col11,
         nullif(trim(to_varchar("EXT_COL12")), '') as ext_col12,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_MOT_TAC_DTLS') }}
+    from {{ source('motor_test_raw', 'BJAZ_MOT_TAC_DTLS') }}
 
 )
 

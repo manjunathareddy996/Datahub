@@ -18,7 +18,7 @@ with source as (
         nullif(trim(to_varchar("MAXIMUS_PROCESS_DATE")), '') as maximus_process_date,
         nullif(trim(to_varchar("GG_CHANGE_DATE")), '') as gg_change_date,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'VEHICLE_BLOCK_MASTER') }}
+    from {{ source('motor_test_raw', 'VEHICLE_BLOCK_MASTER') }}
 
 )
 

@@ -22,7 +22,7 @@ with source as (
         nullif(trim(to_varchar("NO_OF_CLAIMS")), '') as no_of_claims,
         nullif(trim(to_varchar("GG_CHANGE_DATE")), '') as gg_change_date,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_MOT_INS_HST_EXTN') }}
+    from {{ source('motor_test_raw', 'BJAZ_MOT_INS_HST_EXTN') }}
 
 )
 

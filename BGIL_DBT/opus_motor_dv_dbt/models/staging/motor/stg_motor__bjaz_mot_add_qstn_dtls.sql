@@ -47,7 +47,7 @@ with source as (
         nullif(trim(to_varchar("DRV_OFFENCE_CNT")), '') as drv_offence_cnt,
         nullif(trim(to_varchar("CLAIM_OFFENCE_CNT")), '') as claim_offence_cnt,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_MOT_ADD_QSTN_DTLS') }}
+    from {{ source('motor_test_raw', 'BJAZ_MOT_ADD_QSTN_DTLS') }}
 
 )
 

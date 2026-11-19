@@ -15,7 +15,7 @@ with source as (
         nullif(trim(to_varchar("PROD_NAME")), '') as prod_name,
         nullif(trim(to_varchar("USER_ID")), '') as user_id,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_MOT_PROD_UIN_MAPPING') }}
+    from {{ source('motor_test_raw', 'BJAZ_MOT_PROD_UIN_MAPPING') }}
 
 )
 

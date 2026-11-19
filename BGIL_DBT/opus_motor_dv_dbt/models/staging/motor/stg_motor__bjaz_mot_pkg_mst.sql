@@ -23,7 +23,7 @@ with source as (
         nullif(trim(to_varchar("P_RNW_YN")), '') as p_rnw_yn,
         nullif(trim(to_varchar("NCB_DISC_YN")), '') as ncb_disc_yn,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_MOT_PKG_MST') }}
+    from {{ source('motor_test_raw', 'BJAZ_MOT_PKG_MST') }}
 
 )
 

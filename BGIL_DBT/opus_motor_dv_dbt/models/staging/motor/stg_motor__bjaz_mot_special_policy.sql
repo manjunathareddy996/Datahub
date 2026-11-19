@@ -12,7 +12,7 @@ with source as (
         nullif(trim(to_varchar("POL_TYPE")), '') as pol_type,
         nullif(trim(to_varchar("BASIC_MOT_POLICY")), '') as basic_mot_policy,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_MOT_SPECIAL_POLICY') }}
+    from {{ source('motor_test_raw', 'BJAZ_MOT_SPECIAL_POLICY') }}
 
 )
 

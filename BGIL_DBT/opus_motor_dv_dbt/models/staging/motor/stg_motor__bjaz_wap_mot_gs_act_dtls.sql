@@ -30,7 +30,7 @@ with source as (
         nullif(trim(to_varchar("LONGITUDE")), '') as longitude,
         nullif(trim(to_varchar("GOOGLE_ADD")), '') as google_add,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_WAP_MOT_GS_ACT_DTLS') }}
+    from {{ source('motor_test_raw', 'BJAZ_WAP_MOT_GS_ACT_DTLS') }}
 
 )
 

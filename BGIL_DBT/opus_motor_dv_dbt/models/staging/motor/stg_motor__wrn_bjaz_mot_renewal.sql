@@ -66,7 +66,7 @@ with source as (
         nullif(trim(to_varchar("TAX_DESC")), '') as tax_desc,
         nullif(trim(to_varchar("CESS_TOTAL")), '') as cess_total,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'WRN_BJAZ_MOT_RENEWAL') }}
+    from {{ source('motor_test_raw', 'WRN_BJAZ_MOT_RENEWAL') }}
 
 )
 

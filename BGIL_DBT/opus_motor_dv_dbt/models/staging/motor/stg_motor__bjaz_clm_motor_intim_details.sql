@@ -48,7 +48,7 @@ with source as (
         nullif(trim(to_varchar("INSURED_PANNO")), '') as insured_panno,
         nullif(trim(to_varchar("VEHICLE_LEFT_YN")), '') as vehicle_left_yn,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_CLM_MOTOR_INTIM_DETAILS') }}
+    from {{ source('motor_test_raw', 'BJAZ_CLM_MOTOR_INTIM_DETAILS') }}
 
 )
 

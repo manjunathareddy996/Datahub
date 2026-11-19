@@ -30,7 +30,7 @@ with source as (
         nullif(trim(to_varchar("GG_CHANGE_DATE")), '') as gg_change_date,
         nullif(trim(to_varchar("UNIQ_UUI")), '') as uniq_uui,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_IIB_SUDARS_POLICY_DTL_HST_QM') }}
+    from {{ source('motor_test_raw', 'BJAZ_IIB_SUDARS_POLICY_DTL_HST_QM') }}
 
 )
 

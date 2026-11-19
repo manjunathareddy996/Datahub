@@ -42,7 +42,7 @@ with source as (
         nullif(trim(to_varchar("PIN_CONDITION")), '') as pin_condition,
         nullif(trim(to_varchar("VEHICLE_TYPE")), '') as vehicle_type,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_WAP_MOT_ADD_QSTN_DTLS') }}
+    from {{ source('motor_test_raw', 'BJAZ_WAP_MOT_ADD_QSTN_DTLS') }}
 
 )
 

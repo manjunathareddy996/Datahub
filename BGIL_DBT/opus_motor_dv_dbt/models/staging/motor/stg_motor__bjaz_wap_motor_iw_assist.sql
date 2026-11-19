@@ -13,7 +13,7 @@ with source as (
         nullif(trim(to_varchar("UPDATE_ON")), '') as update_on,
         nullif(trim(to_varchar("SOS_ID")), '') as sos_id,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_WAP_MOTOR_IW_ASSIST') }}
+    from {{ source('motor_test_raw', 'BJAZ_WAP_MOTOR_IW_ASSIST') }}
 
 )
 

@@ -10,7 +10,7 @@ with source as (
         nullif(trim(to_varchar("UPDATED_BY")), '') as updated_by,
         nullif(trim(to_varchar("UPDATED_ON")), '') as updated_on,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_MOT_CLM_CDC_REVIEWER_DTLS') }}
+    from {{ source('motor_test_raw', 'BJAZ_MOT_CLM_CDC_REVIEWER_DTLS') }}
 
 )
 

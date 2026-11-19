@@ -31,7 +31,7 @@ with source as (
         nullif(trim(to_varchar("MAKE_CODE")), '') as make_code,
         nullif(trim(to_varchar("MODEL_CODE")), '') as model_code,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_MOT_GEN_RATE_MASTER') }}
+    from {{ source('motor_test_raw', 'BJAZ_MOT_GEN_RATE_MASTER') }}
 
 )
 

@@ -12,7 +12,7 @@ with source as (
         nullif(trim(to_varchar("INSERTED_BY")), '') as inserted_by,
         nullif(trim(to_varchar("RECORD_DATE")), '') as record_date,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_MOT_TP_GST_APPLICABLE_PRD') }}
+    from {{ source('motor_test_raw', 'BJAZ_MOT_TP_GST_APPLICABLE_PRD') }}
 
 )
 

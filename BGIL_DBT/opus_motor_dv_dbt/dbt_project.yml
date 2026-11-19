@@ -15,12 +15,13 @@ clean-targets:
   - "target"
   - "dbt_packages"
 
-# Raw source location: the OPUS GG replica that opus_partner_dv_dbt and opus_travel_dv_dbt
-# point their *_raw sources at. Not yet confirmed for the motor tables: run
-# analyses/round1_raw_source_check.sql first.
+# Raw source locations, as in opus_partner_dv_dbt / opus_travel_dv_dbt: motor_raw is the OPUS GG replica,
+# motor_test_raw the year-to-date test copies (analyses/motor_test_raw_ytd_copy.sql). stg1 reads motor_test_raw.
 vars:
   motor_raw_database: BAGIC_PROD_MIRROR_DB
   motor_raw_schema: OPUS_GG_DWHSTAGE
+  motor_test_raw_database: BAGIC_PREPROD_CURATED_DB
+  motor_test_raw_schema: UTILS
 
 
 # Shared vault: every layer lands in BGIL_DATA_MODEL, the schema the opus_partner, opus_travel,

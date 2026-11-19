@@ -25,7 +25,7 @@ with source as (
         nullif(trim(to_varchar("REF_ID")), '') as ref_id,
         nullif(trim(to_varchar("GG_CHANGE_DATE")), '') as gg_change_date,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_MOT_NAMED_DRIVER_EXTN') }}
+    from {{ source('motor_test_raw', 'BJAZ_MOT_NAMED_DRIVER_EXTN') }}
 
 )
 

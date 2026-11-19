@@ -62,7 +62,7 @@ with source as (
         nullif(trim(to_varchar("GG_CHANGE_DATE")), '') as gg_change_date,
         nullif(trim(to_varchar("EREQNO")), '') as ereqno,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_MOT_WAR_CHILD_DTLS') }}
+    from {{ source('motor_test_raw', 'BJAZ_MOT_WAR_CHILD_DTLS') }}
 
 )
 

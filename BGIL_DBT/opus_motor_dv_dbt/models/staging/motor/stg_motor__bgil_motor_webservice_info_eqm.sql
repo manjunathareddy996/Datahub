@@ -86,7 +86,7 @@ with source as (
         nullif(trim(to_varchar("MVND_OTH_LIABILITY_RATE")), '') as mvnd_oth_liability_rate,
         nullif(trim(to_varchar("GG_CHANGE_DATE")), '') as gg_change_date,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BGIL_MOTOR_WEBSERVICE_INFO_EQM') }}
+    from {{ source('motor_test_raw', 'BGIL_MOTOR_WEBSERVICE_INFO_EQM') }}
 
 )
 

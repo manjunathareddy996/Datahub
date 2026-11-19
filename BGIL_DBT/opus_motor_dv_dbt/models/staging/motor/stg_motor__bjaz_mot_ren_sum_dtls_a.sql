@@ -16,7 +16,7 @@ with source as (
         nullif(trim(to_varchar("OD_TAG")), '') as od_tag,
         nullif(trim(to_varchar("TP_TAG")), '') as tp_tag,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_MOT_REN_SUM_DTLS_A') }}
+    from {{ source('motor_test_raw', 'BJAZ_MOT_REN_SUM_DTLS_A') }}
 
 )
 

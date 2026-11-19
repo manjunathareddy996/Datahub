@@ -315,7 +315,7 @@ with source as (
         nullif(trim(to_varchar("RVMP_LNAME")), '') as rvmp_lname,
         nullif(trim(to_varchar("RVMP_FNAME")), '') as rvmp_fname,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_MOT_ONLINE_POL_DTLS') }}
+    from {{ source('motor_test_raw', 'BJAZ_MOT_ONLINE_POL_DTLS') }}
 
 )
 

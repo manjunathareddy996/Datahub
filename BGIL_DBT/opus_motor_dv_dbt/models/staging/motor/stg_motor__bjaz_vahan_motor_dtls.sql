@@ -21,7 +21,7 @@ with source as (
         nullif(trim(to_varchar("RECORD_DATE")), '') as record_date,
         nullif(trim(to_varchar("VAHAN_RESPONSE")), '') as vahan_response,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_VAHAN_MOTOR_DTLS') }}
+    from {{ source('motor_test_raw', 'BJAZ_VAHAN_MOTOR_DTLS') }}
 
 )
 

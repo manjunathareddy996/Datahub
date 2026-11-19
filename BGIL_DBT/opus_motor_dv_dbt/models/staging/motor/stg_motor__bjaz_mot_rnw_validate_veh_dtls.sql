@@ -34,7 +34,7 @@ with source as (
         nullif(trim(to_varchar("USER_MACHINE_IP")), '') as user_machine_ip,
         nullif(trim(to_varchar("USER_PROXY_IP")), '') as user_proxy_ip,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_MOT_RNW_VALIDATE_VEH_DTLS') }}
+    from {{ source('motor_test_raw', 'BJAZ_MOT_RNW_VALIDATE_VEH_DTLS') }}
 
 )
 

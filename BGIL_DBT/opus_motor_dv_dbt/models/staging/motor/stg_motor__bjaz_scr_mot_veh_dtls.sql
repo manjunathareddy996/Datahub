@@ -66,7 +66,7 @@ with source as (
         nullif(trim(to_varchar("GG_CHANGE_DATE")), '') as gg_change_date,
         nullif(trim(to_varchar("TP_PREV_COMP_NAME")), '') as tp_prev_comp_name,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_SCR_MOT_VEH_DTLS') }}
+    from {{ source('motor_test_raw', 'BJAZ_SCR_MOT_VEH_DTLS') }}
 
 )
 

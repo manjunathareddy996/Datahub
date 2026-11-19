@@ -35,7 +35,7 @@ with source as (
         nullif(trim(to_varchar("REST_PROD_POL_REQYN")), '') as rest_prod_pol_reqyn,
         nullif(trim(to_varchar("WAITING_PERIOD")), '') as waiting_period,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_MOT_PAYC_DTLS') }}
+    from {{ source('motor_test_raw', 'BJAZ_MOT_PAYC_DTLS') }}
 
 )
 

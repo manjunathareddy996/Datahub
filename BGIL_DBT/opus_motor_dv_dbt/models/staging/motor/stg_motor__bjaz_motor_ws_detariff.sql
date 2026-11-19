@@ -70,7 +70,7 @@ with source as (
         nullif(trim(to_varchar("DATA_COL40")), '') as data_col40,
         nullif(trim(to_varchar("GG_CHANGE_DATE")), '') as gg_change_date,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_MOTOR_WS_DETARIFF') }}
+    from {{ source('motor_test_raw', 'BJAZ_MOTOR_WS_DETARIFF') }}
 
 )
 

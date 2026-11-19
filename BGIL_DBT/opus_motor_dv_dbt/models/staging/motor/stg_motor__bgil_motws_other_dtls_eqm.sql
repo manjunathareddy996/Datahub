@@ -27,7 +27,7 @@ with source as (
         nullif(trim(to_varchar("TOTAL_RSOD_PREM")), '') as total_rsod_prem,
         nullif(trim(to_varchar("GG_CHANGE_DATE")), '') as gg_change_date,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BGIL_MOTWS_OTHER_DTLS_EQM') }}
+    from {{ source('motor_test_raw', 'BGIL_MOTWS_OTHER_DTLS_EQM') }}
 
 )
 

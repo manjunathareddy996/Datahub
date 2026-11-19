@@ -23,7 +23,7 @@ with source as (
         nullif(trim(to_varchar("FUEL_TYPE")), '') as fuel_type,
         nullif(trim(to_varchar("OBJECT_ID")), '') as object_id,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_MOT_WAR_PLANS_EXTN') }}
+    from {{ source('motor_test_raw', 'BJAZ_MOT_WAR_PLANS_EXTN') }}
 
 )
 

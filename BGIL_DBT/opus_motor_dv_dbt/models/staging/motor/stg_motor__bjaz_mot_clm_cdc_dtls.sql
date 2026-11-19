@@ -36,7 +36,7 @@ with source as (
         nullif(trim(to_varchar("RIM_WITH_TYRE")), '') as rim_with_tyre,
         nullif(trim(to_varchar("GG_CHANGE_DATE")), '') as gg_change_date,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_MOT_CLM_CDC_DTLS') }}
+    from {{ source('motor_test_raw', 'BJAZ_MOT_CLM_CDC_DTLS') }}
 
 )
 

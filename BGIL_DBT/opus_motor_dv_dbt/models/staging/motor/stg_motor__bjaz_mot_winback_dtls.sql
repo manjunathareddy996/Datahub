@@ -69,7 +69,7 @@ with source as (
         nullif(trim(to_varchar("PA_DFT_FLAG")), '') as pa_dft_flag,
         nullif(trim(to_varchar("CPA_FLAG")), '') as cpa_flag,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_MOT_WINBACK_DTLS') }}
+    from {{ source('motor_test_raw', 'BJAZ_MOT_WINBACK_DTLS') }}
 
 )
 

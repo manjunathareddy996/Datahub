@@ -12,7 +12,7 @@ with source as (
         nullif(trim(to_varchar("USER_NAME")), '') as user_name,
         nullif(trim(to_varchar("BJAZINSURERCODE")), '') as bjazinsurercode,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_IIB_INSURER_MASTER') }}
+    from {{ source('motor_test_raw', 'BJAZ_IIB_INSURER_MASTER') }}
 
 )
 

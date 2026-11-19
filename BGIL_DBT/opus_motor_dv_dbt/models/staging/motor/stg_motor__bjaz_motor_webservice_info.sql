@@ -86,7 +86,7 @@ with source as (
         nullif(trim(to_varchar("MV_ADDON_RATE")), '') as mv_addon_rate,
         nullif(trim(to_varchar("MVND_OTH_LIABILITY_RATE")), '') as mvnd_oth_liability_rate,
         "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('motor_raw', 'BJAZ_MOTOR_WEBSERVICE_INFO') }}
+    from {{ source('motor_test_raw', 'BJAZ_MOTOR_WEBSERVICE_INFO') }}
 
 )
 
