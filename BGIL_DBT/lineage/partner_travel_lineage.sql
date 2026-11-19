@@ -1,85 +1,64 @@
 -- =====================================================================
 -- PARTNER -> TRAVEL LINEAGE  (Snowflake, read-only)
--- One row per: picked partner x matched travel party x travel policy x role
--- Vault: BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL
+-- Uses ONLY final vault tables: HUB_*, LNK_*, SAT_* in BGIL_DATA_MODEL.
+-- No stg_ / stg2_ views, the same objects a business user would query.
 --
--- HOW TO USE: set the two variables below, then run the SET lines and the query together.
---   partner_codes : comma-separated partner codes (HUB_PARTY.PARENT_BK = part_id / party_code).
---                   Leave it '' to take a random sample of partners instead.
---   sample_size   : how many partners to sample when partner_codes is ''.
---   sample_mode   : 'IN_TRAVEL' = sample only partners whose key also appears on a travel policy
---                                 (use this to test: most partners have no travel at all)
---                   'RANDOM'    = any partner.
--- Every later step is filtered to the picked partners from the start, so the query
--- only touches their rows.
+-- One row per: picked partner x matched travel party x travel policy (when known).
 --
--- Deployed-table notes:
---   * Partner RECORD_SOURCE still has the old prefix OPUS_<TABLE> / MAXIMUS_<TABLE>;
---     travel was backfilled to OPUS_TRAVEL_ / MAXIMUS_TRAVEL_.
---   * SAT_PARTY_IDENTIFICATION still has the old column names (PANNUMBER, not PAN_NUMBER),
---     and at least one ID column is not text, so values go through TO_VARCHAR.
---   * Maximus travel's link model is now lnk_policy_party (was link_policy_party), so it writes
---     the shared LNK_POLICY_PARTY. Re-run it before using this query; LINK_POLICY_PARTY is not read.
---   * Hubs and links keep only the FIRST loader's RECORD_SOURCE per key, so travel joins
---     go by business key / hash key, not by the hub's RECORD_SOURCE.
+-- HOW TO USE: set the variables, then run the SET lines and the query together.
+--   partner_codes      : comma-separated partner codes (HUB_PARTY.PARENT_BK = part_id / party_code).
+--                        Leave '' to sample partners instead.
+--   sample_size        : how many partners to sample when partner_codes is ''.
+--   sample_mode        : 'IN_TRAVEL' = only partners that travel also loaded (use this to test)
+--                        'RANDOM'    = any partner.
+--   max_parties_per_id : an ID value held by more parties than this is a placeholder or a
+--                        shared corporate ID, so it is NOT used for matching.
+--
+-- WHAT THE VAULT CAN AND CANNOT ANSWER TODAY
+--   * Maximus travel: party -> policy is in LNK_POLICY_PARTY (+ role in SAT_LNK_POLICY_PARTY_ROLE),
+--     party -> claim is in LNK_CLAIM_PARTY. Policy, role, dates and product are returned.
+--   * Opus travel: the vault has NO policy-party link (no lnk_ model in opus_travel_dv_dbt).
+--     The query can only say the party was loaded by Opus travel (party satellites with an
+--     OPUS_TRAVEL_ source) plus the payer / proposer flags in the SAT_AUG_* role satellites.
+--     Policy columns stay empty for Opus travel until an Opus travel lnk_policy_party is built.
+--
+-- RECORD_SOURCE -> line of business (deployed data):
+--   Partner rows still carry the old prefix OPUS_<TABLE> / MAXIMUS_<TABLE>; travel rows carry
+--   OPUS_TRAVEL_* / MAXIMUS_TRAVEL_* (or the older OPUS_BA_TRV_*, OPUS_BJAZ_TRV_*, MAXIMUS_NONHLTH_TRV_*).
+--   Hubs and links keep only the FIRST loader's RECORD_SOURCE per key, satellites keep every
+--   source, so LOB membership is read from the satellites.
+-- SAT_PARTY_IDENTIFICATION still has the old column names (PANNUMBER, not PAN_NUMBER) and at
+-- least one ID column is not text, so values go through TO_VARCHAR.
 -- =====================================================================
-SET partner_codes = '';      -- e.g. 'PC1001,PC1002,PC1003'
-SET sample_size   = 10;
-SET sample_mode   = 'IN_TRAVEL';   -- 'IN_TRAVEL' or 'RANDOM'
-SET max_parties_per_id = 5;        -- an ID value held by more parties than this is a placeholder or a
-                                   -- shared corporate ID, not a person: it is NOT used for matching
+SET partner_codes      = '';            -- e.g. '10045514,10045515'
+SET sample_size        = 10;
+SET sample_mode        = 'IN_TRAVEL';   -- 'IN_TRAVEL' or 'RANDOM'
+SET max_parties_per_id = 5;
 
 WITH
--- 0. INPUT: passed codes if any, else a random sample of partner rows from HUB_PARTY -------
+-- ---------------------------------------------------------------------------------------
+-- 0. INPUT: passed codes, else a sample
+-- ---------------------------------------------------------------------------------------
 passed_partner AS (
     SELECT DISTINCT TRIM(value) AS partner_bk
     FROM   TABLE(SPLIT_TO_TABLE($partner_codes, ','))
     WHERE  TRIM(value) <> ''
 ),
--- partner filter: old OPUS_<T> / MAXIMUS_<T> or new *_PARTNER_*; other LOBs and old travel tokens excluded
-partner_hub AS (
-    SELECT PARTY_HKEY, PARENT_BK
-    FROM   BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
-    WHERE  NOT EXISTS (SELECT 1 FROM passed_partner)
-      AND (STARTSWITH(RECORD_SOURCE, 'OPUS_') OR STARTSWITH(RECORD_SOURCE, 'MAXIMUS_'))
-      AND NOT (   STARTSWITH(RECORD_SOURCE, 'OPUS_TRAVEL_')   OR STARTSWITH(RECORD_SOURCE, 'MAXIMUS_TRAVEL_')
-               OR STARTSWITH(RECORD_SOURCE, 'OPUS_HEALTH_')   OR STARTSWITH(RECORD_SOURCE, 'MAXIMUS_HEALTH_')
-               OR STARTSWITH(RECORD_SOURCE, 'OPUS_MOTOR_')
-               OR STARTSWITH(RECORD_SOURCE, 'OPUS_BA_TRV_')   OR STARTSWITH(RECORD_SOURCE, 'OPUS_BJAZ_TRV_')
-               OR STARTSWITH(RECORD_SOURCE, 'MAXIMUS_NONHLTH_TRV_'))
-),
--- party codes that sit on a travel policy (only built in IN_TRAVEL mode)
-travel_party_bk AS (
-    SELECT REGEXP_REPLACE(TRIM(TO_VARCHAR(payer_part_id)), '\\.0+$', '') AS bk FROM BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.STG_TRAVEL__BA_TRV_DATA_POLICY_DTLS
-    WHERE  $sample_mode = 'IN_TRAVEL' AND NOT EXISTS (SELECT 1 FROM passed_partner)
-    UNION
-    SELECT REGEXP_REPLACE(TRIM(TO_VARCHAR(cft_mst_comp_ref)), '\\.0+$', '') FROM BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.STG_TRAVEL__BA_TRV_DATA_POLICY_DTLS
-    WHERE  $sample_mode = 'IN_TRAVEL' AND NOT EXISTS (SELECT 1 FROM passed_partner)
-    UNION
-    SELECT REGEXP_REPLACE(TRIM(TO_VARCHAR(part_id)), '\\.0+$', '') FROM BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.STG_TRAVEL__BJAZ_TRV_LOADER_DATA
-    WHERE  $sample_mode = 'IN_TRAVEL' AND NOT EXISTS (SELECT 1 FROM passed_partner)
-    UNION
-    SELECT REGEXP_REPLACE(TRIM(TO_VARCHAR(premiumpayerid)), '\\.0+$', '') FROM BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.STG_TRAVEL__BJAZ_TRV_LOADER_DATA
-    WHERE  $sample_mode = 'IN_TRAVEL' AND NOT EXISTS (SELECT 1 FROM passed_partner)
-),
-travel_party_key AS (
--- LNK_POLICY_PARTY is shared by Opus partner / health / motor and Maximus travel, so keep only
--- Maximus travel rows. The link keeps its first loader's source; the role satellite keeps
--- Maximus travel's own rows, so either one marks the row as travel.
-    SELECT DISTINCT l.PARTY_HKEY
-    FROM   BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LNK_POLICY_PARTY l
-    LEFT JOIN BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_POLICY_PARTY_ROLE r
-           ON r.POLICY_PARTY_HKEY = l.POLICY_PARTY_HKEY
-    WHERE  $sample_mode = 'IN_TRAVEL' AND NOT EXISTS (SELECT 1 FROM passed_partner)
-      AND (l.RECORD_SOURCE ILIKE ANY ('MAXIMUS%TRAVEL%', 'MAXIMUS%TRV%')
-        OR r.RECORD_SOURCE ILIKE ANY ('MAXIMUS%TRAVEL%', 'MAXIMUS%TRV%'))
-),
+-- sample: partner keys from SAT_PARTY_IDENTITY (partner source = old OPUS_<T> / MAXIMUS_<T>,
+-- i.e. not travel / health / motor). IN_TRAVEL also needs a travel row for the same key.
 sampled_partner AS (
-    SELECT ph.PARENT_BK AS partner_bk
-    FROM   partner_hub ph
-    WHERE  $sample_mode <> 'IN_TRAVEL'
-        OR REGEXP_REPLACE(TRIM(TO_VARCHAR(ph.PARENT_BK)), '\\.0+$', '') IN (SELECT bk FROM travel_party_bk)
-        OR ph.PARTY_HKEY IN (SELECT PARTY_HKEY FROM travel_party_key)
+    SELECT h.PARENT_BK AS partner_bk
+    FROM   BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY s
+    JOIN   BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY h ON h.PARTY_HKEY = s.PARTY_HKEY
+    WHERE  NOT EXISTS (SELECT 1 FROM passed_partner)
+      AND  s.RECORD_SOURCE RLIKE '^(OPUS|MAXIMUS)_.*'
+      AND  NOT s.RECORD_SOURCE RLIKE '^(OPUS|MAXIMUS)_(TRAVEL|HEALTH|MOTOR|BA_TRV|BJAZ_TRV|NONHLTH_TRV)_.*'
+      AND ($sample_mode <> 'IN_TRAVEL'
+           OR EXISTS (SELECT 1
+                      FROM   BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY t
+                      WHERE  t.PARTY_HKEY = s.PARTY_HKEY
+                        AND  t.RECORD_SOURCE RLIKE '^(OPUS|MAXIMUS)_(TRAVEL|BA_TRV|BJAZ_TRV|NONHLTH_TRV)_.*'))
+    GROUP BY h.PARENT_BK
     QUALIFY ROW_NUMBER() OVER (ORDER BY RANDOM()) <= $sample_size
 ),
 picked_partner AS (
@@ -88,52 +67,20 @@ picked_partner AS (
     SELECT partner_bk FROM sampled_partner
 ),
 
--- 1. PARTNER SIDE ------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
+-- 1. PARTNER SIDE: key + which partner sources wrote it
+-- ---------------------------------------------------------------------------------------
 partner_key AS (
     SELECT h.PARTY_HKEY, h.PARENT_BK AS partner_bk
     FROM   BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY h
     JOIN   picked_partner p ON p.partner_bk = h.PARENT_BK
 ),
--- every source that wrote these keys (satellites keep one row per source, hubs only the first)
-partner_src AS (
-    SELECT PARTY_HKEY, RECORD_SOURCE FROM BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
-    WHERE  PARTY_HKEY IN (SELECT PARTY_HKEY FROM partner_key)
-    UNION
-    SELECT PARTY_HKEY, RECORD_SOURCE FROM BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY
-    WHERE  PARTY_HKEY IN (SELECT PARTY_HKEY FROM partner_key)
-    UNION
-    SELECT PARTY_HKEY, RECORD_SOURCE FROM BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-    WHERE  PARTY_HKEY IN (SELECT PARTY_HKEY FROM partner_key)
-    UNION
-    SELECT PARTY_HKEY, RECORD_SOURCE FROM BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
-    WHERE  PARTY_HKEY IN (SELECT PARTY_HKEY FROM partner_key)
-),
-partner AS (
-    SELECT  k.PARTY_HKEY,
-            k.partner_bk,
-            CASE WHEN MAX(IFF(STARTSWITH(s.RECORD_SOURCE, 'OPUS_'), 1, 0)) = 1
-                  AND MAX(IFF(STARTSWITH(s.RECORD_SOURCE, 'MAXIMUS_'), 1, 0)) = 1 THEN 'OPUS+MAXIMUS'
-                 WHEN MAX(IFF(STARTSWITH(s.RECORD_SOURCE, 'OPUS_'), 1, 0)) = 1 THEN 'OPUS'
-                 WHEN MAX(IFF(STARTSWITH(s.RECORD_SOURCE, 'MAXIMUS_'), 1, 0)) = 1 THEN 'MAXIMUS'
-                 ELSE 'NOT FOUND AS PARTNER' END AS partner_system,
-            LISTAGG(DISTINCT s.RECORD_SOURCE, ', ') WITHIN GROUP (ORDER BY s.RECORD_SOURCE) AS partner_record_sources
-    FROM    partner_key k
-    LEFT JOIN partner_src s
-           ON s.PARTY_HKEY = k.PARTY_HKEY
-          -- partner = old OPUS_<T> / MAXIMUS_<T> or new OPUS_PARTNER_ / MAXIMUS_PARTNER_;
-          -- every other LOB and the old travel tokens are excluded (STARTSWITH: '_' is literal)
-          AND (STARTSWITH(s.RECORD_SOURCE, 'OPUS_') OR STARTSWITH(s.RECORD_SOURCE, 'MAXIMUS_'))
-          AND NOT (   STARTSWITH(s.RECORD_SOURCE, 'OPUS_TRAVEL_')   OR STARTSWITH(s.RECORD_SOURCE, 'MAXIMUS_TRAVEL_')
-                   OR STARTSWITH(s.RECORD_SOURCE, 'OPUS_HEALTH_')   OR STARTSWITH(s.RECORD_SOURCE, 'MAXIMUS_HEALTH_')
-                   OR STARTSWITH(s.RECORD_SOURCE, 'OPUS_MOTOR_')
-                   OR STARTSWITH(s.RECORD_SOURCE, 'OPUS_BA_TRV_')   OR STARTSWITH(s.RECORD_SOURCE, 'OPUS_BJAZ_TRV_')
-                   OR STARTSWITH(s.RECORD_SOURCE, 'MAXIMUS_NONHLTH_TRV_'))
-    GROUP BY k.PARTY_HKEY, k.partner_bk
-),
 
--- 2. IDENTITY RESOLUTION (only for the picked partners) ------------------------------------
--- 2a. the partners' own ID values (old column names, cast to text)
-partner_id_raw AS (
+-- ---------------------------------------------------------------------------------------
+-- 2. IDENTITY RESOLUTION (from SAT_PARTY_IDENTIFICATION only)
+-- ---------------------------------------------------------------------------------------
+-- 2a. the partners' own well-formed IDs
+partner_id AS (
     SELECT DISTINCT PARTY_HKEY, id_type, id_value
     FROM (
         SELECT PARTY_HKEY, 'PAN'      AS id_type, UPPER(TRIM(TO_VARCHAR(PANNUMBER)))      AS id_value FROM BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION WHERE PARTY_HKEY IN (SELECT PARTY_HKEY FROM partner_key)
@@ -144,36 +91,35 @@ partner_id_raw AS (
         UNION ALL
         SELECT PARTY_HKEY, 'GSTIN',                 UPPER(TRIM(TO_VARCHAR(GSTIN)))                       FROM BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION WHERE PARTY_HKEY IN (SELECT PARTY_HKEY FROM partner_key)
     )
-    -- keep only well-formed IDs: drops blanks, 'NA', '0', '{}' (OBJECT cast) and other placeholders
     WHERE (id_type = 'PAN'      AND REGEXP_LIKE(id_value, '[A-Z]{5}[0-9]{4}[A-Z]'))
        OR (id_type = 'AADHAAR'  AND REGEXP_LIKE(id_value, '[0-9]{12}') AND id_value NOT IN ('000000000000', '111111111111'))
        OR (id_type = 'PASSPORT' AND REGEXP_LIKE(id_value, '[A-Z][0-9]{7}'))
        OR (id_type = 'GSTIN'    AND REGEXP_LIKE(id_value, '[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][0-9A-Z]Z[0-9A-Z]'))
 ),
--- 2b. other parties carrying the same ID value (tier 2, cross-system)
+-- 2b. other parties with the same ID value (tier 2); values shared too widely are dropped
 id_match AS (
     SELECT DISTINCT pi.PARTY_HKEY AS partner_hkey, o.PARTY_HKEY AS travel_party_hkey,
            pi.id_type AS match_method, pi.id_value AS matched_value, o.parties_with_value
-    FROM   partner_id_raw pi
+    FROM   partner_id pi
     JOIN  (
       SELECT PARTY_HKEY, id_type, id_value,
              COUNT(DISTINCT PARTY_HKEY) OVER (PARTITION BY id_type, id_value) AS parties_with_value
       FROM (
         SELECT PARTY_HKEY, 'PAN' AS id_type, UPPER(TRIM(TO_VARCHAR(PANNUMBER))) AS id_value
         FROM   BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-        WHERE  UPPER(TRIM(TO_VARCHAR(PANNUMBER))) IN (SELECT id_value FROM partner_id_raw WHERE id_type = 'PAN')
+        WHERE  UPPER(TRIM(TO_VARCHAR(PANNUMBER))) IN (SELECT id_value FROM partner_id WHERE id_type = 'PAN')
         UNION ALL
         SELECT PARTY_HKEY, 'AADHAAR', UPPER(TRIM(TO_VARCHAR(AADHAARNUMBER)))
         FROM   BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-        WHERE  UPPER(TRIM(TO_VARCHAR(AADHAARNUMBER))) IN (SELECT id_value FROM partner_id_raw WHERE id_type = 'AADHAAR')
+        WHERE  UPPER(TRIM(TO_VARCHAR(AADHAARNUMBER))) IN (SELECT id_value FROM partner_id WHERE id_type = 'AADHAAR')
         UNION ALL
         SELECT PARTY_HKEY, 'PASSPORT', UPPER(TRIM(TO_VARCHAR(PASSPORTNUMBER)))
         FROM   BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-        WHERE  UPPER(TRIM(TO_VARCHAR(PASSPORTNUMBER))) IN (SELECT id_value FROM partner_id_raw WHERE id_type = 'PASSPORT')
+        WHERE  UPPER(TRIM(TO_VARCHAR(PASSPORTNUMBER))) IN (SELECT id_value FROM partner_id WHERE id_type = 'PASSPORT')
         UNION ALL
         SELECT PARTY_HKEY, 'GSTIN', UPPER(TRIM(TO_VARCHAR(GSTIN)))
         FROM   BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-        WHERE  UPPER(TRIM(TO_VARCHAR(GSTIN))) IN (SELECT id_value FROM partner_id_raw WHERE id_type = 'GSTIN')
+        WHERE  UPPER(TRIM(TO_VARCHAR(GSTIN))) IN (SELECT id_value FROM partner_id WHERE id_type = 'GSTIN')
       )
       QUALIFY parties_with_value <= $max_parties_per_id
     ) o
@@ -188,82 +134,120 @@ xref AS (
     UNION
     SELECT partner_hkey, travel_party_hkey, match_method, matched_value, parties_with_value FROM id_match
 ),
-candidate AS (
-    SELECT DISTINCT x.travel_party_hkey, h.PARENT_BK AS travel_party_bk,
-           REGEXP_REPLACE(TRIM(TO_VARCHAR(h.PARENT_BK)), '\\.0+$', '') AS travel_party_bk_norm
-    FROM   xref x
-    JOIN   BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY h ON h.PARTY_HKEY = x.travel_party_hkey
+candidate AS (SELECT DISTINCT travel_party_hkey FROM xref),
+
+-- ---------------------------------------------------------------------------------------
+-- 3. LOB MEMBERSHIP of partner + candidate keys (party satellites keep every source)
+-- ---------------------------------------------------------------------------------------
+key_src AS (
+    SELECT PARTY_HKEY, RECORD_SOURCE FROM BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY
+    WHERE  PARTY_HKEY IN (SELECT travel_party_hkey FROM candidate)
+    UNION
+    SELECT PARTY_HKEY, RECORD_SOURCE FROM BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
+    WHERE  PARTY_HKEY IN (SELECT travel_party_hkey FROM candidate)
+    UNION
+    SELECT PARTY_HKEY, RECORD_SOURCE FROM BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
+    WHERE  PARTY_HKEY IN (SELECT travel_party_hkey FROM candidate)
+    UNION
+    SELECT PARTY_HKEY, RECORD_SOURCE FROM BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
+    WHERE  PARTY_HKEY IN (SELECT travel_party_hkey FROM candidate)
+),
+key_lob AS (
+    SELECT PARTY_HKEY, RECORD_SOURCE,
+           CASE WHEN STARTSWITH(RECORD_SOURCE, 'OPUS_TRAVEL')    OR STARTSWITH(RECORD_SOURCE, 'OPUS_BA_TRV_')
+                  OR STARTSWITH(RECORD_SOURCE, 'OPUS_BJAZ_TRV_')                                       THEN 'OPUS_TRAVEL'
+                WHEN STARTSWITH(RECORD_SOURCE, 'MAXIMUS_TRAVEL') OR STARTSWITH(RECORD_SOURCE, 'MAXIMUS_NONHLTH_TRV_') THEN 'MAXIMUS_TRAVEL'
+                WHEN STARTSWITH(RECORD_SOURCE, 'OPUS_HEALTH')    OR STARTSWITH(RECORD_SOURCE, 'MAXIMUS_HEALTH')
+                  OR STARTSWITH(RECORD_SOURCE, 'OPUS_MOTOR')                                           THEN 'OTHER'
+                WHEN STARTSWITH(RECORD_SOURCE, 'OPUS_')                                                THEN 'OPUS_PARTNER'
+                WHEN STARTSWITH(RECORD_SOURCE, 'MAXIMUS_')                                             THEN 'MAXIMUS_PARTNER'
+                ELSE 'OTHER' END AS lob
+    FROM key_src
+),
+partner AS (
+    SELECT  k.PARTY_HKEY,
+            k.partner_bk,
+            COALESCE(NULLIF(LISTAGG(DISTINCT IFF(l.lob IN ('OPUS_PARTNER', 'MAXIMUS_PARTNER'), l.lob, NULL), '+'), ''),
+                     'NOT FOUND AS PARTNER') AS partner_system,
+            LISTAGG(DISTINCT IFF(l.lob IN ('OPUS_PARTNER', 'MAXIMUS_PARTNER'), l.RECORD_SOURCE, NULL), ', ')
+                AS partner_record_sources
+    FROM    partner_key k
+    LEFT JOIN key_lob l ON l.PARTY_HKEY = k.PARTY_HKEY
+    GROUP BY k.PARTY_HKEY, k.partner_bk
+),
+-- travel systems that loaded each candidate key
+travel_presence AS (
+    SELECT PARTY_HKEY AS travel_party_hkey, lob AS travel_system,
+           LISTAGG(DISTINCT RECORD_SOURCE, ', ') AS travel_record_sources
+    FROM   key_lob
+    WHERE  lob IN ('OPUS_TRAVEL', 'MAXIMUS_TRAVEL')
+    GROUP BY 1, 2
 ),
 
--- 3. TRAVEL INVOLVEMENT (only for the candidate parties) ----------------------------------
--- 3a. Maximus travel: policy-party link + role satellite
-mx_travel AS (
--- LNK_POLICY_PARTY is shared by Opus partner / health / motor and Maximus travel, so keep only
--- Maximus travel rows. The link keeps its first loader's source; the role satellite keeps
--- Maximus travel's own rows, so either one marks the row as travel.
+-- ---------------------------------------------------------------------------------------
+-- 4. TRAVEL INVOLVEMENT
+-- ---------------------------------------------------------------------------------------
+-- 4a. Maximus travel: party -> policy (link) + role (link satellite)
+mx_policy AS (
     SELECT DISTINCT
-           l.PARTY_HKEY   AS travel_party_hkey,
-           l.POLICY_HKEY  AS policy_hkey,
-           COALESCE(r.PARTY_ROLE_TYPE, 'UNKNOWN') AS role,
-           'MAXIMUS_TRAVEL' AS travel_system
+           l.PARTY_HKEY  AS travel_party_hkey,
+           l.POLICY_HKEY AS policy_hkey,
+           COALESCE(r.PARTY_ROLE_TYPE, 'UNKNOWN') AS role
     FROM   BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LNK_POLICY_PARTY l
     LEFT JOIN BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_POLICY_PARTY_ROLE r
            ON r.POLICY_PARTY_HKEY = l.POLICY_PARTY_HKEY
     WHERE  l.PARTY_HKEY IN (SELECT travel_party_hkey FROM candidate)
+      -- shared link: keep Maximus travel rows (link keeps the first loader; the role sat its own rows)
       AND (l.RECORD_SOURCE ILIKE ANY ('MAXIMUS%TRAVEL%', 'MAXIMUS%TRV%')
         OR r.RECORD_SOURCE ILIKE ANY ('MAXIMUS%TRAVEL%', 'MAXIMUS%TRV%'))
 ),
--- 3b. Opus travel: rebuilt from staging (no policy-party link in the model)
---     Opus travel ID columns can come through as '10045514.0000000000' (NUMBER cast to text);
---     the trailing '.000' is stripped on both sides before comparing with the partner code.
-opus_raw AS (
-    SELECT trv_data_no AS policy_bk, REGEXP_REPLACE(TRIM(TO_VARCHAR(payer_part_id)), '\\.0+$', '') AS party_bk, 'PAYER (payer_part_id)' AS role
-    FROM   BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.STG_TRAVEL__BA_TRV_DATA_POLICY_DTLS
-    WHERE  REGEXP_REPLACE(TRIM(TO_VARCHAR(payer_part_id)), '\\.0+$', '') IN (SELECT travel_party_bk_norm FROM candidate)
-    UNION
-    SELECT trv_data_no, REGEXP_REPLACE(TRIM(TO_VARCHAR(cft_mst_comp_ref)), '\\.0+$', ''), 'CUSTOMER (cft_mst_comp_ref)'
-    FROM   BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.STG_TRAVEL__BA_TRV_DATA_POLICY_DTLS
-    WHERE  REGEXP_REPLACE(TRIM(TO_VARCHAR(cft_mst_comp_ref)), '\\.0+$', '') IN (SELECT travel_party_bk_norm FROM candidate)
-    UNION
-    SELECT policy_ref, REGEXP_REPLACE(TRIM(TO_VARCHAR(part_id)), '\\.0+$', ''), 'CUSTOMER (part_id)'
-    FROM   BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.STG_TRAVEL__BJAZ_TRV_LOADER_DATA
-    WHERE  REGEXP_REPLACE(TRIM(TO_VARCHAR(part_id)), '\\.0+$', '') IN (SELECT travel_party_bk_norm FROM candidate)
-    UNION
-    SELECT policy_ref, REGEXP_REPLACE(TRIM(TO_VARCHAR(premiumpayerid)), '\\.0+$', ''), 'PAYER (premiumpayerid)'
-    FROM   BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.STG_TRAVEL__BJAZ_TRV_LOADER_DATA
-    WHERE  REGEXP_REPLACE(TRIM(TO_VARCHAR(premiumpayerid)), '\\.0+$', '') IN (SELECT travel_party_bk_norm FROM candidate)
+-- 4b. Maximus travel: claims the party is on
+mx_claim AS (
+    SELECT l.PARTY_HKEY AS travel_party_hkey, COUNT(DISTINCT l.CLAIM_HKEY) AS claim_count
+    FROM   BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LNK_CLAIM_PARTY l
+    WHERE  l.PARTY_HKEY IN (SELECT travel_party_hkey FROM candidate)
+      AND  l.RECORD_SOURCE ILIKE ANY ('MAXIMUS%TRAVEL%', 'MAXIMUS%TRV%')
+    GROUP BY 1
 ),
-opus_travel AS (
-    SELECT DISTINCT
-           c.travel_party_hkey,
-           hpol.POLICY_HKEY AS policy_hkey,
-           o.role,
-           'OPUS_TRAVEL'    AS travel_system
-    FROM   opus_raw o
-    JOIN   candidate c ON c.travel_party_bk_norm = o.party_bk
-    LEFT JOIN BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY hpol
-           ON hpol.PARENT_BK = o.policy_bk
-    WHERE  o.policy_bk IS NOT NULL
+-- 4c. Opus travel: role flags on the party (no policy link exists in the vault)
+opus_role AS (
+    SELECT p.PARTY_HKEY AS travel_party_hkey,
+           MAX(TO_VARCHAR(p.PREMIUM_PAYER_INDICATOR))         AS opus_premium_payer_indicator,
+           MAX(TO_VARCHAR(c.PROPOSER_IS_TRAVELLER_INDICATOR)) AS opus_proposer_is_traveller_indicator
+    FROM   BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_PARTY_ROLE_CORE p
+    LEFT JOIN BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_CUSTOMER c
+           ON c.PARTY_HKEY = p.PARTY_HKEY
+          AND (STARTSWITH(c.RECORD_SOURCE, 'OPUS_TRAVEL') OR STARTSWITH(c.RECORD_SOURCE, 'OPUS_BA_TRV_')
+               OR STARTSWITH(c.RECORD_SOURCE, 'OPUS_BJAZ_TRV_'))
+    WHERE  p.PARTY_HKEY IN (SELECT travel_party_hkey FROM candidate)
+      AND (STARTSWITH(p.RECORD_SOURCE, 'OPUS_TRAVEL') OR STARTSWITH(p.RECORD_SOURCE, 'OPUS_BA_TRV_')
+           OR STARTSWITH(p.RECORD_SOURCE, 'OPUS_BJAZ_TRV_'))
+    GROUP BY 1
 ),
+-- 4d. one row per travel party x system x policy (policy NULL for Opus travel)
 travel AS (
-    SELECT * FROM mx_travel
-    UNION ALL
-    SELECT * FROM opus_travel
+    SELECT tp.travel_party_hkey, tp.travel_system, tp.travel_record_sources,
+           mp.policy_hkey, mp.role
+    FROM   travel_presence tp
+    LEFT JOIN mx_policy mp
+           ON mp.travel_party_hkey = tp.travel_party_hkey
+          AND tp.travel_system = 'MAXIMUS_TRAVEL'
 ),
 
--- 4. POLICY + PRODUCT (only the policies found; latest satellite row each) ----------------
+-- ---------------------------------------------------------------------------------------
+-- 5. POLICY + PRODUCT (latest satellite row each)
+-- ---------------------------------------------------------------------------------------
 pol AS (
     SELECT POLICY_HKEY, POLICY_REFERENCE_NUMBER, POLICY_STATUS, POLICY_TYPE,
            RISK_INCEPTION_DATE, RISK_EXPIRY_DATE, SUM_INSURED_TOTAL, PRODUCT_REFERENCE
     FROM   BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
-    WHERE  POLICY_HKEY IN (SELECT policy_hkey FROM travel)
+    WHERE  POLICY_HKEY IN (SELECT policy_hkey FROM mx_policy)
     QUALIFY ROW_NUMBER() OVER (PARTITION BY POLICY_HKEY ORDER BY LOAD_DATETIME DESC) = 1
 ),
 policy_bk AS (
-    SELECT POLICY_HKEY, ANY_VALUE(PARENT_BK) AS policy_bk
+    SELECT POLICY_HKEY, PARENT_BK AS policy_bk
     FROM   BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY
-    WHERE  POLICY_HKEY IN (SELECT policy_hkey FROM travel)
-    GROUP BY POLICY_HKEY
+    WHERE  POLICY_HKEY IN (SELECT policy_hkey FROM mx_policy)
 ),
 prod AS (
     SELECT h.PARENT_BK AS product_bk, s.PRODUCT_NAME, s.PRODUCT_CATEGORY
@@ -272,19 +256,29 @@ prod AS (
            ON s.PRODUCT_HKEY = h.PRODUCT_HKEY
     WHERE  h.PARENT_BK IN (SELECT PRODUCT_REFERENCE FROM pol)
     QUALIFY ROW_NUMBER() OVER (PARTITION BY h.PARENT_BK ORDER BY s.LOAD_DATETIME DESC) = 1
+),
+party_bk AS (
+    SELECT PARTY_HKEY, PARENT_BK
+    FROM   BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
+    WHERE  PARTY_HKEY IN (SELECT travel_party_hkey FROM candidate)
 )
 
--- 5. OUTPUT: every picked partner appears; travel columns are NULL when none found ----------
-SELECT  p.partner_bk,
+-- ---------------------------------------------------------------------------------------
+-- 6. OUTPUT: every picked partner appears at least once
+-- ---------------------------------------------------------------------------------------
+SELECT  pp.partner_bk,
         p.partner_system,
         p.partner_record_sources,
         x.match_method,
         x.matched_value,
         x.parties_with_value,
-        th.travel_party_bk,
+        pb.PARENT_BK                  AS travel_party_bk,
         t.travel_system,
-        t.role,
-        COALESCE(pb.policy_bk, '(policy not in HUB_POLICY)') AS policy_bk,
+        t.travel_record_sources,
+        t.role                        AS maximus_policy_role,
+        orl.opus_premium_payer_indicator,
+        orl.opus_proposer_is_traveller_indicator,
+        polbk.policy_bk,
         pol.POLICY_REFERENCE_NUMBER,
         pol.POLICY_STATUS,
         pol.RISK_INCEPTION_DATE,
@@ -293,28 +287,24 @@ SELECT  p.partner_bk,
         pol.PRODUCT_REFERENCE,
         prod.PRODUCT_NAME,
         prod.PRODUCT_CATEGORY,
-        IFF(t.travel_party_hkey IS NULL, 'NO TRAVEL INVOLVEMENT', 'IN TRAVEL') AS travel_flag
+        COALESCE(mc.claim_count, 0)   AS maximus_travel_claim_count,
+        CASE WHEN t.travel_party_hkey IS NULL       THEN 'NO TRAVEL INVOLVEMENT'
+             WHEN t.policy_hkey IS NOT NULL         THEN 'IN TRAVEL - POLICY LINKED'
+             WHEN t.travel_system = 'OPUS_TRAVEL'   THEN 'IN TRAVEL - PARTY ONLY (Opus travel has no policy link)'
+             ELSE                                        'IN TRAVEL - PARTY ONLY (no Maximus policy link)'
+        END                           AS travel_flag
 FROM    picked_partner pp
-LEFT JOIN partner   p   ON p.partner_bk = pp.partner_bk
-LEFT JOIN xref      x   ON x.partner_hkey = p.PARTY_HKEY
-LEFT JOIN travel    t   ON t.travel_party_hkey = x.travel_party_hkey
-LEFT JOIN candidate th  ON th.travel_party_hkey = t.travel_party_hkey
-LEFT JOIN policy_bk pb  ON pb.POLICY_HKEY = t.policy_hkey
-LEFT JOIN pol           ON pol.POLICY_HKEY = t.policy_hkey
-LEFT JOIN prod          ON prod.product_bk = pol.PRODUCT_REFERENCE
+LEFT JOIN partner     p     ON p.partner_bk = pp.partner_bk
+LEFT JOIN xref        x     ON x.partner_hkey = p.PARTY_HKEY
+LEFT JOIN travel      t     ON t.travel_party_hkey = x.travel_party_hkey
+LEFT JOIN party_bk    pb    ON pb.PARTY_HKEY = t.travel_party_hkey
+LEFT JOIN opus_role   orl   ON orl.travel_party_hkey = t.travel_party_hkey AND t.travel_system = 'OPUS_TRAVEL'
+LEFT JOIN mx_claim    mc    ON mc.travel_party_hkey = t.travel_party_hkey AND t.travel_system = 'MAXIMUS_TRAVEL'
+LEFT JOIN policy_bk   polbk ON polbk.POLICY_HKEY = t.policy_hkey
+LEFT JOIN pol               ON pol.POLICY_HKEY = t.policy_hkey
+LEFT JOIN prod              ON prod.product_bk = pol.PRODUCT_REFERENCE
 QUALIFY t.travel_party_hkey IS NOT NULL
-     OR ROW_NUMBER() OVER (PARTITION BY pp.partner_bk ORDER BY x.match_method) = 1
+     -- partner with no travel at all: keep one row so it still shows up
+     OR ROW_NUMBER() OVER (PARTITION BY pp.partner_bk
+                           ORDER BY IFF(t.travel_party_hkey IS NULL, 1, 0), x.match_method) = 1
 ORDER BY pp.partner_bk, t.travel_system, pol.RISK_INCEPTION_DATE DESC;
-
--- ---------------------------------------------------------------------
--- DIAGNOSTIC (run on its own): how many partner keys appear in travel at all?
--- If both counts are 0, no partner shares a key with travel, and only the
--- PAN / Aadhaar / passport / GSTIN match (tier 2) can link them.
---   WITH ph AS (SELECT PARTY_HKEY, PARENT_BK FROM BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
---               WHERE STARTSWITH(RECORD_SOURCE,'OPUS_') AND NOT STARTSWITH(RECORD_SOURCE,'OPUS_TRAVEL_'))
---   SELECT
---     (SELECT COUNT(DISTINCT ph.PARENT_BK) FROM ph JOIN BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.STG_TRAVEL__BJAZ_TRV_LOADER_DATA t
---        ON ph.PARENT_BK IN (t.part_id, t.premiumpayerid))                                   AS opus_partner_in_loader_data,
---     (SELECT COUNT(DISTINCT ph.PARENT_BK) FROM ph JOIN BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.STG_TRAVEL__BA_TRV_DATA_POLICY_DTLS t
---        ON ph.PARENT_BK IN (t.payer_part_id, t.cft_mst_comp_ref))                           AS opus_partner_in_policy_dtls;
--- ---------------------------------------------------------------------
