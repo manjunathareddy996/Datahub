@@ -1,5 +1,5 @@
 -- AUGMENTED track (not mapper-ratified) ma_sat() for SAT_AUG_CLAIM_HOSPITAL_DAY_LIMIT (parent HUB_CLAIM, history SCD2), fed whole from central view stitch_v05_claim.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_aug_claim_hospital_day_limit'

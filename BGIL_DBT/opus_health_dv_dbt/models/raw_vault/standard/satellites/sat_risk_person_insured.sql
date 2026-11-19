@@ -1,5 +1,5 @@
 -- Standard sat() for SAT_RISK_PERSON_INSURED (parent HUB_RISK_OBJECT, history SCD2), fed whole from central view stitch_v34_risk_object.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_risk_person_insured'

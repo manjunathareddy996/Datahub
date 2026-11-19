@@ -1,5 +1,5 @@
 -- Standard sat() for SAT_CASE_HEADER (parent HUB_CASE, history SCD2), fed whole from central view stitch_v05_claim.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_case_header'

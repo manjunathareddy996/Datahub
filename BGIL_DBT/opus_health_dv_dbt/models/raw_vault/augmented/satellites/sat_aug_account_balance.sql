@@ -1,5 +1,5 @@
 -- AUGMENTED track (not mapper-ratified) sat() for SAT_AUG_ACCOUNT_BALANCE (parent HUB_FINANCIAL_ACCOUNT, history SCD2), fed whole from central view stitch_v13_financial_account.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_aug_account_balance'

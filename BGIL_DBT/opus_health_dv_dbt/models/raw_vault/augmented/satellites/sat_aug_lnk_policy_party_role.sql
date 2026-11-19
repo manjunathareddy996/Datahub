@@ -1,5 +1,5 @@
 -- AUGMENTED track (not mapper-ratified) sat() for SAT_AUG_LNK_POLICY_PARTY_ROLE (parent LNK_POLICY_PARTY, history SCD2), fed whole from central view stitch_v23_policy.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_aug_lnk_policy_party_role'

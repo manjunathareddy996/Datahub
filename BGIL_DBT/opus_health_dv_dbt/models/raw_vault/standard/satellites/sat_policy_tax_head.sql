@@ -1,5 +1,5 @@
 -- Standard ma_sat() for SAT_POLICY_TAX_HEAD (parent HUB_POLICY, history Multi-Active SCD2), fed whole from central view stitch_v27_policy.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_policy_tax_head'

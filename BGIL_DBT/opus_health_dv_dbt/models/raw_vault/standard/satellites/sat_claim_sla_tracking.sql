@@ -1,5 +1,5 @@
 -- Standard sat() for SAT_CLAIM_SLA_TRACKING (parent HUB_CLAIM, history SCD2), fed whole from central view stitch_v34_risk_object.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_claim_sla_tracking'

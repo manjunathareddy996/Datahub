@@ -1,5 +1,5 @@
 -- Standard ma_sat() for SAT_FINTXN_RECON_INSTRUMENT (parent HUB_FINANCIAL_TRANSACTION, history Multi-Active SCD2), fed whole from central view stitch_v31_product.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_fintxn_recon_instrument'

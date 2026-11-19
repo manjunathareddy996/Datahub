@@ -1,5 +1,5 @@
 -- Standard ma_sat() for SAT_CLAIM_PROVIDER_BILLING (parent HUB_CLAIM, history Multi-Active SCD2), fed whole from central view stitch_v08_claim.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_claim_provider_billing'

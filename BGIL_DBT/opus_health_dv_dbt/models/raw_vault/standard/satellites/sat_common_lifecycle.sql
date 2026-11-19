@@ -1,5 +1,5 @@
 -- Standard sat() for SAT_COMMON_LIFECYCLE (parent HUB_POLICY, history SCD2), fed whole from central view stitch_v23_policy.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_common_lifecycle'

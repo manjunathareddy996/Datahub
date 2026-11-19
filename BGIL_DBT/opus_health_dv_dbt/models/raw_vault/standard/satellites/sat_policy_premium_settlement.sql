@@ -1,5 +1,5 @@
 -- Standard ma_sat() for SAT_POLICY_PREMIUM_SETTLEMENT (parent HUB_POLICY, history Multi-Active SCD2), fed whole from central view stitch_v34_risk_object.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_policy_premium_settlement'

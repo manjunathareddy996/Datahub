@@ -1,5 +1,5 @@
 -- Standard sat() for SAT_ORG_UNIT_DEFINITION (parent HUB_ORG_UNIT, history SCD2), fed whole from central view stitch_v14_org_unit.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_org_unit_definition'

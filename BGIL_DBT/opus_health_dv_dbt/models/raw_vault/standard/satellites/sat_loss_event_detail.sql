@@ -1,5 +1,5 @@
 -- Standard sat() for SAT_LOSS_EVENT_DETAIL (parent HUB_LOSS_EVENT, history SCD2), fed whole from central view stitch_v11_claim.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_loss_event_detail'

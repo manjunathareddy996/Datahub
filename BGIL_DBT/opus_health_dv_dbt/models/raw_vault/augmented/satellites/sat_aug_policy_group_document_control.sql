@@ -1,5 +1,5 @@
 -- AUGMENTED track (not mapper-ratified) sat() for SAT_AUG_POLICY_GROUP_DOCUMENT_CONTROL (parent HUB_POLICY, history SCD2), fed whole from central view stitch_v33_quote.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_aug_policy_group_document_control'

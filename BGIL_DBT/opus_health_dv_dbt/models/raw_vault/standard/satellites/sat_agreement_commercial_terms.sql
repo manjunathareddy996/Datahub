@@ -1,5 +1,5 @@
 -- Standard sat() for SAT_AGREEMENT_COMMERCIAL_TERMS (parent HUB_AGREEMENT, history SCD2), fed whole from central view stitch_v01_agreement.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_agreement_commercial_terms'

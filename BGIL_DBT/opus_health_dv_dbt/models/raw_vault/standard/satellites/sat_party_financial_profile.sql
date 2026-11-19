@@ -1,5 +1,5 @@
 -- Standard sat() for SAT_PARTY_FINANCIAL_PROFILE (parent HUB_PARTY, history SCD2), fed whole from central view stitch_v21_party.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_party_financial_profile'

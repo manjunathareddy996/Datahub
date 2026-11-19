@@ -1,5 +1,5 @@
 -- Standard sat() for SAT_ASSESSMENT_UNDERWRITING (parent HUB_ASSESSMENT, history SCD2), fed whole from central view stitch_v22_policy.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_assessment_underwriting'

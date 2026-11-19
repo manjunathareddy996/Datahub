@@ -1,5 +1,5 @@
 -- Standard ma_sat() for SAT_LNK_ROLE_PROVIDER (parent LNK_PARTY_ROLE, history SCD2), fed whole from central view stitch_v01_agreement.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_lnk_role_provider'

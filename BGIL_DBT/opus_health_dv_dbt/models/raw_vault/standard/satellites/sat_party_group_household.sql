@@ -1,5 +1,5 @@
 -- Standard sat() for SAT_PARTY_GROUP_HOUSEHOLD (parent HUB_PARTY, history SCD2), fed whole from central view stitch_v27_policy.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_party_group_household'

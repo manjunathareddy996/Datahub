@@ -1,5 +1,5 @@
 -- Standard ma_sat() for SAT_QUOTE_RATING_INPUT (parent HUB_QUOTE, history Multi-Active SCD2), fed whole from central view stitch_v33_quote.
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_quote_rating_input'
