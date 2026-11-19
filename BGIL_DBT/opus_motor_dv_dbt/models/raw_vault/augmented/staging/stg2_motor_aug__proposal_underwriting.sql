@@ -1,4 +1,4 @@
--- automate_dv.stage() for SAT_AUG_PROPOSAL_UNDERWRITING, read off central view stitch_motor__v09_party.
+-- automate_dv.stage() for SAT_MOTOR_AUG_PROPOSAL_UNDERWRITING, read off central view stitch_motor__v09_party.
 -- The key is NULL wherever this satellite has no payload: sat() takes no filter, and it skips a NULL key.
 {{ config(materialized='view') }}
 

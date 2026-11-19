@@ -1,0 +1,41 @@
+-- automate_dv.stage() for SAT_MOTOR_AUG_POLICY_PA_NAMED_PERSON, read off central view stitch_mxm__v13_policy.
+-- The key is NULL wherever this satellite has no payload: sat() takes no filter, and it skips a NULL key.
+{{ config(materialized='view') }}
+
+{%- set yaml_metadata -%}
+source_model: 'stitch_mxm__v13_policy'
+hashed_columns:
+  POLICY_HKEY: 'POLICY_NK'
+  HASHDIFF:
+    is_hashdiff: true
+    columns:
+      - 'BENEFIT_ALLOCATION_PERCENTAGE'
+      - 'NAMED_PERSON_AGE'
+      - 'NAMED_PERSON_GENDER'
+      - 'NAMED_PERSON_NAME'
+      - 'NAMED_PERSON_RELATIONSHIP'
+      - 'NOMINEE_NAME'
+      - 'NOMINEE_RELATIONSHIP_TO_INSURED'
+      - 'NAMED_PERSON_NAME_CK'
+      - 'NAMED_PERSON_SEQUENCE_CK'
+derived_columns:
+  POLICY_NK: "case when coalesce(AUG_POLICY_PA_NAMED_PERSON__BENEFIT_ALLOCATION_PERCENTAGE, AUG_POLICY_PA_NAMED_PERSON__NAMED_PERSON_AGE, AUG_POLICY_PA_NAMED_PERSON__NAMED_PERSON_GENDER, AUG_POLICY_PA_NAMED_PERSON__NAMED_PERSON_NAME, AUG_POLICY_PA_NAMED_PERSON__NAMED_PERSON_RELATIONSHIP, AUG_POLICY_PA_NAMED_PERSON__NOMINEE_NAME, AUG_POLICY_PA_NAMED_PERSON__NOMINEE_RELATIONSHIP_TO_INSURED) is not null then 'HUB_POLICY|' || POLICY_BK end"
+  NAMED_PERSON_NAME_CK: 'AUG_POLICY_PA_NAMED_PERSON__NAMED_PERSON_NAME_CK'
+  NAMED_PERSON_SEQUENCE_CK: 'AUG_POLICY_PA_NAMED_PERSON__NAMED_PERSON_SEQUENCE_CK'
+  BENEFIT_ALLOCATION_PERCENTAGE: 'AUG_POLICY_PA_NAMED_PERSON__BENEFIT_ALLOCATION_PERCENTAGE'
+  NAMED_PERSON_AGE: 'AUG_POLICY_PA_NAMED_PERSON__NAMED_PERSON_AGE'
+  NAMED_PERSON_GENDER: 'AUG_POLICY_PA_NAMED_PERSON__NAMED_PERSON_GENDER'
+  NAMED_PERSON_NAME: 'AUG_POLICY_PA_NAMED_PERSON__NAMED_PERSON_NAME'
+  NAMED_PERSON_RELATIONSHIP: 'AUG_POLICY_PA_NAMED_PERSON__NAMED_PERSON_RELATIONSHIP'
+  NOMINEE_NAME: 'AUG_POLICY_PA_NAMED_PERSON__NOMINEE_NAME'
+  NOMINEE_RELATIONSHIP_TO_INSURED: 'AUG_POLICY_PA_NAMED_PERSON__NOMINEE_RELATIONSHIP_TO_INSURED'
+  LOAD_DATETIME: 'POLICY_BK__MA_LOAD_DATETIME'
+  RECORD_SOURCE: '!stitch_mxm__v13_policy'
+{%- endset -%}
+
+{% set metadata_dict = fromyaml(yaml_metadata) %}
+
+{{ automate_dv.stage(include_source_columns=false,
+                      source_model=metadata_dict['source_model'],
+                      hashed_columns=metadata_dict['hashed_columns'],
+                      derived_columns=metadata_dict['derived_columns']) }}

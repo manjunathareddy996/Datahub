@@ -1,4 +1,4 @@
--- automate_dv.stage() for SAT_AUG_RISK_EXTENDED_WARRANTY, read off central view stitch_motor__v08_org_unit.
+-- automate_dv.stage() for SAT_MOTOR_AUG_RISK_EXTENDED_WARRANTY, read off central view stitch_motor__v08_org_unit.
 -- The key is NULL wherever this satellite has no payload: sat() takes no filter, and it skips a NULL key.
 {{ config(materialized='view') }}
 

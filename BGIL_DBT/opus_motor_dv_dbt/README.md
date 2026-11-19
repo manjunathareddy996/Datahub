@@ -190,3 +190,11 @@ generators would emit.
 - Not changed: `RECORD_SOURCE` (still `'!stitch_motor__...'`), the branch SQL, the merges, the keys, macros.
 - Before `dbt run`: the raw tables must have `INC_JOB_UPDATED_AT`; `normalise()` must exist; in tables another
   project created first with a text `LOAD_DATETIME`, the time filter does not compare real times.
+
+## Round 4 (2026-11-19): LOB in augmented satellite names
+
+- The 117 augmented satellites are renamed `sat_aug_<name>` -> `sat_motor_aug_<name>` (rule: `sat_<lob>_aug_<name>`),
+  so motor's augmented tables no longer share a physical table with health, travel or partner. motor_maximus_dv_dbt
+  uses the same names, so the two motor projects share them. Comments naming the satellites were updated; no SQL changed
+  (nothing refs a satellite). Standard satellites, hubs and links keep their shared names. build_artifacts/ still shows
+  the generated names. Recorded in .kiro/steering/modeller-learnings.md (overrides utils/skill.md's no-LOB rule).

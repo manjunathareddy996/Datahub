@@ -1,4 +1,4 @@
--- automate_dv.stage() for SAT_AUG_QUOTE_VEHICLE_SPEC, read off central view stitch_motor__v22_quote.
+-- automate_dv.stage() for SAT_MOTOR_AUG_QUOTE_VEHICLE_SPEC, read off central view stitch_motor__v22_quote.
 -- The key is NULL wherever this satellite has no payload: sat() takes no filter, and it skips a NULL key.
 {{ config(materialized='view') }}
 

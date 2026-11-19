@@ -1,0 +1,835 @@
+{
+ "project": "motor_maximus_v2_dv_dbt",
+ "mapping": "exactly the mapping motor_maximus_dv_dbt was built from: 42 of its 43 pinned bundle files plus data_7.js (see build_profile.json -> inputs_pinned; the workbook is not read)",
+ "writer_decisions": [
+  {
+   "group": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW | SAT_AUG_CLAIM_CO_RI_SHARE | Co-Insurance Applicable Indicator | None",
+   "emitted": [
+    "COINSURANCE_APPLICABLE"
+   ],
+   "withheld": [
+    "COINSURANCE_APPLICABILITY"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW | SAT_AUG_CLAIM_HEADER | Inward Document Mode | None",
+   "emitted": [
+    "MODE_OF_DOCUMENT_INWARD"
+   ],
+   "withheld": [
+    "MODE_OF_INWARD"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW | SAT_AUG_CLAIM_SURVEY_APPOINTMENT | Inspection Address Text | None",
+   "emitted": [
+    "SELECT_INSPECTION_ADDRESS"
+   ],
+   "withheld": [
+    "SELECT_INSPECTION_ADDRESSOD"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW | SAT_CLAIM_HEADER | Claim Type | None",
+   "emitted": [
+    "CLAIM_TYPES"
+   ],
+   "withheld": [
+    "TYPE_OF_CLAIM"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW | SAT_CLAIM_HEADER | Intimated By Role | None",
+   "emitted": [
+    "CLAIM_REPORTED_BY"
+   ],
+   "withheld": [
+    "NOTIFIED_BY"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW | SAT_CLAIM_LITIGATION | Court Type | None",
+   "emitted": [
+    "CASE_FILED_BEFORE"
+   ],
+   "withheld": [
+    "COURT_TYPE"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW | SAT_CLAIM_MOTOR_DETAIL | Driver Type | None",
+   "emitted": [
+    "WHO_WAS_DRIVING"
+   ],
+   "withheld": [
+    "WHO_WAS_DRIVING_"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW | SAT_CLAIM_MOTOR_DETAIL | Third Party Claim Indicator | None",
+   "emitted": [
+    "TP_INVOLVEMENT_"
+   ],
+   "withheld": [
+    "DO_YOU_WANT_THIRD_PARTY_INVOLVEMNT"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW | SAT_CLAIM_TP_FORENSIC | FIR Date | None",
+   "emitted": [
+    "POLICE_REPORT_DATE"
+   ],
+   "withheld": [
+    "POLICE_REPORTED_DATE"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW | SAT_COMMON_ADDRESS | State Name | claim-address",
+   "emitted": [
+    "STATE"
+   ],
+   "withheld": [
+    "STATECLAIM"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW | SAT_COMMON_ADDRESS | State Name | workshop",
+   "emitted": [
+    "WORKSHOP_STATE"
+   ],
+   "withheld": [
+    "STATE_WORKSHOP"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW | SAT_PARTY_IDENTITY | Party Full Name | claimant",
+   "emitted": [
+    "INSURED_NAME"
+   ],
+   "withheld": [
+    "MEMBER_NAME"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW | SAT_RISK_MOTOR_VEHICLE | Manufacturing Year | None",
+   "emitted": [
+    "YEAR_OF_MANUFACTURE"
+   ],
+   "withheld": [
+    "YEAR_OF_MANUFACTURE_SCPA"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW | SAT_AUG_DOCUMENT_DEFINITION | Courier Vendor Name | None",
+   "emitted": [
+    "COURIER_NAME"
+   ],
+   "withheld": [
+    "COURIERPOST_NAME"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW | SAT_ASSESSMENT_SURVEY | Survey Type | survey",
+   "emitted": [
+    "SURVEY_TYPE"
+   ],
+   "withheld": [
+    "TYPE_OF_SURVEY"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW | SAT_AUG_CLAIM_MOTOR_DETAIL | Driver Relationship To Insured | None",
+   "emitted": [
+    "DRIVER_RELATION_WITH_INSURED",
+    "WHO_WAS_DRIVING"
+   ],
+   "withheld": []
+  },
+  {
+   "group": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW | SAT_FINTXN_CLAIM_PAYMENT | Payment Type | claim-payment",
+   "emitted": [
+    "PAYMENT_TYPE"
+   ],
+   "withheld": [
+    "TYPE_OF_PAYMENT"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW | SAT_FINTXN_HEADER | Tax Amount | claim-payment",
+   "emitted": [
+    "TAX_AMOUNT"
+   ],
+   "withheld": [
+    "TAX_AMT"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW | SAT_CLAIM_REPUDIATION | Repudiation Reason | None",
+   "emitted": [
+    "CLAIM_REPUDIATION_REASON"
+   ],
+   "withheld": [
+    "REPUDIATION_REASON"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_AUG_POLICY_HEADER | Plan Reference | None",
+   "emitted": [
+    "POLICY_PLAN"
+   ],
+   "withheld": [
+    "POLICYPLAN"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_AUG_POLICY_PREMIUM_SUMMARY | Premium Calculation Basis | None",
+   "emitted": [
+    "MODE_OF_PREMIUM_CALCULATION"
+   ],
+   "withheld": [
+    "PREMIUM_CALCULATION_MODE"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_AUG_RISK_MOTOR_CPA | PA Nominee Detail Text | None",
+   "emitted": [
+    "NOMINEE_DETAIL",
+    "SCPA_NOMINEE_DETAILS"
+   ],
+   "withheld": []
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_AUG_RISK_MOTOR_VEHICLE | Power To Weight Ratio | None",
+   "emitted": [
+    "POWER_WEIGHT_RATIO"
+   ],
+   "withheld": [
+    "POWERWEIGHT_RATIO"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_AUG_RISK_MOTOR_VEHICLE | Registration Number In Specified Format | None",
+   "emitted": [
+    "REGISTRATION_NUMBER_IN_SPECIFIED_FORMAT"
+   ],
+   "withheld": [
+    "REGISTRATION_NUMBER_SPECIFIED_FORMAT"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_AUG_RISK_OBJECT_CORE | Risk Line Serial Number | None",
+   "emitted": [
+    "SERIAL_NO"
+   ],
+   "withheld": [
+    "SRL_NO"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_COVERAGE_DEFINITION | Coverage Name | None",
+   "emitted": [
+    "COVER_NAME"
+   ],
+   "withheld": [
+    "COVERAGE_NAME"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_COVERAGE_MOTOR_PA_OCCUPANT | Number Of Persons Covered | None",
+   "emitted": [
+    "NO_OF_PERSONS"
+   ],
+   "withheld": [
+    "NOP",
+    "NUMBER_OF_PERSONS"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_POLICY_HEADER | Policy Type | None",
+   "emitted": [
+    "POLICY_TYPE"
+   ],
+   "withheld": [
+    "TYPEOFPOLICY"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_POLICY_RENEWAL | Renewal Status | None",
+   "emitted": [
+    "RENEWAL_STATUS"
+   ],
+   "withheld": [
+    "RENEWAL_STATUSS"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_RISK_MOTOR_VEHICLE | Body Type | None",
+   "emitted": [
+    "BODY_TYPE"
+   ],
+   "withheld": [
+    "TYPE_OF_BODY"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_RISK_MOTOR_VEHICLE | Vehicle Sub Class | None",
+   "emitted": [
+    "VEHICLE_SUBTYPE"
+   ],
+   "withheld": [
+    "VEHICLE_SUB_TYPE"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_AUG_POLICY_HEADER | Standalone CPA Policy Number | None",
+   "emitted": [
+    "SCPA_POLICY_NO"
+   ],
+   "withheld": [
+    "SCPA_POLICY_NUMBER"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_AUG_POLICY_HEADER | Transaction Line Serial Number | None",
+   "emitted": [
+    "SERIAL_NO"
+   ],
+   "withheld": [
+    "SRL_NO"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_AUG_POLICY_PREMIUM_SUMMARY | Loading Percentage | None",
+   "emitted": [
+    "LOADING_PERCENTAGE"
+   ],
+   "withheld": [
+    "PERCENTAGE_LOADING_"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_POLICY_RENEWAL | Renewal Status | None",
+   "emitted": [
+    "RENEWAL_STATUS"
+   ],
+   "withheld": [
+    "RENEWAL_STATUSS"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_POLICY_TAX_BREAKUP | CGST Amount | None",
+   "emitted": [
+    "CGST_AMOUNT"
+   ],
+   "withheld": [
+    "CGST"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_RISK_MOTOR_VEHICLE | Manufacturing Year | None",
+   "emitted": [
+    "YEAR_OF_MANUFACTURING"
+   ],
+   "withheld": [
+    "YOM_STORE"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_RISK_MOTOR_VEHICLE | Registration Number | None",
+   "emitted": [
+    "REGISTRATION_NO"
+   ],
+   "withheld": [
+    "REGISTRATION_NUMBER"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_RISK_MOTOR_VEHICLE | Vehicle Sub Class | None",
+   "emitted": [
+    "VEHICLE_SUBTYPE"
+   ],
+   "withheld": [
+    "SUBTYPE_STORE"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_AUG_COMMON_ADDRESS | Full Address Text | overseas-permanent",
+   "emitted": [
+    "CURRENT_PERMANENT_OVERSEAS_ADDRESS"
+   ],
+   "withheld": [
+    "CURRENT_PERMANENT_OVERSEAS_ADDRESS_"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_AUG_PARTY_FINANCIAL_PROFILE | Banking Detail Text | None",
+   "emitted": [
+    "BANKING_DETAILS"
+   ],
+   "withheld": [
+    "BANK_ACCOUNT_DETAILS"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS | Mother Maiden Name | None",
+   "emitted": [
+    "MOTHERS_MAIDEN_NAME"
+   ],
+   "withheld": [
+    "MOTHER_MAIDEN_NAME"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS | Qualification Detail Text | None",
+   "emitted": [
+    "QUALIFICATIONS_DETAILS"
+   ],
+   "withheld": [
+    "QUALIFICATION_DETAILS"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_AUG_PARTY_KYC | CKYC Detail Text | None",
+   "emitted": [
+    "CKYC_DETAILS"
+   ],
+   "withheld": [
+    "CLAIM_CKYC_DETAILS"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_AUG_PARTY_KYC | KYC Detail Text | None",
+   "emitted": [
+    "KYC_DETAILS"
+   ],
+   "withheld": [
+    "KYC_RELATED_DETAILS"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_AUG_PARTY_KYC | Proof Of Address Status | None",
+   "emitted": [
+    "POA_STATUS"
+   ],
+   "withheld": [
+    "CLAIM_POA_STATUS"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_AUG_PARTY_KYC | Proof Of Identity Status | None",
+   "emitted": [
+    "POI_STATUS"
+   ],
+   "withheld": [
+    "CLAIM_POI_STATUS"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_AUG_PARTY_ONBOARDING_JOURNEY | Licence Examination Detail Text | None",
+   "emitted": [
+    "EXAMINATIONS_DETAILS_FOR_IRDA_CODE"
+   ],
+   "withheld": [
+    "EXAM_DETAILS"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_AUG_PARTY_ORGANISATION_PROFILE | SEZ Registration Date | None",
+   "emitted": [
+    "SEZ_REGISTRATION_DATE"
+   ],
+   "withheld": [
+    "SEPZ_REGISTRATION_DATE"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_AUG_PARTY_ORGANISATION_PROFILE | SEZ Registration Number | None",
+   "emitted": [
+    "SEZ_REGISTRATION_NO"
+   ],
+   "withheld": [
+    "SEPZ_REGISTRATION_NO"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_COMMON_ADDRESS | Country Name | correspondence-local",
+   "emitted": [
+    "CORRESPONDENCE_LOCAL_ADDRESS_COUNTRY"
+   ],
+   "withheld": [
+    "COUNTRY"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_PARTY_AML_SCREENING | Screening Status | None",
+   "emitted": [
+    "AML_VERIFICATION_STATUS"
+   ],
+   "withheld": [
+    "CLAIM_AML_VERIFICATION_STATUS"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_PARTY_EMPLOYMENT | Employer Name | None",
+   "emitted": [
+    "EMPLOYER_NAME"
+   ],
+   "withheld": [
+    "COMPANY"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS | Educational Qualification | None",
+   "emitted": [
+    "EDUCATIONAL_QUALIFICATION"
+   ],
+   "withheld": [
+    "EDUCATION"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_PARTY_KYC | CKYC Number | None",
+   "emitted": [
+    "CKYC_NUMBER"
+   ],
+   "withheld": [
+    "CLAIM_CKYC_NUMBER"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_PARTY_KYC | CKYC Registration Status | None",
+   "emitted": [
+    "CKYC_STATUS"
+   ],
+   "withheld": [
+    "CLAIM_CKYC_STATUS",
+    "CLAIM_CKYC_STATUS_"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_PARTY_ORGANISATION_PROFILE | Annual Turnover | None",
+   "emitted": [
+    "ANNUAL_TURNOVER"
+   ],
+   "withheld": [
+    "ANNUAL_TURNOVER_OF_THE_COMPANY"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW | SAT_AUG_QUOTE_HEADER | Renewal Status | None",
+   "emitted": [
+    "RENEWAL_STATUS"
+   ],
+   "withheld": [
+    "RENEWAL_STATUSS"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW | SAT_AUG_QUOTE_HEADER | Standalone CPA Policy Number | None",
+   "emitted": [
+    "SCPA_POLICY_NO"
+   ],
+   "withheld": [
+    "SCPA_POLICY_NUMBER"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW | SAT_AUG_QUOTE_HEADER | Transaction Line Serial Number | None",
+   "emitted": [
+    "SERIAL_NO"
+   ],
+   "withheld": [
+    "SRL_NO"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW | SAT_AUG_QUOTE_RATING | IGST Amount | None",
+   "emitted": [
+    "IGST_AMOUNT"
+   ],
+   "withheld": [
+    "IGST"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW | SAT_AUG_QUOTE_RATING | Loading Percentage | None",
+   "emitted": [
+    "LOADING_PERCENTAGE"
+   ],
+   "withheld": [
+    "PERCENTAGE_LOADING_"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW | SAT_RISK_MOTOR_VEHICLE | Manufacturing Year | None",
+   "emitted": [
+    "YEAR_OF_MANUFACTURING"
+   ],
+   "withheld": [
+    "YOM_STORE"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW | SAT_RISK_MOTOR_VEHICLE | Registration Number | None",
+   "emitted": [
+    "REGISTRATION_NO"
+   ],
+   "withheld": [
+    "REGISTRATION_NUMBER"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW | SAT_RISK_MOTOR_VEHICLE | Vehicle Sub Class | None",
+   "emitted": [
+    "VEHICLE_SUBTYPE"
+   ],
+   "withheld": [
+    "SUBTYPE_STORE"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW | SAT_AUG_QUOTE_HEADER | Plan Reference | None",
+   "emitted": [
+    "POLICY_PLAN"
+   ],
+   "withheld": [
+    "POLICYPLAN"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW | SAT_AUG_QUOTE_RATING | Loading Percentage | None",
+   "emitted": [
+    "LOADING_PERCENTAGE"
+   ],
+   "withheld": [
+    "PERCENTAGE_LOADING_"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW | SAT_AUG_QUOTE_RATING | Premium Calculation Basis | None",
+   "emitted": [
+    "MODE_OF_PREMIUM_CALCULATION"
+   ],
+   "withheld": [
+    "PREMIUM_CALCULATION_MODE"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW | SAT_AUG_RISK_MOTOR_CPA | PA Nominee Detail Text | None",
+   "emitted": [
+    "NOMINEE_DETAIL",
+    "SCPA_NOMINEE_DETAILS"
+   ],
+   "withheld": []
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW | SAT_AUG_RISK_MOTOR_VEHICLE | Power To Weight Ratio | None",
+   "emitted": [
+    "POWER_WEIGHT_RATIO"
+   ],
+   "withheld": [
+    "POWERWEIGHT_RATIO"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW | SAT_AUG_RISK_MOTOR_VEHICLE | Registration Number In Specified Format | None",
+   "emitted": [
+    "REGISTRATION_NUMBER_IN_SPECIFIED_FORMAT"
+   ],
+   "withheld": [
+    "REGISTRATION_NUMBER_SPECIFIED_FORMAT"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW | SAT_AUG_RISK_OBJECT_CORE | Risk Line Serial Number | None",
+   "emitted": [
+    "SERIAL_NO"
+   ],
+   "withheld": [
+    "SRL_NO"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW | SAT_COVERAGE_DEFINITION | Coverage Name | None",
+   "emitted": [
+    "COVER_NAME"
+   ],
+   "withheld": [
+    "COVERAGE_NAME"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW | SAT_COVERAGE_MOTOR_PA_OCCUPANT | Number Of Persons Covered | None",
+   "emitted": [
+    "NO_OF_PERSONS"
+   ],
+   "withheld": [
+    "NOP",
+    "NUMBER_OF_PERSONS"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW | SAT_RISK_MOTOR_VEHICLE | Body Type | None",
+   "emitted": [
+    "BODY_TYPE"
+   ],
+   "withheld": [
+    "TYPE_OF_BODY"
+   ]
+  },
+  {
+   "group": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW | SAT_RISK_MOTOR_VEHICLE | Vehicle Sub Class | None",
+   "emitted": [
+    "VEHICLE_SUBTYPE"
+   ],
+   "withheld": [
+    "VEHICLE_SUB_TYPE"
+   ]
+  }
+ ],
+ "dual_grain_hub_risk_object_satellites": [
+  "SAT_AUG_RISK_MOTOR_CPA",
+  "SAT_AUG_RISK_MOTOR_DRIVER",
+  "SAT_AUG_RISK_MOTOR_EV_BATTERY",
+  "SAT_AUG_RISK_MOTOR_GEOGRAPHICAL_EXTENSION",
+  "SAT_AUG_RISK_MOTOR_IDV",
+  "SAT_AUG_RISK_MOTOR_NCB_HISTORY",
+  "SAT_AUG_RISK_MOTOR_TELEMATICS",
+  "SAT_AUG_RISK_MOTOR_VEHICLE",
+  "SAT_AUG_RISK_OBJECT_CORE",
+  "SAT_AUG_RISK_OBJECT_PARAMETER",
+  "SAT_RISK_MOTOR_ADDON",
+  "SAT_RISK_MOTOR_CPA",
+  "SAT_RISK_MOTOR_DRIVER",
+  "SAT_RISK_MOTOR_FITMENTS",
+  "SAT_RISK_MOTOR_IDV_TENURE",
+  "SAT_RISK_MOTOR_NCB_HISTORY",
+  "SAT_RISK_MOTOR_VEHICLE",
+  "SAT_RISK_OBJECT_CORE",
+  "SAT_RISK_OBJECT_VALUATION",
+  "SAT_RISK_TRAILER"
+ ],
+ "macro_library": "automate_dv: every hub, link and satellite is a macro call; every key hash is computed by automate_dv.stage()",
+ "structure": "partner_dv_dbt / travel_dv_dbt layout, exactly",
+ "build_status": "PARTIAL_BY_DECLARATION",
+ "models": {
+  "total": 741,
+  "by_layer": {
+   "automate_dv/augmented/satellites": 152,
+   "automate_dv/augmented/staging": 152,
+   "automate_dv/standard/hubs": 16,
+   "automate_dv/standard/links": 33,
+   "automate_dv/standard/satellites": 127,
+   "automate_dv/standard/staging": 142,
+   "automate_dv/standard/stitched": 15,
+   "staging/maximus_motor": 104
+  }
+ },
+ "tree_digest_sha256": "c3e38746e5cd704724d968587bb93dd458dbb327f2a1cde2bbfbd3f69d6ca8b5",
+ "tree_digest_recipe": "per file: posix-relpath + LF + sha256(bytes); lines sorted bytewise, joined by LF, sha256 of the UTF-8 join",
+ "central_views": {
+  "views": 15,
+  "satellites": 279,
+  "views_over_limit": 2,
+  "link_only_views": 0,
+  "feeding_tables": 57,
+  "link_pairs": 59,
+  "walk_tables_joined": 60
+ },
+ "unresolved_register": {
+  "count": 1543,
+  "by_kind": {
+   "augmentation_on_unbuildable_link": 30,
+   "child_key_leg_unresolved": 1362,
+   "child_key_unassigned": 1,
+   "claim_applicant_unruled": 3,
+   "key_not_emittable": 12,
+   "key_object_without_expression": 130,
+   "link_leg_not_equal_to_hub_key": 1,
+   "redundant_of_target_not_emitted": 4
+  },
+  "by_whose_call": {
+   "mapper": 1410,
+   "source owner": 133
+  },
+  "where": "build_artifacts/reports/unresolved_register.json"
+ },
+ "verification": {
+  "tally": {
+   "PASS": 21,
+   "FAIL": 1
+  },
+  "where": "build_artifacts/reports/verification.json"
+ },
+ "preconditions_before_dbt_run": [
+  {
+   "item": "normalise() must exist as a Snowflake function",
+   "detail": "BUILD_INSTRUCTIONS s1.2 lists it among the six ratified functions; nothing in the bundle or this workspace defines it. Carried verbatim (build_profile.json normalise_policy); health_consolidated_v5_dv_dbt refuses it -- settle once."
+  }
+ ],
+ "shared_gates": {
+  "check_internal": "PASS",
+  "check_patterns": "PASS",
+  "check_prose_counts": "PASS",
+  "check_prose_shape": "PASS"
+ },
+ "check_vault_alignment": {
+  "sibling": "opus_motor_v3_dv_dbt (same LOB, the binding OPUS Motor precedence, same conventions)",
+  "exit": 1,
+  "findings": {
+   "1. payload column is not the canonical rendering": 3,
+   "2. grain differs from the sibling": 2,
+   "2. src_cdk differs from the sibling": 7,
+   "5. alias selected more than once in one select": 72,
+   "6. mapped column reaches no satellite": 7
+  },
+  "mapped_columns_reaching_a_satellite": {
+   "reached": 598,
+   "of": 605
+  },
+  "triage": {
+   "5. alias selected more than once in one select": {
+    "gate_count_reproduced": 72,
+    "explained": 72,
+    "n_unexplained": 0,
+    "unexplained": [],
+    "aliases_repeated_within_one_real_select": 0,
+    "cause": "the gate splits a file on 'union all' only, so a view's last branch and its final windowed select fall in one block and each payload column, aliased once in each, reads as repeated. Parsed select by select, no alias repeats."
+   },
+   "1. and 6. mapped column reaches no satellite": {
+    "pairs_the_gate_reports_missing": 7,
+    "explained_by_refusal_kind": {
+     "key_object_without_expression": 7,
+     "redundant_of dedup": 1
+    },
+    "n_unexplained": 0,
+    "unexplained": [],
+    "cause": "every such pair had ALL its map rows refused under a directive or for an unresolvable key, each registered with whose call it is."
+   },
+   "2. grain / src_cdk differs from the sibling": {
+    "satellites_shown_by_the_gate": [
+     "SAT_AUG_CLAIM_DOC_CHECKLIST",
+     "SAT_AUG_CLAIM_RECOVERY_EXPENSE_LINE",
+     "SAT_AUG_CLAIM_SURVEY_APPOINTMENT",
+     "SAT_AUG_COVERAGE_PACKAGE_RATING",
+     "SAT_AUG_QUOTE_PREMIUM_HEAD"
+    ],
+    "cause": "the two maps assign different child keys / multi-active declarations to these satellites (mostly SAT_AUG_* proposals). The mapper's closure (RUN_STATE s19) measures the GENUINE child-key divergence from the OPUS vocabulary as 2 -- SAT_POLICY_SUM_INSURED_BREAKUP and SAT_RISK_MOTOR_ADDON; the rest are level mismatches. Each build emits what its own map states; the two write separate schemas, so nothing collides."
+   }
+  }
+ },
+ "other_builds_unchanged": {
+  "check": "ABSOLUTE: no file outside this project changed",
+  "status": "PASS",
+  "population": 27336,
+  "detail": {
+   "files_compared": 27336,
+   "added": [],
+   "removed": [],
+   "modified": [],
+   "n_added": 0,
+   "n_removed": 0,
+   "n_modified": 0
+  }
+ }
+}

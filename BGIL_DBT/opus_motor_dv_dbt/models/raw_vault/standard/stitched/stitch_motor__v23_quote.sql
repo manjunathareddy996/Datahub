@@ -12,9 +12,9 @@
 --   BJAZ_SCR_MOT_VEH_DTLS
 --   BJAZ_WS_MOT_STP_RATE_SUMM
 -- Satellites fed WHOLE from this view (rule 2):
---   SAT_AUG_QUOTE_HEADER
---   SAT_AUG_QUOTE_PRIOR_INSURANCE
---   SAT_AUG_QUOTE_RATING
+--   SAT_MOTOR_AUG_QUOTE_HEADER
+--   SAT_MOTOR_AUG_QUOTE_PRIOR_INSURANCE
+--   SAT_MOTOR_AUG_QUOTE_RATING
 --   SAT_QUOTE_HEADER
 --   SAT_QUOTE_RATING
 -- Links whose legs come from one source row on this view (rule 6):
@@ -376,7 +376,7 @@ select
     first_value(QUOTE_RATING__NET_PREMIUM) ignore nulls over (partition by QUOTE_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as QUOTE_RATING__NET_PREMIUM,
     -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
     m.INC_JOB_UPDATED_AT,
-    -- multi-active satellites on QUOTE_BK (SAT_AUG_QUOTE_PRIOR_INSURANCE):
+    -- multi-active satellites on QUOTE_BK (SAT_MOTOR_AUG_QUOTE_PRIOR_INSURANCE):
     -- one load time per QUOTE_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
     -- all child rows of a parent share it (ma_sat finds its latest set by time).
     max(case when coalesce(m.AUG_QUOTE_PRIOR_INSURANCE__PRIOR_INSURER_NAME, m.AUG_QUOTE_PRIOR_INSURANCE__PRIOR_POLICY_CLAIM_COUNT, m.AUG_QUOTE_PRIOR_INSURANCE__PRIOR_POLICY_END_DATE, m.AUG_QUOTE_PRIOR_INSURANCE__PRIOR_POLICY_NUMBER, m.AUG_QUOTE_PRIOR_INSURANCE__PRIOR_POLICY_START_DATE, m.AUG_QUOTE_PRIOR_INSURANCE__PRIOR_TENURE_YEARS) is not null

@@ -1,0 +1,23 @@
+-- AUGMENTED track (not mapper-ratified) sat() for SAT_MOTOR_AUG_CLAIM_COVER_SECTION_ASSESSMENT (parent HUB_CLAIM, history SCD2), fed whole from central view stitch_mxm__v01_assessment.
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
+
+{%- set yaml_metadata -%}
+source_model: 'stg2_mxm_aug__claim_cover_section_assessment'
+src_pk: 'CLAIM_HKEY'
+src_payload:
+  - 'ADVERSE_MEDICAL_HISTORY_FINDING'
+  - 'CASE_MANAGEMENT_INDICATOR'
+  - 'NON_DISCLOSURE_FINDING'
+src_hashdiff: 'HASHDIFF'
+src_ldts: 'LOAD_DATETIME'
+src_source: 'RECORD_SOURCE'
+{%- endset -%}
+
+{% set metadata_dict = fromyaml(yaml_metadata) %}
+
+{{ automate_dv.sat(src_pk=metadata_dict['src_pk'],
+                   src_payload=metadata_dict['src_payload'],
+                   src_hashdiff=metadata_dict['src_hashdiff'],
+                   src_ldts=metadata_dict['src_ldts'],
+                   src_source=metadata_dict['src_source'],
+                   source_model=metadata_dict['source_model']) }}

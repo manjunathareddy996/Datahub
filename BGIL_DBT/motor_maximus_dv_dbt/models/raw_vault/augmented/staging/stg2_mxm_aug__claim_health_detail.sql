@@ -1,0 +1,41 @@
+-- automate_dv.stage() for SAT_MOTOR_AUG_CLAIM_HEALTH_DETAIL, read off central view stitch_mxm__v03_claim.
+-- The key is NULL wherever this satellite has no payload: sat() takes no filter, and it skips a NULL key.
+{{ config(materialized='view') }}
+
+{%- set yaml_metadata -%}
+source_model: 'stitch_mxm__v03_claim'
+hashed_columns:
+  CLAIM_HKEY: 'CLAIM_NK'
+  HASHDIFF:
+    is_hashdiff: true
+    columns:
+      - 'DISEASE_CATEGORY'
+      - 'HOSPITAL_EMAIL_ADDRESS'
+      - 'ICD_CODE_DESCRIPTION'
+      - 'ICD_DESCRIPTION'
+      - 'MEDICAL_CLAIM_NUMBER'
+      - 'MEDICAL_REVIEWER_COMMENTS'
+      - 'PRE_EXISTING_DISEASE_DESCRIPTION'
+      - 'PURPOSE_OF_VISIT'
+      - 'SYSTEM_OF_MEDICINE'
+derived_columns:
+  CLAIM_NK: "case when coalesce(AUG_CLAIM_HEALTH_DETAIL__DISEASE_CATEGORY, AUG_CLAIM_HEALTH_DETAIL__HOSPITAL_EMAIL_ADDRESS, AUG_CLAIM_HEALTH_DETAIL__ICD_CODE_DESCRIPTION, AUG_CLAIM_HEALTH_DETAIL__ICD_DESCRIPTION, AUG_CLAIM_HEALTH_DETAIL__MEDICAL_CLAIM_NUMBER, AUG_CLAIM_HEALTH_DETAIL__MEDICAL_REVIEWER_COMMENTS, AUG_CLAIM_HEALTH_DETAIL__PRE_EXISTING_DISEASE_DESCRIPTION, AUG_CLAIM_HEALTH_DETAIL__PURPOSE_OF_VISIT, AUG_CLAIM_HEALTH_DETAIL__SYSTEM_OF_MEDICINE) is not null then 'HUB_CLAIM|' || CLAIM_BK end"
+  DISEASE_CATEGORY: 'AUG_CLAIM_HEALTH_DETAIL__DISEASE_CATEGORY'
+  HOSPITAL_EMAIL_ADDRESS: 'AUG_CLAIM_HEALTH_DETAIL__HOSPITAL_EMAIL_ADDRESS'
+  ICD_CODE_DESCRIPTION: 'AUG_CLAIM_HEALTH_DETAIL__ICD_CODE_DESCRIPTION'
+  ICD_DESCRIPTION: 'AUG_CLAIM_HEALTH_DETAIL__ICD_DESCRIPTION'
+  MEDICAL_CLAIM_NUMBER: 'AUG_CLAIM_HEALTH_DETAIL__MEDICAL_CLAIM_NUMBER'
+  MEDICAL_REVIEWER_COMMENTS: 'AUG_CLAIM_HEALTH_DETAIL__MEDICAL_REVIEWER_COMMENTS'
+  PRE_EXISTING_DISEASE_DESCRIPTION: 'AUG_CLAIM_HEALTH_DETAIL__PRE_EXISTING_DISEASE_DESCRIPTION'
+  PURPOSE_OF_VISIT: 'AUG_CLAIM_HEALTH_DETAIL__PURPOSE_OF_VISIT'
+  SYSTEM_OF_MEDICINE: 'AUG_CLAIM_HEALTH_DETAIL__SYSTEM_OF_MEDICINE'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
+  RECORD_SOURCE: '!stitch_mxm__v03_claim'
+{%- endset -%}
+
+{% set metadata_dict = fromyaml(yaml_metadata) %}
+
+{{ automate_dv.stage(include_source_columns=false,
+                      source_model=metadata_dict['source_model'],
+                      hashed_columns=metadata_dict['hashed_columns'],
+                      derived_columns=metadata_dict['derived_columns']) }}

@@ -1,0 +1,41 @@
+-- automate_dv.stage() for SAT_CLAIM_FNOL, read off central view stitch_mxm__v03_claim.
+-- The key is NULL wherever this satellite has no payload: sat() takes no filter, and it skips a NULL key.
+{{ config(materialized='view') }}
+
+{%- set yaml_metadata -%}
+source_model: 'stitch_mxm__v03_claim'
+hashed_columns:
+  CLAIM_HKEY: 'CLAIM_NK'
+  HASHDIFF:
+    is_hashdiff: true
+    columns:
+      - 'FNOL_CHANNEL'
+      - 'FNOL_DATE'
+      - 'FNOL_REFERENCE'
+      - 'FNOL_TIME'
+      - 'LOCATION_OF_LOSS'
+      - 'PRELIMINARY_LOSS_DESCRIPTION'
+      - 'PRELIMINARY_LOSS_ESTIMATE'
+      - 'REPORTED_BY_CONTACT'
+      - 'REPORTED_BY_NAME'
+derived_columns:
+  CLAIM_NK: "case when coalesce(CLAIM_FNOL__FNOL_CHANNEL, CLAIM_FNOL__FNOL_DATE, CLAIM_FNOL__FNOL_REFERENCE, CLAIM_FNOL__FNOL_TIME, CLAIM_FNOL__LOCATION_OF_LOSS, CLAIM_FNOL__PRELIMINARY_LOSS_DESCRIPTION, CLAIM_FNOL__PRELIMINARY_LOSS_ESTIMATE, CLAIM_FNOL__REPORTED_BY_CONTACT, CLAIM_FNOL__REPORTED_BY_NAME) is not null then 'HUB_CLAIM|' || CLAIM_BK end"
+  FNOL_CHANNEL: 'CLAIM_FNOL__FNOL_CHANNEL'
+  FNOL_DATE: 'CLAIM_FNOL__FNOL_DATE'
+  FNOL_REFERENCE: 'CLAIM_FNOL__FNOL_REFERENCE'
+  FNOL_TIME: 'CLAIM_FNOL__FNOL_TIME'
+  LOCATION_OF_LOSS: 'CLAIM_FNOL__LOCATION_OF_LOSS'
+  PRELIMINARY_LOSS_DESCRIPTION: 'CLAIM_FNOL__PRELIMINARY_LOSS_DESCRIPTION'
+  PRELIMINARY_LOSS_ESTIMATE: 'CLAIM_FNOL__PRELIMINARY_LOSS_ESTIMATE'
+  REPORTED_BY_CONTACT: 'CLAIM_FNOL__REPORTED_BY_CONTACT'
+  REPORTED_BY_NAME: 'CLAIM_FNOL__REPORTED_BY_NAME'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
+  RECORD_SOURCE: '!stitch_mxm__v03_claim'
+{%- endset -%}
+
+{% set metadata_dict = fromyaml(yaml_metadata) %}
+
+{{ automate_dv.stage(include_source_columns=false,
+                      source_model=metadata_dict['source_model'],
+                      hashed_columns=metadata_dict['hashed_columns'],
+                      derived_columns=metadata_dict['derived_columns']) }}

@@ -1,0 +1,130 @@
+{
+ "project": "motor_maximus_v2_dv_dbt",
+ "dbt_project_name": "motor_maximus_v2_dv",
+ "lob": "maximus_motor",
+ "structure_reference": "partner_dv_dbt / travel_dv_dbt -- models/staging/<lob>/ and models/automate_dv/{standard/{stitched,staging,hubs,links,satellites,references},augmented/{staging,satellites}}, the same layout as health_consolidated_v5, maximus_health_v4 and opus_motor_v3. No resolver, hub_feed, proposed, reject_log or assertions layer.",
+ "macro_library": {
+  "packages": [
+   {
+    "package": "dbt-labs/dbt_utils",
+    "version": [
+     ">=1.1.0",
+     "<2.0.0"
+    ]
+   },
+   {
+    "package": "Datavault-UK/automate_dv",
+    "version": [
+     ">=0.11.0",
+     "<0.12.0"
+    ]
+   }
+  ]
+ },
+ "inputs_pinned": {
+  "note": "EXACTLY the mapping motor_maximus_dv_dbt was built from: the 42 of its 43 pinned bundle files whose sha256 still matches BOTH its inputs/ copy and the live bundle, read in place from outputs/, plus data_7.js. The mapper's RUN_STATE.md records the handoff (s17) and the build's closure (s19); its open items are carried here as directives.",
+  "files": {
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/00_opus_build_vocab_raw.json": "sha256:d8d6c43cf3486a9423a2aba044da02b72f43b31997afe0c0af366cd88ad40434",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/00_source_profile.json": "sha256:2c1bef990761696dad0222d42910b6d49592ed22bc539484783bf036c7a588bf",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/00_tables_index.json": "sha256:719ee0b3b117bad9307305febdcdb38058559fd18fae951f3088f426aca68330",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/01_table_classification.json": "sha256:14fef88d5c58962e7f0adc243ed42a4be52499709a9ff07efe6dfb823ca3ba7f",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/02_business_table_domain.json": "sha256:011b4dd702bed1d95ad21a22ae610d50e22fc49e6f589a86b4b61aad76c42726",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/03_column_anchor_mapping.json": "sha256:d4537da5f6fecfd9c92514dbc9fbc87f1ca1ed5aa0395005f92f774260f10fad",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/03b_business_columns.json": "sha256:f5f834a2eed3880078ff6eb4b079fe8408f86d0d4ff59b5930f9757438846a10",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/03c_opus_recall_candidates.json": "sha256:9c211dc87c4c2c75ed6dd1c338bbbcd0990cafd9f47b0086c1358749cdf76ab1",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/03c_recall_impact.json": "sha256:daa3eaf2587c7003fd3aa913d776356d5079fe3d7fef6deb42595c6aff141548",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/04_collapse_after_stamp.json": "sha256:66a9ea873b96e6acf17667153fc5646bcccb0235a2bccb4830f1428bae79a5f2",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/04_collapse_final.json": "sha256:049680f58c7f218f5ef189d385dfe9179f4b4eddc68f70064b43d79920112ec7",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/04_collapse_violations.json": "sha256:ca8e4b113d373f8059a7504ba28074f5bc90c4c055b0db13cfdb41803de66fd4",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/04_column_map.json": "sha256:eb3a51d6f6103aadd054aae65ac5c88ccd995e57f18f18fff9255c6a1e4ab548",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/04_column_map.rejected.pre_apply_patches.json": "sha256:540c0267de1f96d72a54f29c3fc28ccf223ee05d0f4091176edbd14bf555d254",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/04_pivotbase_patch.json": "sha256:55609c24a5a44582f838b27631f5465cad27b3b53b604bc117d38c9d23aa1638",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/04c_precedence_audit.json": "sha256:eb3db788cb5fb653afb9440902a27410211e6a4b5a0308677e9b8926177096df",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/04d_new_satellite_audit.json": "sha256:1f68825e7b7f41b648a4d1d21c453c3292e7ecacce2ea02007ecb0752a06d757",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/04e_hub_key_splits.json": "sha256:31a5583b941c34002e8d82f94382db681a7cfa89bc57d2ce7f1c3606f74de5ac",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/04e_hub_key_splits_classified.json": "sha256:3e75d28836544182707a3f18a29faf773c73fdc843d551851ccc975226b47674",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/08_apply_log.json": "sha256:2e3092f19f93bd6cb6de4ed955b506a34d5b6882d527b96ed5afb37c927a0dae",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/08_handoff_facts.json": "sha256:b4c03cbf613c8d61a0ccb50b93fa5a936da0a7885eb67d7a74c6f78887a21e53",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/09_validation_report.json": "sha256:9748bbac88ec5760a5c0c639007ba0599b355accb1e101a03c1a90de09ad9870",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/09_validator_findings.final.json": "sha256:2543b671cfe248e8de2068410572582be394355065855747faa46b708fa9528a",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/09_validator_findings.json": "sha256:56a2e3cc3ee8932a36ac450311cebcfddaedb7b851910bfb62434b9f67fb2bd7",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/BUILD_INSTRUCTIONS_MOTOR_MAXIMUS.md": "sha256:1fa1fde00a7f29231814eeed0492e21e0492271354fd760486022dbdaf6943ca",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/CHILDKEY_GAPS.csv": "sha256:676a8bb8a19f631166239d4acf68bd64b6530b9ec51ed959fc3865393727de7c",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/CLOSING_NOTE_TO_SENIOR_MAPPER_MOTOR_MAXIMUS.md": "sha256:15391f7c12bfb21c4be4ef32642085953e1e3cee5242b152fd0ecf71706c8cbc",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/MESSAGE_TO_BUILDER.md": "sha256:c176a8e49034700d470a78ac5258cc40a83891c80120fb571cbda02192257563",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/NOTE_TO_SENIOR_MAPPER.md": "sha256:c23685e5ccf68441e3459decc93cc5d6dbc9f295398054096daeb0e6b8863064",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/REPLY_TO_SENIOR_MAPPER_MOTOR_MAXIMUS.md": "sha256:9e7b62de8ab4e153a59de083a3b3e0d0e6e2761fcb1411c1efdb79b520e41ab3",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/SENIOR_MAPPER_CLARIFICATIONS_NEW_QUERIES_MOTOR_MAXIMUS.md": "sha256:732831661b085a0447e2b57a85ec9cb24f7df708d4ecce2224d1732230b8bbf9",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/SENIOR_MAPPER_CLOSEOUT_MOTOR_MAXIMUS.md": "sha256:90fa2b8a3d3a729e84ec8c7554bef899391bf66917d92ca8a20e4ad13d918dbc",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/SENIOR_MAPPER_FINAL_REPLY_MOTOR_MAXIMUS.md": "sha256:a1097cf022ea39553db2446574062b7d0840090d130f33e8e675675190321a96",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/SENIOR_MAPPER_REVIEW_MOTOR_MAXIMUS.md": "sha256:4b45d755b0da5c3cc3c3bf8ad5a50bb05e7a62bd7ef72be6a85e0fd24f67ad38",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/SENIOR_MAPPER_REVIEW_PACK.md": "sha256:96a6eed9e8666459e95766cf12922aa7199db779a096e360932e63f037585574",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/STAGE3_BATCHREF_RESOLUTION.json": "sha256:8dc31800600becc777b02123147bcbf59af613e3bf6cddedcfba33dd8e5f6e41",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/STAGE_REPORTS.json": "sha256:7759a0226d66a39b70440db997e0894d48bed59fb421c6b7693c129d1000021f",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/VALIDATION_REPORT_Motor_Maximus.md": "sha256:3e9a2aaa87723be42ff704a048f71a35ff87b439307a0ce0bd45600b8a8062ec",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/crossrun_vocabulary.json": "sha256:e601de921745ea4b9e0eee472956937378f109cb1e09a0f822e1427a4aae2968",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/model_taxonomy.json": "sha256:5cd3228c120f91be21317375155cc4720fface9372a45a27b2233e28876d4db3",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/modeler_feedback.json": "sha256:f1dd7c3150d63b05e816b42b46a98c09f13a0cca24087cb3d86124d4cf79774a",
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/precedent_reference.json": "sha256:1335d94ff7f3bba65d8bf866faf0a356954f2512bc9f29fd3614ba69f35dbff2",
+   "Health_DBTModel/data_7.js": "md5:082b92d7650cf4e192b6e9bb931cdc7e"
+  },
+  "not_read": {
+   "SourceMapping_Skill/Motor Maximus Mapping/outputs/Motor_Maximus_SourceToModel_Mapping.xlsx": "the workbook's bytes match neither the sha256 motor_maximus_dv_dbt recorded for it nor anything else on record (its inputs/ copy and the live bundle agree with each other). It is not a build input -- the build reads 04_column_map.json, which matches."
+  }
+ },
+ "central_view_rule": {
+  "status": "GOVERNS",
+  "verbatim": "1. we create a central view from source tables (by joining them , max upto 10). The join are selected so that it can feed sat as a whole (one or moew). That is we do not split sat across these views. Restriction of 10 can be broken if a sat needs more than source tables to build. If a view as less source tables join, we add more tables to it efficiently so that new sats can be built.",
+  "hub_and_link_extension_verbatim": "the views will have hub keys -- effectively each sat is primary key goes to hub -- so hub has to come from there, 2nd the links will also be from same view , as different hub keys and sat populatin comes from there",
+  "table_limit": 10,
+  "what_counts_toward_the_limit": "the source tables whose rows FEED the view. Ancestor and sibling tables joined only to resolve a spine walk are lookups for a key and are listed per view as walk tables."
+ },
+ "spine": {
+  "edge_field": "tables[].shred.parent_table",
+  "span_types": "spine[...] (climb, '->') and cross_via_root[... -> ROOT >> TARGET] (climb to the root, then descend). BUILD_INSTRUCTIONS s1.2: classify by operator, verify against the graph.",
+  "start_forms": "spine[PARENT_KEY_HASH -> ...], spine[<own view> -> ...] and spine[<own view>.PARENT_KEY_HASH -> <view>.KEY_HASH -> ...] are one climb: child.PARENT_KEY_HASH = parent.KEY_HASH, one join per REAL level. A hop name is the full view name or, where the map abbreviates it, the name relative to the row's root (root + '_' + name).",
+  "descend": "only where exactly one distinct value exists under the ancestor; a 1:N descend gives NULL and the row is rejected, never a pick."
+ },
+ "ratified_functions": [
+  "coalesce",
+  "lnk",
+  "md5",
+  "normalise",
+  "nullif",
+  "trim",
+  "upper"
+ ],
+ "normalise_policy": "emit",
+ "normalise_note": "normalise() is one of the six functions BUILD_INSTRUCTIONS s1.2 calls 'all ratified', and is defined nowhere in the bundle or this workspace. 'emit' carries it verbatim and declares a precondition. health_consolidated_v5_dv_dbt refuses it; settle once, estate-wide.",
+ "directives": {
+  "empty_key_shell": "a resolved_key object with no expression is refused (source) -- including the declared keyless insured party on the CLM pivot; 'CUST:' is never borrowed from a cousin view.",
+  "withheld_unruled": {
+   "rows": [
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.CLAIM_APPLICANT_DOB",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.CLAIM_APPLICANT_NAME",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.CLAIM_APPLICANT_NAME_PREFIX"
+   ],
+   "why": "BUILD_INSTRUCTIONS s5.2: written on the PROPOSER's key with no instance; never ruled. Withheld as agreed at closure (RUN_STATE s18/s19) until a source answer."
+  },
+  "link_leg_identity": "a link leg must equal the hub key of the hub it references on that view; a leg that differs from every key form of that hub on the view is WITHHELD, not emitted non-joining.",
+  "risk_object_interest_grain": "blocks whose resolved_key.note declares HUB_RISK_OBJECT keyed at interest grain are emitted as stated and every satellite they feed carries a DUAL-GRAIN banner; the two grains are never unified.",
+  "two_writers_declared": "SAT_POLICY_COVERAGE_SCHEDULE 'Coverage Start Date' keeps its two writers (no redundant_of invented); where two writers of one single-active attribute meet on one row, the merge is stated per group in build_artifacts/reports/single_writer_decisions.json.",
+  "vehicle_ladder": "emitted exactly as the map writes it; never re-ordered or re-spelt.",
+  "report_not_gate": "a per-hop audit that cannot resolve a name REPORTS, it never gates a key (RUN_STATE s19: gating on an incomplete reader withheld half the key surface)."
+ },
+ "conventions": {
+  "hub_key_column": "<HUB minus HUB_>_HKEY",
+  "link_key_column": "<LNK minus LNK_>_HKEY",
+  "natural_key": "'<HUB_CODE>|' || <business key>, hashed by automate_dv.stage()",
+  "link_natural_key": "'<LNK_CODE>|' || <leg BKs in hub-code order, '|'-joined>",
+  "hashdiff": "HASHDIFF (bare, one stage per satellite)",
+  "child_key_column": "<LEG>_CK",
+  "role_satellites": "satellites on the one-hub LNK_PARTY_ROLE are built off HUB_PARTY with a literal ROLE_TYPE_CK",
+  "load_datetime": "!CURRENT_TIMESTAMP()  -- as the reference projects write it, by the user's instruction",
+  "payload_names": "UPPER_SNAKE of the data_7.js attribute name",
+  "hub_business_key_column": "<HUB>_BK"
+ },
+ "staging_casts": "every column nullif(trim(to_varchar(\"COL\")), '') aliased lower-case, shred keys included.",
+ "row_filters": {},
+ "refusals_not_fallbacks": "A key, child key, walk or attribute that cannot be resolved from the pinned inputs is REFUSED and registered with whose call it is."
+}

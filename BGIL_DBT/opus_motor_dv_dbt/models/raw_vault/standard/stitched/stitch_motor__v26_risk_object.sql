@@ -24,9 +24,9 @@
 --   BJAZ_WAP_MOT_ADD_QSTN_DTLS
 --   VEHICLE_BLOCK_MASTER
 -- Satellites fed WHOLE from this view (rule 2):
---   SAT_AUG_RISK_MOTOR_VEHICLE
---   SAT_AUG_RISK_MOTOR_VERIFICATION
---   SAT_AUG_RISK_OBJECT_CORE
+--   SAT_MOTOR_AUG_RISK_MOTOR_VEHICLE
+--   SAT_MOTOR_AUG_RISK_MOTOR_VERIFICATION
+--   SAT_MOTOR_AUG_RISK_OBJECT_CORE
 --   SAT_RISK_MOTOR_VEHICLE
 -- Links whose legs come from one source row on this view (rule 6):
 -- OVER the table limit by rule 3: one satellite on this view needs every feeding table.

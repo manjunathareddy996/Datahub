@@ -1,0 +1,214 @@
+{
+ "tally": {
+  "PASS": 21,
+  "FAIL": 1
+ },
+ "checks": [
+  {
+   "check": "layout: models only in the partner/travel directory set",
+   "status": "PASS",
+   "population": 741,
+   "detail": {
+    "unexpected": [],
+    "missing": []
+   }
+  },
+  {
+   "check": "every hub/link/sat is an automate_dv macro; every stage is stage()",
+   "status": "PASS",
+   "population": 622,
+   "detail": {
+    "offenders": []
+   }
+  },
+  {
+   "check": "no hash KEY written by hand: every key is hashed by stage()",
+   "status": "PASS",
+   "population": 741,
+   "detail": {
+    "offenders": [],
+    "md5_inside_map_content_hash_business_keys": 70
+   }
+  },
+  {
+   "check": "packages.yml declares automate_dv + dbt_utils at the pinned ranges",
+   "status": "PASS",
+   "population": 2,
+   "detail": {}
+  },
+  {
+   "check": "refs and sources resolve; no orphan model",
+   "status": "PASS",
+   "population": 741,
+   "detail": {
+    "dangling": [],
+    "bad_sources": [],
+    "orphans": []
+   }
+  },
+  {
+   "check": "yaml_metadata blocks are in the generated grammar, no Jinja inside",
+   "status": "PASS",
+   "population": 622,
+   "detail": {
+    "offenders": []
+   }
+  },
+  {
+   "check": "vault contract: every src_* column is produced by every source stage",
+   "status": "PASS",
+   "population": 398,
+   "detail": {
+    "offenders": []
+   }
+  },
+  {
+   "check": "stage contract: every stage column comes from its central view",
+   "status": "PASS",
+   "population": 3178,
+   "detail": {
+    "offenders": []
+   }
+  },
+  {
+   "check": "view contract: every qualified column is on the model its alias binds",
+   "status": "PASS",
+   "population": 946,
+   "detail": {
+    "offenders": [],
+    "n": 0
+   }
+  },
+  {
+   "check": "central-view rule: whole satellites, <=10 feeding tables or rule 3",
+   "status": "PASS",
+   "population": 279,
+   "detail": {
+    "offenders": []
+   }
+  },
+  {
+   "check": "no spine notation, LNK() or display form survives into SQL",
+   "status": "PASS",
+   "population": 741,
+   "detail": {
+    "offenders": [],
+    "normalise_calls_carried_verbatim": 70
+   }
+  },
+  {
+   "check": "every model under Snowflake's 1 MB statement limit once compiled",
+   "status": "PASS",
+   "population": 741,
+   "detail": {
+    "largest_compiled_estimate": 920164,
+    "offenders": [],
+    "why": "Snowflake rejects a statement over 1 MB; a ref() compiles to a fully qualified name, estimated at 64 bytes"
+   }
+  },
+  {
+   "check": "every mapped satellite row lands, is refused with a reason, or is a declared dedup",
+   "status": "PASS",
+   "population": 1894,
+   "detail": {
+    "accounted": {
+     "landed in its satellite": 1766,
+     "refused and registered": 55,
+     "dropped: redundant_of another mapped column": 73
+    },
+    "unaccounted": [],
+    "n_unaccounted": 0
+   }
+  },
+  {
+   "check": "writer decisions: every withheld or merged writer is stated in its satellite",
+   "status": "PASS",
+   "population": 76,
+   "detail": {
+    "unstated": [],
+    "groups_merged_in_column_name_order": [
+     "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW | SAT_AUG_CLAIM_MOTOR_DETAIL | Driver Relationship To Insured | None",
+     "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW | SAT_AUG_RISK_MOTOR_CPA | PA Nominee Detail Text | None",
+     "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW | SAT_AUG_RISK_MOTOR_CPA | PA Nominee Detail Text | None"
+    ]
+   }
+  },
+  {
+   "check": "dual grain: every interest-grain HUB_RISK_OBJECT satellite carries the banner",
+   "status": "PASS",
+   "population": 20,
+   "detail": {
+    "unbannered": []
+   }
+  },
+  {
+   "check": "withheld: the unruled CLAIM_APPLICANT_* rows land nowhere and are registered",
+   "status": "PASS",
+   "population": 3,
+   "detail": {
+    "landed_anyway": [],
+    "not_registered": []
+   }
+  },
+  {
+   "check": "ABSOLUTE: no file outside this project changed",
+   "status": "PASS",
+   "population": 27336,
+   "detail": {
+    "files_compared": 27336,
+    "added": [],
+    "removed": [],
+    "modified": [],
+    "n_added": 0,
+    "n_removed": 0,
+    "n_modified": 0
+   }
+  },
+  {
+   "check": "shared gate: check_internal",
+   "status": "PASS",
+   "population": 1,
+   "detail": {
+    "tail": "models                        : 741   (motor_maximus_v2_dv_dbt)\n  PASS -- refs resolve, every declared source column is emitted, names unique.\n"
+   }
+  },
+  {
+   "check": "shared gate: check_patterns",
+   "status": "PASS",
+   "population": 1,
+   "detail": {
+    "tail": "files scanned                 : 9\n  PASS -- no control bytes, every statically-known pattern compiles.\n"
+   }
+  },
+  {
+   "check": "shared gate: check_prose_counts",
+   "status": "PASS",
+   "population": 1,
+   "detail": {
+    "tail": "prose files scanned           : 2\n  PASS -- every quantity in current-state prose is sourced or absent.\n"
+   }
+  },
+  {
+   "check": "shared gate: check_prose_shape",
+   "status": "PASS",
+   "population": 1,
+   "detail": {
+    "tail": "models examined               : 741   (population)\n  PASS -- no identifier-position token contains a space.\n"
+   }
+  },
+  {
+   "check": "shared gate: check_vault_alignment (vs opus_motor_v3_dv_dbt)",
+   "status": "FAIL",
+   "population": 1,
+   "detail": {
+    "findings": {
+     "1. payload column is not the canonical rendering": 3,
+     "2. grain differs from the sibling": 2,
+     "2. src_cdk differs from the sibling": 7,
+     "5. alias selected more than once in one select": 72,
+     "6. mapped column reaches no satellite": 7
+    }
+   }
+  }
+ ]
+}

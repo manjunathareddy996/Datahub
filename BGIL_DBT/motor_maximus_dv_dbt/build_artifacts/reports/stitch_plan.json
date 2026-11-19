@@ -1,0 +1,1795 @@
+{
+ "rule": "1. we create a central view from source tables (by joining them , max upto 10). The join are selected so that it can feed sat as a whole (one or moew). That is we do not split sat across these views. Restriction of 10 can be broken if a sat needs more than source tables to build. If a view as less source tables join, we add more tables to it efficiently so that new sats can be built.",
+ "table_limit": 10,
+ "views": [
+  {
+   "ordinal": 1,
+   "name": "v01_assessment",
+   "stitch_model": "stitch_v01_assessment",
+   "stage_model": "stg2_v01_assessment",
+   "tables": [
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_SURVEYOR_DEPUTATION",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS",
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_ASSESSMENT_FRAUD_INVESTIGATION",
+    "SAT_ASSESSMENT_HEADER",
+    "SAT_ASSESSMENT_SURVEY",
+    "SAT_AUG_ASSESSMENT_HEADER",
+    "SAT_AUG_ASSESSMENT_PRE_INSPECTION",
+    "SAT_AUG_ASSESSMENT_SURVEY",
+    "SAT_AUG_CLAIM_COVER_SECTION_ASSESSMENT",
+    "SAT_AUG_CLAIM_DEDUCTION_WAIVER",
+    "SAT_AUG_COVERAGE_CONDITIONS",
+    "SAT_AUG_COVERAGE_LIMITS",
+    "SAT_AUG_POLICY_COVERAGE_SCHEDULE",
+    "SAT_AUG_POLICY_PREMIUM_TENURE",
+    "SAT_AUG_QUOTE_COVERAGE_SCHEDULE",
+    "SAT_AUG_QUOTE_DISCOUNT_LOADING_APPLIED",
+    "SAT_AUG_QUOTE_PREMIUM_HEAD",
+    "SAT_AUG_QUOTE_SUM_INSURED_BREAKUP",
+    "SAT_CLAIM_DEDUCTION_WAIVER",
+    "SAT_CLAIM_PA_DETAIL",
+    "SAT_CLAIM_QUALITY_AUDIT",
+    "SAT_COVERAGE_LIMITS",
+    "SAT_QUOTE_RATING_INPUT",
+    "SAT_RISK_MOTOR_CPA",
+    "SAT_RISK_MOTOR_FITMENTS",
+    "SAT_RISK_MOTOR_IDV_TENURE"
+   ],
+   "links": [
+    "LNK_CLAIM_ASSESSMENT",
+    "LNK_CLAIM_COVERAGE",
+    "LNK_QUOTE_RISK_OBJECT",
+    "LNK_RISK_OBJECT_DOCUMENT"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_CLAIM_ASSESSMENT",
+     "table": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW",
+     "legs": {
+      "HUB_ASSESSMENT": {
+       "expr": "nullif(trim(ASSESSMENT_NO),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW -> MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS].CLAIMNO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_CLAIM_COVERAGE",
+     "table": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW -> MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS].CLAIMNO), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_COVERAGE": {
+       "expr": "nullif(trim(COVER_CODE),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_CLAIM_ASSESSMENT",
+     "table": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_SURVEYOR_DEPUTATION",
+     "legs": {
+      "HUB_ASSESSMENT": {
+       "expr": "nullif(trim(DEPUTATION_NUMBER),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_SURVEYOR_DEPUTATION -> MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS].CLAIMNO),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_RISK_OBJECT_DOCUMENT",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+     "legs": {
+      "HUB_DOCUMENT": {
+       "expr": "'CERT:' || nullif(trim(CERTIFICATE_NUMBER), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS].POL_RISK_ID), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_QUOTE_RISK_OBJECT",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW",
+     "legs": {
+      "HUB_QUOTE": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW -> MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST -> MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY -> MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER -> MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST -> MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS].POLICY_QUOTE_NUMBER), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW -> MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST -> MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY -> MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER -> MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST].POL_RISK_ID), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_RISK_OBJECT_DOCUMENT",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW",
+     "legs": {
+      "HUB_DOCUMENT": {
+       "expr": "'CERT:' || nullif(trim(CERTIFICATE_NUMBER), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW -> MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST -> MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY -> MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER -> MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST].POL_RISK_ID), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_ASSESSMENT",
+    "HUB_CLAIM",
+    "HUB_COVERAGE",
+    "HUB_POLICY",
+    "HUB_QUOTE",
+    "HUB_RISK_OBJECT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 2,
+   "name": "v02_case",
+   "stitch_model": "stitch_v02_case",
+   "stage_model": "stg2_v02_case",
+   "tables": [
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_WORK_ITEM_DETAILS"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_CASE_WORKFLOW_TASK",
+    "SAT_CASE_WORKFLOW_TASK"
+   ],
+   "links": [],
+   "link_pairs": [],
+   "anchor_hubs": [
+    "HUB_CASE"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 3,
+   "name": "v03_claim",
+   "stitch_model": "stitch_v03_claim",
+   "stage_model": "stg2_v03_claim",
+   "tables": [
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_SURVEYOR_DEPUTATION"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_CLAIM_ASSESSMENT_SUMMARY",
+    "SAT_AUG_CLAIM_BENEFIT_HEAD",
+    "SAT_AUG_CLAIM_BILL_LINE",
+    "SAT_AUG_CLAIM_CO_RI_SHARE",
+    "SAT_AUG_CLAIM_DOC_CHECKLIST",
+    "SAT_AUG_CLAIM_FNOL",
+    "SAT_AUG_CLAIM_FRAUD",
+    "SAT_AUG_CLAIM_HEADER",
+    "SAT_AUG_CLAIM_HEALTH_DETAIL",
+    "SAT_AUG_CLAIM_LITIGATION",
+    "SAT_AUG_CLAIM_MOTOR_DETAIL",
+    "SAT_AUG_CLAIM_PA_DETAIL",
+    "SAT_AUG_CLAIM_PROVIDER_BILLING",
+    "SAT_AUG_CLAIM_QUALITY_AUDIT",
+    "SAT_AUG_CLAIM_REOPEN",
+    "SAT_AUG_CLAIM_REPUDIATION",
+    "SAT_AUG_CLAIM_SETTLEMENT",
+    "SAT_AUG_CLAIM_SLA_TRACKING",
+    "SAT_AUG_CLAIM_SUB_FILE",
+    "SAT_AUG_CLAIM_TP_FORENSIC",
+    "SAT_CLAIM_ASSESSMENT_SUMMARY",
+    "SAT_CLAIM_FNOL",
+    "SAT_CLAIM_FRAUD",
+    "SAT_CLAIM_HEADER",
+    "SAT_CLAIM_HEALTH_DETAIL",
+    "SAT_CLAIM_MOTOR_DETAIL",
+    "SAT_CLAIM_PROVIDER_BILLING",
+    "SAT_CLAIM_REPUDIATION",
+    "SAT_CLAIM_RESERVE_HEAD",
+    "SAT_CLAIM_SETTLEMENT",
+    "SAT_CLAIM_SLA_TRACKING",
+    "SAT_CLAIM_TP_FORENSIC",
+    "SAT_FINTXN_CLAIM_PAYMENT",
+    "SAT_LNK_CLAIM_PARTY_ROLE"
+   ],
+   "links": [
+    "LNK_CLAIM_PARTY",
+    "LNK_CLAIM_POLICY",
+    "LNK_FINTXN_CLAIM"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_CLAIM_POLICY",
+     "table": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(CLAIMNO),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICYNO),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_FINTXN_CLAIM",
+     "table": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT -> MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS].CLAIMNO), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_FINANCIAL_TRANSACTION": {
+       "expr": "nullif(trim(CLAIMPAYMENTID), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_CLAIM_PARTY",
+     "table": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE -> MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS].CLAIMNO), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PARTY": {
+       "expr": "nullif(trim(RESERVPARTY), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_CLAIM",
+    "HUB_FINANCIAL_TRANSACTION",
+    "HUB_PARTY"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 4,
+   "name": "v04_claim",
+   "stitch_model": "stitch_v04_claim",
+   "stage_model": "stg2_v04_claim",
+   "tables": [
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_EVENT_FOLLOWUP",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_HISTORY",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_NOTES",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_CLAIM_COMMUNICATION",
+    "SAT_AUG_CLAIM_EVIDENCE",
+    "SAT_AUG_CLAIM_FOLLOW_UP_CHASE",
+    "SAT_AUG_CLAIM_NOTE",
+    "SAT_AUG_CLAIM_STATUS_TRANSITION",
+    "SAT_AUG_CLAIM_SURVEY_APPOINTMENT",
+    "SAT_AUG_LNK_CLAIM_PARTY_ROLE",
+    "SAT_AUG_PARTY_POLICY_HISTORY",
+    "SAT_AUG_PARTY_PORTFOLIO_SUMMARY",
+    "SAT_AUG_POLICY_BONUS_TRACKING",
+    "SAT_AUG_POLICY_UNDERWRITING_QUERY",
+    "SAT_AUG_QUOTE_PA_NAMED_PERSON",
+    "SAT_AUG_QUOTE_UNDERWRITING_QUERY",
+    "SAT_CLAIM_BENEFIT_HEAD",
+    "SAT_CLAIM_LITIGATION",
+    "SAT_CLAIM_NOTE",
+    "SAT_CLAIM_RECOVERY_SALVAGE",
+    "SAT_CLAIM_SURVEY_APPOINTMENT",
+    "SAT_PARTY_CLAIM_HISTORY",
+    "SAT_PARTY_POLICY_HISTORY",
+    "SAT_PARTY_PORTFOLIO_SUMMARY",
+    "SAT_PARTY_RELATIONSHIP_PROFILE",
+    "SAT_POLICY_BONUS_TRACKING"
+   ],
+   "links": [
+    "LNK_CLAIM_POLICY",
+    "LNK_CLAIM_RISK_OBJECT",
+    "LNK_POLICY_ORG_UNIT",
+    "LNK_POLICY_PRODUCT",
+    "LNK_POLICY_RISK_OBJECT"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_CLAIM_POLICY",
+     "table": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(CLAIMNO),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS].POLICYNO),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_CLAIM_RISK_OBJECT",
+     "table": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(CLAIMNO),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NUMBER),''), nullif(trim(ENGINE_NUMBER),''), nullif(trim(REGISTRATION_NUMBER),''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_ORG_UNIT",
+     "table": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW",
+     "legs": {
+      "HUB_ORG_UNIT": {
+       "expr": "nullif(trim(STORED_COMPANY_CODE),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS].POLICYNO),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_PRODUCT",
+     "table": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS].POLICYNO),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(STORED_PRODUCT_CODE),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_RISK_OBJECT",
+     "table": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS].POLICYNO),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NUMBER),''), nullif(trim(ENGINE_NUMBER),''), nullif(trim(REGISTRATION_NUMBER),''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_CLAIM",
+    "HUB_PARTY",
+    "HUB_POLICY",
+    "HUB_QUOTE"
+   ],
+   "absorbed_by_rule_4": [
+    [
+     "SAT_AUG_CLAIM_COMMUNICATION",
+     "SAT_AUG_CLAIM_FOLLOW_UP_CHASE",
+     "SAT_AUG_CLAIM_NOTE",
+     "SAT_CLAIM_BENEFIT_HEAD",
+     "SAT_CLAIM_NOTE"
+    ]
+   ]
+  },
+  {
+   "ordinal": 5,
+   "name": "v05_coverage",
+   "stitch_model": "stitch_v05_coverage",
+   "stage_model": "stg2_v05_coverage",
+   "tables": [
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_COVERAGE_PARAMETER"
+   ],
+   "links": [],
+   "link_pairs": [],
+   "anchor_hubs": [
+    "HUB_COVERAGE"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 6,
+   "name": "v06_document",
+   "stitch_model": "stitch_v06_document",
+   "stage_model": "stg2_v06_document",
+   "tables": [
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_DOCUMENT_DETAILS",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_DOCUMENT_DETAILS",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_DOCUMENT_DETAILS",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_DOCUMENT_DETAIL"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_DOCUMENT_CHECKLIST",
+    "SAT_AUG_DOCUMENT_DEFINITION",
+    "SAT_DOCUMENT_CHECKLIST",
+    "SAT_DOCUMENT_DEFINITION"
+   ],
+   "links": [
+    "LNK_CLAIM_DOCUMENT"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_CLAIM_DOCUMENT",
+     "table": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW -> MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY -> MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL -> MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER -> MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS].CLAIMNO),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_DOCUMENT": {
+       "expr": "coalesce(nullif(trim(INWARD_NUMBER),''), nullif(trim(OUTWARD_NUMBER),''), nullif(trim(POD_NUMBER),''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_DOCUMENT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 7,
+   "name": "v07_financial_transaction",
+   "stitch_model": "stitch_v07_financial_transaction",
+   "stage_model": "stg2_v07_financial_transaction",
+   "tables": [
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION",
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER",
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_COVERAGE_DEFINITION",
+    "SAT_AUG_FINTXN_CLAIM_PAYMENT",
+    "SAT_AUG_FINTXN_TAX",
+    "SAT_AUG_POLICY_PREMIUM_HEAD",
+    "SAT_COVERAGE_DEFINITION",
+    "SAT_FINTXN_HEADER",
+    "SAT_FINTXN_TAX"
+   ],
+   "links": [
+    "LNK_POLICY_COVERAGE"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_POLICY_COVERAGE",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS",
+     "legs": {
+      "HUB_COVERAGE": {
+       "expr": "nullif(trim(COVER_CODE),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS].POLICY_NUMBER),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_COVERAGE",
+    "HUB_FINANCIAL_TRANSACTION",
+    "HUB_POLICY"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 8,
+   "name": "v08_location",
+   "stitch_model": "stitch_v08_location",
+   "stage_model": "stg2_v08_location",
+   "tables": [
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST"
+   ],
+   "over_limit": true,
+   "satellites": [
+    "SAT_AUG_COMMON_ADDRESS",
+    "SAT_AUG_COMMON_GEO",
+    "SAT_AUG_ORG_UNIT_CONTACT",
+    "SAT_COMMON_ADDRESS",
+    "SAT_COMMON_CONTACT",
+    "SAT_COMMON_GEO",
+    "SAT_LOCATION_PROFILE",
+    "SAT_PARTY_CONTACT_ADDRESS_LINK"
+   ],
+   "links": [
+    "LNK_PARTY_LOCATION"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_PARTY_LOCATION",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW",
+     "legs": {
+      "HUB_LOCATION": {
+       "expr": "md5(normalise(upper(nullif(trim(coalesce(spine[MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS].ADDRESS1, '') || '|' || coalesce(spine[MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS].ADDRESS2, '') || '|' || coalesce(spine[MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS].ADDRESS3, '') || '|' || coalesce(spine[MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS].CITY, '') || '|' || coalesce(spine[MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS].DISTRICT, '') || '|' || coalesce(spine[MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS].STATE, '') || '|' || coalesce(spine[MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS].PINCODE, '') || '|' || coalesce(spine[MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS].COUNTRY, '')), '|||||||'))))",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PARTY": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS].PARTY_CODE), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_LOCATION",
+    "HUB_ORG_UNIT",
+    "HUB_PARTY"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 9,
+   "name": "v09_party",
+   "stitch_model": "stitch_v09_party",
+   "stage_model": "stg2_v09_party",
+   "tables": [
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_ASSESSMENT_REINSPECTION",
+    "SAT_AUG_ASSESSMENT_REINSPECTION",
+    "SAT_AUG_CLAIM_EXCESS_HEAD",
+    "SAT_AUG_CLAIM_PAYMENT_TRANCHE",
+    "SAT_AUG_CLAIM_RECOVERY_EXPENSE_LINE",
+    "SAT_AUG_CLAIM_RECOVERY_SALVAGE",
+    "SAT_AUG_CLAIM_TAT_BREACH",
+    "SAT_AUG_CLAIM_THIRD_PARTY_MACT",
+    "SAT_AUG_COMMON_CLASSIFICATION",
+    "SAT_AUG_COMMON_COMMUNICATION_PREFERENCE",
+    "SAT_AUG_COMMON_CONSENT",
+    "SAT_AUG_FIN_RECEIPT",
+    "SAT_AUG_INSTRUMENT_DEFINITION",
+    "SAT_AUG_LNK_PARTY_ROLE_CORE",
+    "SAT_AUG_PARTY_BANKING",
+    "SAT_AUG_PARTY_CONSENT_MANDATE",
+    "SAT_AUG_PARTY_CONTACT_ADDRESS_LINK",
+    "SAT_AUG_PARTY_EMPLOYMENT",
+    "SAT_AUG_PARTY_FINANCIAL_PROFILE",
+    "SAT_AUG_PARTY_FRAUD_PROFILE",
+    "SAT_AUG_PARTY_GROUP_HOUSEHOLD",
+    "SAT_AUG_PARTY_HEALTH_PROFILE",
+    "SAT_AUG_PARTY_HIERARCHY",
+    "SAT_AUG_PARTY_IDENTIFICATION",
+    "SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS",
+    "SAT_AUG_PARTY_KYC",
+    "SAT_AUG_PARTY_ONBOARDING_JOURNEY",
+    "SAT_AUG_PARTY_PAYOUT_PROFILE",
+    "SAT_AUG_PARTY_PREFERENCE_PROFILE",
+    "SAT_AUG_PARTY_RELATIONSHIP_PROFILE",
+    "SAT_AUG_PARTY_VEHICLE_OWNER",
+    "SAT_AUG_PRODUCT_DEFINITION",
+    "SAT_AUG_RISK_MOTOR_VERIFICATION",
+    "SAT_CLAIM_CO_RI_SHARE",
+    "SAT_CLAIM_MACT_AWARD_HEAD",
+    "SAT_CLAIM_PAYMENT_TRANCHE",
+    "SAT_CLAIM_RESERVE",
+    "SAT_COMMON_ADMIN_GEOGRAPHY",
+    "SAT_COMMON_CLASSIFICATION",
+    "SAT_COMMON_COMMUNICATION_PREFERENCE",
+    "SAT_COMMON_CONSENT",
+    "SAT_FINTXN_ACCOUNTING",
+    "SAT_FINTXN_PREMIUM",
+    "SAT_FIN_RECEIPT",
+    "SAT_INSTRUMENT_DEFINITION",
+    "SAT_LNK_ROLE_AGENT",
+    "SAT_LNK_ROLE_CUSTOMER",
+    "SAT_LNK_ROLE_EMPLOYEE",
+    "SAT_LNK_ROLE_PROVIDER",
+    "SAT_PARTY_AML_SCREENING",
+    "SAT_PARTY_BANKING",
+    "SAT_PARTY_EMPLOYMENT",
+    "SAT_PARTY_FINANCIAL_PROFILE",
+    "SAT_PARTY_HEALTH_PROFILE",
+    "SAT_PARTY_HIERARCHY",
+    "SAT_PARTY_IDENTIFICATION",
+    "SAT_PARTY_KYC",
+    "SAT_PARTY_ONBOARDING_JOURNEY",
+    "SAT_POLICY_DELIVERY",
+    "SAT_POLICY_EXTERNAL_TP_LINK",
+    "SAT_POLICY_LIFECYCLE",
+    "SAT_QUOTE_COMPARISON",
+    "SAT_RISK_MOTOR_VERIFICATION"
+   ],
+   "links": [
+    "LNK_CHANNEL_ORG_UNIT",
+    "LNK_CLAIM_ASSESSMENT",
+    "LNK_CLAIM_POLICY",
+    "LNK_CLAIM_RISK_OBJECT",
+    "LNK_FINTXN_CLAIM",
+    "LNK_FINTXN_INSTRUMENT",
+    "LNK_PARTY_CHANNEL",
+    "LNK_PARTY_ORG_UNIT",
+    "LNK_POLICY_CHANNEL",
+    "LNK_POLICY_ORG_UNIT",
+    "LNK_POLICY_PARTY",
+    "LNK_POLICY_PRODUCT",
+    "LNK_POLICY_RISK_OBJECT",
+    "LNK_PROPOSAL_ASSESSMENT",
+    "LNK_PROPOSAL_RISK_OBJECT",
+    "LNK_RISK_OBJECT_ASSESSMENT"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_FINTXN_CLAIM",
+     "table": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW -> MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY -> MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT -> MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS].CLAIMNO),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_FINANCIAL_TRANSACTION": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW -> MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY -> MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT].CLAIMPAYMENTID),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_CLAIM_ASSESSMENT",
+     "table": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+     "legs": {
+      "HUB_ASSESSMENT": {
+       "expr": "nullif(trim(ASSESSMENT_NO), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW -> MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS].CLAIMNO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_CLAIM_POLICY",
+     "table": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW -> MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS].CLAIMNO), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS].POLICYNO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_CLAIM_RISK_OBJECT",
+     "table": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+     "legs": {
+      "HUB_CLAIM": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW -> MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS].CLAIMNO), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NUMBER),''), nullif(trim(ENGINE_NUMBER),''), nullif(trim(REGISTRATION_NUMBER),''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_ORG_UNIT",
+     "table": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+     "legs": {
+      "HUB_ORG_UNIT": {
+       "expr": "nullif(trim(BRANCH_CODE), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS].POLICYNO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_RISK_OBJECT",
+     "table": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[PARENT_KEY_HASH -> MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS].POLICYNO), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NUMBER),''), nullif(trim(ENGINE_NUMBER),''), nullif(trim(REGISTRATION_NUMBER),''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_RISK_OBJECT_ASSESSMENT",
+     "table": "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+     "legs": {
+      "HUB_ASSESSMENT": {
+       "expr": "nullif(trim(ASSESSMENT_NO), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NUMBER),''), nullif(trim(ENGINE_NUMBER),''), nullif(trim(REGISTRATION_NUMBER),''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_FINTXN_INSTRUMENT",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION",
+     "legs": {
+      "HUB_FINANCIAL_TRANSACTION": {
+       "expr": "nullif(trim(TRANSACTION_ID),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PAYMENT_INSTRUMENT": {
+       "expr": "nullif(trim(CHEQUE_NUMBER),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_CHANNEL_ORG_UNIT",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+     "legs": {
+      "HUB_DISTRIBUTION_CHANNEL": {
+       "expr": "nullif(trim(IMD_CODE), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_ORG_UNIT": {
+       "expr": "nullif(trim(BRANCH_CODE), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_PROPOSAL_ASSESSMENT",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+     "legs": {
+      "HUB_ASSESSMENT": {
+       "expr": "nullif(trim(PRE_INSPECTION_NUMBER), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(APP_NO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_PROPOSAL_RISK_OBJECT",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+     "legs": {
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(APP_NO), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NUMBER),''), nullif(trim(ENGINE_NUMBER),''), nullif(trim(REGISTRATION_NUMBER),''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_RISK_OBJECT_ASSESSMENT",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+     "legs": {
+      "HUB_ASSESSMENT": {
+       "expr": "nullif(trim(PRE_INSPECTION_NUMBER), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NUMBER),''), nullif(trim(ENGINE_NUMBER),''), nullif(trim(REGISTRATION_NUMBER),''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_CHANNEL_ORG_UNIT",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+     "legs": {
+      "HUB_DISTRIBUTION_CHANNEL": {
+       "expr": "nullif(trim(AGENT_CHANNEL), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_ORG_UNIT": {
+       "expr": "nullif(trim(LOCATION_CODE), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_PARTY_CHANNEL",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+     "legs": {
+      "HUB_DISTRIBUTION_CHANNEL": {
+       "expr": "nullif(trim(AGENT_CHANNEL), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PARTY": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS].PARTY_CODE), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_PARTY_ORG_UNIT",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+     "legs": {
+      "HUB_ORG_UNIT": {
+       "expr": "nullif(trim(LOCATION_CODE), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PARTY": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS].PARTY_CODE), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_CHANNEL",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+     "legs": {
+      "HUB_DISTRIBUTION_CHANNEL": {
+       "expr": "nullif(trim(AGENT_CHANNEL), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS].POLICY_NUMBER), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_ORG_UNIT",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+     "legs": {
+      "HUB_ORG_UNIT": {
+       "expr": "nullif(trim(LOCATION_CODE), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS].POLICY_NUMBER), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_PARTY",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+     "legs": {
+      "HUB_PARTY": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS].PARTY_CODE), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS].POLICY_NUMBER), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_PRODUCT",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS].POLICY_NUMBER), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(PRODUCT_CODE), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_CHANNEL_ORG_UNIT",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW",
+     "legs": {
+      "HUB_DISTRIBUTION_CHANNEL": {
+       "expr": "nullif(trim(IMD_CODE), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_ORG_UNIT": {
+       "expr": "nullif(trim(BRANCH_CODE), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_PROPOSAL_ASSESSMENT",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW",
+     "legs": {
+      "HUB_ASSESSMENT": {
+       "expr": "nullif(trim(PRE_INSPECTION_NUMBER), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(APP_NO), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_PROPOSAL_RISK_OBJECT",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW",
+     "legs": {
+      "HUB_PROPOSAL": {
+       "expr": "nullif(trim(APP_NO), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NUMBER),''), nullif(trim(ENGINE_NUMBER),''), nullif(trim(REGISTRATION_NUMBER),''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_RISK_OBJECT_ASSESSMENT",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW",
+     "legs": {
+      "HUB_ASSESSMENT": {
+       "expr": "nullif(trim(PRE_INSPECTION_NUMBER), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NUMBER),''), nullif(trim(ENGINE_NUMBER),''), nullif(trim(REGISTRATION_NUMBER),''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_ASSESSMENT",
+    "HUB_CLAIM",
+    "HUB_FINANCIAL_TRANSACTION",
+    "HUB_LOCATION",
+    "HUB_PARTY",
+    "HUB_PAYMENT_INSTRUMENT",
+    "HUB_POLICY",
+    "HUB_PRODUCT",
+    "HUB_QUOTE",
+    "HUB_RISK_OBJECT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 10,
+   "name": "v10_party",
+   "stitch_model": "stitch_v10_party",
+   "stage_model": "stg2_v10_party",
+   "tables": [
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW"
+   ],
+   "over_limit": true,
+   "satellites": [
+    "SAT_AUG_CHANNEL_DEFINITION",
+    "SAT_AUG_PARTY_IDENTITY",
+    "SAT_AUG_PARTY_ORGANISATION_PROFILE",
+    "SAT_CHANNEL_DEFINITION",
+    "SAT_LNK_POLICY_PARTY_ROLE",
+    "SAT_PARTY_IDENTITY",
+    "SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS",
+    "SAT_PARTY_ORGANISATION_PROFILE"
+   ],
+   "links": [],
+   "link_pairs": [],
+   "anchor_hubs": [
+    "HUB_DISTRIBUTION_CHANNEL",
+    "HUB_PARTY",
+    "HUB_POLICY"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 11,
+   "name": "v11_party",
+   "stitch_model": "stitch_v11_party",
+   "stage_model": "stg2_v11_party",
+   "tables": [
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS",
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY",
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST",
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_PARTY_CLAIM_HISTORY",
+    "SAT_AUG_PARTY_MARKETING",
+    "SAT_AUG_PARTY_VEHICLE_PRIOR_INSURANCE",
+    "SAT_AUG_QUOTE_HEADER",
+    "SAT_AUG_QUOTE_RATING",
+    "SAT_PARTY_VEHICLE_PRIOR_INSURANCE",
+    "SAT_QUOTE_HEADER",
+    "SAT_QUOTE_RATING"
+   ],
+   "links": [],
+   "link_pairs": [],
+   "anchor_hubs": [
+    "HUB_PARTY",
+    "HUB_QUOTE"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 12,
+   "name": "v12_policy",
+   "stitch_model": "stitch_v12_policy",
+   "stage_model": "stg2_v12_policy",
+   "tables": [
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_RELATION",
+    "MAXI_MOTOR_UWR_VW_DATA_PREMIUM_DETAILS",
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST",
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_ASSESSMENT_UNDERWRITING",
+    "SAT_AUG_ASSESSMENT_UNDERWRITING",
+    "SAT_AUG_COMMON_ADMIN_GEOGRAPHY",
+    "SAT_AUG_COMMON_BUSINESS_AUDIT",
+    "SAT_AUG_COMMON_CONTACT",
+    "SAT_AUG_LNK_POLICY_PARTY_ROLE",
+    "SAT_AUG_POLICY_CANCELLATION",
+    "SAT_AUG_POLICY_DECLARED_CLAIM_HISTORY",
+    "SAT_AUG_POLICY_DELIVERY",
+    "SAT_AUG_POLICY_DOC_CHECKLIST",
+    "SAT_AUG_POLICY_EXTERNAL_TP_LINK",
+    "SAT_AUG_POLICY_INTERMEDIARY_SPLIT",
+    "SAT_AUG_POLICY_LIFECYCLE",
+    "SAT_AUG_POLICY_LONG_TERM_DETAIL",
+    "SAT_AUG_POLICY_RENEWAL",
+    "SAT_AUG_POLICY_SERVICING_SUMMARY",
+    "SAT_AUG_POLICY_SUM_INSURED_BREAKUP",
+    "SAT_AUG_POLICY_TAX_BREAKUP",
+    "SAT_AUG_POLICY_TERMS",
+    "SAT_AUG_POLICY_UNDERWRITING_WORKFLOW",
+    "SAT_AUG_PRODUCT_TERMS",
+    "SAT_AUG_PROPOSAL_HEADER",
+    "SAT_AUG_PROPOSAL_SCRUTINY",
+    "SAT_AUG_RISK_MOTOR_BUREAU_ENQUIRY",
+    "SAT_AUG_RISK_MOTOR_BUREAU_PROFILE",
+    "SAT_AUG_RISK_MOTOR_RATING_ZONE_HEAD",
+    "SAT_AUG_RISK_OBJECT_OWNERSHIP_HISTORY",
+    "SAT_AUG_RISK_OBJECT_PARAMETER",
+    "SAT_COMMON_BUSINESS_AUDIT",
+    "SAT_COMMON_LIFECYCLE",
+    "SAT_LNK_PARTY_ROLE_CORE",
+    "SAT_ORG_UNIT_DEFINITION",
+    "SAT_PARTY_MARKETING",
+    "SAT_POLICY_CANCELLATION",
+    "SAT_POLICY_EXCESS_STRUCTURE",
+    "SAT_POLICY_INTERMEDIARY_SPLIT",
+    "SAT_POLICY_PREMIUM_SUMMARY",
+    "SAT_POLICY_TAX_BREAKUP",
+    "SAT_PROPOSAL_HEADER",
+    "SAT_RISK_PERSON_INSURED"
+   ],
+   "links": [],
+   "link_pairs": [],
+   "anchor_hubs": [
+    "HUB_ASSESSMENT",
+    "HUB_LOCATION",
+    "HUB_ORG_UNIT",
+    "HUB_PARTY",
+    "HUB_POLICY",
+    "HUB_PRODUCT",
+    "HUB_PROPOSAL",
+    "HUB_RISK_OBJECT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 13,
+   "name": "v13_policy",
+   "stitch_model": "stitch_v13_policy",
+   "stage_model": "stg2_v13_policy",
+   "tables": [
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED",
+    "SAT_AUG_POLICY_ENDORSEMENT",
+    "SAT_AUG_POLICY_HEADER",
+    "SAT_AUG_POLICY_PA_NAMED_PERSON",
+    "SAT_AUG_POLICY_PREMIUM_SUMMARY",
+    "SAT_POLICY_CLASSIFICATION",
+    "SAT_POLICY_COVERAGE_SCHEDULE",
+    "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+    "SAT_POLICY_ENDORSEMENT",
+    "SAT_POLICY_PREMIUM_HEAD",
+    "SAT_POLICY_SUM_INSURED_BREAKUP",
+    "SAT_POLICY_TAX_HEAD",
+    "SAT_POLICY_TERMS"
+   ],
+   "links": [],
+   "link_pairs": [],
+   "anchor_hubs": [
+    "HUB_POLICY"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 14,
+   "name": "v14_risk_object",
+   "stitch_model": "stitch_v14_risk_object",
+   "stage_model": "stg2_v14_risk_object",
+   "tables": [
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST",
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_ASSESSMENT_PRE_INSPECTION",
+    "SAT_AUG_COVERAGE_MONETARY_CONTEXT",
+    "SAT_AUG_COVERAGE_MOTOR_PA_OCCUPANT",
+    "SAT_AUG_COVERAGE_PACKAGE_RATING",
+    "SAT_AUG_FINTXN_HEADER",
+    "SAT_AUG_FINTXN_PREMIUM",
+    "SAT_AUG_ORG_UNIT_DEFINITION",
+    "SAT_AUG_PRODUCT_RATING_STRUCTURE",
+    "SAT_AUG_QUOTE_EXCESS_STRUCTURE",
+    "SAT_AUG_QUOTE_TAX_BREAKUP",
+    "SAT_AUG_QUOTE_UNDERWRITING_WORKFLOW",
+    "SAT_AUG_RISK_MOTOR_LOSS_EXPERIENCE",
+    "SAT_AUG_RISK_OBJECT_CORE",
+    "SAT_AUG_RISK_OBJECT_INSURABLE_INTEREST",
+    "SAT_AUG_RISK_OBJECT_VALUATION",
+    "SAT_AUG_RISK_TRAILER",
+    "SAT_COMMON_STATUS",
+    "SAT_COVERAGE_MOTOR_PA_OCCUPANT",
+    "SAT_POLICY_CERTIFICATE",
+    "SAT_POLICY_HEADER",
+    "SAT_POLICY_LONG_TERM_DETAIL",
+    "SAT_POLICY_RENEWAL",
+    "SAT_POLICY_TAX_INVOICE",
+    "SAT_PRODUCT_DEFINITION",
+    "SAT_PRODUCT_RATING_STRUCTURE",
+    "SAT_RISK_EXTENDED_WARRANTY",
+    "SAT_RISK_MOTOR_IDV",
+    "SAT_RISK_OBJECT_CORE",
+    "SAT_RISK_OBJECT_INSURABLE_INTEREST",
+    "SAT_RISK_OBJECT_OWNERSHIP_HISTORY"
+   ],
+   "links": [
+    "LNK_ASSESSMENT_PARTY",
+    "LNK_FINTXN_PARTY",
+    "LNK_PARTY_DOCUMENT",
+    "LNK_PARTY_LOCATION",
+    "LNK_POLICY_DOCUMENT",
+    "LNK_POLICY_LOCATION",
+    "LNK_POLICY_PARTY",
+    "LNK_POLICY_PRODUCT",
+    "LNK_POLICY_RISK_OBJECT",
+    "LNK_QUOTE_PARTY",
+    "LNK_QUOTE_PRODUCT",
+    "LNK_QUOTE_RISK_OBJECT",
+    "LNK_RISK_OBJECT_ASSESSMENT",
+    "LNK_RISK_OBJECT_DOCUMENT",
+    "LNK_RISK_OBJECT_LOCATION",
+    "LNK_RISK_OBJECT_PARTY"
+   ],
+   "link_pairs": [
+    {
+     "link": "LNK_POLICY_PRODUCT",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_NUMBER),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(PRODUCT_CODE),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_QUOTE_PRODUCT",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS",
+     "legs": {
+      "HUB_PRODUCT": {
+       "expr": "nullif(trim(PRODUCT_CODE),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_QUOTE": {
+       "expr": "nullif(trim(QUOTATION_NUMBER),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_RISK_OBJECT",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS.PARENT_KEY_HASH -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS.KEY_HASH].POLICY_NUMBER), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "nullif(trim(POL_RISK_ID), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_ASSESSMENT_PARTY",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+     "legs": {
+      "HUB_ASSESSMENT": {
+       "expr": "nullif(trim(PRE_INSPECTION_NUMBER),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PARTY": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS].POLICY_HOLDER_CODE), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_FINTXN_PARTY",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+     "legs": {
+      "HUB_FINANCIAL_TRANSACTION": {
+       "expr": "nullif(trim(PARENT_PAYMENT_CYCLE_REF_NO),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PARTY": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS].POLICY_HOLDER_CODE), '')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_RISK_OBJECT_ASSESSMENT",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+     "legs": {
+      "HUB_ASSESSMENT": {
+       "expr": "nullif(trim(PRE_INSPECTION_NUMBER),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NUMBER),''), nullif(trim(ENGINE_NUMBER),''), nullif(trim(REGISTRATION_NUMBER),''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_RISK_OBJECT_PARTY",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+     "legs": {
+      "HUB_PARTY": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS -> MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS].POLICY_HOLDER_CODE), '')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NUMBER),''), nullif(trim(ENGINE_NUMBER),''), nullif(trim(REGISTRATION_NUMBER),''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_PARTY_DOCUMENT",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST",
+     "legs": {
+      "HUB_DOCUMENT": {
+       "expr": "nullif(trim(DOCUMENT_ID),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PARTY": {
+       "expr": "nullif(trim(PARTY_CODE),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_PARTY_LOCATION",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST",
+     "legs": {
+      "HUB_LOCATION": {
+       "expr": "md5(normalise(upper(nullif(trim(coalesce(ADDR1,'') || '|' || coalesce(ADDR2,'') || '|' || coalesce(ADDR3,'') || '|' || coalesce(CITY_CODE,'') || '|' || coalesce(STATE_CODE,'') || '|' || coalesce(POSTAL_CODE,'') || '|' || coalesce(COUNTRY_CODE,'')), '||||||'))))",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_PARTY": {
+       "expr": "nullif(trim(PARTY_CODE),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_DOCUMENT",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST",
+     "legs": {
+      "HUB_DOCUMENT": {
+       "expr": "nullif(trim(DOCUMENT_ID),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_ID),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_LOCATION",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST",
+     "legs": {
+      "HUB_LOCATION": {
+       "expr": "md5(normalise(upper(nullif(trim(coalesce(ADDR1,'') || '|' || coalesce(ADDR2,'') || '|' || coalesce(ADDR3,'') || '|' || coalesce(CITY_CODE,'') || '|' || coalesce(STATE_CODE,'') || '|' || coalesce(POSTAL_CODE,'') || '|' || coalesce(COUNTRY_CODE,'')), '||||||'))))",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_ID),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_PARTY",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST",
+     "legs": {
+      "HUB_PARTY": {
+       "expr": "nullif(trim(PARTY_CODE),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_ID),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_POLICY_RISK_OBJECT",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST",
+     "legs": {
+      "HUB_POLICY": {
+       "expr": "nullif(trim(POLICY_ID),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "nullif(trim(POL_RISK_ID),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_QUOTE_PARTY",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST",
+     "legs": {
+      "HUB_PARTY": {
+       "expr": "nullif(trim(PARTY_CODE),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_QUOTE": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST -> MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS].POLICY_QUOTE_NUMBER),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_QUOTE_RISK_OBJECT",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST",
+     "legs": {
+      "HUB_QUOTE": {
+       "expr": "nullif(trim(spine[MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST -> MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS].POLICY_QUOTE_NUMBER),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "nullif(trim(POL_RISK_ID),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_RISK_OBJECT_DOCUMENT",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST",
+     "legs": {
+      "HUB_DOCUMENT": {
+       "expr": "nullif(trim(DOCUMENT_ID),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "nullif(trim(POL_RISK_ID),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_RISK_OBJECT_LOCATION",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST",
+     "legs": {
+      "HUB_LOCATION": {
+       "expr": "md5(normalise(upper(nullif(trim(coalesce(ADDR1,'') || '|' || coalesce(ADDR2,'') || '|' || coalesce(ADDR3,'') || '|' || coalesce(CITY_CODE,'') || '|' || coalesce(STATE_CODE,'') || '|' || coalesce(POSTAL_CODE,'') || '|' || coalesce(COUNTRY_CODE,'')), '||||||'))))",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "nullif(trim(POL_RISK_ID),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_RISK_OBJECT_PARTY",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST",
+     "legs": {
+      "HUB_PARTY": {
+       "expr": "nullif(trim(PARTY_CODE),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "nullif(trim(POL_RISK_ID),'')",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    },
+    {
+     "link": "LNK_RISK_OBJECT_ASSESSMENT",
+     "table": "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW",
+     "legs": {
+      "HUB_ASSESSMENT": {
+       "expr": "nullif(trim(PRE_INSPECTION_NUMBER),'')",
+       "verdict": null,
+       "dv": null
+      },
+      "HUB_RISK_OBJECT": {
+       "expr": "coalesce(nullif(trim(CHASSIS_NUMBER),''), nullif(trim(ENGINE_NUMBER),''), nullif(trim(REGISTRATION_NUMBER),''))",
+       "verdict": null,
+       "dv": null
+      }
+     },
+     "evidence": "each leg is the instance-free hub key on this table, so the leg is byte-identical to the hub key (BUILD_INSTRUCTIONS s3, link legs)"
+    }
+   ],
+   "anchor_hubs": [
+    "HUB_ASSESSMENT",
+    "HUB_COVERAGE",
+    "HUB_FINANCIAL_TRANSACTION",
+    "HUB_ORG_UNIT",
+    "HUB_POLICY",
+    "HUB_PRODUCT",
+    "HUB_QUOTE",
+    "HUB_RISK_OBJECT"
+   ],
+   "absorbed_by_rule_4": []
+  },
+  {
+   "ordinal": 15,
+   "name": "v15_risk_object",
+   "stitch_model": "stitch_v15_risk_object",
+   "stage_model": "stg2_v15_risk_object",
+   "tables": [
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW",
+    "MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST",
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW",
+    "MAXI_MOTOR_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW"
+   ],
+   "over_limit": false,
+   "satellites": [
+    "SAT_AUG_RISK_MOTOR_CPA",
+    "SAT_AUG_RISK_MOTOR_DRIVER",
+    "SAT_AUG_RISK_MOTOR_EV_BATTERY",
+    "SAT_AUG_RISK_MOTOR_GEOGRAPHICAL_EXTENSION",
+    "SAT_AUG_RISK_MOTOR_IDV",
+    "SAT_AUG_RISK_MOTOR_NCB_HISTORY",
+    "SAT_AUG_RISK_MOTOR_TELEMATICS",
+    "SAT_AUG_RISK_MOTOR_VEHICLE",
+    "SAT_RISK_MOTOR_ADDON",
+    "SAT_RISK_MOTOR_DRIVER",
+    "SAT_RISK_MOTOR_NCB_HISTORY",
+    "SAT_RISK_MOTOR_VEHICLE",
+    "SAT_RISK_OBJECT_VALUATION",
+    "SAT_RISK_TRAILER"
+   ],
+   "links": [],
+   "link_pairs": [],
+   "anchor_hubs": [
+    "HUB_RISK_OBJECT"
+   ],
+   "absorbed_by_rule_4": []
+  }
+ ],
+ "census": {
+  "views": 15,
+  "satellites": 279,
+  "views_over_limit": 2,
+  "link_only_views": 0,
+  "feeding_tables": 57,
+  "link_pairs": 59
+ }
+}

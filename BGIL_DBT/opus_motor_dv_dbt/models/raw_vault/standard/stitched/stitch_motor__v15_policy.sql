@@ -11,10 +11,10 @@
 --   BJAZ_VAHAN_AUTO_ENDT_LOG
 --   RTO_MASTER
 -- Satellites fed WHOLE from this view (rule 2):
---   SAT_AUG_COMMON_BUSINESS_AUDIT
---   SAT_AUG_COMMON_GEO
---   SAT_AUG_POLICY_ENDORSEMENT
---   SAT_AUG_POLICY_EXTERNAL_TP_LINK
+--   SAT_MOTOR_AUG_COMMON_BUSINESS_AUDIT
+--   SAT_MOTOR_AUG_COMMON_GEO
+--   SAT_MOTOR_AUG_POLICY_ENDORSEMENT
+--   SAT_MOTOR_AUG_POLICY_EXTERNAL_TP_LINK
 --   SAT_COMMON_ADMIN_GEOGRAPHY
 --   SAT_POLICY_BONUS_TRACKING
 --   SAT_POLICY_ENDORSEMENT
@@ -290,7 +290,7 @@ select
     first_value(RISK_MOTOR_VERIFICATION__VERIFICATION_REQUEST_NUMBER) ignore nulls over (partition by RISK_OBJECT_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as RISK_MOTOR_VERIFICATION__VERIFICATION_REQUEST_NUMBER,
     -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
     m.INC_JOB_UPDATED_AT,
-    -- multi-active satellites on POLICY_BK (SAT_AUG_POLICY_ENDORSEMENT, SAT_POLICY_ENDORSEMENT):
+    -- multi-active satellites on POLICY_BK (SAT_MOTOR_AUG_POLICY_ENDORSEMENT, SAT_POLICY_ENDORSEMENT):
     -- one load time per POLICY_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
     -- all child rows of a parent share it (ma_sat finds its latest set by time).
     max(case when coalesce(m.AUG_POLICY_ENDORSEMENT__ENDORSEMENT_REMARKS, m.POLICY_ENDORSEMENT__ENDORSEMENT_CHANNEL, m.POLICY_ENDORSEMENT__ENDORSEMENT_DATE, m.POLICY_ENDORSEMENT__ENDORSEMENT_NUMBER) is not null

@@ -1,0 +1,76 @@
+-- AUGMENTED track (not mapper-ratified) sat() for SAT_MOTOR_AUG_CLAIM_HEADER (parent HUB_CLAIM, history SCD2), fed whole from central view stitch_mxm__v03_claim.
+-- WRITERS MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW | SAT_MOTOR_AUG_CLAIM_HEADER | Inward Document Mode | None: emits MODE_OF_DOCUMENT_INWARD; withheld MODE_OF_INWARD
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
+
+{%- set yaml_metadata -%}
+source_model: 'stg2_mxm_aug__claim_header'
+src_pk: 'CLAIM_HKEY'
+src_payload:
+  - 'ATTRIBUTE_SET_VALID_INDICATOR'
+  - 'BANK_DETAIL_SUPPORTING_DOCUMENT_TYPE'
+  - 'CLAIMANT_CLAIM_REFERENCE'
+  - 'CLAIMED_COVER_NAME'
+  - 'CLAIM_FORM_REMARKS'
+  - 'CLAIM_STATUS_REMARK'
+  - 'CLOSURE_REASON'
+  - 'CLOSURE_REMARKS'
+  - 'COURIER_VENDOR_NAME'
+  - 'CURRENCY_CONVERSION_DATE'
+  - 'CURRENCY_CONVERSION_RATE_TO_INR'
+  - 'CURRENCY_CONVERSION_RATE_TO_POLICY_SUM_INSURED_CURRENCY'
+  - 'DOCUMENT_PROCESSING_ROUTED_INDICATOR'
+  - 'DOCUMENT_RECEIVED_DATE'
+  - 'DOCUMENT_SENDER_NAME'
+  - 'DOCUMENT_SUMMARY_TEXT'
+  - 'ENDORSEMENT_REQUIRED_DURING_CLAIM_INDICATOR'
+  - 'ENDORSEMENT_REQUIRED_DURING_CLAIM_REMARKS'
+  - 'GENERAL_TEAM_TRACKING_COMMENTS'
+  - 'HEAD_OFFICE_CODE'
+  - 'ILM_CASE_STATUS'
+  - 'ILM_INTERIM_UPDATE'
+  - 'ILM_REFERRAL_REASON'
+  - 'ILM_REFERRAL_REASON_AT_ADMISSIBILITY'
+  - 'INTERNAL_HANDLER_COMMENTS'
+  - 'INWARD_DATE'
+  - 'INWARD_DOCUMENT_MODE'
+  - 'INWARD_DOCUMENT_TYPE'
+  - 'INWARD_PROPERTY_IDENTIFIER'
+  - 'INWARD_REGISTRATION_REFERENCE'
+  - 'LAST_MODIFIED_BY_USER_REFERENCE'
+  - 'LOSS_COUNTRY_CODE'
+  - 'LOSS_COUNTRY_NAME'
+  - 'LOSS_DATE_REMARKS'
+  - 'LOSS_DESCRIPTION'
+  - 'MANDATORY_DOCUMENTS_RECEIVED_INDICATOR'
+  - 'OEM_CLAIM_REFERENCE'
+  - 'OPERATION_REASON_CODE'
+  - 'OTHER_REMARKS'
+  - 'PCS_DESCRIPTION'
+  - 'PRIORITY_SERVICE_INDICATOR'
+  - 'PROOF_OF_DELIVERY_NUMBER'
+  - 'REGISTRATION_FLAG_SET'
+  - 'REGISTRATION_ORG_UNIT_CODE'
+  - 'REGISTRATION_TIME'
+  - 'REOPEN_REASON'
+  - 'REOPEN_TYPE'
+  - 'RISK_ACCEPTANCE_PRIORITY_CODE'
+  - 'RISK_PRIORITY_FEEDBACK'
+  - 'SELECTED_ENDORSEMENT_REFERENCE'
+  - 'SERVICING_HUB_LOCATION'
+  - 'SPECIAL_ENCLOSURES_DETAIL'
+  - 'SPECIAL_ENCLOSURES_INDICATOR'
+  - 'STATUS_CHANGE_DATE'
+  - 'TEAM_TRACKING_COMMENTS'
+src_hashdiff: 'HASHDIFF'
+src_ldts: 'LOAD_DATETIME'
+src_source: 'RECORD_SOURCE'
+{%- endset -%}
+
+{% set metadata_dict = fromyaml(yaml_metadata) %}
+
+{{ automate_dv.sat(src_pk=metadata_dict['src_pk'],
+                   src_payload=metadata_dict['src_payload'],
+                   src_hashdiff=metadata_dict['src_hashdiff'],
+                   src_ldts=metadata_dict['src_ldts'],
+                   src_source=metadata_dict['src_source'],
+                   source_model=metadata_dict['source_model']) }}

@@ -1,0 +1,45 @@
+-- automate_dv.stage() for SAT_MOTOR_AUG_RISK_MOTOR_IDV, read off central view stitch_mxm__v15_risk_object.
+-- The key is NULL wherever this satellite has no payload: sat() takes no filter, and it skips a NULL key.
+{{ config(materialized='view') }}
+
+{%- set yaml_metadata -%}
+source_model: 'stitch_mxm__v15_risk_object'
+hashed_columns:
+  RISK_OBJECT_HKEY: 'RISK_OBJECT_NK'
+  HASHDIFF:
+    is_hashdiff: true
+    columns:
+      - 'BATTERY_IDV'
+      - 'BODY_PRICE'
+      - 'CHASSIS_PRICE'
+      - 'ELECTRICAL_ACCESSORIES_IDV'
+      - 'IDV_PERCENTAGE_VARIATION'
+      - 'NON_ELECTRICAL_ACCESSORIES_IDV'
+      - 'ORIGINAL_IDV_BEFORE_ADJUSTMENT'
+      - 'REVISED_IDV'
+      - 'ROAD_TAX_AMOUNT'
+      - 'VEHICLE_AGE_MONTHS'
+      - 'VEHICLE_INVOICE_PRICE'
+derived_columns:
+  RISK_OBJECT_NK: "case when coalesce(AUG_RISK_MOTOR_IDV__BATTERY_IDV, AUG_RISK_MOTOR_IDV__BODY_PRICE, AUG_RISK_MOTOR_IDV__CHASSIS_PRICE, AUG_RISK_MOTOR_IDV__ELECTRICAL_ACCESSORIES_IDV, AUG_RISK_MOTOR_IDV__IDV_PERCENTAGE_VARIATION, AUG_RISK_MOTOR_IDV__NON_ELECTRICAL_ACCESSORIES_IDV, AUG_RISK_MOTOR_IDV__ORIGINAL_IDV_BEFORE_ADJUSTMENT, AUG_RISK_MOTOR_IDV__REVISED_IDV, AUG_RISK_MOTOR_IDV__ROAD_TAX_AMOUNT, AUG_RISK_MOTOR_IDV__VEHICLE_AGE_MONTHS, AUG_RISK_MOTOR_IDV__VEHICLE_INVOICE_PRICE) is not null then 'HUB_RISK_OBJECT|' || RISK_OBJECT_BK end"
+  BATTERY_IDV: 'AUG_RISK_MOTOR_IDV__BATTERY_IDV'
+  BODY_PRICE: 'AUG_RISK_MOTOR_IDV__BODY_PRICE'
+  CHASSIS_PRICE: 'AUG_RISK_MOTOR_IDV__CHASSIS_PRICE'
+  ELECTRICAL_ACCESSORIES_IDV: 'AUG_RISK_MOTOR_IDV__ELECTRICAL_ACCESSORIES_IDV'
+  IDV_PERCENTAGE_VARIATION: 'AUG_RISK_MOTOR_IDV__IDV_PERCENTAGE_VARIATION'
+  NON_ELECTRICAL_ACCESSORIES_IDV: 'AUG_RISK_MOTOR_IDV__NON_ELECTRICAL_ACCESSORIES_IDV'
+  ORIGINAL_IDV_BEFORE_ADJUSTMENT: 'AUG_RISK_MOTOR_IDV__ORIGINAL_IDV_BEFORE_ADJUSTMENT'
+  REVISED_IDV: 'AUG_RISK_MOTOR_IDV__REVISED_IDV'
+  ROAD_TAX_AMOUNT: 'AUG_RISK_MOTOR_IDV__ROAD_TAX_AMOUNT'
+  VEHICLE_AGE_MONTHS: 'AUG_RISK_MOTOR_IDV__VEHICLE_AGE_MONTHS'
+  VEHICLE_INVOICE_PRICE: 'AUG_RISK_MOTOR_IDV__VEHICLE_INVOICE_PRICE'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
+  RECORD_SOURCE: '!stitch_mxm__v15_risk_object'
+{%- endset -%}
+
+{% set metadata_dict = fromyaml(yaml_metadata) %}
+
+{{ automate_dv.stage(include_source_columns=false,
+                      source_model=metadata_dict['source_model'],
+                      hashed_columns=metadata_dict['hashed_columns'],
+                      derived_columns=metadata_dict['derived_columns']) }}

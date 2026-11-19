@@ -16,9 +16,9 @@
 --   BJAZ_MOT_WS_POL_DTLS
 --   BJAZ_PAYMOTORTHEFT_DTLS
 -- Satellites fed WHOLE from this view (rule 2):
---   SAT_AUG_CASE_HEADER
---   SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED
---   SAT_AUG_POLICY_HEADER
+--   SAT_MOTOR_AUG_CASE_HEADER
+--   SAT_MOTOR_AUG_POLICY_DISCOUNT_LOADING_APPLIED
+--   SAT_MOTOR_AUG_POLICY_HEADER
 -- Links whose legs come from one source row on this view (rule 6):
 -- OVER the table limit by rule 3: one satellite on this view needs every feeding table.
 -- No hash is computed here. Hashing happens once, in automate_dv.stage() downstream.
@@ -340,7 +340,7 @@ select
     first_value(AUG_POLICY_HEADER__UNDERWRITING_YEAR) ignore nulls over (partition by POLICY_BK order by __PREC, __RID rows between unbounded preceding and unbounded following) as AUG_POLICY_HEADER__UNDERWRITING_YEAR,
     -- the row's own source time: LOAD_DATETIME for hubs, links and single-active satellites
     m.INC_JOB_UPDATED_AT,
-    -- multi-active satellites on POLICY_BK (SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED):
+    -- multi-active satellites on POLICY_BK (SAT_MOTOR_AUG_POLICY_DISCOUNT_LOADING_APPLIED):
     -- one load time per POLICY_BK, the newest INC_JOB_UPDATED_AT of the rows carrying any of their data;
     -- all child rows of a parent share it (ma_sat finds its latest set by time).
     max(case when coalesce(m.AUG_POLICY_DISCOUNT_LOADING_APPLIED__BASIS_AMOUNT, m.AUG_POLICY_DISCOUNT_LOADING_APPLIED__ITEM_APPLIED_INDICATOR, m.AUG_POLICY_DISCOUNT_LOADING_APPLIED__RATING_FACTOR_VALUE) is not null

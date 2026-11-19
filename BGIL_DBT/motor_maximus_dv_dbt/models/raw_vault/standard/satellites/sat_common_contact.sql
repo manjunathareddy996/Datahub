@@ -1,0 +1,33 @@
+-- Standard ma_sat() for SAT_COMMON_CONTACT (parent HUB_PARTY, history Multi-Active SCD2), fed whole from central view stitch_mxm__v08_location.
+{{ config(materialized='incremental') }}
+
+{%- set yaml_metadata -%}
+source_model: 'stg2_mxm__common_contact'
+src_pk: 'PARTY_HKEY'
+src_cdk:
+  - 'CONTACT_POINT_TYPE_CK'
+  - 'CONTACT_PRIORITY_ORDER_CK'
+src_payload:
+  - 'ALTERNATE_EMAIL_ADDRESS'
+  - 'ALTERNATE_MOBILE_NUMBER'
+  - 'CONTACT_POINT_USAGE'
+  - 'EMAIL_ADDRESS'
+  - 'FAX_NUMBER'
+  - 'LANDLINE_NUMBER'
+  - 'MOBILE_NUMBER'
+  - 'SOCIAL_MEDIA_HANDLE'
+  - 'STD_CODE'
+src_hashdiff: 'HASHDIFF'
+src_ldts: 'LOAD_DATETIME'
+src_source: 'RECORD_SOURCE'
+{%- endset -%}
+
+{% set metadata_dict = fromyaml(yaml_metadata) %}
+
+{{ automate_dv.ma_sat(src_pk=metadata_dict['src_pk'],
+                      src_cdk=metadata_dict['src_cdk'],
+                      src_payload=metadata_dict['src_payload'],
+                      src_hashdiff=metadata_dict['src_hashdiff'],
+                      src_ldts=metadata_dict['src_ldts'],
+                      src_source=metadata_dict['src_source'],
+                      source_model=metadata_dict['source_model']) }}

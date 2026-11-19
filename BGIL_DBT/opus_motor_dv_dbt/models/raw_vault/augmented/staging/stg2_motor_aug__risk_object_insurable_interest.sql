@@ -1,4 +1,4 @@
--- automate_dv.stage() for SAT_AUG_RISK_OBJECT_INSURABLE_INTEREST, read off central view stitch_motor__v06_distribution_channel.
+-- automate_dv.stage() for SAT_MOTOR_AUG_RISK_OBJECT_INSURABLE_INTEREST, read off central view stitch_motor__v06_distribution_channel.
 -- The key is NULL wherever this satellite has no payload: sat() takes no filter, and it skips a NULL key.
 {{ config(materialized='view') }}
 

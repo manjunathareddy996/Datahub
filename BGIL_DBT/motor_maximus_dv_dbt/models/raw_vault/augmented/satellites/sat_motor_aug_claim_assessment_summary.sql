@@ -1,0 +1,63 @@
+-- AUGMENTED track (not mapper-ratified) sat() for SAT_MOTOR_AUG_CLAIM_ASSESSMENT_SUMMARY (parent HUB_CLAIM, history SCD2), fed whole from central view stitch_mxm__v03_claim.
+{{ config(materialized='incremental', meta={'apply_source_filter': true}) }}
+
+{%- set yaml_metadata -%}
+source_model: 'stg2_mxm_aug__claim_assessment_summary'
+src_pk: 'CLAIM_HKEY'
+src_payload:
+  - 'ADDITIONAL_AMOUNT_OVER_SUM_INSURED'
+  - 'ADMISSIBILITY_ACTION'
+  - 'ADMISSIBILITY_REVIEW_REMARKS'
+  - 'AGREED_GARAGE_DISCOUNT_REPRICING_AMOUNT'
+  - 'ASSESSMENT_APPROVAL_DECISION'
+  - 'ASSESSMENT_APPROVED_BY_USER_REFERENCE'
+  - 'ASSESSMENT_APPROVER_REMARKS'
+  - 'ASSESSMENT_APPROVER_USER_REFERENCE'
+  - 'ASSESSMENT_CURRENT_STATUS_TEXT'
+  - 'ASSESSMENT_SAVING_AMOUNT'
+  - 'ASSESSMENT_VALIDATION_REQUESTED_INDICATOR'
+  - 'CLAIM_LIMIT_AMOUNT'
+  - 'DEDUCTIBLE_COMMENT'
+  - 'DEDUCTION_UPDATE_TEXT'
+  - 'EXTENSIONS_CLAUSES_CONDITIONS_AND_WARRANTIES_APPLICABLE_INDICATOR'
+  - 'FINAL_ADMISSIBLE_AMOUNT_IN_BILL_CURRENCY'
+  - 'FINAL_ADMISSIBLE_AMOUNT_IN_POLICY_SUM_INSURED_CURRENCY'
+  - 'INSURABLE_INTEREST_CONFIRMED_INDICATOR'
+  - 'INSURABLE_INTEREST_REMARKS'
+  - 'LOSS_AMOUNT'
+  - 'LOSS_AMOUNT_CURRENCY'
+  - 'LOSS_AMOUNT_IN_INR'
+  - 'LOSS_MINIMISATION_FLAG_REASON'
+  - 'LOSS_MINIMISATION_TRIGGER_CODE'
+  - 'MEDICALLY_ADMISSIBLE_INDICATOR'
+  - 'MORE_INFORMATION_ACTION'
+  - 'NON_ADMISSIBLE_AMOUNT'
+  - 'NON_ADMISSIBLE_REMARKS'
+  - 'NON_MEDICAL_ADMISSIBILITY_COMMENTS'
+  - 'NON_MEDICAL_ADMISSIBILITY_INDICATOR'
+  - 'PCS_DESCRIPTION_TEXT'
+  - 'REQUESTOR_REMARKS'
+  - 'RESERVE_SET_REQUESTED_INDICATOR'
+  - 'REVIEWED_VALUE_AMOUNT'
+  - 'REVIEW_DESCRIPTION'
+  - 'RE_EVALUATION_REASON'
+  - 'SECTION_64VB_REALISATION_STATUS'
+  - 'SUM_INSURED_VALIDATION_OVERRIDE_INDICATOR'
+  - 'SUM_INSURED_VALIDATION_OVERRIDE_REMARKS'
+  - 'SURVEYOR_TECHNICAL_OBSERVATION_TEXT'
+  - 'TECHNICALLY_ADMISSIBLE_INDICATOR'
+  - 'TOTAL_DEDUCTION_AMOUNT_IN_SUM_INSURED_CURRENCY'
+  - 'TOTAL_PAYABLE_AMOUNT_AT_ADMISSIBILITY'
+src_hashdiff: 'HASHDIFF'
+src_ldts: 'LOAD_DATETIME'
+src_source: 'RECORD_SOURCE'
+{%- endset -%}
+
+{% set metadata_dict = fromyaml(yaml_metadata) %}
+
+{{ automate_dv.sat(src_pk=metadata_dict['src_pk'],
+                   src_payload=metadata_dict['src_payload'],
+                   src_hashdiff=metadata_dict['src_hashdiff'],
+                   src_ldts=metadata_dict['src_ldts'],
+                   src_source=metadata_dict['src_source'],
+                   source_model=metadata_dict['source_model']) }}

@@ -1,0 +1,22 @@
+{
+ "check_internal": {
+  "exit": 0,
+  "tail": "models                        : 741   (motor_maximus_v2_dv_dbt)\n  PASS -- refs resolve, every declared source column is emitted, names unique.\n"
+ },
+ "check_patterns": {
+  "exit": 0,
+  "tail": "files scanned                 : 9\n  PASS -- no control bytes, every statically-known pattern compiles.\n"
+ },
+ "check_prose_counts": {
+  "exit": 0,
+  "tail": "prose files scanned           : 2\n  PASS -- every quantity in current-state prose is sourced or absent.\n"
+ },
+ "check_prose_shape": {
+  "exit": 0,
+  "tail": "models examined               : 741   (population)\n  PASS -- no identifier-position token contains a space.\n"
+ },
+ "check_vault_alignment": {
+  "exit": 1,
+  "tail": "canonical satellites          : 365\nsibling satellites            : 246   (opus_motor_v3_dv_dbt)\nthis project's satellites     : 279   (motor_maximus_v2_dv_dbt)\nsibling naming convention     : UPPER_SNAKE   {'UPPER_SNAKE': 566, 'squashed': 19}\nmapped columns reaching a sat  : 598 of 605   (98.8%)\ndead data paths (report-only)  : 1994   -- attribute declared on a payload, cast-null in every feeder\n        SAT_AUG_ASSESSMENT_HEADER.AI_ASSESSMENT_STATUS\n        SAT_AUG_ASSESSMENT_HEADER.ASSESSMENT_END_TIME\n        SAT_AUG_ASSESSMENT_HEADER.ASSESSMENT_NATURE\n        SAT_AUG_ASSESSMENT_HEADER.ASSESSMENT_REPORT_REFERENCE\n        SAT_AUG_ASSESSMENT_HEADER.ASSESSMENT_REVIEW_REMARKS\n        ... and 1989 more\n\n  FAIL 1. payload column is not the canonical rendering: 3\n        SAT_CLAIM_MOTOR_DETAIL.Vehicle Parked Indicator -> expected 'VEHICLE_PARKED_INDICATOR'\n        SAT_PARTY_EMPLOYMENT.Occupation Code -> expected 'OCCUPATION_CODE'\n        SAT_PARTY_EMPLOYMENT.Occupation Description -> expected 'OCCUPATION_DESCRIPTION'\n  FAIL 2. grain differs from the sibling: 2\n        SAT_AUG_CLAIM_SURVEY_APPOINTMENT: sibling ma_sat vs ours sat\n        SAT_AUG_COVERAGE_PACKAGE_RATING: sibling ma_sat vs ours sat\n  FAIL 2. src_cdk differs from the sibling: 7\n        SAT_AUG_CLAIM_DOC_CHECKLIST: ['REQUIRED_DOCUMENT_TYPE_CK', 'DOCUMENT_TYPE_CK'] vs ['REQUIRED_DOCUMENT_TYPE_CK']\n        SAT_AUG_CLAIM_RECOVERY_EXPENSE_LINE: ['EXPENSE_HEAD_CODE_CK', 'EXPENSE_HEAD_CK'] vs ['EXPENSE_HEAD_CODE_CK']\n        SAT_AUG_CLAIM_SURVEY_APPOINTMENT: ['APPOINTMENT_TYPE_CK', 'SURVEYOR_REFERENCE_CK'] vs []\n        SAT_AUG_COVERAGE_PACKAGE_RATING: ['ADD_ON_PACKAGE_CODE_CK', 'PACKAGE_REFERENCE_CK'] vs []\n        SAT_AUG_QUOTE_PREMIUM_HEAD: ['PREMIUM_HEAD_CODE_CK', 'SECTION_CK'] vs ['TENURE_YEAR_CK', 'PREMIUM_HEAD_CODE_CK', 'COVERAGE_REFERENCE_CK', 'SECTION_CK', 'ADJUSTED_INDICATOR_CK']\n        ... and 2 more\n  FAIL 5. alias selected more than once in one select: 72\n        stitch_v01_assessment.sql: QUOTE_RATING_INPUT__FACTOR_VALUE\n        stitch_v02_case.sql: AUG_CASE_WORKFLOW_TASK__TASK_RAISED_BY_REFERENCE\n        stitch_v02_case.sql: AUG_CASE_WORKFLOW_TASK__TASK_RAISED_DATE\n        stitch_v02_case.sql: AUG_CASE_WORKFLOW_TASK__TASK_REMARKS\n        stitch_v02_case.sql: CASE_WORKFLOW_TASK__COMPLETED_DATE\n        ... and 67 more\n  FAIL 6. mapped column reaches no satellite: 7\n        SAT_CLAIM_MOTOR_DETAIL.VEHICLE_PARKED_INDICATOR\n        SAT_LNK_ROLE_NOMINEE_BENEFICIARY.GUARDIAN_NAME   (satellite not built at all)\n        SAT_LNK_ROLE_NOMINEE_BENEFICIARY.NOMINATION_PERCENTAGE   (satellite not built at all)\n        SAT_LNK_ROLE_NOMINEE_BENEFICIARY.RELATIONSHIP_TO_INSURED   (satellite not built at all)\n        SAT_LOSS_EVENT_DETAIL.LOSS_TIME   (satellite not built at all)\n        ... and 2 more\n"
+ }
+}
