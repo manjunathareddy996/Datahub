@@ -10,7 +10,7 @@ derived_columns:
   RISK_OBJECT_BK: 'RISK_OBJECT_BK'
   RISK_OBJECT_NK: "'HUB_RISK_OBJECT|' || RISK_OBJECT_BK"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V26_RISK_OBJECT'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v26_risk_object'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

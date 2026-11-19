@@ -20,7 +20,7 @@ derived_columns:
   AUTHORITY_LEVEL_REQUIRED: 'PRODUCT_UW_RULE__AUTHORITY_LEVEL_REQUIRED'
   EFFECTIVE_DATE: 'PRODUCT_UW_RULE__EFFECTIVE_DATE'
   LOAD_DATETIME: 'PRODUCT_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!OPUS_MOTOR_V21_PRODUCT'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v21_product'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -18,7 +18,7 @@ derived_columns:
   DEPRECIATION_PERCENTAGE: 'RISK_OBJECT_VALUATION__DEPRECIATION_PERCENTAGE'
   MARKET_VALUE: 'RISK_OBJECT_VALUATION__MARKET_VALUE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V24_RISK_OBJECT'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v24_risk_object'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

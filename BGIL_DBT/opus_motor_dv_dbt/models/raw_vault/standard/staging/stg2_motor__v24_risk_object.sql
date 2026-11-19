@@ -15,7 +15,7 @@ derived_columns:
   RISK_OBJECT_NK: "'HUB_RISK_OBJECT|' || RISK_OBJECT_BK"
   PROPOSAL_RISK_OBJECT_NK: "case when __LNK_PROPOSAL_RISK_OBJECT = 1 then 'LNK_PROPOSAL_RISK_OBJECT|' || PROPOSAL_BK || '|' || RISK_OBJECT_BK end"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V24_RISK_OBJECT'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v24_risk_object'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

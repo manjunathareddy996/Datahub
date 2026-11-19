@@ -16,7 +16,7 @@ derived_columns:
   TAX_HEAD_CODE_CK: 'AUG_POLICY_TAX_HEAD__TAX_HEAD_CODE_CK'
   TAX_HEAD_IDENTIFIER: 'AUG_POLICY_TAX_HEAD__TAX_HEAD_IDENTIFIER'
   LOAD_DATETIME: 'POLICY_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!OPUS_MOTOR_V10_PARTY'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v10_party'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

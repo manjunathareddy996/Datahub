@@ -16,7 +16,7 @@ derived_columns:
   TAX_TYPE_2_CODE: 'AUG_POLICY_TAX_BREAKUP__TAX_TYPE_2_CODE'
   UTGST_AMOUNT: 'AUG_POLICY_TAX_BREAKUP__UTGST_AMOUNT'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V10_PARTY'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v10_party'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

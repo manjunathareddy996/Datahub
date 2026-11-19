@@ -22,7 +22,7 @@ derived_columns:
   LOADING_AMOUNT: 'QUOTE_RATING__LOADING_AMOUNT'
   NET_PREMIUM: 'QUOTE_RATING__NET_PREMIUM'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V23_QUOTE'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v23_quote'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

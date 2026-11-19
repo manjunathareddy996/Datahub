@@ -14,7 +14,7 @@ derived_columns:
   PROPOSAL_NK: "case when PROPOSAL_PAYMENT__PAYMENT_MODE is not null then 'HUB_PROPOSAL|' || PROPOSAL_BK end"
   PAYMENT_MODE: 'PROPOSAL_PAYMENT__PAYMENT_MODE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V06_DISTRIBUTION_CHANNEL'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v06_distribution_channel'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

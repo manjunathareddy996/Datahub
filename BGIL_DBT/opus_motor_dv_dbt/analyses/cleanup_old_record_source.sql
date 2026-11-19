@@ -1,4 +1,5 @@
--- One-off cleanup after RECORD_SOURCE changed from '!stitch_motor__vNN_*' to '!OPUS_MOTOR_VNN_*'.
+-- One-off cleanup after RECORD_SOURCE changed from '!stitch_motor__vNN_*' to '!OPUS_stitch_motor__vNN_*'.
+-- The condition below matches only the OLD value (the new one starts with OPUS_).
 -- Hubs and links only insert keys they do not have, so keys loaded before the change keep the old value.
 -- 'stitch_motor__v%' is written ONLY by opus_motor_dv_dbt, so these statements touch no other project's rows.
 -- Run in a worksheet. Run a block only for the layers you have already loaded; a table that was never built

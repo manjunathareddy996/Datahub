@@ -14,7 +14,7 @@ derived_columns:
   POLICY_NK: "case when POLICY_LIFECYCLE__ASSIGNEE_REFERENCE is not null then 'HUB_POLICY|' || POLICY_BK end"
   ASSIGNEE_REFERENCE: 'POLICY_LIFECYCLE__ASSIGNEE_REFERENCE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V11_PARTY'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v11_party'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

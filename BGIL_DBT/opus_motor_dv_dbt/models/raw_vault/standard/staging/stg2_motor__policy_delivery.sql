@@ -18,7 +18,7 @@ derived_columns:
   DISPATCH_DATE: 'POLICY_DELIVERY__DISPATCH_DATE'
   TRACKING_REFERENCE: 'POLICY_DELIVERY__TRACKING_REFERENCE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V12_POLICY'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v12_policy'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

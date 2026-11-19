@@ -22,7 +22,7 @@ derived_columns:
   RAISED_DATE: 'CASE_HEADER__RAISED_DATE'
   RESOLUTION_DATE: 'CASE_HEADER__RESOLUTION_DATE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V02_CLAIM'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v02_claim'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

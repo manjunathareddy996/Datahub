@@ -10,7 +10,7 @@ derived_columns:
   COVERAGE_BK: 'COVERAGE_BK'
   COVERAGE_NK: "'HUB_COVERAGE|' || COVERAGE_BK"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V04_COVERAGE'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v04_coverage'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

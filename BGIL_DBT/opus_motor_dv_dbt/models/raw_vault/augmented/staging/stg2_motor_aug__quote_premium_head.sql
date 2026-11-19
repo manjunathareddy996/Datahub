@@ -24,7 +24,7 @@ derived_columns:
   PREMIUM_HEAD_CODE: 'AUG_QUOTE_PREMIUM_HEAD__PREMIUM_HEAD_CODE'
   PREMIUM_HEAD_NAME: 'AUG_QUOTE_PREMIUM_HEAD__PREMIUM_HEAD_NAME'
   LOAD_DATETIME: 'QUOTE_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!OPUS_MOTOR_V22_QUOTE'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v22_quote'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

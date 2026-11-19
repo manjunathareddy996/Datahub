@@ -24,7 +24,7 @@ derived_columns:
   VALUE_RANGE_FROM: 'PRODUCT_RATING_FACTOR__VALUE_RANGE_FROM'
   VALUE_RANGE_TO: 'PRODUCT_RATING_FACTOR__VALUE_RANGE_TO'
   LOAD_DATETIME: 'PRODUCT_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!OPUS_MOTOR_V20_PRODUCT'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v20_product'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

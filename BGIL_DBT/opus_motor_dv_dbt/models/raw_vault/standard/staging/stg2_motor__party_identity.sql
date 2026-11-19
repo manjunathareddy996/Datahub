@@ -40,7 +40,7 @@ derived_columns:
   SALUTATION: 'PARTY_IDENTITY__SALUTATION'
   TITLE_CODE: 'PARTY_IDENTITY__TITLE_CODE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V09_PARTY'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v09_party'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

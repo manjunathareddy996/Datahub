@@ -22,7 +22,7 @@ derived_columns:
   SETTLEMENT_AMOUNT: 'CLAIM_SETTLEMENT__SETTLEMENT_AMOUNT'
   SETTLEMENT_TYPE: 'CLAIM_SETTLEMENT__SETTLEMENT_TYPE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V03_CLAIM'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v03_claim'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

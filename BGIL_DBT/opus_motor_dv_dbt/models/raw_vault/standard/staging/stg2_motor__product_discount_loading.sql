@@ -18,7 +18,7 @@ derived_columns:
   DISCOUNT_PERCENTAGE: 'PRODUCT_DISCOUNT_LOADING__DISCOUNT_PERCENTAGE'
   RULE_CODE: 'PRODUCT_DISCOUNT_LOADING__RULE_CODE'
   LOAD_DATETIME: 'PRODUCT_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!OPUS_MOTOR_V20_PRODUCT'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v20_product'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

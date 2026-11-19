@@ -20,7 +20,7 @@ derived_columns:
   RISK_OBJECT_NAME: 'RISK_OBJECT_CORE__RISK_OBJECT_NAME'
   RISK_OBJECT_REFERENCE_NUMBER: 'RISK_OBJECT_CORE__RISK_OBJECT_REFERENCE_NUMBER'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V16_POLICY'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v16_policy'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

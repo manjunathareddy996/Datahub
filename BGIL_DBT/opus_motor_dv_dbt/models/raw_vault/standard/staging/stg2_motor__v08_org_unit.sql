@@ -31,7 +31,7 @@ derived_columns:
   POLICY_PRODUCT_NK: "case when __LNK_POLICY_PRODUCT = 1 then 'LNK_POLICY_PRODUCT|' || POLICY_BK || '|' || PRODUCT_BK end"
   POLICY_RISK_OBJECT_NK: "case when __LNK_POLICY_RISK_OBJECT = 1 then 'LNK_POLICY_RISK_OBJECT|' || POLICY_BK || '|' || RISK_OBJECT_BK end"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V08_ORG_UNIT'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v08_org_unit'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -14,7 +14,7 @@ derived_columns:
   CLAIM_NK: "case when AUG_CLAIM_THIRD_PARTY_MACT__NEGLIGENCE_DETAILS is not null then 'HUB_CLAIM|' || CLAIM_BK end"
   NEGLIGENCE_DETAILS: 'AUG_CLAIM_THIRD_PARTY_MACT__NEGLIGENCE_DETAILS'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V01_CLAIM'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v01_claim'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

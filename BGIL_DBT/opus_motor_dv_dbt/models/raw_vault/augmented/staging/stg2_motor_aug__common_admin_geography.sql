@@ -22,7 +22,7 @@ derived_columns:
   REGISTRATION_ZONE: 'AUG_COMMON_ADMIN_GEOGRAPHY__REGISTRATION_ZONE'
   RTO_CLUSTER_CODE: 'AUG_COMMON_ADMIN_GEOGRAPHY__RTO_CLUSTER_CODE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V07_LOCATION'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v07_location'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

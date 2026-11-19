@@ -24,7 +24,7 @@ derived_columns:
   TARGET_PERIOD: 'CHANNEL_SALES_TARGET__TARGET_PERIOD'
   TARGET_TYPE: 'CHANNEL_SALES_TARGET__TARGET_TYPE'
   LOAD_DATETIME: 'DISTRIBUTION_CHANNEL_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!OPUS_MOTOR_V09_PARTY'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v09_party'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

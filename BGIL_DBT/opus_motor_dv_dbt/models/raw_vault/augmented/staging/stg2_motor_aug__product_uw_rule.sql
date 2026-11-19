@@ -64,7 +64,7 @@ derived_columns:
   RULE_ACTIVE_INDICATOR: 'AUG_PRODUCT_UW_RULE__RULE_ACTIVE_INDICATOR'
   RULE_STATUS: 'AUG_PRODUCT_UW_RULE__RULE_STATUS'
   LOAD_DATETIME: 'PRODUCT_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!OPUS_MOTOR_V21_PRODUCT'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v21_product'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

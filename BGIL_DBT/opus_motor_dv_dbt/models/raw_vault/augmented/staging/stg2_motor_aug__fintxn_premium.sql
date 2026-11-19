@@ -28,7 +28,7 @@ derived_columns:
   TOTAL_IEV_AMOUNT: 'AUG_FINTXN_PREMIUM__TOTAL_IEV_AMOUNT'
   TOTAL_OWN_DAMAGE_PREMIUM: 'AUG_FINTXN_PREMIUM__TOTAL_OWN_DAMAGE_PREMIUM'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V11_PARTY'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v11_party'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

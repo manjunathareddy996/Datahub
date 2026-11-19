@@ -27,7 +27,7 @@ derived_columns:
   PROPOSAL_POLICY_NK: "case when __LNK_PROPOSAL_POLICY = 1 then 'LNK_PROPOSAL_POLICY|' || POLICY_BK || '|' || PROPOSAL_BK end"
   PROPOSAL_PRODUCT_NK: "case when __LNK_PROPOSAL_PRODUCT = 1 then 'LNK_PROPOSAL_PRODUCT|' || PRODUCT_BK || '|' || PROPOSAL_BK end"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V21_PRODUCT'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v21_product'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

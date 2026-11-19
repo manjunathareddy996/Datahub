@@ -18,7 +18,7 @@ derived_columns:
   LONGITUDE: 'COMMON_GEO__LONGITUDE'
   ZONE_CODE: 'COMMON_GEO__ZONE_CODE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V06_DISTRIBUTION_CHANNEL'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v06_distribution_channel'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -26,7 +26,7 @@ derived_columns:
   NET_PREMIUM: 'FINTXN_PREMIUM__NET_PREMIUM'
   STAMP_DUTY_AMOUNT: 'FINTXN_PREMIUM__STAMP_DUTY_AMOUNT'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V11_PARTY'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v11_party'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

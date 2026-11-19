@@ -14,7 +14,7 @@ derived_columns:
   LOCATION_NK: "case when AUG_COMMON_GEO__TEMPERATURE_ZONE_CODE is not null then 'HUB_LOCATION|' || LOCATION_BK end"
   TEMPERATURE_ZONE_CODE: 'AUG_COMMON_GEO__TEMPERATURE_ZONE_CODE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V15_POLICY'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v15_policy'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -14,7 +14,7 @@ derived_columns:
   PARTY_NK: "case when AUG_PARTY_ORGANISATION_PROFILE__INTERNAL_INSURER_CODE is not null then 'HUB_PARTY|' || PARTY_BK end"
   INTERNAL_INSURER_CODE: 'AUG_PARTY_ORGANISATION_PROFILE__INTERNAL_INSURER_CODE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V09_PARTY'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v09_party'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

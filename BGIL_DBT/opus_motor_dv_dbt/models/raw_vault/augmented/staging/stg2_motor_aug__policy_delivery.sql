@@ -18,7 +18,7 @@ derived_columns:
   DISPATCH_TIME: 'AUG_POLICY_DELIVERY__DISPATCH_TIME'
   DISPATCH_TRANSACTION_DATE: 'AUG_POLICY_DELIVERY__DISPATCH_TRANSACTION_DATE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V12_POLICY'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v12_policy'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

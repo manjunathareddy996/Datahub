@@ -14,7 +14,7 @@ derived_columns:
   COVERAGE_NK: "case when AUG_COVERAGE_CONDITIONS__MAXIMUM_VEHICLE_AGE is not null then 'HUB_COVERAGE|' || COVERAGE_BK end"
   MAXIMUM_VEHICLE_AGE: 'AUG_COVERAGE_CONDITIONS__MAXIMUM_VEHICLE_AGE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V04_COVERAGE'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v04_coverage'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -24,7 +24,7 @@ derived_columns:
   OTSP_REASON: 'AUG_CLAIM_SETTLEMENT__OTSP_REASON'
   SETTLEMENT_FILE_NUMBER: 'AUG_CLAIM_SETTLEMENT__SETTLEMENT_FILE_NUMBER'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V03_CLAIM'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v03_claim'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

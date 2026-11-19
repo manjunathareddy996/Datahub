@@ -24,7 +24,7 @@ derived_columns:
   POSTAL_CODE: 'LOSS_LOCATION_ADDRESS__POSTAL_CODE'
   STATE_CODE: 'LOSS_LOCATION_ADDRESS__STATE_CODE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V01_CLAIM'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v01_claim'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

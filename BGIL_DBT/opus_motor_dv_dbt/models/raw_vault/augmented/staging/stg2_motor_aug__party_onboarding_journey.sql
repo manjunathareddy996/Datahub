@@ -14,7 +14,7 @@ derived_columns:
   PARTY_NK: "case when AUG_PARTY_ONBOARDING_JOURNEY__JOURNEY_PAGE_URL is not null then 'HUB_PARTY|' || PARTY_BK end"
   JOURNEY_PAGE_URL: 'AUG_PARTY_ONBOARDING_JOURNEY__JOURNEY_PAGE_URL'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V11_PARTY'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v11_party'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

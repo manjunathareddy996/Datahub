@@ -34,7 +34,7 @@ derived_columns:
   SUB_PERIL_CODE: 'LOSS_EVENT_DETAIL__SUB_PERIL_CODE'
   THIRD_PARTY_INVOLVED_INDICATOR: 'LOSS_EVENT_DETAIL__THIRD_PARTY_INVOLVED_INDICATOR'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V01_CLAIM'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v01_claim'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

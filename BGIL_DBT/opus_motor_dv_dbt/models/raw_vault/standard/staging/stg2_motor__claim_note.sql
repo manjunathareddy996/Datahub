@@ -16,7 +16,7 @@ derived_columns:
   NOTE_SEQUENCE: 'CLAIM_NOTE__NOTE_SEQUENCE_CK'
   NOTE_TEXT: 'CLAIM_NOTE__NOTE_TEXT'
   LOAD_DATETIME: 'CLAIM_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!OPUS_MOTOR_V02_CLAIM'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v02_claim'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

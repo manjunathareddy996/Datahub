@@ -30,7 +30,7 @@ derived_columns:
   PROXY_IP_ADDRESS: 'AUG_PARTY_DIGITAL_IDENTITY__PROXY_IP_ADDRESS'
   THIRD_IP_ADDRESS: 'AUG_PARTY_DIGITAL_IDENTITY__THIRD_IP_ADDRESS'
   LOAD_DATETIME: 'PARTY_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!OPUS_MOTOR_V11_PARTY'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v11_party'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

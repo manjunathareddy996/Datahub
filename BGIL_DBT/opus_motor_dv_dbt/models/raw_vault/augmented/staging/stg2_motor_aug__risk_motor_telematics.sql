@@ -32,7 +32,7 @@ derived_columns:
   TRIP_ORIGIN: 'AUG_RISK_MOTOR_TELEMATICS__TRIP_ORIGIN'
   TRIP_START_DATE: 'AUG_RISK_MOTOR_TELEMATICS__TRIP_START_DATE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V25_RISK_OBJECT'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v25_risk_object'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

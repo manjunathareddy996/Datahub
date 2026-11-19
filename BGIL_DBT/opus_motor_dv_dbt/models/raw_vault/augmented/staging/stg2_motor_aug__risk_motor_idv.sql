@@ -34,7 +34,7 @@ derived_columns:
   SYSTEM_IDV_ACCEPTED_INDICATOR: 'AUG_RISK_MOTOR_IDV__SYSTEM_IDV_ACCEPTED_INDICATOR'
   VEHICLE_AGE_BAND: 'AUG_RISK_MOTOR_IDV__VEHICLE_AGE_BAND'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V25_RISK_OBJECT'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v25_risk_object'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

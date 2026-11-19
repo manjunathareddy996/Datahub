@@ -22,7 +22,7 @@ derived_columns:
   PARENT_ORG_UNIT_REFERENCE: 'ORG_UNIT_DEFINITION__PARENT_ORG_UNIT_REFERENCE'
   ZONE_NAME: 'ORG_UNIT_DEFINITION__ZONE_NAME'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V08_ORG_UNIT'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v08_org_unit'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

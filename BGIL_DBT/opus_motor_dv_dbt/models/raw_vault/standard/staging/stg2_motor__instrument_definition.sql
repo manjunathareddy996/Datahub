@@ -18,7 +18,7 @@ derived_columns:
   BANK_NAME: 'INSTRUMENT_DEFINITION__BANK_NAME'
   BRANCH_NAME: 'INSTRUMENT_DEFINITION__BRANCH_NAME'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V06_DISTRIBUTION_CHANNEL'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v06_distribution_channel'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

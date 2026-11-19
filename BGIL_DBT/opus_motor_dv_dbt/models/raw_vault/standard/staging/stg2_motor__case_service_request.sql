@@ -14,7 +14,7 @@ derived_columns:
   CASE_NK: "case when CASE_SERVICE_REQUEST__SERVICE_REQUEST_TYPE is not null then 'HUB_CASE|' || CASE_BK end"
   SERVICE_REQUEST_TYPE: 'CASE_SERVICE_REQUEST__SERVICE_REQUEST_TYPE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_MOTOR_V09_PARTY'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v09_party'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

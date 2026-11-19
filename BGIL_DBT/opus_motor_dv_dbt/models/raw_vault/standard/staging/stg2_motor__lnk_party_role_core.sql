@@ -18,7 +18,7 @@ derived_columns:
   ROLE_SEQUENCE: 'LNK_PARTY_ROLE_CORE__ROLE_SEQUENCE_CK'
   ROLE_START_DATE: 'LNK_PARTY_ROLE_CORE__ROLE_START_DATE'
   LOAD_DATETIME: 'PARTY_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!OPUS_MOTOR_V03_CLAIM'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v03_claim'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

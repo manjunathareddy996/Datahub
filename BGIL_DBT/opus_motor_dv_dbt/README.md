@@ -212,8 +212,8 @@ generators would emit.
 
 ## Round 6 (2026-11-19): source system in RECORD_SOURCE
 
-- All 272 stages: `RECORD_SOURCE: '!stitch_motor__vNN_<entity>'` -> `'!OPUS_MOTOR_VNN_<ENTITY>'`, the
-  `<SYSTEM>_<LOB>_...` pattern of the other projects (motor_maximus_dv_dbt uses `!MAXIMUS_MOTOR_VNN_...`), so opus and
-  maximus rows are told apart and validation filters on `OPUS_` / `MAXIMUS_` include motor.
+- All 272 stages: `RECORD_SOURCE: '!stitch_motor__vNN_<entity>'` -> `'!OPUS_stitch_motor__vNN_<entity>'`: the view
+  name is kept and the source system is prefixed (motor_maximus_dv_dbt uses `'!MAXIMUS_stitch_mxm__vNN_...'`), so opus
+  and maximus rows are told apart and validation filters on `OPUS_` / `MAXIMUS_` include motor.
 - Rows loaded before this keep the old value (hubs/links insert only new keys):
   analyses/cleanup_old_record_source.sql counts and deletes motor's own old rows, then re-run the layer.

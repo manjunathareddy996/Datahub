@@ -20,7 +20,7 @@ derived_columns:
   BID_AMOUNT: 'CLAIM_SALVAGE_BIDDER__BID_AMOUNT'
   BID_DATE: 'CLAIM_SALVAGE_BIDDER__BID_DATE'
   LOAD_DATETIME: 'CLAIM_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!OPUS_MOTOR_V03_CLAIM'
+  RECORD_SOURCE: '!OPUS_stitch_motor__v03_claim'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
