@@ -5,7 +5,7 @@
 source_model: 'stg2_party_digital_identity'
 src_pk: 'PARTY_HKEY'
 src_cdk:
-  - 'ACTIVE_SEQUENCE_NUMBER'
+  - 'ACTIVE_SEQUENCE_NUMBER_CK'
 src_payload:
   - 'LOGIN_IDENTIFIER'
 src_hashdiff: 'HASHDIFF'

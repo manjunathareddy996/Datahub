@@ -5,7 +5,7 @@
 source_model: 'stg2_party_group_census'
 src_pk: 'PARTY_HKEY'
 src_cdk:
-  - 'MEMBER_REFERENCE'
+  - 'MEMBER_REFERENCE_CK'
 src_payload:
   - 'ACTIVE_INDICATOR'
   - 'DATE_OF_JOINING'

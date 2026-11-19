@@ -5,7 +5,7 @@
 source_model: 'stg2_quote_rating_input'
 src_pk: 'QUOTE_HKEY'
 src_cdk:
-  - 'FACTOR_CODE'
+  - 'FACTOR_CODE_CK'
 src_payload:
   - 'FACTOR_VALUE'
 src_hashdiff: 'HASHDIFF'

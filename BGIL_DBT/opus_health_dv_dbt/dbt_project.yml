@@ -16,8 +16,10 @@ clean-targets:
   - "dbt_packages"
 
 vars:
-  health_raw_database: RAW
-  health_raw_schema: HEALTH
+  health_raw_database: BAGIC_PROD_MIRROR_DB
+  health_raw_schema: OPUS_GG_DWHSTAGE
+  health_test_raw_database: BAGIC_PREPROD_CURATED_DB
+  health_test_raw_schema: UTILS
 
 models:
   opus_health_dv_dbt:

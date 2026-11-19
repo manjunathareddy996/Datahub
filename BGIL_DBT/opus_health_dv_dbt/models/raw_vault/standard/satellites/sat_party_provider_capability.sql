@@ -5,7 +5,7 @@
 source_model: 'stg2_party_provider_capability'
 src_pk: 'PARTY_HKEY'
 src_cdk:
-  - 'FACILITY_CODE'
+  - 'FACILITY_CODE_CK'
 src_payload:
   - 'ACCREDITATION_INDICATOR'
   - 'ACCREDITATION_REFERENCE'

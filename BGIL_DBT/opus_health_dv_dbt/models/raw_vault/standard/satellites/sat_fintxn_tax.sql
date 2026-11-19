@@ -5,7 +5,7 @@
 source_model: 'stg2_fintxn_tax'
 src_pk: 'FINANCIAL_TRANSACTION_HKEY'
 src_cdk:
-  - 'TAX_TYPE'
+  - 'TAX_TYPE_CK'
 src_payload:
   - 'CGST_AMOUNT'
   - 'IGST_AMOUNT'
