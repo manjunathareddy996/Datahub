@@ -60,7 +60,7 @@ derived_columns:
   WORK_CEASED_DATE: 'AUG_CLAIM_THIRD_PARTY_LINE__WORK_CEASED_DATE'
   WORK_RESUMED_DATE: 'AUG_CLAIM_THIRD_PARTY_LINE__WORK_RESUMED_DATE'
   LOAD_DATETIME: 'CLAIM_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_motor__v01_claim'
+  RECORD_SOURCE: '!OPUS_MOTOR_V01_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

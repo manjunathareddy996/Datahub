@@ -18,7 +18,7 @@ derived_columns:
   FRAUD_SUSPICION_INDICATOR: 'CLAIM_FRAUD__FRAUD_SUSPICION_INDICATOR'
   FRAUD_TRIGGER_REASON: 'CLAIM_FRAUD__FRAUD_TRIGGER_REASON'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v02_claim'
+  RECORD_SOURCE: '!OPUS_MOTOR_V02_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

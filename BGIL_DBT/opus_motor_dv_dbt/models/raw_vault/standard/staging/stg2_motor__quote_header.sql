@@ -28,7 +28,7 @@ derived_columns:
   QUOTE_STATUS: 'QUOTE_HEADER__QUOTE_STATUS'
   REQUESTED_SUM_INSURED: 'QUOTE_HEADER__REQUESTED_SUM_INSURED'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v23_quote'
+  RECORD_SOURCE: '!OPUS_MOTOR_V23_QUOTE'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

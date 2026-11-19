@@ -15,7 +15,7 @@ derived_columns:
   QUOTE_NK: "'HUB_QUOTE|' || QUOTE_BK"
   QUOTE_PRODUCT_NK: "case when __LNK_QUOTE_PRODUCT = 1 then 'LNK_QUOTE_PRODUCT|' || PRODUCT_BK || '|' || QUOTE_BK end"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v20_product'
+  RECORD_SOURCE: '!OPUS_MOTOR_V20_PRODUCT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

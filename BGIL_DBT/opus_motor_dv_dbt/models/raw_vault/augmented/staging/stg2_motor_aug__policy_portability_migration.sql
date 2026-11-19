@@ -14,7 +14,7 @@ derived_columns:
   POLICY_NK: "case when AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_EXPIRY_DATE is not null then 'HUB_POLICY|' || POLICY_BK end"
   PREVIOUS_POLICY_EXPIRY_DATE: 'AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_EXPIRY_DATE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v10_party'
+  RECORD_SOURCE: '!OPUS_MOTOR_V10_PARTY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

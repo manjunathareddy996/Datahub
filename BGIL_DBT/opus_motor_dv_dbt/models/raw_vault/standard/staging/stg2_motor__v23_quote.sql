@@ -10,7 +10,7 @@ derived_columns:
   QUOTE_BK: 'QUOTE_BK'
   QUOTE_NK: "'HUB_QUOTE|' || QUOTE_BK"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v23_quote'
+  RECORD_SOURCE: '!OPUS_MOTOR_V23_QUOTE'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

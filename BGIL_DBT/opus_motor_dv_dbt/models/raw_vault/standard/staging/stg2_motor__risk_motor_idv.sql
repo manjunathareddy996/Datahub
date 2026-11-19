@@ -30,7 +30,7 @@ derived_columns:
   TOTAL_IDV: 'RISK_MOTOR_IDV__TOTAL_IDV'
   VEHICLE_AGE: 'RISK_MOTOR_IDV__VEHICLE_AGE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v24_risk_object'
+  RECORD_SOURCE: '!OPUS_MOTOR_V24_RISK_OBJECT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

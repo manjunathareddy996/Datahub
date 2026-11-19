@@ -18,7 +18,7 @@ derived_columns:
   KYC_REFERENCE_NUMBER: 'PARTY_KYC_REFERENCE__KYC_REFERENCE_NUMBER'
   KYC_REFERENCE_TYPE: 'PARTY_KYC_REFERENCE__KYC_REFERENCE_TYPE'
   LOAD_DATETIME: 'PARTY_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_motor__v06_distribution_channel'
+  RECORD_SOURCE: '!OPUS_MOTOR_V06_DISTRIBUTION_CHANNEL'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

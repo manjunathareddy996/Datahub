@@ -16,7 +16,7 @@ derived_columns:
   ACCOUNT_NUMBER_MASKED_CK: 'PARTY_BANKING__ACCOUNT_NUMBER_MASKED_CK'
   BANK_NAME: 'PARTY_BANKING__BANK_NAME'
   LOAD_DATETIME: 'PARTY_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_motor__v11_party'
+  RECORD_SOURCE: '!OPUS_MOTOR_V11_PARTY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

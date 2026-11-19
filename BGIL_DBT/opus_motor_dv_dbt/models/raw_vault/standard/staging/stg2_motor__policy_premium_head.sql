@@ -36,7 +36,7 @@ derived_columns:
   PREMIUM_HEAD_CODE: 'POLICY_PREMIUM_HEAD__PREMIUM_HEAD_CODE'
   PREMIUM_HEAD_NAME: 'POLICY_PREMIUM_HEAD__PREMIUM_HEAD_NAME'
   LOAD_DATETIME: 'POLICY_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_motor__v19_policy'
+  RECORD_SOURCE: '!OPUS_MOTOR_V19_POLICY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

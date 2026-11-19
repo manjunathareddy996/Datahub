@@ -20,7 +20,7 @@ derived_columns:
   SPECIAL_CONDITIONS: 'POLICY_TERMS__SPECIAL_CONDITIONS'
   WAITING_PERIOD: 'POLICY_TERMS__WAITING_PERIOD'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v05_coverage'
+  RECORD_SOURCE: '!OPUS_MOTOR_V05_COVERAGE'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

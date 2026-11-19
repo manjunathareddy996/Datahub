@@ -24,7 +24,7 @@ derived_columns:
   RENEWAL_PREMIUM: 'POLICY_RENEWAL__RENEWAL_PREMIUM'
   RENEWAL_STATUS: 'POLICY_RENEWAL__RENEWAL_STATUS'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v14_policy'
+  RECORD_SOURCE: '!OPUS_MOTOR_V14_POLICY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

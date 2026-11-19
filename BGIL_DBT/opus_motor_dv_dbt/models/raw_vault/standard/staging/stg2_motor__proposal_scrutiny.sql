@@ -16,7 +16,7 @@ derived_columns:
   QUALITY_CHECK_STATUS: 'PROPOSAL_SCRUTINY__QUALITY_CHECK_STATUS'
   SCRUTINY_REFERENCE: 'PROPOSAL_SCRUTINY__SCRUTINY_REFERENCE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v06_distribution_channel'
+  RECORD_SOURCE: '!OPUS_MOTOR_V06_DISTRIBUTION_CHANNEL'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

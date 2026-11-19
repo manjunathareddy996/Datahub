@@ -14,7 +14,7 @@ derived_columns:
   CASE_NK: "case when CASE_INVESTIGATION__FINDINGS_SUMMARY is not null then 'HUB_CASE|' || CASE_BK end"
   FINDINGS_SUMMARY: 'CASE_INVESTIGATION__FINDINGS_SUMMARY'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v02_claim'
+  RECORD_SOURCE: '!OPUS_MOTOR_V02_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

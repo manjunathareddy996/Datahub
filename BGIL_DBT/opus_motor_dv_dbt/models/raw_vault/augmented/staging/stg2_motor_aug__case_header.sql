@@ -18,7 +18,7 @@ derived_columns:
   INTERACTION_SCRIPT_CODE: 'AUG_CASE_HEADER__INTERACTION_SCRIPT_CODE'
   OWNING_STATE_NAME: 'AUG_CASE_HEADER__OWNING_STATE_NAME'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v13_policy'
+  RECORD_SOURCE: '!OPUS_MOTOR_V13_POLICY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

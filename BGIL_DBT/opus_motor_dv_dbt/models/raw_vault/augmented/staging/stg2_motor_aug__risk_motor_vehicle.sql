@@ -76,7 +76,7 @@ derived_columns:
   VEHICLE_MASTER_CODE: 'AUG_RISK_MOTOR_VEHICLE__VEHICLE_MASTER_CODE'
   VEHICLE_TYPE_CODE: 'AUG_RISK_MOTOR_VEHICLE__VEHICLE_TYPE_CODE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v26_risk_object'
+  RECORD_SOURCE: '!OPUS_MOTOR_V26_RISK_OBJECT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

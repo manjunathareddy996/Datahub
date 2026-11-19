@@ -16,7 +16,7 @@ derived_columns:
   FACTOR_CODE: 'QUOTE_RATING_INPUT__FACTOR_CODE_CK'
   FACTOR_VALUE: 'QUOTE_RATING_INPUT__FACTOR_VALUE'
   LOAD_DATETIME: 'QUOTE_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_motor__v22_quote'
+  RECORD_SOURCE: '!OPUS_MOTOR_V22_QUOTE'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

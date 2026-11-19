@@ -38,7 +38,7 @@ derived_columns:
   SGST_AMOUNT: 'AUG_QUOTE_COVERAGE_LINE__SGST_AMOUNT'
   SUM_INSURED: 'AUG_QUOTE_COVERAGE_LINE__SUM_INSURED'
   LOAD_DATETIME: 'QUOTE_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_motor__v22_quote'
+  RECORD_SOURCE: '!OPUS_MOTOR_V22_QUOTE'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

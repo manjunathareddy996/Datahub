@@ -16,7 +16,7 @@ derived_columns:
   PLAN_CODE_CK: 'AUG_RISK_MOTOR_USAGE_PLAN__PLAN_CODE_CK'
   PLAN_ELECTION_INDICATOR: 'AUG_RISK_MOTOR_USAGE_PLAN__PLAN_ELECTION_INDICATOR'
   LOAD_DATETIME: 'RISK_OBJECT_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_motor__v22_quote'
+  RECORD_SOURCE: '!OPUS_MOTOR_V22_QUOTE'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

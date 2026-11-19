@@ -22,7 +22,7 @@ derived_columns:
   RIDER_NAME: 'PRODUCT_RIDER_CATALOGUE__RIDER_NAME'
   RIDER_TYPE: 'PRODUCT_RIDER_CATALOGUE__RIDER_TYPE'
   LOAD_DATETIME: 'PRODUCT_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_motor__v20_product'
+  RECORD_SOURCE: '!OPUS_MOTOR_V20_PRODUCT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

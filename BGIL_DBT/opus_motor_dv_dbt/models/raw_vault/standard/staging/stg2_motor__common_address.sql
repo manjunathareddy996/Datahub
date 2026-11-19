@@ -40,7 +40,7 @@ derived_columns:
   STATE_NAME: 'COMMON_ADDRESS__STATE_NAME'
   STREET_NAME: 'COMMON_ADDRESS__STREET_NAME'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v07_location'
+  RECORD_SOURCE: '!OPUS_MOTOR_V07_LOCATION'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

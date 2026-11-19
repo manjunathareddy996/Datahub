@@ -16,7 +16,7 @@ derived_columns:
   REFERENCE_TYPE_CK: 'CASE_EXTERNAL_REF__REFERENCE_TYPE_CK'
   EXTERNAL_REFERENCE: 'CASE_EXTERNAL_REF__EXTERNAL_REFERENCE'
   LOAD_DATETIME: 'CASE_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_motor__v02_claim'
+  RECORD_SOURCE: '!OPUS_MOTOR_V02_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -18,7 +18,7 @@ derived_columns:
   FAMILY_PHYSICIAN_NAME: 'AUG_RISK_PERSON_STUDENT_PA__FAMILY_PHYSICIAN_NAME'
   STUDENT_REMARKS: 'AUG_RISK_PERSON_STUDENT_PA__STUDENT_REMARKS'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v11_party'
+  RECORD_SOURCE: '!OPUS_MOTOR_V11_PARTY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

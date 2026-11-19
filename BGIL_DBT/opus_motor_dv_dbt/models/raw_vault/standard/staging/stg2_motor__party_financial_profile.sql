@@ -16,7 +16,7 @@ derived_columns:
   CIBIL_SCORE: 'PARTY_FINANCIAL_PROFILE__CIBIL_SCORE'
   CREDIT_SCORE_DATE: 'PARTY_FINANCIAL_PROFILE__CREDIT_SCORE_DATE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v11_party'
+  RECORD_SOURCE: '!OPUS_MOTOR_V11_PARTY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -18,7 +18,7 @@ derived_columns:
   LEAD_REFERENCE: 'LEAD_ATTRIBUTION__LEAD_REFERENCE'
   PARAMETER_VALUE: 'LEAD_ATTRIBUTION__PARAMETER_VALUE'
   LOAD_DATETIME: 'PARTY_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_motor__v11_party'
+  RECORD_SOURCE: '!OPUS_MOTOR_V11_PARTY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

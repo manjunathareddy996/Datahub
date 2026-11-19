@@ -13,7 +13,7 @@ derived_columns:
   POLICY_BK: 'POLICY_BK'
   POLICY_NK: "'HUB_POLICY|' || POLICY_BK"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v18_policy'
+  RECORD_SOURCE: '!OPUS_MOTOR_V18_POLICY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

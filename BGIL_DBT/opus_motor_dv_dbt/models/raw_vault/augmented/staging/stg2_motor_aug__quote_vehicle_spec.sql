@@ -20,7 +20,7 @@ derived_columns:
   SIDE_CAR_IDV: 'AUG_QUOTE_VEHICLE_SPEC__SIDE_CAR_IDV'
   TRAILER_COUNT: 'AUG_QUOTE_VEHICLE_SPEC__TRAILER_COUNT'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v22_quote'
+  RECORD_SOURCE: '!OPUS_MOTOR_V22_QUOTE'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

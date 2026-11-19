@@ -22,7 +22,7 @@ derived_columns:
   ADD_ON_PREMIUM: 'RISK_MOTOR_ADDON__ADD_ON_PREMIUM'
   ADD_ON_SUM_INSURED: 'RISK_MOTOR_ADDON__ADD_ON_SUM_INSURED'
   LOAD_DATETIME: 'RISK_OBJECT_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_motor__v25_risk_object'
+  RECORD_SOURCE: '!OPUS_MOTOR_V25_RISK_OBJECT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

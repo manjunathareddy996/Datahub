@@ -26,7 +26,7 @@ derived_columns:
   TOP_UP_KILOMETRE_SLAB: 'RISK_MOTOR_TELEMATICS__TOP_UP_KILOMETRE_SLAB'
   USAGE_BASED_PLAN_TYPE: 'RISK_MOTOR_TELEMATICS__USAGE_BASED_PLAN_TYPE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v25_risk_object'
+  RECORD_SOURCE: '!OPUS_MOTOR_V25_RISK_OBJECT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

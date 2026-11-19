@@ -55,7 +55,7 @@ derived_columns:
   PROPOSAL_POLICY_NK: "case when __LNK_PROPOSAL_POLICY = 1 then 'LNK_PROPOSAL_POLICY|' || POLICY_BK || '|' || PROPOSAL_BK end"
   PROPOSAL_RISK_OBJECT_NK: "case when __LNK_PROPOSAL_RISK_OBJECT = 1 then 'LNK_PROPOSAL_RISK_OBJECT|' || PROPOSAL_BK || '|' || RISK_OBJECT_BK end"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v06_distribution_channel'
+  RECORD_SOURCE: '!OPUS_MOTOR_V06_DISTRIBUTION_CHANNEL'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

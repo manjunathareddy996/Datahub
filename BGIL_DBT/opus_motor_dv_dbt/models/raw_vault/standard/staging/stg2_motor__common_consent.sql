@@ -14,7 +14,7 @@ derived_columns:
   PARTY_NK: "case when COMMON_CONSENT__CONSENT_GIVEN_INDICATOR is not null then 'HUB_PARTY|' || PARTY_BK end"
   CONSENT_GIVEN_INDICATOR: 'COMMON_CONSENT__CONSENT_GIVEN_INDICATOR'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v12_policy'
+  RECORD_SOURCE: '!OPUS_MOTOR_V12_POLICY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -18,7 +18,7 @@ derived_columns:
   EXPENSE_HEAD_CK: 'AUG_CLAIM_RECOVERY_EXPENSE_LINE__EXPENSE_HEAD_CK'
   EXPENSE_AMOUNT: 'AUG_CLAIM_RECOVERY_EXPENSE_LINE__EXPENSE_AMOUNT'
   LOAD_DATETIME: 'CLAIM_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_motor__v02_claim'
+  RECORD_SOURCE: '!OPUS_MOTOR_V02_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -14,7 +14,7 @@ derived_columns:
   CLAIM_NK: "case when AUG_CLAIM_PA_DETAIL__PA_CLAIM_INDICATOR is not null then 'HUB_CLAIM|' || CLAIM_BK end"
   PA_CLAIM_INDICATOR: 'AUG_CLAIM_PA_DETAIL__PA_CLAIM_INDICATOR'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v02_claim'
+  RECORD_SOURCE: '!OPUS_MOTOR_V02_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

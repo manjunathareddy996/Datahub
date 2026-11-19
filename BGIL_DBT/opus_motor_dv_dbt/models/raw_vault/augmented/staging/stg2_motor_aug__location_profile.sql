@@ -16,7 +16,7 @@ derived_columns:
   DWELLING_DESCRIPTION: 'AUG_LOCATION_PROFILE__DWELLING_DESCRIPTION'
   YEARS_AT_LOCATION: 'AUG_LOCATION_PROFILE__YEARS_AT_LOCATION'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v10_party'
+  RECORD_SOURCE: '!OPUS_MOTOR_V10_PARTY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

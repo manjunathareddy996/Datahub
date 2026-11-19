@@ -25,7 +25,7 @@ derived_columns:
   POLICY_COVERAGE_RISK_NK: "case when __LNK_POLICY_COVERAGE_RISK = 1 then 'LNK_POLICY_COVERAGE_RISK|' || COVERAGE_BK || '|' || POLICY_BK || '|' || RISK_OBJECT_BK end"
   POLICY_RISK_OBJECT_NK: "case when __LNK_POLICY_RISK_OBJECT = 1 then 'LNK_POLICY_RISK_OBJECT|' || POLICY_BK || '|' || RISK_OBJECT_BK end"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v05_coverage'
+  RECORD_SOURCE: '!OPUS_MOTOR_V05_COVERAGE'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -32,7 +32,7 @@ derived_columns:
   RECEIPT_DATE: 'FIN_RECEIPT__RECEIPT_DATE'
   RECEIPT_NUMBER: 'FIN_RECEIPT__RECEIPT_NUMBER'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v18_policy'
+  RECORD_SOURCE: '!OPUS_MOTOR_V18_POLICY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -14,7 +14,7 @@ derived_columns:
   CASE_NK: "case when AUG_CASE_SERVICE_REQUEST__ASSISTANCE_OFFER_PUSHED_INDICATOR is not null then 'HUB_CASE|' || CASE_BK end"
   ASSISTANCE_OFFER_PUSHED_INDICATOR: 'AUG_CASE_SERVICE_REQUEST__ASSISTANCE_OFFER_PUSHED_INDICATOR'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v09_party'
+  RECORD_SOURCE: '!OPUS_MOTOR_V09_PARTY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

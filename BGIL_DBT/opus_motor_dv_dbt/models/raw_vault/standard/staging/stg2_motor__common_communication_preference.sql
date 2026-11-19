@@ -14,7 +14,7 @@ derived_columns:
   PARTY_NK: "case when COMMON_COMMUNICATION_PREFERENCE__CALL_OPT_IN_INDICATOR is not null then 'HUB_PARTY|' || PARTY_BK end"
   CALL_OPT_IN_INDICATOR: 'COMMON_COMMUNICATION_PREFERENCE__CALL_OPT_IN_INDICATOR'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v11_party'
+  RECORD_SOURCE: '!OPUS_MOTOR_V11_PARTY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

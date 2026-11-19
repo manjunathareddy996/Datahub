@@ -16,7 +16,7 @@ derived_columns:
   PANCHANAMA_DETAIL: 'AUG_CLAIM_TP_FORENSIC__PANCHANAMA_DETAIL'
   POLICE_STATION_NAME: 'AUG_CLAIM_TP_FORENSIC__POLICE_STATION_NAME'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v02_claim'
+  RECORD_SOURCE: '!OPUS_MOTOR_V02_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

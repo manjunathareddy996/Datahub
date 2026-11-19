@@ -16,7 +16,7 @@ derived_columns:
   ROLE_TYPE_CK: 'LNK_ROLE_CUSTOMER__ROLE_TYPE_CK'
   VIP_INDICATOR: 'LNK_ROLE_CUSTOMER__VIP_INDICATOR'
   LOAD_DATETIME: 'PARTY_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_motor__v14_policy'
+  RECORD_SOURCE: '!OPUS_MOTOR_V14_POLICY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

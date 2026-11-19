@@ -38,7 +38,7 @@ derived_columns:
   TECHNICAL_PREMIUM: 'POLICY_PREMIUM_SUMMARY__TECHNICAL_PREMIUM'
   TERRORISM_PREMIUM: 'POLICY_PREMIUM_SUMMARY__TERRORISM_PREMIUM'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v16_policy'
+  RECORD_SOURCE: '!OPUS_MOTOR_V16_POLICY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

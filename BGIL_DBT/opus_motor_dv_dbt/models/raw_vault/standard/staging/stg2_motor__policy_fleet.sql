@@ -14,7 +14,7 @@ derived_columns:
   POLICY_NK: "case when POLICY_FLEET__NAMED_DRIVER_POLICY_INDICATOR is not null then 'HUB_POLICY|' || POLICY_BK end"
   NAMED_DRIVER_POLICY_INDICATOR: 'POLICY_FLEET__NAMED_DRIVER_POLICY_INDICATOR'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v19_policy'
+  RECORD_SOURCE: '!OPUS_MOTOR_V19_POLICY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

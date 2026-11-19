@@ -20,7 +20,7 @@ derived_columns:
   ENDORSEMENT_DATE: 'POLICY_ENDORSEMENT__ENDORSEMENT_DATE'
   ENDORSEMENT_NUMBER: 'POLICY_ENDORSEMENT__ENDORSEMENT_NUMBER'
   LOAD_DATETIME: 'POLICY_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_motor__v15_policy'
+  RECORD_SOURCE: '!OPUS_MOTOR_V15_POLICY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

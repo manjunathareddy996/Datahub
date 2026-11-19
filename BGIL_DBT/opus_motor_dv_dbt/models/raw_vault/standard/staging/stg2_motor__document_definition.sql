@@ -18,7 +18,7 @@ derived_columns:
   RECEIVED_DATE: 'DOCUMENT_DEFINITION__RECEIVED_DATE'
   SOURCE_CHANNEL: 'DOCUMENT_DEFINITION__SOURCE_CHANNEL'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v02_claim'
+  RECORD_SOURCE: '!OPUS_MOTOR_V02_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

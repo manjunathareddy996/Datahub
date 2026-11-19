@@ -18,7 +18,7 @@ derived_columns:
   FOLLOW_UP_DATE: 'PARTY_INTERACTION_EVENT__FOLLOW_UP_DATE'
   INTERACTION_DATE: 'PARTY_INTERACTION_EVENT__INTERACTION_DATE'
   LOAD_DATETIME: 'PARTY_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_motor__v11_party'
+  RECORD_SOURCE: '!OPUS_MOTOR_V11_PARTY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

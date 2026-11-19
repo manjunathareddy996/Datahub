@@ -20,7 +20,7 @@ derived_columns:
   RTO_REGION_CODE: 'COMMON_ADMIN_GEOGRAPHY__RTO_REGION_CODE'
   STATE_NAME: 'COMMON_ADMIN_GEOGRAPHY__STATE_NAME'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v15_policy'
+  RECORD_SOURCE: '!OPUS_MOTOR_V15_POLICY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

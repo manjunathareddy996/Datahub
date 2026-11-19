@@ -26,7 +26,7 @@ derived_columns:
   REPORTED_BY_CONTACT: 'CLAIM_FNOL__REPORTED_BY_CONTACT'
   REPORTED_BY_NAME: 'CLAIM_FNOL__REPORTED_BY_NAME'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v01_claim'
+  RECORD_SOURCE: '!OPUS_MOTOR_V01_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

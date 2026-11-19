@@ -14,7 +14,7 @@ derived_columns:
   CLAIM_NK: "case when CLAIM_TP_FORENSIC__FIR_NUMBER is not null then 'HUB_CLAIM|' || CLAIM_BK end"
   FIR_NUMBER: 'CLAIM_TP_FORENSIC__FIR_NUMBER'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v02_claim'
+  RECORD_SOURCE: '!OPUS_MOTOR_V02_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

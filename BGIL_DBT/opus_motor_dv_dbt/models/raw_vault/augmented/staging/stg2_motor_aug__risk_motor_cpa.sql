@@ -14,7 +14,7 @@ derived_columns:
   RISK_OBJECT_NK: "case when AUG_RISK_MOTOR_CPA__COMPULSORY_PA_DEFAULT_INDICATOR is not null then 'HUB_RISK_OBJECT|' || RISK_OBJECT_BK end"
   COMPULSORY_PA_DEFAULT_INDICATOR: 'AUG_RISK_MOTOR_CPA__COMPULSORY_PA_DEFAULT_INDICATOR'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v11_party'
+  RECORD_SOURCE: '!OPUS_MOTOR_V11_PARTY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

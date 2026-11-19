@@ -16,7 +16,7 @@ derived_columns:
   TAX_TYPE: 'FINTXN_TAX__TAX_TYPE_CK'
   SERVICE_TAX_AMOUNT: 'FINTXN_TAX__SERVICE_TAX_AMOUNT'
   LOAD_DATETIME: 'FINANCIAL_TRANSACTION_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_motor__v11_party'
+  RECORD_SOURCE: '!OPUS_MOTOR_V11_PARTY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

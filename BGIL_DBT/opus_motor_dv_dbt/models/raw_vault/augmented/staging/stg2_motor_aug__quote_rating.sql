@@ -50,7 +50,7 @@ derived_columns:
   TOTAL_IEV_AMOUNT: 'AUG_QUOTE_RATING__TOTAL_IEV_AMOUNT'
   TOTAL_OWN_DAMAGE_PREMIUM: 'AUG_QUOTE_RATING__TOTAL_OWN_DAMAGE_PREMIUM'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v23_quote'
+  RECORD_SOURCE: '!OPUS_MOTOR_V23_QUOTE'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

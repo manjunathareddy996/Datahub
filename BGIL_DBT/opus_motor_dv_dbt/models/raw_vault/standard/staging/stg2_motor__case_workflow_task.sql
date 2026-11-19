@@ -22,7 +22,7 @@ derived_columns:
   TASK_STATUS: 'CASE_WORKFLOW_TASK__TASK_STATUS'
   TASK_TYPE: 'CASE_WORKFLOW_TASK__TASK_TYPE'
   LOAD_DATETIME: 'CASE_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_motor__v02_claim'
+  RECORD_SOURCE: '!OPUS_MOTOR_V02_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

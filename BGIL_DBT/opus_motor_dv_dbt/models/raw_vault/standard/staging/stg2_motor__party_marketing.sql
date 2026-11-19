@@ -18,7 +18,7 @@ derived_columns:
   CAMPAIGN_RESPONSE_INDICATOR: 'PARTY_MARKETING__CAMPAIGN_RESPONSE_INDICATOR'
   LEAD_SOURCE: 'PARTY_MARKETING__LEAD_SOURCE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v06_distribution_channel'
+  RECORD_SOURCE: '!OPUS_MOTOR_V06_DISTRIBUTION_CHANNEL'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

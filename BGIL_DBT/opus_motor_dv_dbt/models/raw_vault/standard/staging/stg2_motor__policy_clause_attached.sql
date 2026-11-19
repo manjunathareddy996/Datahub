@@ -16,7 +16,7 @@ derived_columns:
   CLAUSE_CODE_CK: 'POLICY_CLAUSE_ATTACHED__CLAUSE_CODE_CK'
   CLAUSE_CODE: 'POLICY_CLAUSE_ATTACHED__CLAUSE_CODE'
   LOAD_DATETIME: 'POLICY_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_motor__v06_distribution_channel'
+  RECORD_SOURCE: '!OPUS_MOTOR_V06_DISTRIBUTION_CHANNEL'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

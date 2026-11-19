@@ -16,7 +16,7 @@ derived_columns:
   COVERAGE_DESCRIPTION: 'COVERAGE_DEFINITION__COVERAGE_DESCRIPTION'
   COVERAGE_STATUS: 'COVERAGE_DEFINITION__COVERAGE_STATUS'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v04_coverage'
+  RECORD_SOURCE: '!OPUS_MOTOR_V04_COVERAGE'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

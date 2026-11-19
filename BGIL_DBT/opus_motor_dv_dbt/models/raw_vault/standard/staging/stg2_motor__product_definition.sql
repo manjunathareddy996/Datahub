@@ -20,7 +20,7 @@ derived_columns:
   PRODUCT_STATUS: 'PRODUCT_DEFINITION__PRODUCT_STATUS'
   UIN: 'PRODUCT_DEFINITION__UIN'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v05_coverage'
+  RECORD_SOURCE: '!OPUS_MOTOR_V05_COVERAGE'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

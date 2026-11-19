@@ -20,7 +20,7 @@ derived_columns:
   LAID_UP_SUB_TYPE: 'AUG_COVERAGE_MOTOR_LAID_UP__LAID_UP_SUB_TYPE'
   LAID_UP_TYPE: 'AUG_COVERAGE_MOTOR_LAID_UP__LAID_UP_TYPE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v05_coverage'
+  RECORD_SOURCE: '!OPUS_MOTOR_V05_COVERAGE'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

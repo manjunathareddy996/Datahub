@@ -209,3 +209,11 @@ generators would emit.
 - Consequence: names, phone numbers, addresses etc. that form those keys are stored as plain text in the BK columns
   of the views and the shared hubs (HUB_PARTY, HUB_LOCATION, ...).
 - The "normalise() must exist" precondition above (and in build_artifacts/) no longer applies.
+
+## Round 6 (2026-11-19): source system in RECORD_SOURCE
+
+- All 272 stages: `RECORD_SOURCE: '!stitch_motor__vNN_<entity>'` -> `'!OPUS_MOTOR_VNN_<ENTITY>'`, the
+  `<SYSTEM>_<LOB>_...` pattern of the other projects (motor_maximus_dv_dbt uses `!MAXIMUS_MOTOR_VNN_...`), so opus and
+  maximus rows are told apart and validation filters on `OPUS_` / `MAXIMUS_` include motor.
+- Rows loaded before this keep the old value (hubs/links insert only new keys):
+  analyses/cleanup_old_record_source.sql counts and deletes motor's own old rows, then re-run the layer.

@@ -14,7 +14,7 @@ derived_columns:
   ASSESSMENT_NK: "case when ASSESSMENT_HEADER__ASSESSMENT_STATUS is not null then 'HUB_ASSESSMENT|' || ASSESSMENT_BK end"
   ASSESSMENT_STATUS: 'ASSESSMENT_HEADER__ASSESSMENT_STATUS'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!stitch_motor__v09_party'
+  RECORD_SOURCE: '!OPUS_MOTOR_V09_PARTY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

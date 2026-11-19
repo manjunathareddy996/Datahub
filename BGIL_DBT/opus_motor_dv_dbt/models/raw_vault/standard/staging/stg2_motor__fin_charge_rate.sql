@@ -16,7 +16,7 @@ derived_columns:
   CHARGE_TYPE_CK: 'FIN_CHARGE_RATE__CHARGE_TYPE_CK'
   CHARGE_RATE: 'FIN_CHARGE_RATE__CHARGE_RATE'
   LOAD_DATETIME: 'FINANCIAL_TRANSACTION_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_motor__v11_party'
+  RECORD_SOURCE: '!OPUS_MOTOR_V11_PARTY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
