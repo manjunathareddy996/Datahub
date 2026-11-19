@@ -539,7 +539,7 @@ def main():
         feed = "lnkfeed_%s_%s" % (N.PREFIX, N.hub_slug(link))
         body, _cols = linkfeed_body(link, entry, stage_of_view)
         N.write_model(os.path.join(N.LAYER_DIRS["link"], feed + ".sql"), body)
-        N.write_model(os.path.join(N.LAYER_DIRS["link"], "link_%s.sql" % N.hub_slug(link)),
+        N.write_model(os.path.join(N.LAYER_DIRS["link"], "lnk_%s.sql" % N.hub_slug(link)),
                       link_body(link, entry, feed))
         counts["links"] += 1
 
