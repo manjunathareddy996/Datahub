@@ -49,7 +49,7 @@ with merged as (
         cast(null as varchar) as ASSESSMENT_BK,
         cast(null as varchar) as CASE_BK,
         cast(null as varchar) as DISTRIBUTION_CHANNEL_BK,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.nominee_name, ''), '')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.nominee_name, ''), '')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         cast(null as varchar) as PROPOSAL_BK,
         nullif(coalesce(nullif(trim(t0.chassis_no), ''), nullif(trim(t0.vehicle_reg_no), '')), '') as RISK_OBJECT_BK,
         cast(null as varchar) as ASSESSMENT_HEADER__ASSESSMENT_STATUS,
@@ -126,14 +126,14 @@ with merged as (
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__ba_quote_mot_dtls') }} t0
-    where (coalesce(nullif(coalesce(nullif(trim(t0.chassis_no), ''), nullif(trim(t0.vehicle_reg_no), '')), ''), nullif(md5(normalise(upper(nullif(coalesce(t0.nominee_name, ''), '')))), ''))) is not null
+    where (coalesce(nullif(coalesce(nullif(trim(t0.chassis_no), ''), nullif(trim(t0.vehicle_reg_no), '')), ''), nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.nominee_name, ''), '')), '[[:space:]]+', ' ')), ''), ''))) is not null
 
     union all
 
     -- branch 1: BJAZ_AGENCY_MOT_WAR_DTLS | child-key literal(s): COMMON_CONTACT.Contact Point Type=MOBILE
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.your_name, '') || '|' || coalesce(to_char(t0.mob_no), ''), '|')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.your_name, '') || '|' || coalesce(to_char(t0.mob_no), ''), '|')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'MOBILE' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -145,14 +145,14 @@ with merged as (
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_agency_mot_war_dtls') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.your_name, '') || '|' || coalesce(to_char(t0.mob_no), ''), '|')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.your_name, '') || '|' || coalesce(to_char(t0.mob_no), ''), '|')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
     -- branch 2: BJAZ_AGENCY_MOT_WAR_DTLS | child-key literal(s): COMMON_CONTACT.Contact Point Type=EMAIL
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.your_name, '') || '|' || coalesce(to_char(t0.mob_no), ''), '|')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.your_name, '') || '|' || coalesce(to_char(t0.mob_no), ''), '|')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'EMAIL' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -164,14 +164,14 @@ with merged as (
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_agency_mot_war_dtls') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.your_name, '') || '|' || coalesce(to_char(t0.mob_no), ''), '|')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.your_name, '') || '|' || coalesce(to_char(t0.mob_no), ''), '|')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
     -- branch 3: BJAZ_AGENCY_MOT_WAR_DTLS
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.your_name, '') || '|' || coalesce(to_char(t0.mob_no), ''), '|')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.your_name, '') || '|' || coalesce(to_char(t0.mob_no), ''), '|')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
@@ -183,14 +183,14 @@ with merged as (
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_agency_mot_war_dtls') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.your_name, '') || '|' || coalesce(to_char(t0.mob_no), ''), '|')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.your_name, '') || '|' || coalesce(to_char(t0.mob_no), ''), '|')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
     -- branch 4: BJAZ_CLM_MOTOR_INTIM_DETAILS | child-key literal(s): COMMON_CONTACT.Contact Point Type=LANDLINE
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.cp_name, '') || '|' || coalesce(t0.cp_mobile, ''), '|')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.cp_name, '') || '|' || coalesce(t0.cp_mobile, ''), '|')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'LANDLINE' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -202,14 +202,14 @@ with merged as (
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_motor_intim_details') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.cp_name, '') || '|' || coalesce(t0.cp_mobile, ''), '|')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.cp_name, '') || '|' || coalesce(t0.cp_mobile, ''), '|')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
     -- branch 5: BJAZ_CLM_MOTOR_INTIM_DETAILS | child-key literal(s): COMMON_CONTACT.Contact Point Type=MOBILE
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.cp_name, '') || '|' || coalesce(t0.cp_mobile, ''), '|')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.cp_name, '') || '|' || coalesce(t0.cp_mobile, ''), '|')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'MOBILE' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -221,14 +221,14 @@ with merged as (
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_motor_intim_details') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.cp_name, '') || '|' || coalesce(t0.cp_mobile, ''), '|')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.cp_name, '') || '|' || coalesce(t0.cp_mobile, ''), '|')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
     -- branch 6: BJAZ_CLM_MOTOR_INTIM_DETAILS
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.cp_name, '') || '|' || coalesce(t0.cp_mobile, ''), '|')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.cp_name, '') || '|' || coalesce(t0.cp_mobile, ''), '|')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
@@ -238,7 +238,7 @@ with merged as (
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_motor_intim_details') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.cp_name, '') || '|' || coalesce(t0.cp_mobile, ''), '|')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.cp_name, '') || '|' || coalesce(t0.cp_mobile, ''), '|')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
@@ -262,7 +262,7 @@ with merged as (
     -- branch 8: BJAZ_CLM_SUBFILE_MOT_EXT
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.investigator_name, ''), '')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.investigator_name, ''), '')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
@@ -272,7 +272,7 @@ with merged as (
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_subfile_mot_ext') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.investigator_name, ''), '')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.investigator_name, ''), '')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
@@ -325,7 +325,7 @@ with merged as (
     -- branch 11: BJAZ_CVTP_WS_DATA
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.bjazpolicyno, '') || '|' || coalesce(t0.paowndrivernomname, ''), '|')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.bjazpolicyno, '') || '|' || coalesce(t0.paowndrivernomname, ''), '|')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.paowndrivernomage as PARTY_IDENTITY__AGE,
@@ -338,7 +338,7 @@ with merged as (
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_cvtp_ws_data') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.bjazpolicyno, '') || '|' || coalesce(t0.paowndrivernomname, ''), '|')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.bjazpolicyno, '') || '|' || coalesce(t0.paowndrivernomname, ''), '|')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
@@ -380,7 +380,7 @@ with merged as (
     -- branch 14: BJAZ_IIB_SUDARS_POLICY_DTL_HST_QM
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.txt_insurer, ''), '')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.txt_insurer, ''), '')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
@@ -390,14 +390,14 @@ with merged as (
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_iib_sudars_policy_dtl_hst_qm') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.txt_insurer, ''), '')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.txt_insurer, ''), '')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
     -- branch 15: BJAZ_MOTORTHEFT_CASE_DTLS | child-key literal(s): COMMON_CONTACT.Contact Point Type=MOBILE
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.adv_name, '') || '|' || coalesce(t0.adv_email, '') || '|' || coalesce(t0.adv_contact, ''), '||')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.adv_name, '') || '|' || coalesce(t0.adv_email, '') || '|' || coalesce(t0.adv_contact, ''), '||')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'MOBILE' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -409,14 +409,14 @@ with merged as (
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.adv_name, '') || '|' || coalesce(t0.adv_email, '') || '|' || coalesce(t0.adv_contact, ''), '||')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.adv_name, '') || '|' || coalesce(t0.adv_email, '') || '|' || coalesce(t0.adv_contact, ''), '||')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
     -- branch 16: BJAZ_MOTORTHEFT_CASE_DTLS | child-key literal(s): COMMON_CONTACT.Contact Point Type=EMAIL
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.adv_name, '') || '|' || coalesce(t0.adv_email, '') || '|' || coalesce(t0.adv_contact, ''), '||')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.adv_name, '') || '|' || coalesce(t0.adv_email, '') || '|' || coalesce(t0.adv_contact, ''), '||')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'EMAIL' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -428,14 +428,14 @@ with merged as (
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.adv_name, '') || '|' || coalesce(t0.adv_email, '') || '|' || coalesce(t0.adv_contact, ''), '||')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.adv_name, '') || '|' || coalesce(t0.adv_email, '') || '|' || coalesce(t0.adv_contact, ''), '||')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
     -- branch 17: BJAZ_MOTORTHEFT_CASE_DTLS | child-key literal(s): COMMON_CONTACT.Contact Point Type=EMAIL
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.court_name, '') || '|' || coalesce(t0.court_location, ''), '|')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.court_name, '') || '|' || coalesce(t0.court_location, ''), '|')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'EMAIL' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -447,14 +447,14 @@ with merged as (
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.court_name, '') || '|' || coalesce(t0.court_location, ''), '|')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.court_name, '') || '|' || coalesce(t0.court_location, ''), '|')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
     -- branch 18: BJAZ_MOTORTHEFT_CASE_DTLS | child-key literal(s): COMMON_CONTACT.Contact Point Type=MOBILE
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.highest_bidder_name, '') || '|' || coalesce(t0.highest_bidder_address, '') || '|' || coalesce(t0.highest_bidder_contact_no, ''), '||')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.highest_bidder_name, '') || '|' || coalesce(t0.highest_bidder_address, '') || '|' || coalesce(t0.highest_bidder_contact_no, ''), '||')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'MOBILE' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -466,14 +466,14 @@ with merged as (
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.highest_bidder_name, '') || '|' || coalesce(t0.highest_bidder_address, '') || '|' || coalesce(t0.highest_bidder_contact_no, ''), '||')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.highest_bidder_name, '') || '|' || coalesce(t0.highest_bidder_address, '') || '|' || coalesce(t0.highest_bidder_contact_no, ''), '||')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
     -- branch 19: BJAZ_MOTORTHEFT_CASE_DTLS | child-key literal(s): COMMON_CONTACT.Contact Point Type=MOBILE
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.buyer_name, '') || '|' || coalesce(t0.buyer_address, '') || '|' || coalesce(t0.contact_no, ''), '||')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.buyer_name, '') || '|' || coalesce(t0.buyer_address, '') || '|' || coalesce(t0.contact_no, ''), '||')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'MOBILE' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -485,14 +485,14 @@ with merged as (
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.buyer_name, '') || '|' || coalesce(t0.buyer_address, '') || '|' || coalesce(t0.contact_no, ''), '||')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.buyer_name, '') || '|' || coalesce(t0.buyer_address, '') || '|' || coalesce(t0.contact_no, ''), '||')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
     -- branch 20: BJAZ_MOTORTHEFT_CASE_DTLS
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.adv_name, '') || '|' || coalesce(t0.adv_email, '') || '|' || coalesce(t0.adv_contact, ''), '||')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.adv_name, '') || '|' || coalesce(t0.adv_email, '') || '|' || coalesce(t0.adv_contact, ''), '||')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
@@ -502,14 +502,14 @@ with merged as (
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.adv_name, '') || '|' || coalesce(t0.adv_email, '') || '|' || coalesce(t0.adv_contact, ''), '||')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.adv_name, '') || '|' || coalesce(t0.adv_email, '') || '|' || coalesce(t0.adv_contact, ''), '||')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
     -- branch 21: BJAZ_MOTORTHEFT_CASE_DTLS
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.bid_court_name, '') || '|' || coalesce(t0.bid_court_location, ''), '|')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.bid_court_name, '') || '|' || coalesce(t0.bid_court_location, ''), '|')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
@@ -519,14 +519,14 @@ with merged as (
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.bid_court_name, '') || '|' || coalesce(t0.bid_court_location, ''), '|')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.bid_court_name, '') || '|' || coalesce(t0.bid_court_location, ''), '|')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
     -- branch 22: BJAZ_MOTORTHEFT_CASE_DTLS
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.buyer_name, '') || '|' || coalesce(t0.buyer_address, '') || '|' || coalesce(t0.contact_no, ''), '||')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.buyer_name, '') || '|' || coalesce(t0.buyer_address, '') || '|' || coalesce(t0.contact_no, ''), '||')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
@@ -539,14 +539,14 @@ with merged as (
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.buyer_name, '') || '|' || coalesce(t0.buyer_address, '') || '|' || coalesce(t0.contact_no, ''), '||')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.buyer_name, '') || '|' || coalesce(t0.buyer_address, '') || '|' || coalesce(t0.contact_no, ''), '||')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
     -- branch 23: BJAZ_MOTORTHEFT_CASE_DTLS
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.original_rc_name, ''), '')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.original_rc_name, ''), '')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
@@ -556,14 +556,14 @@ with merged as (
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.original_rc_name, ''), '')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.original_rc_name, ''), '')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
     -- branch 24: BJAZ_MOTORTHEFT_CASE_DTLS
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.investigator_name, ''), '')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.investigator_name, ''), '')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
@@ -573,7 +573,7 @@ with merged as (
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.investigator_name, ''), '')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.investigator_name, ''), '')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
@@ -634,7 +634,7 @@ with merged as (
     -- branch 27: BJAZ_MOT_ONLINE_POL_DTLS
     select
         null, null, null,
-        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         nullif(nullif(trim(to_char(t0.reference_id)), ''), '') as PROPOSAL_BK,
         nullif(coalesce(nullif(trim(t0.chassis_no), ''), nullif(trim(t0.registration_no), '')), '') as RISK_OBJECT_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
@@ -666,14 +666,14 @@ with merged as (
         11 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
-    where (coalesce(nullif(coalesce(nullif(trim(t0.chassis_no), ''), nullif(trim(t0.registration_no), '')), ''), nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), ''), nullif(nullif(trim(to_char(t0.reference_id)), ''), ''))) is not null
+    where (coalesce(nullif(coalesce(nullif(trim(t0.chassis_no), ''), nullif(trim(t0.registration_no), '')), ''), nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), ''), nullif(nullif(trim(to_char(t0.reference_id)), ''), ''))) is not null
 
     union all
 
     -- branch 28: BJAZ_MOT_ONLINE_POL_DTLS | child-key literal(s): COMMON_CONTACT.Contact Point Type=ALTERNATE_EMAIL
     select
         null, null, null,
-        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'ALTERNATE_EMAIL' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -685,14 +685,14 @@ with merged as (
         11 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 
     -- branch 29: BJAZ_MOT_ONLINE_POL_DTLS | child-key literal(s): COMMON_CONTACT.Contact Point Type=LANDLINE, COMMON_CONTACT.Contact Priority Order=1
     select
         null, null, null,
-        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'LANDLINE' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -705,14 +705,14 @@ with merged as (
         11 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 
     -- branch 30: BJAZ_MOT_ONLINE_POL_DTLS | child-key literal(s): COMMON_CONTACT.Contact Point Type=LANDLINE, COMMON_CONTACT.Contact Priority Order=2
     select
         null, null, null,
-        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'LANDLINE' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -725,14 +725,14 @@ with merged as (
         11 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 
     -- branch 31: BJAZ_MOT_ONLINE_POL_DTLS | child-key literal(s): COMMON_CONTACT.Contact Point Type=MOBILE, COMMON_CONTACT.Contact Priority Order=1
     select
         null, null, null,
-        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'MOBILE' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -745,14 +745,14 @@ with merged as (
         11 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 
     -- branch 32: BJAZ_MOT_ONLINE_POL_DTLS | child-key literal(s): COMMON_CONTACT.Contact Point Type=ALTERNATE_MOBILE, COMMON_CONTACT.Contact Priority Order=2
     select
         null, null, null,
-        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'ALTERNATE_MOBILE' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -765,14 +765,14 @@ with merged as (
         11 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 
     -- branch 33: BJAZ_MOT_ONLINE_POL_DTLS | child-key literal(s): COMMON_CONTACT.Contact Point Type=EMAIL
     select
         null, null, null,
-        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'EMAIL' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -784,14 +784,14 @@ with merged as (
         11 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 
     -- branch 34: BJAZ_MOT_ONLINE_POL_DTLS | child-key literal(s): COMMON_CONTACT.Contact Point Type=PREFERENCE
     select
         null, null, null,
-        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'PREFERENCE' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -803,7 +803,7 @@ with merged as (
         11 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 
@@ -830,7 +830,7 @@ with merged as (
     select
         nullif(nullif('BREAKIN:' || nullif(trim(t0.mot_pin_no), ''), 'BREAKIN:'), '') as ASSESSMENT_BK,
         null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.nom_full_name, '') || '|' || coalesce(to_char(t0.nom_dob), ''), '|')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.nom_full_name, '') || '|' || coalesce(to_char(t0.nom_dob), ''), '|')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null,
         t0.mot_pin_status as ASSESSMENT_HEADER__ASSESSMENT_STATUS,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
@@ -843,7 +843,7 @@ with merged as (
         12 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls_extn') }} t0
-    where (coalesce(nullif(md5(normalise(upper(nullif(coalesce(t0.nom_full_name, '') || '|' || coalesce(to_char(t0.nom_dob), ''), '|')))), ''), nullif(nullif('BREAKIN:' || nullif(trim(t0.mot_pin_no), ''), 'BREAKIN:'), ''))) is not null
+    where (coalesce(nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.nom_full_name, '') || '|' || coalesce(to_char(t0.nom_dob), ''), '|')), '[[:space:]]+', ' ')), ''), ''), nullif(nullif('BREAKIN:' || nullif(trim(t0.mot_pin_no), ''), 'BREAKIN:'), ''))) is not null
 
     union all
 
@@ -869,7 +869,7 @@ with merged as (
     -- branch 38: BJAZ_MOT_ONLINE_POL_DTLS_EXTN
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.ass_full_name, '') || '|' || coalesce(to_char(t0.ass_dob), ''), '|')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.ass_full_name, '') || '|' || coalesce(to_char(t0.ass_dob), ''), '|')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.ass_dob as PARTY_IDENTITY__DATE_OF_BIRTH,
@@ -880,7 +880,7 @@ with merged as (
         12 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls_extn') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.ass_full_name, '') || '|' || coalesce(to_char(t0.ass_dob), ''), '|')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.ass_full_name, '') || '|' || coalesce(to_char(t0.ass_dob), ''), '|')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
@@ -905,7 +905,7 @@ with merged as (
     -- branch 40: BJAZ_MOT_ONLINE_POL_DTLS_EXTN
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.od_nom_full_name, '') || '|' || coalesce(t0.od_nom_surname, ''), '|')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.od_nom_full_name, '') || '|' || coalesce(t0.od_nom_surname, ''), '|')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.od_nom_surname as PARTY_IDENTITY__LAST_NAME,
@@ -916,7 +916,7 @@ with merged as (
         12 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls_extn') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.od_nom_full_name, '') || '|' || coalesce(t0.od_nom_surname, ''), '|')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.od_nom_full_name, '') || '|' || coalesce(t0.od_nom_surname, ''), '|')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
@@ -980,7 +980,7 @@ with merged as (
     -- branch 44: BJAZ_MOT_RENEWAL_EXTN
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.pa_nominee_name, '') || '|' || coalesce(t0.pa_nominee_relation, ''), '|')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.pa_nominee_name, '') || '|' || coalesce(t0.pa_nominee_relation, ''), '|')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
@@ -990,7 +990,7 @@ with merged as (
         13 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_renewal_extn') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.pa_nominee_name, '') || '|' || coalesce(t0.pa_nominee_relation, ''), '|')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.pa_nominee_name, '') || '|' || coalesce(t0.pa_nominee_relation, ''), '|')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
@@ -1036,7 +1036,7 @@ with merged as (
     -- branch 46: BJAZ_MOT_WAR_CHILD_DTLS | child-key literal(s): COMMON_CONTACT.Contact Point Type=MOBILE
     select
         null, null, null,
-        nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), md5(normalise(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'MOBILE' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -1048,14 +1048,14 @@ with merged as (
         15 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_war_child_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), md5(normalise(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 
     -- branch 47: BJAZ_MOT_WAR_CHILD_DTLS | child-key literal(s): COMMON_CONTACT.Contact Point Type=LANDLINE
     select
         null, null, null,
-        nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), md5(normalise(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'LANDLINE' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -1067,14 +1067,14 @@ with merged as (
         15 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_war_child_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), md5(normalise(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 
     -- branch 48: BJAZ_MOT_WAR_CHILD_DTLS | child-key literal(s): COMMON_CONTACT.Contact Point Type=EMAIL
     select
         null, null, null,
-        nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), md5(normalise(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'EMAIL' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -1086,14 +1086,14 @@ with merged as (
         15 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_war_child_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), md5(normalise(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 
     -- branch 49: BJAZ_MOT_WAR_CHILD_DTLS
     select
         null, null, null,
-        nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), md5(normalise(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null,
         nullif(coalesce(nullif(trim(t0.vehicle_reg_no), ''), nullif(trim(t0.equipment_serial_no), '')), '') as RISK_OBJECT_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
@@ -1106,14 +1106,14 @@ with merged as (
         15 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_war_child_dtls') }} t0
-    where (coalesce(nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), md5(normalise(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||'))))), ''), nullif(coalesce(nullif(trim(t0.vehicle_reg_no), ''), nullif(trim(t0.equipment_serial_no), '')), ''))) is not null
+    where (coalesce(nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||')), '[[:space:]]+', ' ')), '')), ''), nullif(coalesce(nullif(trim(t0.vehicle_reg_no), ''), nullif(trim(t0.equipment_serial_no), '')), ''))) is not null
 
     union all
 
     -- branch 50: BJAZ_MOT_WAR_CHILD_DTLS
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.sales_person_name, ''), '')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.sales_person_name, ''), '')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
@@ -1123,14 +1123,14 @@ with merged as (
         15 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_war_child_dtls') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.sales_person_name, ''), '')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.sales_person_name, ''), '')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
     -- branch 51: BJAZ_MOT_WINBACK_DTLS | child-key literal(s): COMMON_CONTACT.Contact Point Type=MOBILE
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.last_name, '') || '|' || coalesce(t0.institution_name, '') || '|' || coalesce(t0.contact_no, '') || '|' || coalesce(t0.email_id, ''), '||||')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.last_name, '') || '|' || coalesce(t0.institution_name, '') || '|' || coalesce(t0.contact_no, '') || '|' || coalesce(t0.email_id, ''), '||||')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'MOBILE' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -1142,14 +1142,14 @@ with merged as (
         16 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_winback_dtls') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.last_name, '') || '|' || coalesce(t0.institution_name, '') || '|' || coalesce(t0.contact_no, '') || '|' || coalesce(t0.email_id, ''), '||||')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.last_name, '') || '|' || coalesce(t0.institution_name, '') || '|' || coalesce(t0.contact_no, '') || '|' || coalesce(t0.email_id, ''), '||||')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
     -- branch 52: BJAZ_MOT_WINBACK_DTLS | child-key literal(s): COMMON_CONTACT.Contact Point Type=EMAIL
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.last_name, '') || '|' || coalesce(t0.institution_name, '') || '|' || coalesce(t0.contact_no, '') || '|' || coalesce(t0.email_id, ''), '||||')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.last_name, '') || '|' || coalesce(t0.institution_name, '') || '|' || coalesce(t0.contact_no, '') || '|' || coalesce(t0.email_id, ''), '||||')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'EMAIL' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -1161,14 +1161,14 @@ with merged as (
         16 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_winback_dtls') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.last_name, '') || '|' || coalesce(t0.institution_name, '') || '|' || coalesce(t0.contact_no, '') || '|' || coalesce(t0.email_id, ''), '||||')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.last_name, '') || '|' || coalesce(t0.institution_name, '') || '|' || coalesce(t0.contact_no, '') || '|' || coalesce(t0.email_id, ''), '||||')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
     -- branch 53: BJAZ_MOT_WINBACK_DTLS
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.last_name, '') || '|' || coalesce(t0.institution_name, '') || '|' || coalesce(t0.contact_no, '') || '|' || coalesce(t0.email_id, ''), '||||')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.last_name, '') || '|' || coalesce(t0.institution_name, '') || '|' || coalesce(t0.contact_no, '') || '|' || coalesce(t0.email_id, ''), '||||')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.first_name as PARTY_IDENTITY__FIRST_NAME,
@@ -1181,14 +1181,14 @@ with merged as (
         16 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_winback_dtls') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.last_name, '') || '|' || coalesce(t0.institution_name, '') || '|' || coalesce(t0.contact_no, '') || '|' || coalesce(t0.email_id, ''), '||||')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.last_name, '') || '|' || coalesce(t0.institution_name, '') || '|' || coalesce(t0.contact_no, '') || '|' || coalesce(t0.email_id, ''), '||||')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
     -- branch 54: BJAZ_MOT_WS_POL_DTLS | child-key literal(s): COMMON_CONTACT.Contact Point Type=ALTERNATE_EMAIL
     select
         null, null, null,
-        nullif(coalesce(nullif(trim(t0.pan_number), ''), md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'ALTERNATE_EMAIL' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -1200,14 +1200,14 @@ with merged as (
         17 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 
     -- branch 55: BJAZ_MOT_WS_POL_DTLS | child-key literal(s): COMMON_CONTACT.Contact Point Type=LANDLINE, COMMON_CONTACT.Contact Priority Order=1
     select
         null, null, null,
-        nullif(coalesce(nullif(trim(t0.pan_number), ''), md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'LANDLINE' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -1220,14 +1220,14 @@ with merged as (
         17 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 
     -- branch 56: BJAZ_MOT_WS_POL_DTLS | child-key literal(s): COMMON_CONTACT.Contact Point Type=MOBILE, COMMON_CONTACT.Contact Priority Order=1
     select
         null, null, null,
-        nullif(coalesce(nullif(trim(t0.pan_number), ''), md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'MOBILE' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -1240,14 +1240,14 @@ with merged as (
         17 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 
     -- branch 57: BJAZ_MOT_WS_POL_DTLS | child-key literal(s): COMMON_CONTACT.Contact Point Type=ALTERNATE_MOBILE, COMMON_CONTACT.Contact Priority Order=2
     select
         null, null, null,
-        nullif(coalesce(nullif(trim(t0.pan_number), ''), md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'ALTERNATE_MOBILE' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -1260,14 +1260,14 @@ with merged as (
         17 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 
     -- branch 58: BJAZ_MOT_WS_POL_DTLS | child-key literal(s): COMMON_CONTACT.Contact Point Type=EMAIL
     select
         null, null, null,
-        nullif(coalesce(nullif(trim(t0.pan_number), ''), md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'EMAIL' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -1279,14 +1279,14 @@ with merged as (
         17 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 
     -- branch 59: BJAZ_MOT_WS_POL_DTLS | child-key literal(s): COMMON_CONTACT.Contact Point Type=LANDLINE
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(trim(t0.family_doc), '')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(trim(t0.family_doc), '')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'LANDLINE' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -1298,14 +1298,14 @@ with merged as (
         17 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
-    where (nullif(md5(normalise(upper(nullif(trim(t0.family_doc), '')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(trim(t0.family_doc), '')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
     -- branch 60: BJAZ_MOT_WS_POL_DTLS | child-key literal(s): COMMON_CONTACT.Contact Point Type=PREFERENCE
     select
         null, null, null,
-        nullif(coalesce(nullif(trim(t0.pan_number), ''), md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'PREFERENCE' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -1317,14 +1317,14 @@ with merged as (
         17 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 
     -- branch 61: BJAZ_MOT_WS_POL_DTLS
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(trim(t0.assigne_name), '')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(trim(t0.assigne_name), '')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null,
         nullif(coalesce(nullif(trim(t0.chassis_no), ''), nullif(trim(t0.registration_no), '')), '') as RISK_OBJECT_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
@@ -1337,14 +1337,14 @@ with merged as (
         17 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
-    where (coalesce(nullif(coalesce(nullif(trim(t0.chassis_no), ''), nullif(trim(t0.registration_no), '')), ''), nullif(md5(normalise(upper(nullif(trim(t0.assigne_name), '')))), ''))) is not null
+    where (coalesce(nullif(coalesce(nullif(trim(t0.chassis_no), ''), nullif(trim(t0.registration_no), '')), ''), nullif(nullif(trim(regexp_replace(upper(nullif(trim(t0.assigne_name), '')), '[[:space:]]+', ' ')), ''), ''))) is not null
 
     union all
 
     -- branch 62: BJAZ_MOT_WS_POL_DTLS
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(trim(t0.student_name), '')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(trim(t0.student_name), '')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
@@ -1354,14 +1354,14 @@ with merged as (
         17 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
-    where (nullif(md5(normalise(upper(nullif(trim(t0.student_name), '')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(trim(t0.student_name), '')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
     -- branch 63: BJAZ_MOT_WS_POL_DTLS
     select
         null, null, null,
-        nullif(coalesce(nullif(trim(t0.pan_number), ''), md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.age as PARTY_IDENTITY__AGE,
@@ -1388,14 +1388,14 @@ with merged as (
         17 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 
     -- branch 64: BJAZ_MOT_WS_POL_DTLS
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(trim(t0.family_doc), '')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(trim(t0.family_doc), '')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null,
@@ -1405,7 +1405,7 @@ with merged as (
         17 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
-    where (nullif(md5(normalise(upper(nullif(trim(t0.family_doc), '')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(trim(t0.family_doc), '')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
@@ -1429,7 +1429,7 @@ with merged as (
     -- branch 66: BJAZ_SCR_MOT_VEH_DTLS
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.user_name, ''), '')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.user_name, ''), '')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null,
         nullif(coalesce(nullif(trim(t0.chasis_no), ''), nullif(trim(t0.registration_no), '')), '') as RISK_OBJECT_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
@@ -1442,7 +1442,7 @@ with merged as (
         19 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_scr_mot_veh_dtls') }} t0
-    where (coalesce(nullif(coalesce(nullif(trim(t0.chasis_no), ''), nullif(trim(t0.registration_no), '')), ''), nullif(md5(normalise(upper(nullif(coalesce(t0.user_name, ''), '')))), ''))) is not null
+    where (coalesce(nullif(coalesce(nullif(trim(t0.chasis_no), ''), nullif(trim(t0.registration_no), '')), ''), nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.user_name, ''), '')), '[[:space:]]+', ' ')), ''), ''))) is not null
 
     union all
 
@@ -1489,7 +1489,7 @@ with merged as (
     -- branch 69: BJAZ_WAP_MOT_ADD_QSTN_DTLS
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif('PROPOSER:' || coalesce(to_char(t0.trans_id), ''), 'PROPOSER:')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif('PROPOSER:' || coalesce(to_char(t0.trans_id), ''), 'PROPOSER:')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         nullif(nullif('WAP:' || nullif(trim(to_char(t0.trans_id)), ''), 'WAP:'), '') as PROPOSAL_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.driving_offence_score as AUG_PROPOSAL_UNDERWRITING__DRIVING_OFFENCE_SCORE,
@@ -1511,7 +1511,7 @@ with merged as (
         21 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wap_mot_add_qstn_dtls') }} t0
-    where (coalesce(nullif(md5(normalise(upper(nullif('PROPOSER:' || coalesce(to_char(t0.trans_id), ''), 'PROPOSER:')))), ''), nullif(nullif('WAP:' || nullif(trim(to_char(t0.trans_id)), ''), 'WAP:'), ''))) is not null
+    where (coalesce(nullif(nullif(trim(regexp_replace(upper(nullif('PROPOSER:' || coalesce(to_char(t0.trans_id), ''), 'PROPOSER:')), '[[:space:]]+', ' ')), ''), ''), nullif(nullif('WAP:' || nullif(trim(to_char(t0.trans_id)), ''), 'WAP:'), ''))) is not null
 
     union all
 
@@ -1519,7 +1519,7 @@ with merged as (
     select
         nullif(nullif(trim(t0.estimation_no), ''), '') as ASSESSMENT_BK,
         null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.advisor_name, '') || '|' || coalesce(t0.work_shop_id, ''), '|')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.advisor_name, '') || '|' || coalesce(t0.work_shop_id, ''), '|')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null,
         t0.record_status as ASSESSMENT_HEADER__ASSESSMENT_STATUS,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
@@ -1530,14 +1530,14 @@ with merged as (
         22 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_ws_motclm_details') }} t0
-    where (coalesce(nullif(md5(normalise(upper(nullif(coalesce(t0.advisor_name, '') || '|' || coalesce(t0.work_shop_id, ''), '|')))), ''), nullif(nullif(trim(t0.estimation_no), ''), ''))) is not null
+    where (coalesce(nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.advisor_name, '') || '|' || coalesce(t0.work_shop_id, ''), '|')), '[[:space:]]+', ' ')), ''), ''), nullif(nullif(trim(t0.estimation_no), ''), ''))) is not null
 
     union all
 
     -- branch 71: BJAZ_WS_MOTCLM_DETAILS | child-key literal(s): COMMON_CONTACT.Contact Point Type=MOBILE
     select
         null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.advisor_name, '') || '|' || coalesce(t0.work_shop_id, ''), '|')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.advisor_name, '') || '|' || coalesce(t0.work_shop_id, ''), '|')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null,
         'MOBILE' as COMMON_CONTACT__CONTACT_POINT_TYPE_CK,
@@ -1549,7 +1549,7 @@ with merged as (
         22 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_ws_motclm_details') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.advisor_name, '') || '|' || coalesce(t0.work_shop_id, ''), '|')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.advisor_name, '') || '|' || coalesce(t0.work_shop_id, ''), '|')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 

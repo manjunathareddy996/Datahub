@@ -47,7 +47,7 @@ with merged as (
     select
         cast(null as varchar) as ASSESSMENT_BK,
         cast(null as varchar) as LOCATION_BK,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.your_name, '') || '|' || coalesce(to_char(t0.mob_no), ''), '|')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.your_name, '') || '|' || coalesce(to_char(t0.mob_no), ''), '|')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         cast(null as varchar) as POLICY_BK,
         cast(null as varchar) as PRODUCT_BK,
         cast(null as varchar) as PROPOSAL_BK,
@@ -122,7 +122,7 @@ with merged as (
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_agency_mot_war_dtls') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.your_name, '') || '|' || coalesce(to_char(t0.mob_no), ''), '|')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.your_name, '') || '|' || coalesce(to_char(t0.mob_no), ''), '|')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
@@ -603,7 +603,7 @@ with merged as (
     -- branch 26: BJAZ_MOT_ONLINE_POL_DTLS | child-key literal(s): PARTY_IDENTIFICATION.Identification Type Code=PASSPORT
     select
         null, null,
-        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         'PASSPORT' as PARTY_IDENTIFICATION__IDENTIFICATION_TYPE_CODE_CK,
@@ -614,7 +614,7 @@ with merged as (
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 
@@ -640,7 +640,7 @@ with merged as (
     -- branch 28: BJAZ_MOT_ONLINE_POL_DTLS | child-key literal(s): PARTY_IDENTIFICATION.Identification Type Code=TAX_ID
     select
         null, null,
-        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         'TAX_ID' as PARTY_IDENTIFICATION__IDENTIFICATION_TYPE_CODE_CK,
@@ -652,14 +652,14 @@ with merged as (
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 
     -- branch 29: BJAZ_MOT_ONLINE_POL_DTLS | child-key literal(s): PARTY_IDENTIFICATION.Identification Type Code=PAN
     select
         null, null,
-        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         'PAN' as PARTY_IDENTIFICATION__IDENTIFICATION_TYPE_CODE_CK,
@@ -670,14 +670,14 @@ with merged as (
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 
     -- branch 30: BJAZ_MOT_ONLINE_POL_DTLS | child-key literal(s): PARTY_IDENTIFICATION.Identification Type Code=GSTIN
     select
         null, null,
-        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         'GSTIN' as PARTY_IDENTIFICATION__IDENTIFICATION_TYPE_CODE_CK,
@@ -689,14 +689,14 @@ with merged as (
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 
     -- branch 31: BJAZ_MOT_ONLINE_POL_DTLS | child-key literal(s): PARTY_IDENTIFICATION.Identification Type Code=AADHAAR
     select
         null, null,
-        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         'AADHAAR' as PARTY_IDENTIFICATION__IDENTIFICATION_TYPE_CODE_CK,
@@ -707,14 +707,14 @@ with merged as (
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 
     -- branch 32: BJAZ_MOT_ONLINE_POL_DTLS_EXTN
     select
         nullif(nullif('IIB:' || nullif(trim(t0.iib_ref_no), ''), 'IIB:'), '') as ASSESSMENT_BK,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.loc_address_line1, '') || '|' || coalesce(t0.loc_address_line2, '') || '|' || coalesce(t0.loc_city, '') || '|' || coalesce(t0.loc_state, '') || '|' || coalesce(t0.loc_pincode, '') || '|' || coalesce(t0.loc_country, ''), '|||||')))), '') as LOCATION_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.loc_address_line1, '') || '|' || coalesce(t0.loc_address_line2, '') || '|' || coalesce(t0.loc_city, '') || '|' || coalesce(t0.loc_state, '') || '|' || coalesce(t0.loc_pincode, '') || '|' || coalesce(t0.loc_country, ''), '|||||')), '[[:space:]]+', ' ')), ''), '') as LOCATION_BK,
         nullif(nullif(trim(t0.adhar_no), ''), '') as PARTY_BK,
         nullif(nullif(trim(t0.spca_policy_ref), ''), '') as POLICY_BK,
         null, null,
@@ -755,7 +755,7 @@ with merged as (
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls_extn') }} t0
-    where (coalesce(nullif(md5(normalise(upper(nullif(coalesce(t0.loc_address_line1, '') || '|' || coalesce(t0.loc_address_line2, '') || '|' || coalesce(t0.loc_city, '') || '|' || coalesce(t0.loc_state, '') || '|' || coalesce(t0.loc_pincode, '') || '|' || coalesce(t0.loc_country, ''), '|||||')))), ''), nullif(nullif('IIB:' || nullif(trim(t0.iib_ref_no), ''), 'IIB:'), ''), nullif(nullif(trim(t0.adhar_no), ''), ''), nullif(nullif(trim(t0.spca_policy_ref), ''), ''), nullif(nullif(trim(t0.trailer_chassis_no), ''), ''))) is not null
+    where (coalesce(nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.loc_address_line1, '') || '|' || coalesce(t0.loc_address_line2, '') || '|' || coalesce(t0.loc_city, '') || '|' || coalesce(t0.loc_state, '') || '|' || coalesce(t0.loc_pincode, '') || '|' || coalesce(t0.loc_country, ''), '|||||')), '[[:space:]]+', ' ')), ''), ''), nullif(nullif('IIB:' || nullif(trim(t0.iib_ref_no), ''), 'IIB:'), ''), nullif(nullif(trim(t0.adhar_no), ''), ''), nullif(nullif(trim(t0.spca_policy_ref), ''), ''), nullif(nullif(trim(t0.trailer_chassis_no), ''), ''))) is not null
 
     union all
 
@@ -836,7 +836,7 @@ with merged as (
     -- branch 37: BJAZ_MOT_WAR_CHILD_DTLS | child-key literal(s): PARTY_IDENTIFICATION.Identification Type Code=GSTIN
     select
         null, null,
-        nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), md5(normalise(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         'GSTIN' as PARTY_IDENTIFICATION__IDENTIFICATION_TYPE_CODE_CK,
@@ -848,14 +848,14 @@ with merged as (
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_war_child_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), md5(normalise(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 
     -- branch 38: BJAZ_MOT_WAR_CHILD_DTLS | child-key literal(s): PARTY_IDENTIFICATION.Identification Type Code=PAN
     select
         null, null,
-        nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), md5(normalise(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         'PAN' as PARTY_IDENTIFICATION__IDENTIFICATION_TYPE_CODE_CK,
@@ -866,7 +866,7 @@ with merged as (
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_war_child_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), md5(normalise(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 
@@ -917,7 +917,7 @@ with merged as (
     -- branch 41: BJAZ_MOT_WS_POL_DTLS | child-key literal(s): PARTY_IDENTIFICATION.Identification Type Code=PASSPORT
     select
         null, null,
-        nullif(coalesce(nullif(trim(t0.pan_number), ''), md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         'PASSPORT' as PARTY_IDENTIFICATION__IDENTIFICATION_TYPE_CODE_CK,
@@ -928,14 +928,14 @@ with merged as (
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 
     -- branch 42: BJAZ_MOT_WS_POL_DTLS | child-key literal(s): PARTY_IDENTIFICATION.Identification Type Code=TAX_ID
     select
         null, null,
-        nullif(coalesce(nullif(trim(t0.pan_number), ''), md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         'TAX_ID' as PARTY_IDENTIFICATION__IDENTIFICATION_TYPE_CODE_CK,
@@ -947,14 +947,14 @@ with merged as (
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 
     -- branch 43: BJAZ_MOT_WS_POL_DTLS | child-key literal(s): PARTY_IDENTIFICATION.Identification Type Code=PAN
     select
         null, null,
-        nullif(coalesce(nullif(trim(t0.pan_number), ''), md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         'PAN' as PARTY_IDENTIFICATION__IDENTIFICATION_TYPE_CODE_CK,
@@ -965,14 +965,14 @@ with merged as (
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 
     -- branch 44: BJAZ_MOT_WS_POL_DTLS | child-key literal(s): PARTY_IDENTIFICATION.Identification Type Code=GSTIN
     select
         null, null,
-        nullif(coalesce(nullif(trim(t0.pan_number), ''), md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         'GSTIN' as PARTY_IDENTIFICATION__IDENTIFICATION_TYPE_CODE_CK,
@@ -984,7 +984,7 @@ with merged as (
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
-    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||'))))), '')) is not null
+    where (nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||')), '[[:space:]]+', ' ')), '')), '')) is not null
 
     union all
 

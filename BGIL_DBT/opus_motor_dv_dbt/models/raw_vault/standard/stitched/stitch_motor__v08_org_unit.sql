@@ -78,7 +78,7 @@ with merged as (
     -- branch 2: BJAZ_CLM_SUBFILE_MOT_EXT
     select
         null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.police_station_address, ''), '')))), '') as LOCATION_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.police_station_address, ''), '')), '[[:space:]]+', ' ')), ''), '') as LOCATION_BK,
         null, null, null, null, null, null, null, null, null, null,
         t0.police_station_address as AUG_COMMON_ADDRESS__FULL_ADDRESS_TEXT,
         null, null, null, null, null, null, null, null, null, null, null, null, null,
@@ -86,7 +86,7 @@ with merged as (
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_subfile_mot_ext') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.police_station_address, ''), '')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.police_station_address, ''), '')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
@@ -130,7 +130,7 @@ with merged as (
     -- branch 5: BJAZ_MOT_ONLINE_POL_DTLS
     select
         null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.address_line1, '') || '|' || coalesce(t0.address_line2, '') || '|' || coalesce(t0.area, '') || '|' || coalesce(t0.city, '') || '|' || coalesce(t0.state, '') || '|' || coalesce(t0.postcode, ''), '|||||')))), '') as LOCATION_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.address_line1, '') || '|' || coalesce(t0.address_line2, '') || '|' || coalesce(t0.area, '') || '|' || coalesce(t0.city, '') || '|' || coalesce(t0.state, '') || '|' || coalesce(t0.postcode, ''), '|||||')), '[[:space:]]+', ' ')), ''), '') as LOCATION_BK,
         nullif(nullif(trim(to_char(t0.department_code)), ''), '') as ORG_UNIT_BK,
         null, null,
         nullif(nullif('APPLIANCE:' || nullif(trim(to_char(t0.serial_no)), ''), 'APPLIANCE:'), '') as RISK_OBJECT_BK,
@@ -149,14 +149,14 @@ with merged as (
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
-    where (coalesce(nullif(md5(normalise(upper(nullif(coalesce(t0.address_line1, '') || '|' || coalesce(t0.address_line2, '') || '|' || coalesce(t0.area, '') || '|' || coalesce(t0.city, '') || '|' || coalesce(t0.state, '') || '|' || coalesce(t0.postcode, ''), '|||||')))), ''), nullif(nullif('APPLIANCE:' || nullif(trim(to_char(t0.serial_no)), ''), 'APPLIANCE:'), ''), nullif(nullif(trim(to_char(t0.department_code)), ''), ''))) is not null
+    where (coalesce(nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.address_line1, '') || '|' || coalesce(t0.address_line2, '') || '|' || coalesce(t0.area, '') || '|' || coalesce(t0.city, '') || '|' || coalesce(t0.state, '') || '|' || coalesce(t0.postcode, ''), '|||||')), '[[:space:]]+', ' ')), ''), ''), nullif(nullif('APPLIANCE:' || nullif(trim(to_char(t0.serial_no)), ''), 'APPLIANCE:'), ''), nullif(nullif(trim(to_char(t0.department_code)), ''), ''))) is not null
 
     union all
 
     -- branch 6: BJAZ_MOT_ONLINE_POL_DTLS
     select
         null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.disp_address_line1, '') || '|' || coalesce(t0.disp_address_line2, '') || '|' || coalesce(t0.disp_area, '') || '|' || coalesce(t0.disp_city, '') || '|' || coalesce(t0.disp_state, '') || '|' || coalesce(t0.disppostcode, ''), '|||||')))), '') as LOCATION_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.disp_address_line1, '') || '|' || coalesce(t0.disp_address_line2, '') || '|' || coalesce(t0.disp_area, '') || '|' || coalesce(t0.disp_city, '') || '|' || coalesce(t0.disp_state, '') || '|' || coalesce(t0.disppostcode, ''), '|||||')), '[[:space:]]+', ' ')), ''), '') as LOCATION_BK,
         null, null, null, null, null, null, null,
         t0.disp_address_line6 as AUG_COMMON_ADDRESS__ADDRESS_LINE4,
         null, null, null,
@@ -166,14 +166,14 @@ with merged as (
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.disp_address_line1, '') || '|' || coalesce(t0.disp_address_line2, '') || '|' || coalesce(t0.disp_area, '') || '|' || coalesce(t0.disp_city, '') || '|' || coalesce(t0.disp_state, '') || '|' || coalesce(t0.disppostcode, ''), '|||||')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.disp_address_line1, '') || '|' || coalesce(t0.disp_address_line2, '') || '|' || coalesce(t0.disp_area, '') || '|' || coalesce(t0.disp_city, '') || '|' || coalesce(t0.disp_state, '') || '|' || coalesce(t0.disppostcode, ''), '|||||')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
     -- branch 7: BJAZ_MOT_RENEWAL_EXTN
     select
         null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.cust_add1, '') || '|' || coalesce(t0.cust_add2, '') || '|' || coalesce(t0.cust_add3, '') || '|' || coalesce(t0.cust_add4, '') || '|' || coalesce(t0.cust_add5, '') || '|' || coalesce(to_char(t0.postcode), ''), '|||||')))), '') as LOCATION_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.cust_add1, '') || '|' || coalesce(t0.cust_add2, '') || '|' || coalesce(t0.cust_add3, '') || '|' || coalesce(t0.cust_add4, '') || '|' || coalesce(t0.cust_add5, '') || '|' || coalesce(to_char(t0.postcode), ''), '|||||')), '[[:space:]]+', ' ')), ''), '') as LOCATION_BK,
         null, null, null, null, null, null, null,
         t0.cust_add4 as AUG_COMMON_ADDRESS__ADDRESS_LINE4,
         t0.cust_add5 as AUG_COMMON_ADDRESS__ADDRESS_LINE_5,
@@ -182,7 +182,7 @@ with merged as (
         4 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_renewal_extn') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.cust_add1, '') || '|' || coalesce(t0.cust_add2, '') || '|' || coalesce(t0.cust_add3, '') || '|' || coalesce(t0.cust_add4, '') || '|' || coalesce(t0.cust_add5, '') || '|' || coalesce(to_char(t0.postcode), ''), '|||||')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.cust_add1, '') || '|' || coalesce(t0.cust_add2, '') || '|' || coalesce(t0.cust_add3, '') || '|' || coalesce(t0.cust_add4, '') || '|' || coalesce(t0.cust_add5, '') || '|' || coalesce(to_char(t0.postcode), ''), '|||||')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
@@ -226,7 +226,7 @@ with merged as (
     -- branch 10: BJAZ_MOT_WS_POL_DTLS
     select
         null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.address_line1, '') || '|' || coalesce(t0.address_line2, '') || '|' || coalesce(t0.city, '') || '|' || coalesce(t0.state, '') || '|' || coalesce(t0.postcode, ''), '||||')))), '') as LOCATION_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.address_line1, '') || '|' || coalesce(t0.address_line2, '') || '|' || coalesce(t0.city, '') || '|' || coalesce(t0.state, '') || '|' || coalesce(t0.postcode, ''), '||||')), '[[:space:]]+', ' ')), ''), '') as LOCATION_BK,
         nullif(nullif(trim(to_char(t0.company_org_unit)), ''), '') as ORG_UNIT_BK,
         null, null, null, null, null, null,
         t0.address_line6 as AUG_COMMON_ADDRESS__ADDRESS_LINE4,
@@ -242,14 +242,14 @@ with merged as (
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
-    where (coalesce(nullif(md5(normalise(upper(nullif(coalesce(t0.address_line1, '') || '|' || coalesce(t0.address_line2, '') || '|' || coalesce(t0.city, '') || '|' || coalesce(t0.state, '') || '|' || coalesce(t0.postcode, ''), '||||')))), ''), nullif(nullif(trim(to_char(t0.company_org_unit)), ''), ''))) is not null
+    where (coalesce(nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.address_line1, '') || '|' || coalesce(t0.address_line2, '') || '|' || coalesce(t0.city, '') || '|' || coalesce(t0.state, '') || '|' || coalesce(t0.postcode, ''), '||||')), '[[:space:]]+', ' ')), ''), ''), nullif(nullif(trim(to_char(t0.company_org_unit)), ''), ''))) is not null
 
     union all
 
     -- branch 11: BJAZ_MOT_WS_POL_DTLS
     select
         null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.disp_address_line1, '') || '|' || coalesce(t0.disp_address_line2, '') || '|' || coalesce(t0.disp_city, '') || '|' || coalesce(t0.disp_state, '') || '|' || coalesce(t0.disppostcode, ''), '||||')))), '') as LOCATION_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.disp_address_line1, '') || '|' || coalesce(t0.disp_address_line2, '') || '|' || coalesce(t0.disp_city, '') || '|' || coalesce(t0.disp_state, '') || '|' || coalesce(t0.disppostcode, ''), '||||')), '[[:space:]]+', ' ')), ''), '') as LOCATION_BK,
         null, null, null, null, null, null, null,
         t0.disp_address_line6 as AUG_COMMON_ADDRESS__ADDRESS_LINE4,
         null, null, null,
@@ -260,14 +260,14 @@ with merged as (
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.disp_address_line1, '') || '|' || coalesce(t0.disp_address_line2, '') || '|' || coalesce(t0.disp_city, '') || '|' || coalesce(t0.disp_state, '') || '|' || coalesce(t0.disppostcode, ''), '||||')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.disp_address_line1, '') || '|' || coalesce(t0.disp_address_line2, '') || '|' || coalesce(t0.disp_city, '') || '|' || coalesce(t0.disp_state, '') || '|' || coalesce(t0.disppostcode, ''), '||||')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
     -- branch 12: BJAZ_WAP_MOT_GS_ACT_DTLS
     select
         null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.latitude, '') || '|' || coalesce(t0.longitude, '') || '|' || coalesce(t0.google_add, ''), '||')))), '') as LOCATION_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.latitude, '') || '|' || coalesce(t0.longitude, '') || '|' || coalesce(t0.google_add, ''), '||')), '[[:space:]]+', ' ')), ''), '') as LOCATION_BK,
         nullif(nullif(trim(to_char(t0.branch_code)), ''), '') as ORG_UNIT_BK,
         null, null, null, null, null, null, null, null, null,
         t0.google_add as AUG_COMMON_ADDRESS__FULL_ADDRESS_TEXT,
@@ -278,14 +278,14 @@ with merged as (
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wap_mot_gs_act_dtls') }} t0
-    where (coalesce(nullif(md5(normalise(upper(nullif(coalesce(t0.latitude, '') || '|' || coalesce(t0.longitude, '') || '|' || coalesce(t0.google_add, ''), '||')))), ''), nullif(nullif(trim(to_char(t0.branch_code)), ''), ''))) is not null
+    where (coalesce(nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.latitude, '') || '|' || coalesce(t0.longitude, '') || '|' || coalesce(t0.google_add, ''), '||')), '[[:space:]]+', ' ')), ''), ''), nullif(nullif(trim(to_char(t0.branch_code)), ''), ''))) is not null
 
     union all
 
     -- branch 13: BJAZ_WB_CLM_BASE_MOT_EXT
     select
         null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.vehicle_lying_add, ''), '')))), '') as LOCATION_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.vehicle_lying_add, ''), '')), '[[:space:]]+', ' ')), ''), '') as LOCATION_BK,
         null, null, null, null, null, null, null, null, null, null,
         t0.vehicle_lying_add as AUG_COMMON_ADDRESS__FULL_ADDRESS_TEXT,
         null, null, null, null, null, null, null, null, null, null, null, null, null,
@@ -293,14 +293,14 @@ with merged as (
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wb_clm_base_mot_ext') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.vehicle_lying_add, ''), '')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.vehicle_lying_add, ''), '')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 
     -- branch 14: BJAZ_WB_CLM_BASE_MOT_EXT
     select
         null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.vehicle_inspect_add, ''), '')))), '') as LOCATION_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.vehicle_inspect_add, ''), '')), '[[:space:]]+', ' ')), ''), '') as LOCATION_BK,
         null, null, null, null, null, null, null, null, null, null,
         t0.vehicle_inspect_add as AUG_COMMON_ADDRESS__FULL_ADDRESS_TEXT,
         null, null, null, null, null, null, null, null, null, null, null, null, null,
@@ -308,7 +308,7 @@ with merged as (
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wb_clm_base_mot_ext') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.vehicle_inspect_add, ''), '')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.vehicle_inspect_add, ''), '')), '[[:space:]]+', ' ')), ''), '')) is not null
 
 )
 

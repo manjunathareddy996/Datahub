@@ -350,7 +350,7 @@ with merged as (
         nullif(nullif(trim(to_char(t0.part_id)), ''), '') as DISTRIBUTION_CHANNEL_BK,
         nullif(nullif('RECEIPT:' || nullif(trim(t0.receipt_no), ''), 'RECEIPT:'), '') as FINANCIAL_TRANSACTION_BK,
         null, null,
-        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null,
         nullif(nullif(trim(t0.policy_ref), ''), '') as POLICY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
@@ -371,7 +371,7 @@ with merged as (
         2 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
-    where (coalesce(nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), md5(normalise(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||'))))), ''), nullif(nullif('RECEIPT:' || nullif(trim(t0.receipt_no), ''), 'RECEIPT:'), ''), nullif(nullif(trim(t0.policy_ref), ''), ''), nullif(nullif(trim(to_char(t0.part_id)), ''), ''))) is not null
+    where (coalesce(nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(to_char(t0.aadhaar_no)), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.name, '') || '|' || coalesce(t0.mobile1, '') || '|' || coalesce(t0.email, ''), '||')), '[[:space:]]+', ' ')), '')), ''), nullif(nullif('RECEIPT:' || nullif(trim(t0.receipt_no), ''), 'RECEIPT:'), ''), nullif(nullif(trim(t0.policy_ref), ''), ''), nullif(nullif(trim(to_char(t0.part_id)), ''), ''))) is not null
 
     union all
 
@@ -651,9 +651,9 @@ with merged as (
     select
         nullif(nullif(trim(to_char(t0.part_id)), ''), '') as DISTRIBUTION_CHANNEL_BK,
         nullif(nullif(trim(t0.receipt_no), ''), '') as FINANCIAL_TRANSACTION_BK,
-        nullif(md5(normalise(upper(nullif(trim(t0.registration_loc), '')))), '') as LOCATION_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(trim(t0.registration_loc), '')), '[[:space:]]+', ' ')), ''), '') as LOCATION_BK,
         null,
-        nullif(coalesce(nullif(trim(t0.pan_number), ''), md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         null,
         nullif(nullif(trim(t0.policy_ref), ''), '') as POLICY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
@@ -678,7 +678,7 @@ with merged as (
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
-    where (coalesce(nullif(coalesce(nullif(trim(t0.pan_number), ''), md5(normalise(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||'))))), ''), nullif(md5(normalise(upper(nullif(trim(t0.registration_loc), '')))), ''), nullif(nullif(trim(t0.policy_ref), ''), ''), nullif(nullif(trim(t0.receipt_no), ''), ''), nullif(nullif(trim(to_char(t0.part_id)), ''), ''))) is not null
+    where (coalesce(nullif(coalesce(nullif(trim(t0.pan_number), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.first_name, '') || '|' || coalesce(t0.surname, '') || '|' || coalesce(t0.mobile1, ''), '||')), '[[:space:]]+', ' ')), '')), ''), nullif(nullif(trim(regexp_replace(upper(nullif(trim(t0.registration_loc), '')), '[[:space:]]+', ' ')), ''), ''), nullif(nullif(trim(t0.policy_ref), ''), ''), nullif(nullif(trim(t0.receipt_no), ''), ''), nullif(nullif(trim(to_char(t0.part_id)), ''), ''))) is not null
 
     union all
 
@@ -760,7 +760,7 @@ with merged as (
 
     -- branch 31: BJAZ_RTA_STATE_MASTER
     select
-        nullif(md5(normalise(upper(nullif(coalesce(t0.channel_name, '') || '|' || coalesce(t0.sub_channel_name, ''), '|')))), '') as DISTRIBUTION_CHANNEL_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.channel_name, '') || '|' || coalesce(t0.sub_channel_name, ''), '|')), '[[:space:]]+', ' ')), ''), '') as DISTRIBUTION_CHANNEL_BK,
         null, null, null, null, null, null,
         nullif(nullif(trim(to_char(t0.product_code)), ''), '') as PRODUCT_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
@@ -778,7 +778,7 @@ with merged as (
         7 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_rta_state_master') }} t0
-    where (coalesce(nullif(md5(normalise(upper(nullif(coalesce(t0.channel_name, '') || '|' || coalesce(t0.sub_channel_name, ''), '|')))), ''), nullif(nullif(trim(to_char(t0.product_code)), ''), ''))) is not null
+    where (coalesce(nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.channel_name, '') || '|' || coalesce(t0.sub_channel_name, ''), '|')), '[[:space:]]+', ' ')), ''), ''), nullif(nullif(trim(to_char(t0.product_code)), ''), ''))) is not null
 
     union all
 
@@ -786,7 +786,7 @@ with merged as (
     select
         nullif(nullif(trim(to_char(t0.imd_code)), ''), '') as DISTRIBUTION_CHANNEL_BK,
         null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.latitude, '') || '|' || coalesce(t0.longitude, '') || '|' || coalesce(t0.google_add, ''), '||')))), '') as LOCATION_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.latitude, '') || '|' || coalesce(t0.longitude, '') || '|' || coalesce(t0.google_add, ''), '||')), '[[:space:]]+', ' ')), ''), '') as LOCATION_BK,
         nullif(nullif(trim(to_char(t0.branch_code)), ''), '') as ORG_UNIT_BK,
         null, null, null, null, null, null, null, null, null,
         1 as __LNK_ORG_UNIT_LOCATION,
@@ -818,7 +818,7 @@ with merged as (
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_wap_mot_gs_act_dtls') }} t0
-    where (coalesce(nullif(md5(normalise(upper(nullif(coalesce(t0.latitude, '') || '|' || coalesce(t0.longitude, '') || '|' || coalesce(t0.google_add, ''), '||')))), ''), nullif(nullif(trim(to_char(t0.branch_code)), ''), ''), nullif(nullif(trim(to_char(t0.imd_code)), ''), ''))) is not null
+    where (coalesce(nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.latitude, '') || '|' || coalesce(t0.longitude, '') || '|' || coalesce(t0.google_add, ''), '||')), '[[:space:]]+', ' ')), ''), ''), nullif(nullif(trim(to_char(t0.branch_code)), ''), ''), nullif(nullif(trim(to_char(t0.imd_code)), ''), ''))) is not null
 
     union all
 

@@ -313,7 +313,7 @@ with merged as (
     select
         null,
         nullif(nullif('INTIMATION:' || nullif(trim(t0.intimation_id), ''), 'INTIMATION:'), '') as CLAIM_BK,
-        nullif(md5(normalise(upper(nullif('LOSSEVENT:' || coalesce(t0.intimation_id, ''), 'LOSSEVENT:')))), '') as LOSS_EVENT_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif('LOSSEVENT:' || coalesce(t0.intimation_id, ''), 'LOSSEVENT:')), '[[:space:]]+', ' ')), ''), '') as LOSS_EVENT_BK,
         null, null, null,
         1 as __LNK_CLAIM_LOSS_EVENT,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
@@ -353,7 +353,7 @@ with merged as (
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_clm_motor_intim_details') }} t0
-    where (coalesce(nullif(md5(normalise(upper(nullif('LOSSEVENT:' || coalesce(t0.intimation_id, ''), 'LOSSEVENT:')))), ''), nullif(nullif('INTIMATION:' || nullif(trim(t0.intimation_id), ''), 'INTIMATION:'), ''))) is not null
+    where (coalesce(nullif(nullif(trim(regexp_replace(upper(nullif('LOSSEVENT:' || coalesce(t0.intimation_id, ''), 'LOSSEVENT:')), '[[:space:]]+', ' ')), ''), ''), nullif(nullif('INTIMATION:' || nullif(trim(t0.intimation_id), ''), 'INTIMATION:'), ''))) is not null
 
     union all
 
@@ -811,7 +811,7 @@ with merged as (
     select
         nullif(nullif(trim(t0.estimation_no), ''), '') as ASSESSMENT_BK,
         nullif(nullif(trim(to_char(t0.clm_ref_id)), ''), '') as CLAIM_BK,
-        nullif(md5(normalise(upper(nullif('LOSSEVENT:' || coalesce(to_char(t0.clm_ref_id), ''), 'LOSSEVENT:')))), '') as LOSS_EVENT_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif('LOSSEVENT:' || coalesce(to_char(t0.clm_ref_id), ''), 'LOSSEVENT:')), '[[:space:]]+', ' ')), ''), '') as LOSS_EVENT_BK,
         nullif(nullif(trim(t0.policy_ref), ''), '') as POLICY_BK,
         nullif(nullif(trim(t0.veh_reg_no), ''), '') as RISK_OBJECT_BK,
         1 as __LNK_CLAIM_ASSESSMENT,
@@ -855,7 +855,7 @@ with merged as (
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_ws_motclm_details') }} t0
-    where (coalesce(nullif(md5(normalise(upper(nullif('LOSSEVENT:' || coalesce(to_char(t0.clm_ref_id), ''), 'LOSSEVENT:')))), ''), nullif(nullif(trim(t0.estimation_no), ''), ''), nullif(nullif(trim(t0.policy_ref), ''), ''), nullif(nullif(trim(t0.veh_reg_no), ''), ''), nullif(nullif(trim(to_char(t0.clm_ref_id)), ''), ''))) is not null
+    where (coalesce(nullif(nullif(trim(regexp_replace(upper(nullif('LOSSEVENT:' || coalesce(to_char(t0.clm_ref_id), ''), 'LOSSEVENT:')), '[[:space:]]+', ' ')), ''), ''), nullif(nullif(trim(t0.estimation_no), ''), ''), nullif(nullif(trim(t0.policy_ref), ''), ''), nullif(nullif(trim(t0.veh_reg_no), ''), ''), nullif(nullif(trim(to_char(t0.clm_ref_id)), ''), ''))) is not null
 
     union all
 

@@ -239,7 +239,7 @@ with merged as (
     -- branch 4: BJAZ_MOTORTHEFT_CASE_DTLS | child-key literal(s): LNK_PARTY_ROLE_CORE.Role Code=ADVOCATE
     select
         null, null, null, null,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.adv_name, '') || '|' || coalesce(t0.adv_email, '') || '|' || coalesce(t0.adv_contact, ''), '||')))), '') as PARTY_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.adv_name, '') || '|' || coalesce(t0.adv_email, '') || '|' || coalesce(t0.adv_contact, ''), '||')), '[[:space:]]+', ' ')), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
@@ -252,7 +252,7 @@ with merged as (
         3 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_motortheft_case_dtls') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.adv_name, '') || '|' || coalesce(t0.adv_email, '') || '|' || coalesce(t0.adv_contact, ''), '||')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.adv_name, '') || '|' || coalesce(t0.adv_email, '') || '|' || coalesce(t0.adv_contact, ''), '||')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 

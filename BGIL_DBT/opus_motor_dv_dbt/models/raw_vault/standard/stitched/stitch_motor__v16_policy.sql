@@ -275,7 +275,7 @@ with merged as (
     select
         null, null,
         nullif(nullif(trim(t0.policy_ref), ''), '') as POLICY_BK,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.student_name, '') || '|' || coalesce(t0.school_name, '') || '|' || coalesce(t0.course, ''), '||')))), '') as RISK_OBJECT_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.student_name, '') || '|' || coalesce(t0.school_name, '') || '|' || coalesce(t0.course, ''), '||')), '[[:space:]]+', ' ')), ''), '') as RISK_OBJECT_BK,
         null, null, null, null, null, null, null, null, null, null, null, null,
         t0.agree_quote_to_pol as POLICY_HEADER__CONVERSION_FROM_QUOTE_INDICATOR,
         null, null,
@@ -312,7 +312,7 @@ with merged as (
         8 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_online_pol_dtls') }} t0
-    where (coalesce(nullif(md5(normalise(upper(nullif(coalesce(t0.student_name, '') || '|' || coalesce(t0.school_name, '') || '|' || coalesce(t0.course, ''), '||')))), ''), nullif(nullif(trim(t0.policy_ref), ''), ''))) is not null
+    where (coalesce(nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.student_name, '') || '|' || coalesce(t0.school_name, '') || '|' || coalesce(t0.course, ''), '||')), '[[:space:]]+', ' ')), ''), ''), nullif(nullif(trim(t0.policy_ref), ''), ''))) is not null
 
     union all
 

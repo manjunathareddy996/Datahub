@@ -198,3 +198,14 @@ generators would emit.
   uses the same names, so the two motor projects share them. Comments naming the satellites were updated; no SQL changed
   (nothing refs a satellite). Standard satellites, hubs and links keep their shared names. build_artifacts/ still shows
   the generated names. Recorded in .kiro/steering/modeller-learnings.md (overrides utils/skill.md's no-LOB rule).
+
+## Round 5 (2026-11-19): business keys without md5; normalise() no longer needed
+
+- `normalise()` (undefined in Snowflake; 12 views failed with "Unknown functions NORMALISE") and the `md5` around it
+  are replaced in all 300 content keys: `md5(normalise(X))` -> `nullif(trim(regexp_replace(X, '[[:space:]]+', ' ')), '')`.
+  Snowflake has no built-in NORMALIZE; trim plus whitespace-collapse is done with built-ins, so no function must exist.
+- The business keys (e.g. PARTY_BK, LOCATION_BK) are now the normalised text itself, as partner's address keys are.
+  The hash keys are unchanged in kind: AutomateDV still builds every *_HKEY and HASHDIFF with MD5.
+- Consequence: names, phone numbers, addresses etc. that form those keys are stored as plain text in the BK columns
+  of the views and the shared hubs (HUB_PARTY, HUB_LOCATION, ...).
+- The "normalise() must exist" precondition above (and in build_artifacts/) no longer applies.

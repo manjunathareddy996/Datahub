@@ -1494,7 +1494,7 @@ with merged as (
         null,
         nullif(nullif(trim(to_char(t0.clm_ref_id)), ''), '') as CLAIM_BK,
         null,
-        nullif(md5(normalise(upper(nullif('LOSSEVENT:' || coalesce(to_char(t0.clm_ref_id), ''), 'LOSSEVENT:')))), '') as LOSS_EVENT_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif('LOSSEVENT:' || coalesce(to_char(t0.clm_ref_id), ''), 'LOSSEVENT:')), '[[:space:]]+', ' ')), ''), '') as LOSS_EVENT_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.cause_type as AUG_LOSS_EVENT_DETAIL__CAUSE_TYPE_CODE,
@@ -1509,7 +1509,7 @@ with merged as (
         9 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_ws_motclm_details') }} t0
-    where (coalesce(nullif(md5(normalise(upper(nullif('LOSSEVENT:' || coalesce(to_char(t0.clm_ref_id), ''), 'LOSSEVENT:')))), ''), nullif(nullif(trim(to_char(t0.clm_ref_id)), ''), ''))) is not null
+    where (coalesce(nullif(nullif(trim(regexp_replace(upper(nullif('LOSSEVENT:' || coalesce(to_char(t0.clm_ref_id), ''), 'LOSSEVENT:')), '[[:space:]]+', ' ')), ''), ''), nullif(nullif(trim(to_char(t0.clm_ref_id)), ''), ''))) is not null
 
 )
 

@@ -162,7 +162,7 @@ with merged as (
 
     -- branch 5: BJAZ_MOT_WS_POL_DTLS
     select
-        nullif(md5(normalise(upper(nullif(trim(t0.registration_loc), '')))), '') as LOCATION_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(trim(t0.registration_loc), '')), '[[:space:]]+', ' ')), ''), '') as LOCATION_BK,
         null, null, null, null,
         nullif(coalesce(nullif(trim(t0.chassis_no), ''), nullif(trim(t0.registration_no), '')), '') as RISK_OBJECT_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null,
@@ -174,13 +174,13 @@ with merged as (
         5 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_ws_pol_dtls') }} t0
-    where (coalesce(nullif(coalesce(nullif(trim(t0.chassis_no), ''), nullif(trim(t0.registration_no), '')), ''), nullif(md5(normalise(upper(nullif(trim(t0.registration_loc), '')))), ''))) is not null
+    where (coalesce(nullif(coalesce(nullif(trim(t0.chassis_no), ''), nullif(trim(t0.registration_no), '')), ''), nullif(nullif(trim(regexp_replace(upper(nullif(trim(t0.registration_loc), '')), '[[:space:]]+', ' ')), ''), ''))) is not null
 
     union all
 
     -- branch 6: BJAZ_RTA_STATE_MASTER
     select
-        nullif(md5(normalise(upper(nullif(coalesce(t0.state, ''), '')))), '') as LOCATION_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.state, ''), '')), '[[:space:]]+', ' ')), ''), '') as LOCATION_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
         t0.state as COMMON_ADMIN_GEOGRAPHY__STATE_NAME,
         null, null, null, null, null, null, null, null, null, null,
@@ -188,7 +188,7 @@ with merged as (
         6 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_rta_state_master') }} t0
-    where (nullif(md5(normalise(upper(nullif(coalesce(t0.state, ''), '')))), '')) is not null
+    where (nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.state, ''), '')), '[[:space:]]+', ' ')), ''), '')) is not null
 
     union all
 

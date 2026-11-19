@@ -28,7 +28,7 @@ with merged as (
     select
         nullif(nullif(trim(to_char(t0.contract_id)), ''), '') as AGREEMENT_BK,
         cast(null as varchar) as DISTRIBUTION_CHANNEL_BK,
-        nullif(md5(normalise(upper(nullif(coalesce(t0.customer_address, '') || '|' || coalesce(t0.area, '') || '|' || coalesce(t0.city, '') || '|' || coalesce(t0.state, '') || '|' || coalesce(to_char(t0.pincode), ''), '||||')))), '') as LOCATION_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.customer_address, '') || '|' || coalesce(t0.area, '') || '|' || coalesce(t0.city, '') || '|' || coalesce(t0.state, '') || '|' || coalesce(to_char(t0.pincode), ''), '||||')), '[[:space:]]+', ' ')), ''), '') as LOCATION_BK,
         cast(null as varchar) as ORG_UNIT_BK,
         cast(null as varchar) as PARTY_BK,
         nullif(nullif(trim(t0.policy_ref), ''), '') as POLICY_BK,
@@ -58,7 +58,7 @@ with merged as (
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_agency_mot_war_dtls') }} t0
-    where (coalesce(nullif(coalesce(nullif(trim(t0.chassis_no), ''), nullif(trim(t0.veh_reg_no), '')), ''), nullif(md5(normalise(upper(nullif(coalesce(t0.customer_address, '') || '|' || coalesce(t0.area, '') || '|' || coalesce(t0.city, '') || '|' || coalesce(t0.state, '') || '|' || coalesce(to_char(t0.pincode), ''), '||||')))), ''), nullif(nullif(trim(t0.policy_ref), ''), ''), nullif(nullif(trim(to_char(t0.contract_id)), ''), ''))) is not null
+    where (coalesce(nullif(coalesce(nullif(trim(t0.chassis_no), ''), nullif(trim(t0.veh_reg_no), '')), ''), nullif(nullif(trim(regexp_replace(upper(nullif(coalesce(t0.customer_address, '') || '|' || coalesce(t0.area, '') || '|' || coalesce(t0.city, '') || '|' || coalesce(t0.state, '') || '|' || coalesce(to_char(t0.pincode), ''), '||||')), '[[:space:]]+', ' ')), ''), ''), nullif(nullif(trim(t0.policy_ref), ''), ''), nullif(nullif(trim(to_char(t0.contract_id)), ''), ''))) is not null
 
     union all
 
@@ -68,7 +68,7 @@ with merged as (
         nullif(nullif('DEALER:' || nullif(trim(t0.dealer_code), ''), 'DEALER:'), '') as DISTRIBUTION_CHANNEL_BK,
         null,
         nullif(nullif(trim(t0.outlet_code), ''), '') as ORG_UNIT_BK,
-        nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), md5(normalise(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||'))))), '') as PARTY_BK,
+        nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||')), '[[:space:]]+', ' ')), '')), '') as PARTY_BK,
         nullif(nullif(trim(t0.motor_policy_no), ''), '') as POLICY_BK,
         nullif(coalesce(nullif(trim(t0.vehicle_reg_no), ''), nullif(trim(t0.equipment_serial_no), '')), '') as RISK_OBJECT_BK,
         1 as __LNK_AGREEMENT_CHANNEL,
@@ -91,7 +91,7 @@ with merged as (
         1 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_motor__bjaz_mot_war_child_dtls') }} t0
-    where (coalesce(nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), md5(normalise(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||'))))), ''), nullif(coalesce(nullif(trim(t0.vehicle_reg_no), ''), nullif(trim(t0.equipment_serial_no), '')), ''), nullif(nullif('DEALER:' || nullif(trim(t0.dealer_code), ''), 'DEALER:'), ''), nullif(nullif(trim(t0.motor_policy_no), ''), ''), nullif(nullif(trim(t0.outlet_code), ''), ''), nullif(nullif(trim(to_char(t0.contract_id)), ''), ''))) is not null
+    where (coalesce(nullif(coalesce(nullif(trim(t0.pan_no), ''), nullif(trim(t0.gst_no), ''), nullif(trim(regexp_replace(upper(nullif(coalesce(t0.customer_name, '') || '|' || coalesce(to_char(t0.mobile_no), '') || '|' || coalesce(t0.email_id, ''), '||')), '[[:space:]]+', ' ')), '')), ''), nullif(coalesce(nullif(trim(t0.vehicle_reg_no), ''), nullif(trim(t0.equipment_serial_no), '')), ''), nullif(nullif('DEALER:' || nullif(trim(t0.dealer_code), ''), 'DEALER:'), ''), nullif(nullif(trim(t0.motor_policy_no), ''), ''), nullif(nullif(trim(t0.outlet_code), ''), ''), nullif(nullif(trim(to_char(t0.contract_id)), ''), ''))) is not null
 
     union all
 
