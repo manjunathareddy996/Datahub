@@ -4,7 +4,7 @@ Data Vault 2.0 build for Maximus Motor (the shredded EAV UWR and CLM feeds), on 
 [AutomateDV](https://automate-dv.readthedocs.io/) (`Datavault-UK/automate_dv`). It follows
 [`partner_dv_dbt/`](../partner_dv_dbt/README.md) and [`travel_dv_dbt/`](../travel_dv_dbt/README.md)
 exactly, in the same layout as health v5, Maximus Health v4 and OPUS Motor v3. It is built from
-**exactly the mapping `motor_maximus_dv_dbt` was built from**.
+**exactly the mapping `maximus_motor_dv_dbt` was built from**.
 
 **Status: not yet `dbt deps`'d or run against Snowflake.** Every model is generated and verified
 statically. Model counts, coverage, verification outcomes and the tree digest are in
@@ -12,10 +12,10 @@ statically. Model counts, coverage, verification outcomes and the tree digest ar
 
 ## Why v2 exists
 
-`motor_maximus_dv_dbt` hand-wrote every hub, link, satellite and hash. It called no AutomateDV
+`maximus_motor_dv_dbt` hand-wrote every hub, link, satellite and hash. It called no AutomateDV
 macro and declared no packages, and spread its vault over `hub_feeds`, `proposed`, `reject_log` and
 `assertions` layers. v2 puts the vault on the macros, in the reference layout, under the governing
-central-view rule. `motor_maximus_dv_dbt` is left untouched.
+central-view rule. `maximus_motor_dv_dbt` is left untouched.
 
 ## Source documents
 
@@ -98,8 +98,8 @@ Edited in place; the generators were not changed and are not to be run (they rew
 The sections above describe the tree as generated, before this round.
 
 - Setup: `dbt_packages/` (automate_dv 0.11.5, dbt_utils) and `macros/` copied from `opus_partner_dv_dbt`;
-  `packages.yml` uses the local copies (no `dbt deps`); `profiles.yml` (profile `motor_maximus_dbt`);
-  `dbt_project.yml` rebuilt from the partner template (project `motor_maximus_dv_dbt`, every layer in
+  `packages.yml` uses the local copies (no `dbt deps`); `profiles.yml` (profile `maximus_motor_dbt`);
+  `dbt_project.yml` rebuilt from the partner template (project `maximus_motor_dv_dbt`, every layer in
   `BGIL_DATA_MODEL`, tags, run-log hooks, `append_new_columns`). `models/automate_dv/` is now `models/raw_vault/`.
 - Raw source: `BAGIC_PROD_MIRROR_DB.MAXI_RAW` (vars `maximus_motor_raw_*`), as maximus_partner and maximus_travel.
 - stg1: `"REC_REFRESH_AT"::timestamp_ntz as rec_refresh_at` in all 104 models, the maximus_partner cast.
@@ -118,3 +118,5 @@ The sections above describe the tree as generated, before this round.
 - RECORD_SOURCE carries the source system: `'!MAXIMUS_stitch_mxm__vNN_<entity>'` (opus motor: `'!OPUS_stitch_motor__...'`).
 - Satellites compare only against maximus motor's own rows in shared tables: each satellite stage outputs
   `SOURCE_SYSTEM: '!MAXIMUS_MOTOR'` and all 279 satellites use `src_pk: ['<X>_HKEY', 'SOURCE_SYSTEM']`.
+- Folder, dbt project and profile renamed to `maximus_motor_dv_dbt` / `maximus_motor_dbt` (was motor_maximus_*),
+  matching opus_motor_dv_dbt. No model names changed.

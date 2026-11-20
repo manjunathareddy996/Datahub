@@ -194,7 +194,7 @@ generators would emit.
 ## Round 4 (2026-11-19): LOB in augmented satellite names
 
 - The 117 augmented satellites are renamed `sat_aug_<name>` -> `sat_motor_aug_<name>` (rule: `sat_<lob>_aug_<name>`),
-  so motor's augmented tables no longer share a physical table with health, travel or partner. motor_maximus_dv_dbt
+  so motor's augmented tables no longer share a physical table with health, travel or partner. maximus_motor_dv_dbt
   uses the same names, so the two motor projects share them. Comments naming the satellites were updated; no SQL changed
   (nothing refs a satellite). Standard satellites, hubs and links keep their shared names. build_artifacts/ still shows
   the generated names. Recorded in .kiro/steering/modeller-learnings.md (overrides utils/skill.md's no-LOB rule).
@@ -213,7 +213,7 @@ generators would emit.
 ## Round 6 (2026-11-19): source system in RECORD_SOURCE
 
 - All 272 stages: `RECORD_SOURCE: '!stitch_motor__vNN_<entity>'` -> `'!OPUS_stitch_motor__vNN_<entity>'`: the view
-  name is kept and the source system is prefixed (motor_maximus_dv_dbt uses `'!MAXIMUS_stitch_mxm__vNN_...'`), so opus
+  name is kept and the source system is prefixed (maximus_motor_dv_dbt uses `'!MAXIMUS_stitch_mxm__vNN_...'`), so opus
   and maximus rows are told apart and validation filters on `OPUS_` / `MAXIMUS_` include motor.
 - Rows loaded before this keep the old value (hubs/links insert only new keys):
   analyses/cleanup_old_record_source.sql counts and deletes motor's own old rows, then re-run the layer.
@@ -224,6 +224,6 @@ generators would emit.
   per key from ANY project. Each satellite stage now outputs `SOURCE_SYSTEM: '!OPUS_MOTOR'` and every satellite uses
   `src_pk: ['<X>_HKEY', 'SOURCE_SYSTEM']` (AutomateDV's composite-key support, no new macro). The latest-row lookup,
   apply_source_filter and the HASHDIFF comparison then run per (key, SOURCE_SYSTEM). Other projects' rows have
-  SOURCE_SYSTEM NULL and are never matched. motor_maximus_dv_dbt uses '!MAXIMUS_MOTOR'.
+  SOURCE_SYSTEM NULL and are never matched. maximus_motor_dv_dbt uses '!MAXIMUS_MOTOR'.
 - Not `RECORD_SOURCE` itself: it is already src_source, and listing it twice makes AutomateDV emit a trailing comma.
 - Hubs and links are unchanged. Satellites loaded before this need motor's rows deleted and reloaded.

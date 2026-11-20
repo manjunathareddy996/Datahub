@@ -1,4 +1,4 @@
-motor_maximus_dbt:
+maximus_motor_dbt:
   target: dev            # default
   outputs:
     dev:
