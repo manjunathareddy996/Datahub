@@ -20,7 +20,8 @@ derived_columns:
   TASK_STATUS: 'CASE_WORKFLOW_TASK__TASK_STATUS'
   TASK_TYPE: 'CASE_WORKFLOW_TASK__TASK_TYPE'
   LOAD_DATETIME: 'CASE_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v02_case'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v02_case'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

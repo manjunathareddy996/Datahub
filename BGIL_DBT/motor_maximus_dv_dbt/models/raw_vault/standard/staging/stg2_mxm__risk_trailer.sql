@@ -24,7 +24,8 @@ derived_columns:
   TRAILER_REGISTRATION_NUMBER: 'RISK_TRAILER__TRAILER_REGISTRATION_NUMBER'
   TRAILER_SUM_INSURED: 'RISK_TRAILER__TRAILER_SUM_INSURED'
   LOAD_DATETIME: 'RISK_OBJECT_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v15_risk_object'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v15_risk_object'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

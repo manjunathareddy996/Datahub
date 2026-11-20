@@ -58,7 +58,8 @@ derived_columns:
   SERVICING_ORG_UNIT_CODE: 'POLICY_HEADER__SERVICING_ORG_UNIT_CODE'
   SUM_INSURED_TOTAL: 'POLICY_HEADER__SUM_INSURED_TOTAL'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v14_risk_object'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v14_risk_object'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

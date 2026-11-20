@@ -14,7 +14,8 @@ derived_columns:
   PARTY_NK: "case when PARTY_MARKETING__CAMPAIGN_REFERENCE is not null then 'HUB_PARTY|' || PARTY_BK end"
   CAMPAIGN_REFERENCE: 'PARTY_MARKETING__CAMPAIGN_REFERENCE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v12_policy'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v12_policy'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

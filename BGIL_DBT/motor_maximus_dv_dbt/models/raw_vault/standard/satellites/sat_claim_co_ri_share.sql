@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm__claim_co_ri_share'
-src_pk: 'CLAIM_HKEY'
+src_pk:
+  - 'CLAIM_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'CO_INSURANCE_OUR_SHARE_PERCENTAGE'
   - 'EXPENSE_SHARE_AMOUNT'

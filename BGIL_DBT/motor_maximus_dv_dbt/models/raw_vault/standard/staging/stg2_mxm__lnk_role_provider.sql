@@ -18,7 +18,8 @@ derived_columns:
   SERVICE_REGION: 'LNK_ROLE_PROVIDER__SERVICE_REGION'
   SERVICE_SCOPE_DESCRIPTION: 'LNK_ROLE_PROVIDER__SERVICE_SCOPE_DESCRIPTION'
   LOAD_DATETIME: 'PARTY_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v09_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v09_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

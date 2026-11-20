@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__common_communication_preference'
-src_pk: 'PARTY_HKEY'
+src_pk:
+  - 'PARTY_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'COMMUNICATION_AND_LANGUAGE_PREFERENCE_TEXT'
   - 'PREFERRED_ALERT_CHANNEL_CODE'

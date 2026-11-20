@@ -24,7 +24,8 @@ derived_columns:
   TRANSFER_CASE_REFERENCE: 'AUG_PARTY_HIERARCHY__TRANSFER_CASE_REFERENCE'
   TRANSFER_INDICATOR: 'AUG_PARTY_HIERARCHY__TRANSFER_INDICATOR'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v09_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v09_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

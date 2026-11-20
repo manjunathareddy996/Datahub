@@ -16,7 +16,8 @@ derived_columns:
   OPTION_CODE_CK: 'QUOTE_COMPARISON__OPTION_CODE_CK'
   SELECTED_INDICATOR: 'QUOTE_COMPARISON__SELECTED_INDICATOR'
   LOAD_DATETIME: 'QUOTE_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v09_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v09_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

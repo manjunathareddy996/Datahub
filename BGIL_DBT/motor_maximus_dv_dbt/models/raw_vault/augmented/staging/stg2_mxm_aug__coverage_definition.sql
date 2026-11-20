@@ -24,7 +24,8 @@ derived_columns:
   FACULTATIVE_REINSURANCE_INDICATOR: 'AUG_COVERAGE_DEFINITION__FACULTATIVE_REINSURANCE_INDICATOR'
   LEADING_COVERAGE_INDICATOR: 'AUG_COVERAGE_DEFINITION__LEADING_COVERAGE_INDICATOR'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v07_financial_transaction'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v07_financial_transaction'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

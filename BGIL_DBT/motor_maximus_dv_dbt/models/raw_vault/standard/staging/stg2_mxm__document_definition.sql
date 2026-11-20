@@ -20,7 +20,8 @@ derived_columns:
   ISSUE_DATE: 'DOCUMENT_DEFINITION__ISSUE_DATE'
   RECEIVED_DATE: 'DOCUMENT_DEFINITION__RECEIVED_DATE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v06_document'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v06_document'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

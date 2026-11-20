@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__party_fraud_profile'
-src_pk: 'PARTY_HKEY'
+src_pk:
+  - 'PARTY_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'NON_DISCLOSURE_ACTION_INITIATED_INDICATOR'
 src_hashdiff: 'HASHDIFF'

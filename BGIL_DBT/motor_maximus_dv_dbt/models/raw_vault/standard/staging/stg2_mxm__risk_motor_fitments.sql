@@ -18,7 +18,8 @@ derived_columns:
   SEQUENCE_CK: 'RISK_MOTOR_FITMENTS__SEQUENCE_CK'
   FITMENT_DESCRIPTION: 'RISK_MOTOR_FITMENTS__FITMENT_DESCRIPTION'
   LOAD_DATETIME: 'RISK_OBJECT_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v01_assessment'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v01_assessment'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

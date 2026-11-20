@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__coverage_motor_pa_occupant'
-src_pk: 'COVERAGE_HKEY'
+src_pk:
+  - 'COVERAGE_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'OCCUPANT_PERSON_DETAIL_TEXT'
 src_hashdiff: 'HASHDIFF'

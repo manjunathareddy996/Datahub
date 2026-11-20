@@ -26,7 +26,8 @@ derived_columns:
   LICENCE_EXPIRY_DATE: 'LNK_ROLE_AGENT__LICENCE_EXPIRY_DATE'
   LICENCE_ISSUE_DATE: 'LNK_ROLE_AGENT__LICENCE_ISSUE_DATE'
   LOAD_DATETIME: 'PARTY_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v09_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v09_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

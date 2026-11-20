@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__lnk_party_role_core'
-src_pk: 'PARTY_HKEY'
+src_pk:
+  - 'PARTY_HKEY'
+  - 'SOURCE_SYSTEM'
 src_cdk:
   - 'ROLE_CODE_CK'
   - 'ROLE_SEQUENCE_CK'

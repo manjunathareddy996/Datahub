@@ -20,7 +20,8 @@ derived_columns:
   TAX_HEAD_CODE: 'POLICY_TAX_HEAD__TAX_HEAD_CODE'
   TAX_RATE: 'POLICY_TAX_HEAD__TAX_RATE'
   LOAD_DATETIME: 'POLICY_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v13_policy'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v13_policy'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

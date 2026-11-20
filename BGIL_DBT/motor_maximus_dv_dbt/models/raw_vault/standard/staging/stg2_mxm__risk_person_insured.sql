@@ -14,7 +14,8 @@ derived_columns:
   RISK_OBJECT_NK: "case when RISK_PERSON_INSURED__INSURED_MEMBER_NAME is not null then 'HUB_RISK_OBJECT|' || RISK_OBJECT_BK end"
   INSURED_MEMBER_NAME: 'RISK_PERSON_INSURED__INSURED_MEMBER_NAME'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v12_policy'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v12_policy'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

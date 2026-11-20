@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__assessment_header'
-src_pk: 'ASSESSMENT_HKEY'
+src_pk:
+  - 'ASSESSMENT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'AI_ASSESSMENT_STATUS'
   - 'ASSESSMENT_END_TIME'

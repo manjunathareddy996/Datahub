@@ -26,7 +26,8 @@ derived_columns:
   PER_PERSON_LIMIT: 'COVERAGE_LIMITS__PER_PERSON_LIMIT'
   VOLUNTARY_DEDUCTIBLE_AMOUNT: 'COVERAGE_LIMITS__VOLUNTARY_DEDUCTIBLE_AMOUNT'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v01_assessment'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v01_assessment'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

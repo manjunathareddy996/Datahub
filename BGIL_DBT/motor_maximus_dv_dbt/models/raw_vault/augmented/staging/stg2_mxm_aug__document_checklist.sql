@@ -34,7 +34,8 @@ derived_columns:
   SECOND_REMINDER_DATE: 'AUG_DOCUMENT_CHECKLIST__SECOND_REMINDER_DATE'
   THIRD_REMINDER_DATE: 'AUG_DOCUMENT_CHECKLIST__THIRD_REMINDER_DATE'
   LOAD_DATETIME: 'DOCUMENT_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v06_document'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v06_document'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

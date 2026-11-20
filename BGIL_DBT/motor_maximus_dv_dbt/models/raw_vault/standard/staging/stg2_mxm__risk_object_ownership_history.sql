@@ -18,7 +18,8 @@ derived_columns:
   OWNERSHIP_FROM_DATE: 'RISK_OBJECT_OWNERSHIP_HISTORY__OWNERSHIP_FROM_DATE'
   OWNER_SEQUENCE: 'RISK_OBJECT_OWNERSHIP_HISTORY__OWNER_SEQUENCE'
   LOAD_DATETIME: 'RISK_OBJECT_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v14_risk_object'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v14_risk_object'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

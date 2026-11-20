@@ -5,7 +5,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm__coverage_definition'
-src_pk: 'COVERAGE_HKEY'
+src_pk:
+  - 'COVERAGE_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'COVERAGE_DISPLAY_NAME'
   - 'COVERAGE_NAME'

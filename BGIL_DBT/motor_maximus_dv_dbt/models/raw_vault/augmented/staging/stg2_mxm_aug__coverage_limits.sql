@@ -26,7 +26,8 @@ derived_columns:
   DAILY_ALLOWANCE_LIMIT: 'AUG_COVERAGE_LIMITS__DAILY_ALLOWANCE_LIMIT'
   LIMIT_AMOUNT_IN_USD: 'AUG_COVERAGE_LIMITS__LIMIT_AMOUNT_IN_USD'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v01_assessment'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v01_assessment'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

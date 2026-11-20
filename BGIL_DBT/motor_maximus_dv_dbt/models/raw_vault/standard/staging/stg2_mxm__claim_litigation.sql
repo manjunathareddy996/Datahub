@@ -18,7 +18,8 @@ derived_columns:
   COURT_NAME: 'CLAIM_LITIGATION__COURT_NAME'
   COURT_TYPE: 'CLAIM_LITIGATION__COURT_TYPE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v04_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v04_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

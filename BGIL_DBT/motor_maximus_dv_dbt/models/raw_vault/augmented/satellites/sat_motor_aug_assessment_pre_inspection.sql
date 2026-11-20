@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__assessment_pre_inspection'
-src_pk: 'ASSESSMENT_HKEY'
+src_pk:
+  - 'ASSESSMENT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'IMPOSED_EXCESS_AMOUNT'
   - 'IMPOSED_EXCESS_INDICATOR'

@@ -46,7 +46,8 @@ derived_columns:
   NET_HEAD_PREMIUM_IN_BASE_CURRENCY: 'AUG_QUOTE_PREMIUM_HEAD__NET_HEAD_PREMIUM_IN_BASE_CURRENCY'
   PREMIUM_RATE_APPLIED: 'AUG_QUOTE_PREMIUM_HEAD__PREMIUM_RATE_APPLIED'
   LOAD_DATETIME: 'QUOTE_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v01_assessment'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v01_assessment'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

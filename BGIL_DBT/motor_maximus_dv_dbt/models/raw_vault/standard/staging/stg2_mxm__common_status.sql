@@ -16,7 +16,8 @@ derived_columns:
   STATUS_CODE: 'COMMON_STATUS__STATUS_CODE'
   SUB_STATUS_CODE: 'COMMON_STATUS__SUB_STATUS_CODE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v14_risk_object'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v14_risk_object'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

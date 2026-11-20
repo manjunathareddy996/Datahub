@@ -14,7 +14,8 @@ derived_columns:
   POLICY_NK: "case when AUG_POLICY_LIFECYCLE__NEXT_ANNIVERSARY_DATE is not null then 'HUB_POLICY|' || POLICY_BK end"
   NEXT_ANNIVERSARY_DATE: 'AUG_POLICY_LIFECYCLE__NEXT_ANNIVERSARY_DATE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v12_policy'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v12_policy'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm__assessment_reinspection'
-src_pk: 'ASSESSMENT_HKEY'
+src_pk:
+  - 'ASSESSMENT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'RE_INSPECTION_DATE'
   - 'RE_INSPECTION_TIME'

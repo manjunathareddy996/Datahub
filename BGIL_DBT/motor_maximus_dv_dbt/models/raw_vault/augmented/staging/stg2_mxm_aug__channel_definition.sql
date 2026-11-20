@@ -16,7 +16,8 @@ derived_columns:
   NATIONAL_TIE_UP_DETAIL_TEXT: 'AUG_CHANNEL_DEFINITION__NATIONAL_TIE_UP_DETAIL_TEXT'
   SOLICITATION_TYPE: 'AUG_CHANNEL_DEFINITION__SOLICITATION_TYPE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v10_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v10_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

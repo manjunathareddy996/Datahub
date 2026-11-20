@@ -122,7 +122,8 @@ derived_columns:
   STATUS_CHANGE_DATE: 'AUG_CLAIM_HEADER__STATUS_CHANGE_DATE'
   TEAM_TRACKING_COMMENTS: 'AUG_CLAIM_HEADER__TEAM_TRACKING_COMMENTS'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v03_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v03_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

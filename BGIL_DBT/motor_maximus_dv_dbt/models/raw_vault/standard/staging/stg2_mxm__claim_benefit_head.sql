@@ -18,7 +18,8 @@ derived_columns:
   COVERAGE_REFERENCE: 'CLAIM_BENEFIT_HEAD__COVERAGE_REFERENCE'
   HEAD_DESCRIPTION: 'CLAIM_BENEFIT_HEAD__HEAD_DESCRIPTION'
   LOAD_DATETIME: 'CLAIM_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v04_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v04_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

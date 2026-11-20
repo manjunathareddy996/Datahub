@@ -18,7 +18,8 @@ derived_columns:
   CROSS_HOLD_COUNT: 'PARTY_PORTFOLIO_SUMMARY__CROSS_HOLD_COUNT'
   MOTOR_HOLDING_INDICATOR: 'PARTY_PORTFOLIO_SUMMARY__MOTOR_HOLDING_INDICATOR'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v04_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v04_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

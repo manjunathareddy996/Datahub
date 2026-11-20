@@ -18,7 +18,8 @@ derived_columns:
   ADDRESS_PROOF_TYPE: 'PARTY_CONTACT_ADDRESS_LINK__ADDRESS_PROOF_TYPE'
   ADDRESS_USAGE_TYPE: 'PARTY_CONTACT_ADDRESS_LINK__ADDRESS_USAGE_TYPE'
   LOAD_DATETIME: 'LOCATION_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v08_location'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v08_location'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

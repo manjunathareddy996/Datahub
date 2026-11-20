@@ -36,7 +36,8 @@ derived_columns:
   TDS_AMOUNT: 'FINTXN_TAX__TDS_AMOUNT'
   TDS_RATE: 'FINTXN_TAX__TDS_RATE'
   LOAD_DATETIME: 'FINANCIAL_TRANSACTION_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v07_financial_transaction'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v07_financial_transaction'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

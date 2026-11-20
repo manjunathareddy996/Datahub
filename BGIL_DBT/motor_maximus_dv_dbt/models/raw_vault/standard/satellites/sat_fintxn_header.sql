@@ -4,7 +4,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm__fintxn_header'
-src_pk: 'FINANCIAL_TRANSACTION_HKEY'
+src_pk:
+  - 'FINANCIAL_TRANSACTION_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'APPROVAL_STATUS'
   - 'GROSS_AMOUNT'

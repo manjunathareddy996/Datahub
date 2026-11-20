@@ -20,7 +20,8 @@ derived_columns:
   ROLE_CODE: 'LNK_PARTY_ROLE_CORE__ROLE_CODE'
   ROLE_START_DATE: 'LNK_PARTY_ROLE_CORE__ROLE_START_DATE'
   LOAD_DATETIME: 'PARTY_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v12_policy'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v12_policy'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

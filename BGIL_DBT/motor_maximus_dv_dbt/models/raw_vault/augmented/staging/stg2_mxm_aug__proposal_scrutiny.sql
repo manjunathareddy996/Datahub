@@ -14,7 +14,8 @@ derived_columns:
   PROPOSAL_NK: "case when AUG_PROPOSAL_SCRUTINY__BYPASSED_RULE_LIST is not null then 'HUB_PROPOSAL|' || PROPOSAL_BK end"
   BYPASSED_RULE_LIST: 'AUG_PROPOSAL_SCRUTINY__BYPASSED_RULE_LIST'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v12_policy'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v12_policy'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

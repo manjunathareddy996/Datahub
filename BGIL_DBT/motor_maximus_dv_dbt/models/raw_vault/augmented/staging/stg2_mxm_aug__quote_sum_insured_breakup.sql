@@ -18,7 +18,8 @@ derived_columns:
   HEAD_DESCRIPTION: 'AUG_QUOTE_SUM_INSURED_BREAKUP__HEAD_DESCRIPTION'
   SUM_INSURED_AMOUNT: 'AUG_QUOTE_SUM_INSURED_BREAKUP__SUM_INSURED_AMOUNT'
   LOAD_DATETIME: 'QUOTE_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v01_assessment'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v01_assessment'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

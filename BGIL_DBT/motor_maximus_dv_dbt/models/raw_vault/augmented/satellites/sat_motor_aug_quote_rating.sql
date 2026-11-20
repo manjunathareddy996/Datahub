@@ -7,7 +7,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__quote_rating'
-src_pk: 'QUOTE_HKEY'
+src_pk:
+  - 'QUOTE_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'ADMINISTRATIVE_FEE_AMOUNT'
   - 'ADMINISTRATIVE_FEE_WAIVED_INDICATOR'

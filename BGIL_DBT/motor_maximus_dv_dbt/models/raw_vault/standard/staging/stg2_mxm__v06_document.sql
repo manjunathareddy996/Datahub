@@ -15,7 +15,7 @@ derived_columns:
   DOCUMENT_NK: "'HUB_DOCUMENT|' || DOCUMENT_BK"
   CLAIM_DOCUMENT_NK: "case when __LNK_CLAIM_DOCUMENT = 1 then 'LNK_CLAIM_DOCUMENT|' || CLAIM_BK || '|' || DOCUMENT_BK end"
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v06_document'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v06_document'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -18,7 +18,8 @@ derived_columns:
   HEAD_DESCRIPTION: 'POLICY_SUM_INSURED_BREAKUP__HEAD_DESCRIPTION'
   SUM_INSURED_AMOUNT: 'POLICY_SUM_INSURED_BREAKUP__SUM_INSURED_AMOUNT'
   LOAD_DATETIME: 'POLICY_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v13_policy'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v13_policy'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

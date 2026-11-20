@@ -24,7 +24,8 @@ derived_columns:
   PRESENT_QUOTA_LIMIT: 'AUG_POLICY_TERMS__PRESENT_QUOTA_LIMIT'
   THIRD_PARTY_EXTENSION_DAYS: 'AUG_POLICY_TERMS__THIRD_PARTY_EXTENSION_DAYS'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v12_policy'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v12_policy'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

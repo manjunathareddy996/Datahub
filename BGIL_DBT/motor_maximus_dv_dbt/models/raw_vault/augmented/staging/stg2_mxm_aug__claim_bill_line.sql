@@ -20,7 +20,8 @@ derived_columns:
   LINE_PARTICULAR_CK: 'AUG_CLAIM_BILL_LINE__LINE_PARTICULAR_CK'
   LINE_PARTICULAR: 'AUG_CLAIM_BILL_LINE__LINE_PARTICULAR'
   LOAD_DATETIME: 'CLAIM_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v03_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v03_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -16,7 +16,8 @@ derived_columns:
   EMPLOYER_NAME: 'PARTY_EMPLOYMENT__EMPLOYER_NAME'
   EMPLOYMENT_STATUS: 'PARTY_EMPLOYMENT__EMPLOYMENT_STATUS'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v09_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v09_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

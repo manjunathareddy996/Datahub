@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__coverage_limits'
-src_pk: 'COVERAGE_HKEY'
+src_pk:
+  - 'COVERAGE_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'BENEFIT_PERIOD'
   - 'CLAIM_REGISTRATION_COUNT_LIMIT'

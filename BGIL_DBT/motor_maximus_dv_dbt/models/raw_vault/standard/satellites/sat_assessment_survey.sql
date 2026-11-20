@@ -4,7 +4,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm__assessment_survey'
-src_pk: 'ASSESSMENT_HKEY'
+src_pk:
+  - 'ASSESSMENT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'FINAL_SURVEY_INDICATOR'
   - 'FINAL_VISIT_DATE'

@@ -18,7 +18,8 @@ derived_columns:
   GOODWILL_INDICATOR: 'CLAIM_DEDUCTION_WAIVER__GOODWILL_INDICATOR'
   WAIVER_INDICATOR: 'CLAIM_DEDUCTION_WAIVER__WAIVER_INDICATOR'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v01_assessment'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v01_assessment'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

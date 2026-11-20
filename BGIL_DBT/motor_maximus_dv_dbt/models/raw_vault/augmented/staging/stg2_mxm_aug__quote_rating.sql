@@ -150,7 +150,8 @@ derived_columns:
   UNDERWRITER_IMPOSED_EXCESS_AMOUNT: 'AUG_QUOTE_RATING__UNDERWRITER_IMPOSED_EXCESS_AMOUNT'
   UTGST_AMOUNT: 'AUG_QUOTE_RATING__UTGST_AMOUNT'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v11_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v11_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

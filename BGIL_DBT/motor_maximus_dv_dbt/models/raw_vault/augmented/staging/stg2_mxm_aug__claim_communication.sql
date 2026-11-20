@@ -36,7 +36,8 @@ derived_columns:
   SENDER_NAME: 'AUG_CLAIM_COMMUNICATION__SENDER_NAME'
   SENT_TO_NAME: 'AUG_CLAIM_COMMUNICATION__SENT_TO_NAME'
   LOAD_DATETIME: 'CLAIM_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v04_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v04_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

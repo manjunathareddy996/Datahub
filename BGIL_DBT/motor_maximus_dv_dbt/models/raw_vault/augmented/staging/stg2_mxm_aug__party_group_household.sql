@@ -14,7 +14,8 @@ derived_columns:
   PARTY_NK: "case when AUG_PARTY_GROUP_HOUSEHOLD__MEMBER_TYPE is not null then 'HUB_PARTY|' || PARTY_BK end"
   MEMBER_TYPE: 'AUG_PARTY_GROUP_HOUSEHOLD__MEMBER_TYPE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v09_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v09_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

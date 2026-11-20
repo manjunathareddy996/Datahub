@@ -16,7 +16,8 @@ derived_columns:
   EFFECTIVE_DATE: 'COMMON_LIFECYCLE__EFFECTIVE_DATE'
   EXPIRY_DATE: 'COMMON_LIFECYCLE__EXPIRY_DATE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v12_policy'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v12_policy'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -16,7 +16,8 @@ derived_columns:
   DOCUMENT_QR_CODE: 'AUG_POLICY_DELIVERY__DOCUMENT_QR_CODE'
   PROOF_OF_DELIVERY_DETAILS: 'AUG_POLICY_DELIVERY__PROOF_OF_DELIVERY_DETAILS'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v12_policy'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v12_policy'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

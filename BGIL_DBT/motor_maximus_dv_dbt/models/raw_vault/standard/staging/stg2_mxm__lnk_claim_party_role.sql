@@ -20,7 +20,8 @@ derived_columns:
   PARTY_ROLE_TYPE: 'LNK_CLAIM_PARTY_ROLE__PARTY_ROLE_TYPE'
   ROLE_CATEGORY: 'LNK_CLAIM_PARTY_ROLE__ROLE_CATEGORY'
   LOAD_DATETIME: 'CLAIM_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v03_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v03_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

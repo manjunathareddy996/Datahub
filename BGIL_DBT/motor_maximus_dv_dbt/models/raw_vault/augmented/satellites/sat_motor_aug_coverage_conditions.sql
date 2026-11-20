@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__coverage_conditions'
-src_pk: 'COVERAGE_HKEY'
+src_pk:
+  - 'COVERAGE_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'CONDITIONAL_SECTION_REFERENCE'
   - 'GEOGRAPHICAL_EXTENSION_CODE'

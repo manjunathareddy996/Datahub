@@ -20,7 +20,8 @@ derived_columns:
   EXCESS_WAIVED_INDICATOR: 'AUG_CLAIM_EXCESS_HEAD__EXCESS_WAIVED_INDICATOR'
   EXCESS_WAIVER_REASON: 'AUG_CLAIM_EXCESS_HEAD__EXCESS_WAIVER_REASON'
   LOAD_DATETIME: 'CLAIM_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v09_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v09_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

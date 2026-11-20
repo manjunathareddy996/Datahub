@@ -38,7 +38,8 @@ derived_columns:
   PREMIUM_ADJUSTMENT_TYPE: 'AUG_POLICY_PREMIUM_HEAD__PREMIUM_ADJUSTMENT_TYPE'
   PREMIUM_RATE_APPLIED: 'AUG_POLICY_PREMIUM_HEAD__PREMIUM_RATE_APPLIED'
   LOAD_DATETIME: 'POLICY_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v07_financial_transaction'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v07_financial_transaction'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

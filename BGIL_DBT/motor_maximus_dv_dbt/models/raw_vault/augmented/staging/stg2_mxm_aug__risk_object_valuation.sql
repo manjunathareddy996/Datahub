@@ -14,7 +14,8 @@ derived_columns:
   RISK_OBJECT_NK: "case when AUG_RISK_OBJECT_VALUATION__EXCHANGE_RATE is not null then 'HUB_RISK_OBJECT|' || RISK_OBJECT_BK end"
   EXCHANGE_RATE: 'AUG_RISK_OBJECT_VALUATION__EXCHANGE_RATE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v14_risk_object'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v14_risk_object'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

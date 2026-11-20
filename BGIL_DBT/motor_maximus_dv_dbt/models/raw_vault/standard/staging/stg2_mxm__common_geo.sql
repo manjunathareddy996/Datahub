@@ -18,7 +18,8 @@ derived_columns:
   LONGITUDE: 'COMMON_GEO__LONGITUDE'
   ZONE_CODE: 'COMMON_GEO__ZONE_CODE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v08_location'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v08_location'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

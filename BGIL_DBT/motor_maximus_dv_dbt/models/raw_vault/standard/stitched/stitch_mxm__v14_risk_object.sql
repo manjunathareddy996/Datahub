@@ -734,7 +734,7 @@ with merged as (
         null, null,
         nullif(nullif(trim(t0.document_id),''), '') as DOCUMENT_BK,
         null,
-        nullif(md5(normalise(upper(nullif(trim(coalesce(t0.addr1,'') || '|' || coalesce(t0.addr2,'') || '|' || coalesce(t0.addr3,'') || '|' || coalesce(t0.city_code,'') || '|' || coalesce(t0.state_code,'') || '|' || coalesce(t0.postal_code,'') || '|' || coalesce(t0.country_code,'')), '||||||')))), '') as LOCATION_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(trim(coalesce(t0.addr1,'') || '|' || coalesce(t0.addr2,'') || '|' || coalesce(t0.addr3,'') || '|' || coalesce(t0.city_code,'') || '|' || coalesce(t0.state_code,'') || '|' || coalesce(t0.postal_code,'') || '|' || coalesce(t0.country_code,'')), '||||||')), '[[:space:]]+', ' ')), ''), '') as LOCATION_BK,
         null,
         nullif(nullif(trim(t0.party_code),''), '') as PARTY_BK,
         nullif(nullif(trim(t0.policy_id),''), '') as POLICY_BK,
@@ -773,7 +773,7 @@ with merged as (
         hash(t0.*) as __RID
     from {{ ref('stg_mxm__uwr_quote_param_dtls_risk_list') }} t0
     left join {{ ref('stg_mxm__uwr_quote_param_dtls') }} j1 on j1.KEY_HASH = t0.PARENT_KEY_HASH
-    where (coalesce(nullif(md5(normalise(upper(nullif(trim(coalesce(t0.addr1,'') || '|' || coalesce(t0.addr2,'') || '|' || coalesce(t0.addr3,'') || '|' || coalesce(t0.city_code,'') || '|' || coalesce(t0.state_code,'') || '|' || coalesce(t0.postal_code,'') || '|' || coalesce(t0.country_code,'')), '||||||')))), ''), nullif(nullif(trim(j1.policy_quote_number),''), ''), nullif(nullif(trim(t0.document_id),''), ''), nullif(nullif(trim(t0.party_code),''), ''), nullif(nullif(trim(t0.pol_risk_id),''), ''), nullif(nullif(trim(t0.policy_id),''), ''))) is not null
+    where (coalesce(nullif(nullif(trim(regexp_replace(upper(nullif(trim(coalesce(t0.addr1,'') || '|' || coalesce(t0.addr2,'') || '|' || coalesce(t0.addr3,'') || '|' || coalesce(t0.city_code,'') || '|' || coalesce(t0.state_code,'') || '|' || coalesce(t0.postal_code,'') || '|' || coalesce(t0.country_code,'')), '||||||')), '[[:space:]]+', ' ')), ''), ''), nullif(nullif(trim(j1.policy_quote_number),''), ''), nullif(nullif(trim(t0.document_id),''), ''), nullif(nullif(trim(t0.party_code),''), ''), nullif(nullif(trim(t0.pol_risk_id),''), ''), nullif(nullif(trim(t0.policy_id),''), ''))) is not null
 
     union all
 

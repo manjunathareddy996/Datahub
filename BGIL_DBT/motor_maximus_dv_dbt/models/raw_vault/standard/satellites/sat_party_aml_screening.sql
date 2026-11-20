@@ -4,7 +4,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm__party_aml_screening'
-src_pk: 'PARTY_HKEY'
+src_pk:
+  - 'PARTY_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'SCREENING_STATUS'
 src_hashdiff: 'HASHDIFF'

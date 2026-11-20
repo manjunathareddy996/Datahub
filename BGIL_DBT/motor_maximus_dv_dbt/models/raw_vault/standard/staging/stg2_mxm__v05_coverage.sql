@@ -10,7 +10,7 @@ derived_columns:
   COVERAGE_BK: 'COVERAGE_BK'
   COVERAGE_NK: "'HUB_COVERAGE|' || COVERAGE_BK"
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v05_coverage'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v05_coverage'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

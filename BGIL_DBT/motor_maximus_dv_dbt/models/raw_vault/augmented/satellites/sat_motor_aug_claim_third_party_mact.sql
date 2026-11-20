@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__claim_third_party_mact'
-src_pk: 'CLAIM_HKEY'
+src_pk:
+  - 'CLAIM_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'FIXED_DEPOSIT_RECEIPT_FAVOURING_NAME'
   - 'FIXED_DEPOSIT_RECEIPT_TENURE'

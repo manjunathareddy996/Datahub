@@ -40,7 +40,7 @@ derived_columns:
   POLICY_PRODUCT_NK: "case when __LNK_POLICY_PRODUCT = 1 then 'LNK_POLICY_PRODUCT|' || POLICY_BK || '|' || PRODUCT_BK end"
   POLICY_RISK_OBJECT_NK: "case when __LNK_POLICY_RISK_OBJECT = 1 then 'LNK_POLICY_RISK_OBJECT|' || POLICY_BK || '|' || RISK_OBJECT_BK end"
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v04_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v04_claim'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

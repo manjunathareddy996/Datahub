@@ -34,7 +34,8 @@ derived_columns:
   TRANSACTION_SUB_TYPE: 'FINTXN_HEADER__TRANSACTION_SUB_TYPE'
   TRANSACTION_TYPE: 'FINTXN_HEADER__TRANSACTION_TYPE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v07_financial_transaction'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v07_financial_transaction'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -16,7 +16,8 @@ derived_columns:
   BONUS_AMOUNT: 'POLICY_BONUS_TRACKING__BONUS_AMOUNT'
   NCB_PERCENTAGE: 'POLICY_BONUS_TRACKING__NCB_PERCENTAGE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v04_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v04_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

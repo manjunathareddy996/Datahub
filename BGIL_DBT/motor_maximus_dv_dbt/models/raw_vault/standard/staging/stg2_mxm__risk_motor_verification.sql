@@ -14,7 +14,8 @@ derived_columns:
   RISK_OBJECT_NK: "case when RISK_MOTOR_VERIFICATION__RC_VERIFICATION_STATUS is not null then 'HUB_RISK_OBJECT|' || RISK_OBJECT_BK end"
   RC_VERIFICATION_STATUS: 'RISK_MOTOR_VERIFICATION__RC_VERIFICATION_STATUS'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v09_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v09_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

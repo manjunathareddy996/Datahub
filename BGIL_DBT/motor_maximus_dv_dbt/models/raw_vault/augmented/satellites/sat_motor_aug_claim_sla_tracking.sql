@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__claim_sla_tracking'
-src_pk: 'CLAIM_HKEY'
+src_pk:
+  - 'CLAIM_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'ADMISSIBILITY_DELAY_INDICATOR'
   - 'ADMISSIBILITY_DELAY_REMARKS'

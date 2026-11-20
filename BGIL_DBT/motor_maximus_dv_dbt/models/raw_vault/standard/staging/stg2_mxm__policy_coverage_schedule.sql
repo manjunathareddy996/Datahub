@@ -30,7 +30,8 @@ derived_columns:
   PREMIUM_FOR_COVERAGE: 'POLICY_COVERAGE_SCHEDULE__PREMIUM_FOR_COVERAGE'
   SUM_INSURED: 'POLICY_COVERAGE_SCHEDULE__SUM_INSURED'
   LOAD_DATETIME: 'POLICY_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v13_policy'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v13_policy'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

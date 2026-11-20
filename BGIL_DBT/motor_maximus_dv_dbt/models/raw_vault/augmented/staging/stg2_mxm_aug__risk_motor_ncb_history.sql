@@ -96,7 +96,8 @@ derived_columns:
   TOTAL_LOSS_RATIO: 'AUG_RISK_MOTOR_NCB_HISTORY__TOTAL_LOSS_RATIO'
   USER_ENTERED_RELATED_POLICY_NUMBER: 'AUG_RISK_MOTOR_NCB_HISTORY__USER_ENTERED_RELATED_POLICY_NUMBER'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v15_risk_object'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v15_risk_object'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

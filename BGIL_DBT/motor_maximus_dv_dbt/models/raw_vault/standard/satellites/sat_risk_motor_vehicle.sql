@@ -16,7 +16,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm__risk_motor_vehicle'
-src_pk: 'RISK_OBJECT_HKEY'
+src_pk:
+  - 'RISK_OBJECT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'ANTI_THEFT_DEVICE_INDICATOR'
   - 'BATTERY_CAPACITY'

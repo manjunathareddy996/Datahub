@@ -42,7 +42,8 @@ derived_columns:
   FRAUD_TRIGGER_TYPE: 'AUG_CLAIM_FRAUD__FRAUD_TRIGGER_TYPE'
   NON_DISCLOSURE_FINDING: 'AUG_CLAIM_FRAUD__NON_DISCLOSURE_FINDING'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v03_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v03_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

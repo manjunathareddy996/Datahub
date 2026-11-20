@@ -16,7 +16,8 @@ derived_columns:
   REOPEN_DATE_CK: 'AUG_CLAIM_REOPEN__REOPEN_DATE_CK'
   REOPEN_REASON: 'AUG_CLAIM_REOPEN__REOPEN_REASON'
   LOAD_DATETIME: 'CLAIM_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v03_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v03_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -16,7 +16,8 @@ derived_columns:
   PARAMETER_REFERENCE_CK: 'AUG_COVERAGE_PARAMETER__PARAMETER_REFERENCE_CK'
   BUSINESS_EVENT_CODE: 'AUG_COVERAGE_PARAMETER__BUSINESS_EVENT_CODE'
   LOAD_DATETIME: 'COVERAGE_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v05_coverage'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v05_coverage'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

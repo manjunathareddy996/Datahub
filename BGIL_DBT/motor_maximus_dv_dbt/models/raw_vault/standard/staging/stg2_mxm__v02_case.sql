@@ -10,7 +10,7 @@ derived_columns:
   CASE_BK: 'CASE_BK'
   CASE_NK: "'HUB_CASE|' || CASE_BK"
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v02_case'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v02_case'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

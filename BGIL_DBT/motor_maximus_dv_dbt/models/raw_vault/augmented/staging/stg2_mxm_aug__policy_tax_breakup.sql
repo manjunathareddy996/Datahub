@@ -32,7 +32,8 @@ derived_columns:
   TOTAL_TAX_AMOUNT: 'AUG_POLICY_TAX_BREAKUP__TOTAL_TAX_AMOUNT'
   UTGST_AMOUNT: 'AUG_POLICY_TAX_BREAKUP__UTGST_AMOUNT'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v12_policy'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v12_policy'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

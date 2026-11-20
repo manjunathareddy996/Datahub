@@ -18,7 +18,8 @@ derived_columns:
   EXCESS_AMOUNT: 'AUG_QUOTE_EXCESS_STRUCTURE__EXCESS_AMOUNT'
   EXCESS_TYPE: 'AUG_QUOTE_EXCESS_STRUCTURE__EXCESS_TYPE'
   LOAD_DATETIME: 'QUOTE_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v14_risk_object'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v14_risk_object'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

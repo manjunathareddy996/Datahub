@@ -16,7 +16,8 @@ derived_columns:
   REQUIRED_DOCUMENT_TYPE_CK: 'DOCUMENT_CHECKLIST__REQUIRED_DOCUMENT_TYPE_CK'
   REQUIRED_DOCUMENT_TYPE: 'DOCUMENT_CHECKLIST__REQUIRED_DOCUMENT_TYPE'
   LOAD_DATETIME: 'DOCUMENT_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v06_document'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v06_document'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -4,7 +4,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__party_onboarding_journey'
-src_pk: 'PARTY_HKEY'
+src_pk:
+  - 'PARTY_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'CANDIDATE_BACKGROUND_DESCRIPTION'
   - 'INSURANCE_BANKING_FINANCE_EXPERIENCE_YEARS'

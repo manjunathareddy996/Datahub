@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__product_terms'
-src_pk: 'PRODUCT_HKEY'
+src_pk:
+  - 'PRODUCT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'CHASSIS_NUMBER_VALIDATION_PATTERN'
   - 'ENGINE_NUMBER_VALIDATION_PATTERN'

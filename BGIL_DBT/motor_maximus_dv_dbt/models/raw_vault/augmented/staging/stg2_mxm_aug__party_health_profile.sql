@@ -18,7 +18,8 @@ derived_columns:
   MEDICAL_CONDITION_ICD_CODE: 'AUG_PARTY_HEALTH_PROFILE__MEDICAL_CONDITION_ICD_CODE'
   SURGERY_DETAIL_TEXT: 'AUG_PARTY_HEALTH_PROFILE__SURGERY_DETAIL_TEXT'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v09_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v09_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

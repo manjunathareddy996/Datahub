@@ -18,7 +18,8 @@ derived_columns:
   ROLE_SEQUENCE_CK: 'AUG_LNK_CLAIM_PARTY_ROLE__ROLE_SEQUENCE_CK'
   RELATIONSHIP_TO_INSURED: 'AUG_LNK_CLAIM_PARTY_ROLE__RELATIONSHIP_TO_INSURED'
   LOAD_DATETIME: 'CLAIM_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v04_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v04_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

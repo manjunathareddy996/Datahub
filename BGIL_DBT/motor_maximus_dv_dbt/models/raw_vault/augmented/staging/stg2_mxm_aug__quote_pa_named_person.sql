@@ -22,7 +22,8 @@ derived_columns:
   NAMED_PERSON_NAME: 'AUG_QUOTE_PA_NAMED_PERSON__NAMED_PERSON_NAME'
   NAMED_PERSON_RELATIONSHIP: 'AUG_QUOTE_PA_NAMED_PERSON__NAMED_PERSON_RELATIONSHIP'
   LOAD_DATETIME: 'QUOTE_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v04_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v04_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

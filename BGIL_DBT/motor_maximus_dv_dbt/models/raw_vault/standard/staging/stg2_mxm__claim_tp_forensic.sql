@@ -18,7 +18,8 @@ derived_columns:
   FIR_DATE: 'CLAIM_TP_FORENSIC__FIR_DATE'
   FIR_NUMBER: 'CLAIM_TP_FORENSIC__FIR_NUMBER'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v03_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v03_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -20,7 +20,8 @@ derived_columns:
   INSPECTION_LOCATION_ADDRESS: 'ASSESSMENT_PRE_INSPECTION__INSPECTION_LOCATION_ADDRESS'
   INSPECTOR_REFERENCE: 'ASSESSMENT_PRE_INSPECTION__INSPECTOR_REFERENCE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v14_risk_object'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v14_risk_object'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

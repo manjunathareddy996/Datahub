@@ -14,7 +14,8 @@ derived_columns:
   ASSESSMENT_NK: "case when ASSESSMENT_UNDERWRITING__REFERRAL_INDICATOR is not null then 'HUB_ASSESSMENT|' || ASSESSMENT_BK end"
   REFERRAL_INDICATOR: 'ASSESSMENT_UNDERWRITING__REFERRAL_INDICATOR'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v12_policy'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v12_policy'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

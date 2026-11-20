@@ -25,7 +25,7 @@ derived_columns:
   CLAIM_POLICY_NK: "case when __LNK_CLAIM_POLICY = 1 then 'LNK_CLAIM_POLICY|' || CLAIM_BK || '|' || POLICY_BK end"
   FINTXN_CLAIM_NK: "case when __LNK_FINTXN_CLAIM = 1 then 'LNK_FINTXN_CLAIM|' || CLAIM_BK || '|' || FINANCIAL_TRANSACTION_BK end"
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v03_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v03_claim'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

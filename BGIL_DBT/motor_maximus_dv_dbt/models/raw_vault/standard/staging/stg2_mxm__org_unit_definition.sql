@@ -14,7 +14,8 @@ derived_columns:
   ORG_UNIT_NK: "case when ORG_UNIT_DEFINITION__ORG_UNIT_NAME is not null then 'HUB_ORG_UNIT|' || ORG_UNIT_BK end"
   ORG_UNIT_NAME: 'ORG_UNIT_DEFINITION__ORG_UNIT_NAME'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v12_policy'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v12_policy'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

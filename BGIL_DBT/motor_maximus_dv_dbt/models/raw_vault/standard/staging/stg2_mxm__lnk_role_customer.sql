@@ -22,7 +22,8 @@ derived_columns:
   CONSENT_FOR_DATA_SHARING_INDICATOR: 'LNK_ROLE_CUSTOMER__CONSENT_FOR_DATA_SHARING_INDICATOR'
   VIP_INDICATOR: 'LNK_ROLE_CUSTOMER__VIP_INDICATOR'
   LOAD_DATETIME: 'PARTY_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v09_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v09_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

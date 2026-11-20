@@ -24,7 +24,8 @@ derived_columns:
   PRE_EXISTING_DISEASE_DESCRIPTION: 'PARTY_HEALTH_PROFILE__PRE_EXISTING_DISEASE_DESCRIPTION'
   WEIGHT: 'PARTY_HEALTH_PROFILE__WEIGHT'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v09_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v09_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

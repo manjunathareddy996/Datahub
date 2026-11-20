@@ -26,7 +26,8 @@ derived_columns:
   SURVEY_TYPE: 'ASSESSMENT_SURVEY__SURVEY_TYPE'
   WORK_APPROVAL_DATE: 'ASSESSMENT_SURVEY__WORK_APPROVAL_DATE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v01_assessment'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v01_assessment'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -16,7 +16,8 @@ derived_columns:
   CREDIT_SCORE: 'PARTY_FINANCIAL_PROFILE__CREDIT_SCORE'
   INCOME_SOURCE: 'PARTY_FINANCIAL_PROFILE__INCOME_SOURCE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v09_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v09_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -24,7 +24,8 @@ derived_columns:
   PERSONAL_ACCIDENT_CLAIM_FOR: 'AUG_CLAIM_PA_DETAIL__PERSONAL_ACCIDENT_CLAIM_FOR'
   SCALE_OF_COMPENSATION: 'AUG_CLAIM_PA_DETAIL__SCALE_OF_COMPENSATION'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v03_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v03_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

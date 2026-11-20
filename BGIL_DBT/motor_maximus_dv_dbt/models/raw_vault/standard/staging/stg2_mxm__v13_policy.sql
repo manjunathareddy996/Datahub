@@ -10,7 +10,7 @@ derived_columns:
   POLICY_BK: 'POLICY_BK'
   POLICY_NK: "'HUB_POLICY|' || POLICY_BK"
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v13_policy'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v13_policy'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

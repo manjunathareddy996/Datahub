@@ -10,7 +10,7 @@ derived_columns:
   RISK_OBJECT_BK: 'RISK_OBJECT_BK'
   RISK_OBJECT_NK: "'HUB_RISK_OBJECT|' || RISK_OBJECT_BK"
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v15_risk_object'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v15_risk_object'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

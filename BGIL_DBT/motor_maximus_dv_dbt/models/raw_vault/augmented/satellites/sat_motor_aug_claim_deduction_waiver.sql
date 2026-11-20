@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__claim_deduction_waiver'
-src_pk: 'CLAIM_HKEY'
+src_pk:
+  - 'CLAIM_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'ADDITIONAL_EXCESS_WAIVED_INDICATOR'
   - 'COMPULSORY_EXCESS_WAIVED_INDICATOR'

@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__document_checklist'
-src_pk: 'DOCUMENT_HKEY'
+src_pk:
+  - 'DOCUMENT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_cdk:
   - 'REQUIRED_DOCUMENT_TYPE_CK'
 src_payload:

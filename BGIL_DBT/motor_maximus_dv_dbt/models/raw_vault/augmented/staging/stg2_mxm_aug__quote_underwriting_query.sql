@@ -44,7 +44,8 @@ derived_columns:
   REPLIED_BY_ROLE: 'AUG_QUOTE_UNDERWRITING_QUERY__REPLIED_BY_ROLE'
   REPLIED_BY_USER_REFERENCE: 'AUG_QUOTE_UNDERWRITING_QUERY__REPLIED_BY_USER_REFERENCE'
   LOAD_DATETIME: 'QUOTE_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v04_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v04_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

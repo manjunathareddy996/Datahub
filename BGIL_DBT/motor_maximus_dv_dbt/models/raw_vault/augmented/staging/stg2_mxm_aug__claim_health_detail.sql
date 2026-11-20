@@ -30,7 +30,8 @@ derived_columns:
   PURPOSE_OF_VISIT: 'AUG_CLAIM_HEALTH_DETAIL__PURPOSE_OF_VISIT'
   SYSTEM_OF_MEDICINE: 'AUG_CLAIM_HEALTH_DETAIL__SYSTEM_OF_MEDICINE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v03_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v03_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

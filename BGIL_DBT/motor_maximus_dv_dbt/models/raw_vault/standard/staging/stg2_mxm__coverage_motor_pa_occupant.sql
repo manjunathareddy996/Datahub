@@ -14,7 +14,8 @@ derived_columns:
   COVERAGE_NK: "case when COVERAGE_MOTOR_PA_OCCUPANT__NUMBER_OF_PERSONS_COVERED is not null then 'HUB_COVERAGE|' || COVERAGE_BK end"
   NUMBER_OF_PERSONS_COVERED: 'COVERAGE_MOTOR_PA_OCCUPANT__NUMBER_OF_PERSONS_COVERED'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v14_risk_object'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v14_risk_object'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

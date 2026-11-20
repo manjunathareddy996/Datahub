@@ -14,7 +14,8 @@ derived_columns:
   PARTY_NK: "case when AUG_PARTY_PORTFOLIO_SUMMARY__MULTI_CHANNEL_PURCHASE_INDICATOR is not null then 'HUB_PARTY|' || PARTY_BK end"
   MULTI_CHANNEL_PURCHASE_INDICATOR: 'AUG_PARTY_PORTFOLIO_SUMMARY__MULTI_CHANNEL_PURCHASE_INDICATOR'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v04_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v04_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

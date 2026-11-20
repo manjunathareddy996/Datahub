@@ -48,7 +48,8 @@ derived_columns:
   PRIORITY_CODE: 'CLAIM_HEADER__PRIORITY_CODE'
   REGISTRATION_DATE: 'CLAIM_HEADER__REGISTRATION_DATE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v03_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v03_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

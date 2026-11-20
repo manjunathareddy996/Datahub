@@ -20,7 +20,8 @@ derived_columns:
   REFERENCE_CODE: 'AUG_COMMON_CLASSIFICATION__REFERENCE_CODE'
   USER_TYPE_CODE: 'AUG_COMMON_CLASSIFICATION__USER_TYPE_CODE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v09_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v09_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

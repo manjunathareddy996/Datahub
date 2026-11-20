@@ -32,7 +32,8 @@ derived_columns:
   PAYMENT_TYPE: 'FINTXN_CLAIM_PAYMENT__PAYMENT_TYPE'
   UTR_NUMBER: 'FINTXN_CLAIM_PAYMENT__UTR_NUMBER'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v03_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v03_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

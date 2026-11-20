@@ -5,7 +5,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm__risk_motor_idv_tenure'
-src_pk: 'RISK_OBJECT_HKEY'
+src_pk:
+  - 'RISK_OBJECT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_cdk:
   - 'TENURE_YEAR_CK'
   - 'IDV_COMPONENT_CK'

@@ -24,7 +24,8 @@ derived_columns:
   INSTRUMENT_STATUS: 'INSTRUMENT_DEFINITION__INSTRUMENT_STATUS'
   VALID_TO_DATE: 'INSTRUMENT_DEFINITION__VALID_TO_DATE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v09_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v09_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

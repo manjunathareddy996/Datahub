@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__product_rating_structure'
-src_pk: 'PRODUCT_HKEY'
+src_pk:
+  - 'PRODUCT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'MINIMUM_DEPOSIT_PREMIUM_TYPE'
 src_hashdiff: 'HASHDIFF'

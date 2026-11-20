@@ -34,7 +34,8 @@ derived_columns:
   WORKFLOW_ACTION: 'AUG_CLAIM_SLA_TRACKING__WORKFLOW_ACTION'
   WORK_BUCKET_CODE: 'AUG_CLAIM_SLA_TRACKING__WORK_BUCKET_CODE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v03_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v03_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

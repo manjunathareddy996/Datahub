@@ -18,7 +18,8 @@ derived_columns:
   REPORTING_PARENT_REFERENCE: 'PARTY_HIERARCHY__REPORTING_PARENT_REFERENCE'
   TERRITORY_CODE: 'PARTY_HIERARCHY__TERRITORY_CODE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v09_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v09_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

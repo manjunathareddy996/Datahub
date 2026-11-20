@@ -24,7 +24,8 @@ derived_columns:
   STATE_NAME: 'COMMON_ADMIN_GEOGRAPHY__STATE_NAME'
   TALUKA_NAME: 'COMMON_ADMIN_GEOGRAPHY__TALUKA_NAME'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v09_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v09_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

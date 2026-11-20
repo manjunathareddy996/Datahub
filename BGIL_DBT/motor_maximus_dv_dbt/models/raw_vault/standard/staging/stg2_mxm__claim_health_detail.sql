@@ -28,7 +28,8 @@ derived_columns:
   TREATING_DOCTOR_NAME: 'CLAIM_HEALTH_DETAIL__TREATING_DOCTOR_NAME'
   TREATMENT_TYPE: 'CLAIM_HEALTH_DETAIL__TREATMENT_TYPE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v03_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v03_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

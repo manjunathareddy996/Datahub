@@ -14,7 +14,8 @@ derived_columns:
   CLAIM_NK: "case when CLAIM_PA_DETAIL__INJURY_TYPE is not null then 'HUB_CLAIM|' || CLAIM_BK end"
   INJURY_TYPE: 'CLAIM_PA_DETAIL__INJURY_TYPE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v01_assessment'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v01_assessment'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

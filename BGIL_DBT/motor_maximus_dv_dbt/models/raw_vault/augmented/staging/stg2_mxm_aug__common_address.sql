@@ -16,7 +16,8 @@ derived_columns:
   CITY_CODE: 'AUG_COMMON_ADDRESS__CITY_CODE'
   FULL_ADDRESS_TEXT: 'AUG_COMMON_ADDRESS__FULL_ADDRESS_TEXT'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v08_location'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v08_location'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

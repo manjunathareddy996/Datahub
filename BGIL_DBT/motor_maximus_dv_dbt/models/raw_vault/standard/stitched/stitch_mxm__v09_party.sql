@@ -124,7 +124,7 @@ with merged as (
         nullif(nullif(trim(t0.claimno),''), '') as CLAIM_BK,
         cast(null as varchar) as DISTRIBUTION_CHANNEL_BK,
         cast(null as varchar) as FINANCIAL_TRANSACTION_BK,
-        nullif(md5(normalise(upper(nullif(trim(coalesce(t0.customer_location_by_state,'') || '|' || coalesce(t0.customer_location_by_district,'') || '|' || coalesce(t0.customer_location_by_tehsil,'')),'||')))), '') as LOCATION_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(trim(coalesce(t0.customer_location_by_state,'') || '|' || coalesce(t0.customer_location_by_district,'') || '|' || coalesce(t0.customer_location_by_tehsil,'')),'||')), '[[:space:]]+', ' ')), ''), '') as LOCATION_BK,
         cast(null as varchar) as ORG_UNIT_BK,
         nullif('DL:' || nullif(trim(t0.driver_license_number),''), '') as PARTY_BK,
         cast(null as varchar) as PAYMENT_INSTRUMENT_BK,
@@ -450,14 +450,14 @@ with merged as (
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_mxm__clm_cd_claim_attr_properties_pv') }} t0
-    where (coalesce(nullif('DL:' || nullif(trim(t0.driver_license_number),''), ''), nullif(coalesce(nullif(trim(t0.chassis_number),''), nullif(trim(t0.engine_number),''), nullif(trim(t0.registration_number),'')), ''), nullif(md5(normalise(upper(nullif(trim(coalesce(t0.customer_location_by_state,'') || '|' || coalesce(t0.customer_location_by_district,'') || '|' || coalesce(t0.customer_location_by_tehsil,'')),'||')))), ''), nullif(nullif(trim(t0.claimno),''), ''))) is not null
+    where (coalesce(nullif('DL:' || nullif(trim(t0.driver_license_number),''), ''), nullif(coalesce(nullif(trim(t0.chassis_number),''), nullif(trim(t0.engine_number),''), nullif(trim(t0.registration_number),'')), ''), nullif(nullif(trim(regexp_replace(upper(nullif(trim(coalesce(t0.customer_location_by_state,'') || '|' || coalesce(t0.customer_location_by_district,'') || '|' || coalesce(t0.customer_location_by_tehsil,'')),'||')), '[[:space:]]+', ' ')), ''), ''), nullif(nullif(trim(t0.claimno),''), ''))) is not null
 
     union all
 
     -- branch 1: MAXI_MOTOR_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
     select
         null, null, null, null,
-        nullif(md5(normalise(upper(nullif(trim(coalesce(t0.stored_country_code,'') || '|' || coalesce(t0.stored_state_code,'')),'|')))), '') as LOCATION_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(trim(coalesce(t0.stored_country_code,'') || '|' || coalesce(t0.stored_state_code,'')),'|')), '[[:space:]]+', ' ')), ''), '') as LOCATION_BK,
         null,
         nullif('CUST:' || coalesce(nullif(trim(t0.unique_customer_id),''), nullif(trim(t0.customerid),'')), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
@@ -498,7 +498,7 @@ with merged as (
         0 as __PREC,
         hash(t0.*) as __RID
     from {{ ref('stg_mxm__clm_cd_claim_attr_properties_pv') }} t0
-    where (coalesce(nullif('CUST:' || coalesce(nullif(trim(t0.unique_customer_id),''), nullif(trim(t0.customerid),'')), ''), nullif(md5(normalise(upper(nullif(trim(coalesce(t0.stored_country_code,'') || '|' || coalesce(t0.stored_state_code,'')),'|')))), ''))) is not null
+    where (coalesce(nullif('CUST:' || coalesce(nullif(trim(t0.unique_customer_id),''), nullif(trim(t0.customerid),'')), ''), nullif(nullif(trim(regexp_replace(upper(nullif(trim(coalesce(t0.stored_country_code,'') || '|' || coalesce(t0.stored_state_code,'')),'|')), '[[:space:]]+', ' ')), ''), ''))) is not null
 
     union all
 
@@ -2157,7 +2157,7 @@ with merged as (
         null, null,
         nullif(nullif(trim(t0.agent_channel), ''), '') as DISTRIBUTION_CHANNEL_BK,
         null,
-        nullif(md5(normalise(upper(nullif(trim(coalesce(t0.correspondence_local_address_line_1,'') || ' ' || coalesce(t0.correspondence_local_address_line_2,'') || ' ' || coalesce(t0.correspondence_local_address_line_3,'') || ' ' || coalesce(t0.correspondence_local_address_city_town_village,'') || ' ' || coalesce(t0.correspondence_local_address_district,'') || ' ' || coalesce(t0.correspondence_local_address_state,'') || ' ' || coalesce(t0.correspondence_local_address_country,'') || ' ' || coalesce(t0.local_address_pin_code,'')), '')))), '') as LOCATION_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(trim(coalesce(t0.correspondence_local_address_line_1,'') || ' ' || coalesce(t0.correspondence_local_address_line_2,'') || ' ' || coalesce(t0.correspondence_local_address_line_3,'') || ' ' || coalesce(t0.correspondence_local_address_city_town_village,'') || ' ' || coalesce(t0.correspondence_local_address_district,'') || ' ' || coalesce(t0.correspondence_local_address_state,'') || ' ' || coalesce(t0.correspondence_local_address_country,'') || ' ' || coalesce(t0.local_address_pin_code,'')), '')), '[[:space:]]+', ' ')), ''), '') as LOCATION_BK,
         nullif(nullif(trim(t0.location_code), ''), '') as ORG_UNIT_BK,
         nullif(nullif(trim(j3.party_code), ''), '') as PARTY_BK,
         null,
@@ -2310,14 +2310,14 @@ with merged as (
     left join {{ ref('stg_mxm__uwr_pd_proposer_dtls_party_prop') }} j2 on j2.KEY_HASH = j1.PARENT_KEY_HASH
     left join {{ ref('stg_mxm__uwr_pd_proposer_dtls') }} j3 on j3.KEY_HASH = j2.PARENT_KEY_HASH
     left join {{ ref('stg_mxm__uwr_pd') }} j4 on j4.KEY_HASH = j3.PARENT_KEY_HASH
-    where (coalesce(nullif(md5(normalise(upper(nullif(trim(coalesce(t0.correspondence_local_address_line_1,'') || ' ' || coalesce(t0.correspondence_local_address_line_2,'') || ' ' || coalesce(t0.correspondence_local_address_line_3,'') || ' ' || coalesce(t0.correspondence_local_address_city_town_village,'') || ' ' || coalesce(t0.correspondence_local_address_district,'') || ' ' || coalesce(t0.correspondence_local_address_state,'') || ' ' || coalesce(t0.correspondence_local_address_country,'') || ' ' || coalesce(t0.local_address_pin_code,'')), '')))), ''), nullif(nullif(trim(j3.party_code), ''), ''), nullif(nullif(trim(j4.policy_number), ''), ''), nullif(nullif(trim(t0.agent_channel), ''), ''), nullif(nullif(trim(t0.location_code), ''), ''), nullif(nullif(trim(t0.product_code), ''), ''))) is not null
+    where (coalesce(nullif(nullif(trim(regexp_replace(upper(nullif(trim(coalesce(t0.correspondence_local_address_line_1,'') || ' ' || coalesce(t0.correspondence_local_address_line_2,'') || ' ' || coalesce(t0.correspondence_local_address_line_3,'') || ' ' || coalesce(t0.correspondence_local_address_city_town_village,'') || ' ' || coalesce(t0.correspondence_local_address_district,'') || ' ' || coalesce(t0.correspondence_local_address_state,'') || ' ' || coalesce(t0.correspondence_local_address_country,'') || ' ' || coalesce(t0.local_address_pin_code,'')), '')), '[[:space:]]+', ' ')), ''), ''), nullif(nullif(trim(j3.party_code), ''), ''), nullif(nullif(trim(j4.policy_number), ''), ''), nullif(nullif(trim(t0.agent_channel), ''), ''), nullif(nullif(trim(t0.location_code), ''), ''), nullif(nullif(trim(t0.product_code), ''), ''))) is not null
 
     union all
 
     -- branch 48: MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
     select
         null, null, null, null,
-        nullif(md5(normalise(upper(nullif(trim(coalesce(t0.current_permanent_overseas_address_line_1,'') || ' ' || coalesce(t0.current_permanent_overseas_address_line_2,'') || ' ' || coalesce(t0.current_permanent_overseas_address_line_3,'') || ' ' || coalesce(t0.current_permanent_overseas_address_city_town_village,'') || ' ' || coalesce(t0.current_permanent_overseas_address_state_ut,'') || ' ' || coalesce(t0.current_permanent_overseas_address_country,'') || ' ' || coalesce(t0.current_permanent_overseas_address_pin_code,'')), '')))), '') as LOCATION_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(trim(coalesce(t0.current_permanent_overseas_address_line_1,'') || ' ' || coalesce(t0.current_permanent_overseas_address_line_2,'') || ' ' || coalesce(t0.current_permanent_overseas_address_line_3,'') || ' ' || coalesce(t0.current_permanent_overseas_address_city_town_village,'') || ' ' || coalesce(t0.current_permanent_overseas_address_state_ut,'') || ' ' || coalesce(t0.current_permanent_overseas_address_country,'') || ' ' || coalesce(t0.current_permanent_overseas_address_pin_code,'')), '')), '[[:space:]]+', ' ')), ''), '') as LOCATION_BK,
         null,
         nullif(nullif(trim(j3.party_code), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null,
@@ -2349,14 +2349,14 @@ with merged as (
     left join {{ ref('stg_mxm__uwr_pd_proposer_dtls_party_prop_sp') }} j1 on j1.KEY_HASH = t0.PARENT_KEY_HASH
     left join {{ ref('stg_mxm__uwr_pd_proposer_dtls_party_prop') }} j2 on j2.KEY_HASH = j1.PARENT_KEY_HASH
     left join {{ ref('stg_mxm__uwr_pd_proposer_dtls') }} j3 on j3.KEY_HASH = j2.PARENT_KEY_HASH
-    where (coalesce(nullif(md5(normalise(upper(nullif(trim(coalesce(t0.current_permanent_overseas_address_line_1,'') || ' ' || coalesce(t0.current_permanent_overseas_address_line_2,'') || ' ' || coalesce(t0.current_permanent_overseas_address_line_3,'') || ' ' || coalesce(t0.current_permanent_overseas_address_city_town_village,'') || ' ' || coalesce(t0.current_permanent_overseas_address_state_ut,'') || ' ' || coalesce(t0.current_permanent_overseas_address_country,'') || ' ' || coalesce(t0.current_permanent_overseas_address_pin_code,'')), '')))), ''), nullif(nullif(trim(j3.party_code), ''), ''))) is not null
+    where (coalesce(nullif(nullif(trim(regexp_replace(upper(nullif(trim(coalesce(t0.current_permanent_overseas_address_line_1,'') || ' ' || coalesce(t0.current_permanent_overseas_address_line_2,'') || ' ' || coalesce(t0.current_permanent_overseas_address_line_3,'') || ' ' || coalesce(t0.current_permanent_overseas_address_city_town_village,'') || ' ' || coalesce(t0.current_permanent_overseas_address_state_ut,'') || ' ' || coalesce(t0.current_permanent_overseas_address_country,'') || ' ' || coalesce(t0.current_permanent_overseas_address_pin_code,'')), '')), '[[:space:]]+', ' ')), ''), ''), nullif(nullif(trim(j3.party_code), ''), ''))) is not null
 
     union all
 
     -- branch 49: MAXI_MOTOR_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
     select
         null, null, null, null,
-        nullif(md5(normalise(upper(nullif(trim(coalesce(t0.current_permanent_overseas_address_line_1,'') || ' ' || coalesce(t0.current_permanent_overseas_address_line_2,'') || ' ' || coalesce(t0.current_permanent_overseas_address_line_3,'') || ' ' || coalesce(t0.current_permanent_overseas_address_city_town_village,'') || ' ' || coalesce(t0.current_permanent_overseas_address_state_ut,'') || ' ' || coalesce(t0.current_permanent_overseas_address_country,'') || ' ' || coalesce(t0.current_permanent_overseas_address_pin_code,'')), '')))), '') as LOCATION_BK,
+        nullif(nullif(trim(regexp_replace(upper(nullif(trim(coalesce(t0.current_permanent_overseas_address_line_1,'') || ' ' || coalesce(t0.current_permanent_overseas_address_line_2,'') || ' ' || coalesce(t0.current_permanent_overseas_address_line_3,'') || ' ' || coalesce(t0.current_permanent_overseas_address_city_town_village,'') || ' ' || coalesce(t0.current_permanent_overseas_address_state_ut,'') || ' ' || coalesce(t0.current_permanent_overseas_address_country,'') || ' ' || coalesce(t0.current_permanent_overseas_address_pin_code,'')), '')), '[[:space:]]+', ' ')), ''), '') as LOCATION_BK,
         null,
         nullif(nullif(trim(j3.party_code), ''), '') as PARTY_BK,
         null, null, null, null, null, null, null, null, null, null, null, null, null, null,
@@ -2392,7 +2392,7 @@ with merged as (
     left join {{ ref('stg_mxm__uwr_pd_proposer_dtls_party_prop_sp') }} j1 on j1.KEY_HASH = t0.PARENT_KEY_HASH
     left join {{ ref('stg_mxm__uwr_pd_proposer_dtls_party_prop') }} j2 on j2.KEY_HASH = j1.PARENT_KEY_HASH
     left join {{ ref('stg_mxm__uwr_pd_proposer_dtls') }} j3 on j3.KEY_HASH = j2.PARENT_KEY_HASH
-    where (coalesce(nullif(md5(normalise(upper(nullif(trim(coalesce(t0.current_permanent_overseas_address_line_1,'') || ' ' || coalesce(t0.current_permanent_overseas_address_line_2,'') || ' ' || coalesce(t0.current_permanent_overseas_address_line_3,'') || ' ' || coalesce(t0.current_permanent_overseas_address_city_town_village,'') || ' ' || coalesce(t0.current_permanent_overseas_address_state_ut,'') || ' ' || coalesce(t0.current_permanent_overseas_address_country,'') || ' ' || coalesce(t0.current_permanent_overseas_address_pin_code,'')), '')))), ''), nullif(nullif(trim(j3.party_code), ''), ''))) is not null
+    where (coalesce(nullif(nullif(trim(regexp_replace(upper(nullif(trim(coalesce(t0.current_permanent_overseas_address_line_1,'') || ' ' || coalesce(t0.current_permanent_overseas_address_line_2,'') || ' ' || coalesce(t0.current_permanent_overseas_address_line_3,'') || ' ' || coalesce(t0.current_permanent_overseas_address_city_town_village,'') || ' ' || coalesce(t0.current_permanent_overseas_address_state_ut,'') || ' ' || coalesce(t0.current_permanent_overseas_address_country,'') || ' ' || coalesce(t0.current_permanent_overseas_address_pin_code,'')), '')), '[[:space:]]+', ' ')), ''), ''), nullif(nullif(trim(j3.party_code), ''), ''))) is not null
 
     union all
 

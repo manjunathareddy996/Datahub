@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__policy_cancellation'
-src_pk: 'POLICY_HKEY'
+src_pk:
+  - 'POLICY_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'ELAPSED_PERIOD_PREMIUM_AMOUNT'
   - 'RETAINED_ADMINISTRATION_CHARGES'

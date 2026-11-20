@@ -28,7 +28,8 @@ derived_columns:
   POLICE_REPORT_TIME: 'AUG_CLAIM_TP_FORENSIC__POLICE_REPORT_TIME'
   POLICE_STATION_NAME: 'AUG_CLAIM_TP_FORENSIC__POLICE_STATION_NAME'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v03_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v03_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

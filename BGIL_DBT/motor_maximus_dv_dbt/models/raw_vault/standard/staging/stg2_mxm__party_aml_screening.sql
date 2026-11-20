@@ -14,7 +14,8 @@ derived_columns:
   PARTY_NK: "case when PARTY_AML_SCREENING__SCREENING_STATUS is not null then 'HUB_PARTY|' || PARTY_BK end"
   SCREENING_STATUS: 'PARTY_AML_SCREENING__SCREENING_STATUS'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v09_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v09_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

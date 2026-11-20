@@ -44,7 +44,8 @@ derived_columns:
   PARTY_TYPE_CODE: 'PARTY_IDENTITY__PARTY_TYPE_CODE'
   SALUTATION: 'PARTY_IDENTITY__SALUTATION'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v10_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v10_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

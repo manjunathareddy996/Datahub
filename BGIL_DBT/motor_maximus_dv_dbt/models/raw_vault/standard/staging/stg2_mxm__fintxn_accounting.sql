@@ -14,7 +14,8 @@ derived_columns:
   FINANCIAL_TRANSACTION_NK: "case when FINTXN_ACCOUNTING__VOUCHER_NUMBER is not null then 'HUB_FINANCIAL_TRANSACTION|' || FINANCIAL_TRANSACTION_BK end"
   VOUCHER_NUMBER: 'FINTXN_ACCOUNTING__VOUCHER_NUMBER'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v09_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v09_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

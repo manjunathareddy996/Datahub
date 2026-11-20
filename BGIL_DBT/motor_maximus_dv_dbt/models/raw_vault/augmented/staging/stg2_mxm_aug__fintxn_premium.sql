@@ -14,7 +14,8 @@ derived_columns:
   FINANCIAL_TRANSACTION_NK: "case when AUG_FINTXN_PREMIUM__COLLECTED_PREMIUM_AMOUNT is not null then 'HUB_FINANCIAL_TRANSACTION|' || FINANCIAL_TRANSACTION_BK end"
   COLLECTED_PREMIUM_AMOUNT: 'AUG_FINTXN_PREMIUM__COLLECTED_PREMIUM_AMOUNT'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v14_risk_object'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v14_risk_object'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

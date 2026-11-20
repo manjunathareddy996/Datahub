@@ -82,7 +82,7 @@ derived_columns:
   RISK_OBJECT_ASSESSMENT_NK: "case when __LNK_RISK_OBJECT_ASSESSMENT = 1 then 'LNK_RISK_OBJECT_ASSESSMENT|' || ASSESSMENT_BK || '|' || RISK_OBJECT_BK end"
   PARTY_ROLE_NK: "case when ROLE_TYPE_CODE is not null then 'LNK_PARTY_ROLE|' || PARTY_BK || '|' || ROLE_TYPE_CODE end"
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v09_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v09_party'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -24,7 +24,8 @@ derived_columns:
   PERCENTAGE_APPLIED: 'AUG_QUOTE_DISCOUNT_LOADING_APPLIED__PERCENTAGE_APPLIED'
   RATING_FACTOR_VALUE: 'AUG_QUOTE_DISCOUNT_LOADING_APPLIED__RATING_FACTOR_VALUE'
   LOAD_DATETIME: 'QUOTE_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v01_assessment'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v01_assessment'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

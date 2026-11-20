@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__risk_motor_bureau_profile'
-src_pk: 'RISK_OBJECT_HKEY'
+src_pk:
+  - 'RISK_OBJECT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'BUREAU_REPORTED_OWN_DAMAGE_CLAIM_COUNT'
 src_hashdiff: 'HASHDIFF'

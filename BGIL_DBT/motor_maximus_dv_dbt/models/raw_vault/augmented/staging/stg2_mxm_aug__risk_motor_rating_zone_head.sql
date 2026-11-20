@@ -16,7 +16,8 @@ derived_columns:
   RATING_HEAD_CODE_CK: 'AUG_RISK_MOTOR_RATING_ZONE_HEAD__RATING_HEAD_CODE_CK'
   RTA_CLUSTER_NAME: 'AUG_RISK_MOTOR_RATING_ZONE_HEAD__RTA_CLUSTER_NAME'
   LOAD_DATETIME: 'RISK_OBJECT_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v12_policy'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v12_policy'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

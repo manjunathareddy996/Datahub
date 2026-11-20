@@ -22,7 +22,8 @@ derived_columns:
   DRIVING_LICENCE_NUMBER: 'RISK_MOTOR_DRIVER__DRIVING_LICENCE_NUMBER'
   LICENCE_TYPE: 'RISK_MOTOR_DRIVER__LICENCE_TYPE'
   LOAD_DATETIME: 'RISK_OBJECT_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v15_risk_object'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v15_risk_object'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

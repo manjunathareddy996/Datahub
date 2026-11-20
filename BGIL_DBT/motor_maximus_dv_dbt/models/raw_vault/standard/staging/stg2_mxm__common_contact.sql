@@ -34,7 +34,8 @@ derived_columns:
   SOCIAL_MEDIA_HANDLE: 'COMMON_CONTACT__SOCIAL_MEDIA_HANDLE'
   STD_CODE: 'COMMON_CONTACT__STD_CODE'
   LOAD_DATETIME: 'PARTY_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v08_location'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v08_location'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

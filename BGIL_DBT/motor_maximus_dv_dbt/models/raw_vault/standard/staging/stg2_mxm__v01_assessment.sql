@@ -36,7 +36,7 @@ derived_columns:
   QUOTE_RISK_OBJECT_NK: "case when __LNK_QUOTE_RISK_OBJECT = 1 then 'LNK_QUOTE_RISK_OBJECT|' || QUOTE_BK || '|' || RISK_OBJECT_BK end"
   RISK_OBJECT_DOCUMENT_NK: "case when __LNK_RISK_OBJECT_DOCUMENT = 1 then 'LNK_RISK_OBJECT_DOCUMENT|' || DOCUMENT_BK || '|' || RISK_OBJECT_BK end"
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v01_assessment'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v01_assessment'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

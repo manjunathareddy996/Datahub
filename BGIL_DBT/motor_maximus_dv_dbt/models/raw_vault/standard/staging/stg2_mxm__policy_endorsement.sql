@@ -26,7 +26,8 @@ derived_columns:
   PREMIUM_IMPACT_AMOUNT: 'POLICY_ENDORSEMENT__PREMIUM_IMPACT_AMOUNT'
   SUM_INSURED_IMPACT_AMOUNT: 'POLICY_ENDORSEMENT__SUM_INSURED_IMPACT_AMOUNT'
   LOAD_DATETIME: 'POLICY_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v13_policy'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v13_policy'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -20,7 +20,8 @@ derived_columns:
   RENEWAL_DUE_DATE: 'POLICY_RENEWAL__RENEWAL_DUE_DATE'
   RENEWAL_STATUS: 'POLICY_RENEWAL__RENEWAL_STATUS'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v14_risk_object'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v14_risk_object'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

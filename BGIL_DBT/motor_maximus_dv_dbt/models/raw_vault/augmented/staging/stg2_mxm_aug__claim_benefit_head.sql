@@ -22,7 +22,8 @@ derived_columns:
   DAYS_AVAILED_COUNT: 'AUG_CLAIM_BENEFIT_HEAD__DAYS_AVAILED_COUNT'
   HEAD_BASE_SUM_INSURED: 'AUG_CLAIM_BENEFIT_HEAD__HEAD_BASE_SUM_INSURED'
   LOAD_DATETIME: 'CLAIM_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v03_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v03_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

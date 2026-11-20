@@ -113,3 +113,8 @@ The sections above describe the tree as generated, before this round.
 - Not changed: RECORD_SOURCE (still the view name), branch SQL, merges, keys, hubs, links.
 - Augmented satellites renamed `sat_aug_<name>` -> `sat_motor_aug_<name>` (152), the same names as opus_motor_dv_dbt,
   so the two motor projects share those tables and nothing else does. Comments updated; no SQL changed.
+- Business keys without md5 (3 views, 70 keys): `md5(normalise(X))` -> `nullif(trim(regexp_replace(X, '[[:space:]]+', ' ')), '')`;
+  normalise() was undefined in Snowflake. AutomateDV hash keys and HASHDIFF still use MD5.
+- RECORD_SOURCE carries the source system: `'!MAXIMUS_stitch_mxm__vNN_<entity>'` (opus motor: `'!OPUS_stitch_motor__...'`).
+- Satellites compare only against maximus motor's own rows in shared tables: each satellite stage outputs
+  `SOURCE_SYSTEM: '!MAXIMUS_MOTOR'` and all 279 satellites use `src_pk: ['<X>_HKEY', 'SOURCE_SYSTEM']`.

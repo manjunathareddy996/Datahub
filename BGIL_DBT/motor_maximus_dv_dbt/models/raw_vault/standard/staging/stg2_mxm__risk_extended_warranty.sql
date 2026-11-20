@@ -14,7 +14,8 @@ derived_columns:
   RISK_OBJECT_NK: "case when RISK_EXTENDED_WARRANTY__WARRANTY_TYPE is not null then 'HUB_RISK_OBJECT|' || RISK_OBJECT_BK end"
   WARRANTY_TYPE: 'RISK_EXTENDED_WARRANTY__WARRANTY_TYPE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v14_risk_object'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v14_risk_object'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

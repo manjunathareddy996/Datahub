@@ -16,7 +16,8 @@ derived_columns:
   MOTOR_CLAIM_COUNT: 'PARTY_CLAIM_HISTORY__MOTOR_CLAIM_COUNT'
   TOTAL_CLAIM_AMOUNT: 'PARTY_CLAIM_HISTORY__TOTAL_CLAIM_AMOUNT'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v04_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v04_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

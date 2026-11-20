@@ -14,7 +14,8 @@ derived_columns:
   POLICY_NK: "case when POLICY_LIFECYCLE__LIFECYCLE_STAGE is not null then 'HUB_POLICY|' || POLICY_BK end"
   LIFECYCLE_STAGE: 'POLICY_LIFECYCLE__LIFECYCLE_STAGE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v09_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v09_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

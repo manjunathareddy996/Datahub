@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__party_preference_profile'
-src_pk: 'PARTY_HKEY'
+src_pk:
+  - 'PARTY_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'ELECTRONIC_POLICY_ISSUANCE_PREFERENCE_INDICATOR'
   - 'PROPAGATE_CONTACT_UPDATE_TO_ALL_POLICIES_INDICATOR'

@@ -14,7 +14,8 @@ derived_columns:
   CLAIM_NK: "case when CLAIM_QUALITY_AUDIT__LEAKAGE_IDENTIFIED_INDICATOR is not null then 'HUB_CLAIM|' || CLAIM_BK end"
   LEAKAGE_IDENTIFIED_INDICATOR: 'CLAIM_QUALITY_AUDIT__LEAKAGE_IDENTIFIED_INDICATOR'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v01_assessment'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v01_assessment'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

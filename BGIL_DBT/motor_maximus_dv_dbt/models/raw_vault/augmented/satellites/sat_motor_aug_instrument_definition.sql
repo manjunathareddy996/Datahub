@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__instrument_definition'
-src_pk: 'PAYMENT_INSTRUMENT_HKEY'
+src_pk:
+  - 'PAYMENT_INSTRUMENT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'INSTRUMENT_ISSUE_DATE'
 src_hashdiff: 'HASHDIFF'

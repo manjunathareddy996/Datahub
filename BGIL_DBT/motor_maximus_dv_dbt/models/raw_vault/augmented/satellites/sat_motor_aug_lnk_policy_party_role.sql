@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__lnk_policy_party_role'
-src_pk: 'POLICY_PARTY_HKEY'
+src_pk:
+  - 'POLICY_PARTY_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'RELATIONSHIP_TO_INSURED'
 src_hashdiff: 'HASHDIFF'

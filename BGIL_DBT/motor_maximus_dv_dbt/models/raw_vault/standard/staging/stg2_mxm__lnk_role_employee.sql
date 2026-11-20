@@ -20,7 +20,8 @@ derived_columns:
   EMPLOYEE_CODE: 'LNK_ROLE_EMPLOYEE__EMPLOYEE_CODE'
   FUNCTION: 'LNK_ROLE_EMPLOYEE__FUNCTION'
   LOAD_DATETIME: 'PARTY_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v09_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v09_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

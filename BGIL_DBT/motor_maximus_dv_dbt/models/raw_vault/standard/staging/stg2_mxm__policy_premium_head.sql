@@ -26,7 +26,8 @@ derived_columns:
   DISCOUNT_AMOUNT: 'POLICY_PREMIUM_HEAD__DISCOUNT_AMOUNT'
   NET_HEAD_PREMIUM: 'POLICY_PREMIUM_HEAD__NET_HEAD_PREMIUM'
   LOAD_DATETIME: 'POLICY_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v13_policy'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v13_policy'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

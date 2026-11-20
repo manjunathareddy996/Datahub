@@ -13,7 +13,7 @@ derived_columns:
   QUOTE_BK: 'QUOTE_BK'
   QUOTE_NK: "'HUB_QUOTE|' || QUOTE_BK"
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v11_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v11_party'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

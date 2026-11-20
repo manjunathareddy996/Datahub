@@ -18,7 +18,7 @@ derived_columns:
   POLICY_NK: "'HUB_POLICY|' || POLICY_BK"
   POLICY_COVERAGE_NK: "case when __LNK_POLICY_COVERAGE = 1 then 'LNK_POLICY_COVERAGE|' || COVERAGE_BK || '|' || POLICY_BK end"
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v07_financial_transaction'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v07_financial_transaction'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

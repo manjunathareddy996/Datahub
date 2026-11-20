@@ -26,7 +26,8 @@ derived_columns:
   SCRUTINY_STATUS: 'AUG_CLAIM_QUALITY_AUDIT__SCRUTINY_STATUS'
   VENDOR_SCORE: 'AUG_CLAIM_QUALITY_AUDIT__VENDOR_SCORE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v03_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v03_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

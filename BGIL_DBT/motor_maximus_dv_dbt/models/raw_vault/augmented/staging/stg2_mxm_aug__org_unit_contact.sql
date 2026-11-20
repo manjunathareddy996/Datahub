@@ -30,7 +30,8 @@ derived_columns:
   STD_CODE: 'AUG_ORG_UNIT_CONTACT__STD_CODE'
   WHATSAPP_NUMBER: 'AUG_ORG_UNIT_CONTACT__WHATSAPP_NUMBER'
   LOAD_DATETIME: 'ORG_UNIT_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v08_location'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v08_location'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

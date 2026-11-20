@@ -14,7 +14,8 @@ derived_columns:
   POLICY_NK: "case when AUG_POLICY_LONG_TERM_DETAIL__REMAINING_ANNIVERSARY_COUNT is not null then 'HUB_POLICY|' || POLICY_BK end"
   REMAINING_ANNIVERSARY_COUNT: 'AUG_POLICY_LONG_TERM_DETAIL__REMAINING_ANNIVERSARY_COUNT'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v12_policy'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v12_policy'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

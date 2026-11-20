@@ -16,7 +16,8 @@ derived_columns:
   INVOICE_NUMBER_CK: 'POLICY_TAX_INVOICE__INVOICE_NUMBER_CK'
   INVOICE_NUMBER: 'POLICY_TAX_INVOICE__INVOICE_NUMBER'
   LOAD_DATETIME: 'POLICY_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v14_risk_object'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v14_risk_object'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

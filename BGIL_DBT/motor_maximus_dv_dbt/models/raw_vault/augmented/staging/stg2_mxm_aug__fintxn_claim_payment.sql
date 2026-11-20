@@ -58,7 +58,8 @@ derived_columns:
   SUPPORTING_INVOICE_NUMBER: 'AUG_FINTXN_CLAIM_PAYMENT__SUPPORTING_INVOICE_NUMBER'
   UTR_DATE: 'AUG_FINTXN_CLAIM_PAYMENT__UTR_DATE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v07_financial_transaction'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v07_financial_transaction'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -24,7 +24,8 @@ derived_columns:
   INTEREST_TYPE: 'RISK_OBJECT_INSURABLE_INTEREST__INTEREST_TYPE'
   LEASE_INDICATOR: 'RISK_OBJECT_INSURABLE_INTEREST__LEASE_INDICATOR'
   LOAD_DATETIME: 'RISK_OBJECT_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v14_risk_object'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v14_risk_object'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

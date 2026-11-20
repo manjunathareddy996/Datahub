@@ -20,7 +20,8 @@ derived_columns:
   CO_INSURANCE_STATUS: 'AUG_CLAIM_CO_RI_SHARE__CO_INSURANCE_STATUS'
   CO_INSURANCE_TYPE: 'AUG_CLAIM_CO_RI_SHARE__CO_INSURANCE_TYPE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v03_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v03_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -4,7 +4,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__claim_header'
-src_pk: 'CLAIM_HKEY'
+src_pk:
+  - 'CLAIM_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'ATTRIBUTE_SET_VALID_INDICATOR'
   - 'BANK_DETAIL_SUPPORTING_DOCUMENT_TYPE'

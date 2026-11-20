@@ -16,7 +16,8 @@ derived_columns:
   DEPOSIT_PREMIUM_INDICATOR: 'PRODUCT_RATING_STRUCTURE__DEPOSIT_PREMIUM_INDICATOR'
   MINIMUM_PREMIUM: 'PRODUCT_RATING_STRUCTURE__MINIMUM_PREMIUM'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v14_risk_object'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v14_risk_object'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

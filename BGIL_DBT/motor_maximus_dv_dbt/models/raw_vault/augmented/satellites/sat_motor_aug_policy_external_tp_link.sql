@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__policy_external_tp_link'
-src_pk: 'POLICY_HKEY'
+src_pk:
+  - 'POLICY_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'TP_INSURER_BRANCH_ADDRESS_TEXT'
   - 'TP_POLICY_CLAIM_AMOUNT'

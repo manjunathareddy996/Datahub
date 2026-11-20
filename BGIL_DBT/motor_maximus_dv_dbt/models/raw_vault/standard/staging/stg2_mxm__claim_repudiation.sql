@@ -16,7 +16,8 @@ derived_columns:
   REPUDIATION_CATEGORY: 'CLAIM_REPUDIATION__REPUDIATION_CATEGORY'
   REPUDIATION_REASON: 'CLAIM_REPUDIATION__REPUDIATION_REASON'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v03_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v03_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

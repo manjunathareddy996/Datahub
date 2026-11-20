@@ -30,7 +30,8 @@ derived_columns:
   RISK_OBJECT_TYPE: 'RISK_OBJECT_CORE__RISK_OBJECT_TYPE'
   USAGE_TYPE: 'RISK_OBJECT_CORE__USAGE_TYPE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v14_risk_object'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v14_risk_object'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

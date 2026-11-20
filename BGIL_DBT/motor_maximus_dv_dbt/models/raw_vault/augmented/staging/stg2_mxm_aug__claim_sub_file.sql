@@ -16,7 +16,8 @@ derived_columns:
   SUB_FILE_NUMBER_CK: 'AUG_CLAIM_SUB_FILE__SUB_FILE_NUMBER_CK'
   SUB_FILE_NUMBER: 'AUG_CLAIM_SUB_FILE__SUB_FILE_NUMBER'
   LOAD_DATETIME: 'CLAIM_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v03_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v03_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

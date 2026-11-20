@@ -14,7 +14,8 @@ derived_columns:
   ASSESSMENT_NK: "case when AUG_ASSESSMENT_UNDERWRITING__REFERRAL_LIMIT_AMOUNT is not null then 'HUB_ASSESSMENT|' || ASSESSMENT_BK end"
   REFERRAL_LIMIT_AMOUNT: 'AUG_ASSESSMENT_UNDERWRITING__REFERRAL_LIMIT_AMOUNT'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v12_policy'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v12_policy'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

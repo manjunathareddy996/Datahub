@@ -60,7 +60,8 @@ derived_columns:
   VAT_REGISTRATION_NUMBER: 'PARTY_IDENTIFICATION__VAT_REGISTRATION_NUMBER'
   VOTER_ID_NUMBER: 'PARTY_IDENTIFICATION__VOTER_ID_NUMBER'
   LOAD_DATETIME: 'PARTY_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v09_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v09_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

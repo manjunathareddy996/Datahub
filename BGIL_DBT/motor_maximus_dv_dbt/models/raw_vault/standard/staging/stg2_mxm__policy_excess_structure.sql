@@ -18,7 +18,8 @@ derived_columns:
   EXCESS_AMOUNT: 'POLICY_EXCESS_STRUCTURE__EXCESS_AMOUNT'
   EXCESS_TYPE: 'POLICY_EXCESS_STRUCTURE__EXCESS_TYPE'
   LOAD_DATETIME: 'POLICY_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v12_policy'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v12_policy'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

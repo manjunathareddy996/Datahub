@@ -14,7 +14,8 @@ derived_columns:
   CLAIM_NK: "case when CLAIM_SLA_TRACKING__SLA_BREACH_INDICATOR is not null then 'HUB_CLAIM|' || CLAIM_BK end"
   SLA_BREACH_INDICATOR: 'CLAIM_SLA_TRACKING__SLA_BREACH_INDICATOR'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v03_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v03_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

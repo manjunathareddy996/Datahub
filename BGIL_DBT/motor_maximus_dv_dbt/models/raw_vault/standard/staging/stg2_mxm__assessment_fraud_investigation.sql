@@ -14,7 +14,8 @@ derived_columns:
   ASSESSMENT_NK: "case when ASSESSMENT_FRAUD_INVESTIGATION__FINDINGS_SUMMARY is not null then 'HUB_ASSESSMENT|' || ASSESSMENT_BK end"
   FINDINGS_SUMMARY: 'ASSESSMENT_FRAUD_INVESTIGATION__FINDINGS_SUMMARY'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v01_assessment'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v01_assessment'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

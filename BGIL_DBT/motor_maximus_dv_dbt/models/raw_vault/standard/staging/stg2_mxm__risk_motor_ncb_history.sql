@@ -38,7 +38,8 @@ derived_columns:
   PREVIOUS_POLICY_START_DATE: 'RISK_MOTOR_NCB_HISTORY__PREVIOUS_POLICY_START_DATE'
   PREVIOUS_POLICY_TYPE: 'RISK_MOTOR_NCB_HISTORY__PREVIOUS_POLICY_TYPE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v15_risk_object'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v15_risk_object'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -14,7 +14,8 @@ derived_columns:
   RISK_OBJECT_NK: "case when AUG_RISK_MOTOR_TELEMATICS__CENTRAL_SYSTEM_CONNECTED_INDICATOR is not null then 'HUB_RISK_OBJECT|' || RISK_OBJECT_BK end"
   CENTRAL_SYSTEM_CONNECTED_INDICATOR: 'AUG_RISK_MOTOR_TELEMATICS__CENTRAL_SYSTEM_CONNECTED_INDICATOR'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v15_risk_object'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v15_risk_object'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

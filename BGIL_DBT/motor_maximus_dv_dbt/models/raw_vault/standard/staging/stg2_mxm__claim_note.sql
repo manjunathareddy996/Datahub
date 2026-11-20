@@ -24,7 +24,8 @@ derived_columns:
   NOTE_TEXT: 'CLAIM_NOTE__NOTE_TEXT'
   NOTE_TYPE: 'CLAIM_NOTE__NOTE_TYPE'
   LOAD_DATETIME: 'CLAIM_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v04_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v04_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

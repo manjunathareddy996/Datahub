@@ -18,7 +18,8 @@ derived_columns:
   EXCLUSION_DETAIL: 'AUG_CLAIM_REPUDIATION__EXCLUSION_DETAIL'
   REPUDIATION_REMARKS: 'AUG_CLAIM_REPUDIATION__REPUDIATION_REMARKS'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v03_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v03_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

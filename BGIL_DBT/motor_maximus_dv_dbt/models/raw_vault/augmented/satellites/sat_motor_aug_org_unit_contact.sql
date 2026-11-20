@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__org_unit_contact'
-src_pk: 'ORG_UNIT_HKEY'
+src_pk:
+  - 'ORG_UNIT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_cdk:
   - 'CONTACT_POINT_TYPE_CK'
 src_payload:

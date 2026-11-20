@@ -14,7 +14,8 @@ derived_columns:
   POLICY_PARTY_NK: "case when AUG_LNK_POLICY_PARTY_ROLE__RELATIONSHIP_TO_INSURED is not null then 'LNK_POLICY_PARTY|' || PARTY_BK || '|' || POLICY_BK end"
   RELATIONSHIP_TO_INSURED: 'AUG_LNK_POLICY_PARTY_ROLE__RELATIONSHIP_TO_INSURED'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v12_policy'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v12_policy'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

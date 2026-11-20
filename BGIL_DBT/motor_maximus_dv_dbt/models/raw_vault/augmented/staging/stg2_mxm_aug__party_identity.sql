@@ -26,7 +26,8 @@ derived_columns:
   PARTY_RECORD_LAST_MODIFIED_DATE: 'AUG_PARTY_IDENTITY__PARTY_RECORD_LAST_MODIFIED_DATE'
   PERSONAL_DETAIL_TEXT: 'AUG_PARTY_IDENTITY__PERSONAL_DETAIL_TEXT'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v10_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v10_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -18,7 +18,8 @@ derived_columns:
   COLLECTION_SOURCE: 'AUG_FIN_RECEIPT__COLLECTION_SOURCE'
   COLLECTION_SUB_CODE: 'AUG_FIN_RECEIPT__COLLECTION_SUB_CODE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v09_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v09_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

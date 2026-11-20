@@ -14,7 +14,8 @@ derived_columns:
   LOCATION_NK: "case when AUG_COMMON_ADMIN_GEOGRAPHY__RTO_CLUSTER_CODE is not null then 'HUB_LOCATION|' || LOCATION_BK end"
   RTO_CLUSTER_CODE: 'AUG_COMMON_ADMIN_GEOGRAPHY__RTO_CLUSTER_CODE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v12_policy'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v12_policy'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

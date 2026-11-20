@@ -26,7 +26,8 @@ derived_columns:
   COST_OF_ASSESSMENT: 'ASSESSMENT_HEADER__COST_OF_ASSESSMENT'
   REQUESTED_DATE: 'ASSESSMENT_HEADER__REQUESTED_DATE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v01_assessment'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v01_assessment'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

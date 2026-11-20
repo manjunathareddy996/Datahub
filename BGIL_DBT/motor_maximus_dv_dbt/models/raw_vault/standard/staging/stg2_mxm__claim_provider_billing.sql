@@ -30,7 +30,8 @@ derived_columns:
   DISALLOWANCE_REASON: 'CLAIM_PROVIDER_BILLING__DISALLOWANCE_REASON'
   DISALLOWED_AMOUNT: 'CLAIM_PROVIDER_BILLING__DISALLOWED_AMOUNT'
   LOAD_DATETIME: 'CLAIM_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v03_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v03_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

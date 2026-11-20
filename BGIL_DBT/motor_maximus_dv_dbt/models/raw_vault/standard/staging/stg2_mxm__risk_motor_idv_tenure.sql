@@ -18,7 +18,8 @@ derived_columns:
   IDV_COMPONENT_CK: 'RISK_MOTOR_IDV_TENURE__IDV_COMPONENT_CK'
   AGREED_IDV: 'RISK_MOTOR_IDV_TENURE__AGREED_IDV'
   LOAD_DATETIME: 'RISK_OBJECT_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v01_assessment'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v01_assessment'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

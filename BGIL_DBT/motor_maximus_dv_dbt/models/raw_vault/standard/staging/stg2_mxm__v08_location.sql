@@ -18,7 +18,7 @@ derived_columns:
   PARTY_NK: "'HUB_PARTY|' || PARTY_BK"
   PARTY_LOCATION_NK: "case when __LNK_PARTY_LOCATION = 1 then 'LNK_PARTY_LOCATION|' || LOCATION_BK || '|' || PARTY_BK end"
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v08_location'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v08_location'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -72,7 +72,7 @@ derived_columns:
   RISK_OBJECT_LOCATION_NK: "case when __LNK_RISK_OBJECT_LOCATION = 1 then 'LNK_RISK_OBJECT_LOCATION|' || LOCATION_BK || '|' || RISK_OBJECT_BK end"
   RISK_OBJECT_PARTY_NK: "case when __LNK_RISK_OBJECT_PARTY = 1 then 'LNK_RISK_OBJECT_PARTY|' || PARTY_BK || '|' || RISK_OBJECT_BK end"
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v14_risk_object'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v14_risk_object'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

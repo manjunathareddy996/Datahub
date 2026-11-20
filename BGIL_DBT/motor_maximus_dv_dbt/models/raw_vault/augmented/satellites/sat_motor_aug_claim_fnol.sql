@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__claim_fnol'
-src_pk: 'CLAIM_HKEY'
+src_pk:
+  - 'CLAIM_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'CAUSE_OF_LOSS_CODE'
   - 'CORRESPONDENCE_ADDRESS_SAME_AS_POLICY_INDICATOR'

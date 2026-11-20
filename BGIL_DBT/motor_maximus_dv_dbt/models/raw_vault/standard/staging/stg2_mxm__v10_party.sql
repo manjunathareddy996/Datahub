@@ -18,7 +18,7 @@ derived_columns:
   POLICY_NK: "'HUB_POLICY|' || POLICY_BK"
   POLICY_PARTY_NK: "case when __LNK_POLICY_PARTY = 1 then 'LNK_POLICY_PARTY|' || PARTY_BK || '|' || POLICY_BK end"
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v10_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v10_party'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -14,7 +14,8 @@ derived_columns:
   POLICY_NK: "case when POLICY_LONG_TERM_DETAIL__POLICY_DURATION_YEARS is not null then 'HUB_POLICY|' || POLICY_BK end"
   POLICY_DURATION_YEARS: 'POLICY_LONG_TERM_DETAIL__POLICY_DURATION_YEARS'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v14_risk_object'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v14_risk_object'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

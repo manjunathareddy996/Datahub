@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm__party_vehicle_prior_insurance'
-src_pk: 'PARTY_HKEY'
+src_pk:
+  - 'PARTY_HKEY'
+  - 'SOURCE_SYSTEM'
 src_cdk:
   - 'LINE_OF_BUSINESS_CK'
   - 'PREVIOUS_POLICY_NUMBER_CK'

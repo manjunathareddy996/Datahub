@@ -16,7 +16,8 @@ derived_columns:
   FACTOR_CODE_CK: 'QUOTE_RATING_INPUT__FACTOR_CODE_CK'
   FACTOR_VALUE: 'QUOTE_RATING_INPUT__FACTOR_VALUE'
   LOAD_DATETIME: 'QUOTE_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v01_assessment'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v01_assessment'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

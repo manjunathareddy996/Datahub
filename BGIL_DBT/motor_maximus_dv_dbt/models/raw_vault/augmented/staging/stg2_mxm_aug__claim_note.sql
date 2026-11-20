@@ -26,7 +26,8 @@ derived_columns:
   NOTE_UPDATED_BY_USER_REFERENCE: 'AUG_CLAIM_NOTE__NOTE_UPDATED_BY_USER_REFERENCE'
   NOTE_UPDATED_DATE: 'AUG_CLAIM_NOTE__NOTE_UPDATED_DATE'
   LOAD_DATETIME: 'CLAIM_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v04_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v04_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

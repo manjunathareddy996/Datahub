@@ -38,7 +38,8 @@ derived_columns:
   REQUESTED_POLICY_TERM: 'QUOTE_HEADER__REQUESTED_POLICY_TERM'
   REQUESTED_SUM_INSURED: 'QUOTE_HEADER__REQUESTED_SUM_INSURED'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v11_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v11_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

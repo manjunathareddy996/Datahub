@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__product_definition'
-src_pk: 'PRODUCT_HKEY'
+src_pk:
+  - 'PRODUCT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'PARTNER_PRODUCT_NAME'
   - 'PRODUCT_DETAIL_TEXT'

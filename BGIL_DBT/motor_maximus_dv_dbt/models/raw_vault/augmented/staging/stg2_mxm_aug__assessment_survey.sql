@@ -54,7 +54,8 @@ derived_columns:
   WORK_APPROVAL_REMARKS: 'AUG_ASSESSMENT_SURVEY__WORK_APPROVAL_REMARKS'
   WORK_APPROVAL_TIME: 'AUG_ASSESSMENT_SURVEY__WORK_APPROVAL_TIME'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v01_assessment'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v01_assessment'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

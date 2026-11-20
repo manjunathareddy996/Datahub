@@ -4,7 +4,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__document_definition'
-src_pk: 'DOCUMENT_HKEY'
+src_pk:
+  - 'DOCUMENT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'COURIER_VENDOR_NAME'
   - 'DISPATCH_DATE'

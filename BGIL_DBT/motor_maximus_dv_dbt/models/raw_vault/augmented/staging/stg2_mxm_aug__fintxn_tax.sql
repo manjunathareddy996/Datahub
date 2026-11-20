@@ -50,7 +50,8 @@ derived_columns:
   UTGST_AMOUNT: 'AUG_FINTXN_TAX__UTGST_AMOUNT'
   UTGST_RATE: 'AUG_FINTXN_TAX__UTGST_RATE'
   LOAD_DATETIME: 'FINANCIAL_TRANSACTION_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v07_financial_transaction'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v07_financial_transaction'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

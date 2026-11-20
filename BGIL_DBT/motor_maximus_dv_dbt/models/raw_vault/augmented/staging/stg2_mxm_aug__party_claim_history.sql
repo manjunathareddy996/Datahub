@@ -18,7 +18,8 @@ derived_columns:
   OWN_DAMAGE_CLAIM_SCORE: 'AUG_PARTY_CLAIM_HISTORY__OWN_DAMAGE_CLAIM_SCORE'
   THIRD_PARTY_CLAIM_SCORE: 'AUG_PARTY_CLAIM_HISTORY__THIRD_PARTY_CLAIM_SCORE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v11_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v11_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

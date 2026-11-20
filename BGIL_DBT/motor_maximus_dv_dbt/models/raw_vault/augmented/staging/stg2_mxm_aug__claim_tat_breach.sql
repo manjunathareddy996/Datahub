@@ -16,7 +16,8 @@ derived_columns:
   PROCESS_STEP_CODE_CK: 'AUG_CLAIM_TAT_BREACH__PROCESS_STEP_CODE_CK'
   TAT_BREACH_INDICATOR: 'AUG_CLAIM_TAT_BREACH__TAT_BREACH_INDICATOR'
   LOAD_DATETIME: 'CLAIM_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v09_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v09_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

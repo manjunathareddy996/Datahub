@@ -14,7 +14,8 @@ derived_columns:
   PAYMENT_INSTRUMENT_NK: "case when AUG_INSTRUMENT_DEFINITION__INSTRUMENT_ISSUE_DATE is not null then 'HUB_PAYMENT_INSTRUMENT|' || PAYMENT_INSTRUMENT_BK end"
   INSTRUMENT_ISSUE_DATE: 'AUG_INSTRUMENT_DEFINITION__INSTRUMENT_ISSUE_DATE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v09_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v09_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

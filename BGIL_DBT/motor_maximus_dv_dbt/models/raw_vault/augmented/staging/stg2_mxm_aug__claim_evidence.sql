@@ -14,7 +14,8 @@ derived_columns:
   CLAIM_NK: "case when AUG_CLAIM_EVIDENCE__IMAGE_UPLOAD_STATUS is not null then 'HUB_CLAIM|' || CLAIM_BK end"
   IMAGE_UPLOAD_STATUS: 'AUG_CLAIM_EVIDENCE__IMAGE_UPLOAD_STATUS'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v04_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v04_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

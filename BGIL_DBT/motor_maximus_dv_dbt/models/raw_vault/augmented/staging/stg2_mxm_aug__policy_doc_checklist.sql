@@ -16,7 +16,8 @@ derived_columns:
   ACTIVE_SEQUENCE_NUMBER_CK: 'AUG_POLICY_DOC_CHECKLIST__ACTIVE_SEQUENCE_NUMBER_CK'
   DEFICIENCY_STATUS: 'AUG_POLICY_DOC_CHECKLIST__DEFICIENCY_STATUS'
   LOAD_DATETIME: 'POLICY_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v12_policy'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v12_policy'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

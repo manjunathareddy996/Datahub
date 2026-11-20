@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__assessment_reinspection'
-src_pk: 'ASSESSMENT_HKEY'
+src_pk:
+  - 'ASSESSMENT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'RE_INSPECTION_CONDUCTED_INDICATOR'
   - 'RE_INSPECTION_DELAY_DAYS'

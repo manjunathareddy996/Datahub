@@ -16,7 +16,8 @@ derived_columns:
   LOCATION_NAME: 'LOCATION_PROFILE__LOCATION_NAME'
   LOCATION_TYPE: 'LOCATION_PROFILE__LOCATION_TYPE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v08_location'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v08_location'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

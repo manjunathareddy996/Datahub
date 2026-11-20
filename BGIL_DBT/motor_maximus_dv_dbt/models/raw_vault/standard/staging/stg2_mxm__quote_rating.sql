@@ -26,7 +26,8 @@ derived_columns:
   NET_PREMIUM: 'QUOTE_RATING__NET_PREMIUM'
   PREMIUM_FREQUENCY: 'QUOTE_RATING__PREMIUM_FREQUENCY'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v11_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v11_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

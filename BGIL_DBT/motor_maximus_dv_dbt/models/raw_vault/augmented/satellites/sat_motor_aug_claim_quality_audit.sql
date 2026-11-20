@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_mxm_aug__claim_quality_audit'
-src_pk: 'CLAIM_HKEY'
+src_pk:
+  - 'CLAIM_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'AUDIT_FLAG_INDICATOR'
   - 'PUBLISH_REVIEWER_COMMENTS_EXTERNALLY_INDICATOR'

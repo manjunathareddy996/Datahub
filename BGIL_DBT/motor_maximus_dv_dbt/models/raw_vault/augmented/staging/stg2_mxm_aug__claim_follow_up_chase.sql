@@ -46,7 +46,8 @@ derived_columns:
   THIRD_REMINDER_DATE: 'AUG_CLAIM_FOLLOW_UP_CHASE__THIRD_REMINDER_DATE'
   WORKFLOW_JOB_STATUS: 'AUG_CLAIM_FOLLOW_UP_CHASE__WORKFLOW_JOB_STATUS'
   LOAD_DATETIME: 'CLAIM_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v04_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v04_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

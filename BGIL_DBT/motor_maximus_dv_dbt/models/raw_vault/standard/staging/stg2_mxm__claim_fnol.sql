@@ -30,7 +30,8 @@ derived_columns:
   REPORTED_BY_CONTACT: 'CLAIM_FNOL__REPORTED_BY_CONTACT'
   REPORTED_BY_NAME: 'CLAIM_FNOL__REPORTED_BY_NAME'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v03_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v03_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

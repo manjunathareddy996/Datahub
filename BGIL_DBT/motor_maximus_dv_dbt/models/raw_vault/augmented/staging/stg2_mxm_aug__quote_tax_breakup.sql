@@ -18,7 +18,8 @@ derived_columns:
   EXEMPTION_REASON: 'AUG_QUOTE_TAX_BREAKUP__EXEMPTION_REASON'
   PLACE_OF_SUPPLY: 'AUG_QUOTE_TAX_BREAKUP__PLACE_OF_SUPPLY'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v14_risk_object'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v14_risk_object'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

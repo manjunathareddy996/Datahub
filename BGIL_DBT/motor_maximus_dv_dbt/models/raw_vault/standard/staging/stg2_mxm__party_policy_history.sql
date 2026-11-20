@@ -14,7 +14,8 @@ derived_columns:
   PARTY_NK: "case when PARTY_POLICY_HISTORY__TOTAL_POLICY_COUNT is not null then 'HUB_PARTY|' || PARTY_BK end"
   TOTAL_POLICY_COUNT: 'PARTY_POLICY_HISTORY__TOTAL_POLICY_COUNT'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v04_claim'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v04_claim'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

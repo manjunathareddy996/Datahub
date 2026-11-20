@@ -18,7 +18,8 @@ derived_columns:
   GROSS_AMOUNT: 'CLAIM_PAYMENT_TRANCHE__GROSS_AMOUNT'
   STATUS: 'CLAIM_PAYMENT_TRANCHE__STATUS'
   LOAD_DATETIME: 'CLAIM_BK__MA_LOAD_DATETIME'
-  RECORD_SOURCE: '!stitch_mxm__v09_party'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v09_party'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

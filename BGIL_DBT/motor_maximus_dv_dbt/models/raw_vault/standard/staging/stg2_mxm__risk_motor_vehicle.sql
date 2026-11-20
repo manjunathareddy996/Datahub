@@ -72,7 +72,8 @@ derived_columns:
   VEHICLE_SUB_CLASS: 'RISK_MOTOR_VEHICLE__VEHICLE_SUB_CLASS'
   VEHICLE_USAGE: 'RISK_MOTOR_VEHICLE__VEHICLE_USAGE'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!stitch_mxm__v15_risk_object'
+  RECORD_SOURCE: '!MAXIMUS_stitch_mxm__v15_risk_object'
+  SOURCE_SYSTEM: '!MAXIMUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
