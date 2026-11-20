@@ -104,8 +104,10 @@ be built with real history discrimination even if the hub key existed.
 
 ## 5. Confirmed clean (no action needed)
 
-- No stitches or links needed anywhere in this LOB (see README Architecture section) —
-  verified, not assumed.
+- ~~No stitches or links needed~~ superseded: 25 links were added build-side (README, "Links").
+  Please confirm them, and rule on `LNK_PARTY_RELATIONSHIP`, `LNK_PARTY_GROUP`,
+  `LNK_PRODUCT_VARIANT`, `LNK_COVERAGE_HIERARCHY`, `LNK_POLICY_ENDORSEMENT`, and the role of
+  `PART_ID` / `CFT_MST_COMP_REF` parties for `LNK_PARTY_ROLE`.
 - The 9 `EXCLUDE+FLAG` name-only augmentation columns (assignee/sponsor/nominee names with no
   key) were correctly excluded by the mapping itself; not re-litigated here.
 - `SAT_LNK_ROLE_NOMINEE_BENEFICIARY` and `SAT_LNK_ROLE_CUSTOMER` (role-special pattern) both

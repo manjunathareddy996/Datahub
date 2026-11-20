@@ -44,23 +44,45 @@ Snowflake RAW.GG_DWHSTAGE (source tables)
 models/staging/travel/*.sql            -- 1:1 casts, one view per source table (9 tables)
         ▼
 models/automate_dv/standard/
-  stitched/*.sql                       -- ONE view (round 3) -- see below
+  stitched/*.sql                       -- 1 trip-attrs stitch + 25 link stitches (see Links)
         │
   staging/stg2_*.sql                   -- automate_dv.stage() calls, namespaced hash keys +
         │                                  HASHDIFF (188 files: per-table + per-attribute)
         ▼
-  hubs/*.sql · satellites/*.sql        -- hub() / sat() / ma_sat() calls (no links/*.sql --
+  hubs/*.sql · satellites/*.sql        -- hub() / sat() / ma_sat() / link() calls (links/*.sql --
                                            see below)
 ```
 
-**No `links/` models** — the mapping's Target→Source sheet has zero `KEY:LNK_*` rows, no
-genuine associative link is needed anywhere in this LOB's source tables. The two satellites
+### Links (25, build-side)
+The mapping's Target→Source sheet has zero `KEY:LNK_*` rows, but the canonical model defines 64
+links and the same physical link tables are shared with Motor/Health/Maximus. So this build
+adds 25 links wherever **one source row carries every leg's hub key**, built build-side (same
+policy as the augmented track; not yet confirmed by the mapper):
+`LNK_PARTY_ROLE`, `LNK_PARTY_LOCATION`, `LNK_POLICY_{PARTY,PRODUCT,COVERAGE,RISK_OBJECT,
+COVERAGE_RISK,CHANNEL,ORG_UNIT,LOCATION}`, `LNK_PRODUCT_COVERAGE`, `LNK_RISK_OBJECT_{LOCATION,
+PARTY}`, `LNK_FINTXN_{POLICY,PARTY}`, `LNK_QUOTE_{PARTY,PRODUCT,PROPOSAL}`,
+`LNK_PROPOSAL_{PARTY,PRODUCT,ASSESSMENT,POLICY}`, `LNK_AGREEMENT_{PARTY,CHANNEL,PRODUCT}`.
+Per link: `stitched/stitch_travel__lnk_*` (UNION ALL of one SELECT per source table x hub-key
+branch; each leg's BK is copied from that branch's `stg2_hub_*` `PARENT_BK`, so legs always
+match a hub row) -> `staging/stg2_lnk_*` (hub HKEYs + link HKEY) -> `links/lnk_*` (`link()`).
+Conventions follow Opus Motor/Health: link NK = `'LNK_X|' || BKs` in alphabetical hub order,
+`src_fk` alphabetical, `LNK_PARTY_ROLE` carries the role in its NK (`premium-payer`, matching
+`SAT_AUG_LNK_PARTY_ROLE_CORE`). Judgment calls: traveller (`MEMBERn`) and benefit branches
+are emitted only when `MEMBERnNAME` / the benefit limit is non-null; `LNK_PARTY_LOCATION` and
+`LNK_RISK_OBJECT_LOCATION` use address branches only (not transit from/to); `LNK_PARTY_ROLE`
+covers the payer key only (roles for `PART_ID` / `CFT_MST_COMP_REF` are unspecified);
+`LNK_POLICY_COVERAGE_RISK` pairs every present benefit with every named traveller on the policy.
+Not built (needs mapper input): `LNK_PARTY_RELATIONSHIP`, `LNK_PARTY_GROUP`,
+`LNK_PRODUCT_VARIANT`, `LNK_COVERAGE_HIERARCHY`, `LNK_POLICY_ENDORSEMENT` and 7 lower-confidence
+org/channel/assessment links. Not computable here: 9 links whose legs never share a source row.
+
+Two satellites
 that are canonically link-parented (`SAT_LNK_ROLE_NOMINEE_BENEFICIARY`, and
 `SAT_LNK_ROLE_CUSTOMER` in the augmented track) use the same **role-special** pattern as
 Health/Partner: built directly off `HUB_PARTY` with a literal `ROLE_TYPE_CK`, ratified for
 Health as M3 ("a load-time provenance label, not a fabricated business key").
 
-**`stitched/` has exactly ONE view, added in round 3** — every other satellite attribute in
+**`stitched/` has exactly ONE non-link view, added in round 3** — every other satellite attribute in
 this LOB traces to exactly one source column, so a stitch would add indirection without
 bypassing anything (this was true and confirmed for the whole build through round 2).
 `stitch_risk_person_travel_trip_attrs.sql` is the one genuine exception: the mapper confirmed
@@ -126,7 +148,7 @@ travel_dv_dbt/
                                               added an address-point HUB_LOCATION branch and
                                               a 17-way wide-benefit HUB_COVERAGE unpivot, now
                                               keyed on the mapper's real cover codes -- round 3)
-        links/                    0 files -- none needed, see Architecture
+        links/                    25 files -- see Links section
         satellites/                33 files (round 2 added SAT_FINTXN_HEADER, fixed
                                               SAT_COMMON_ADDRESS, extended SAT_FINTXN_PREMIUM/
                                               _TAX/SAT_FIN_CHARGE_RATE/SAT_COVERAGE_DEFINITION;

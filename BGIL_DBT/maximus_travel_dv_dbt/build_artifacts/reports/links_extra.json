@@ -1,0 +1,217 @@
+{
+ "built": {
+  "LNK_PARTY_DOCUMENT": [
+   "stg2_mt__uwr_qpd"
+  ],
+  "LNK_PARTY_ORG_UNIT": [
+   "stg2_mt__uwr_qpd"
+  ],
+  "LNK_PARTY_CHANNEL": [
+   "stg2_mt__uwr_qpd"
+  ],
+  "LNK_CHANNEL_ORG_UNIT": [
+   "stg2_mt__uwr_pol_polp_sp_pv",
+   "stg2_mt__uwr_qpd_polp_rl_pv"
+  ],
+  "LNK_PRODUCT_COVERAGE": [
+   "stg2_mt__uwr_pol_ins_rskp_sp_pv",
+   "stg2_mt__uwr_qpd_rskl_rskp_rl_pv"
+  ],
+  "LNK_QUOTE_PARTY": [
+   "stg2_mt__uwr_qpd",
+   "stg2_mt__uwr_qpd_rskl_msp_imsd_inp_pv",
+   "stg2_mt__uwr_qpd_rskl_rskp_rl_pv"
+  ],
+  "LNK_QUOTE_PRODUCT": [
+   "stg2_mt__uwr_pol",
+   "stg2_mt__uwr_qpd",
+   "stg2_mt__uwr_qpd_polp_rl_pv",
+   "stg2_mt__uwr_qpd_rskl_rskp_rl_pv"
+  ],
+  "LNK_QUOTE_RISK_OBJECT": [
+   "stg2_mt__uwr_qpd_rskl",
+   "stg2_mt__uwr_qpd_rskl_msp_imsd_inp_pv",
+   "stg2_mt__uwr_qpd_rskl_rskc",
+   "stg2_mt__uwr_qpd_rskl_rskc_rskc_prop_rl_pv"
+  ],
+  "LNK_POLICY_PRODUCT": [
+   "stg2_mt__uwr_pol",
+   "stg2_mt__uwr_pol_ins_rskp_sp_pv"
+  ],
+  "LNK_POLICY_COVERAGE": [
+   "stg2_mt__uwr_pol_ins_cov",
+   "stg2_mt__uwr_pol_ins_cov_covp_sp_pv",
+   "stg2_mt__uwr_pol_ins_rskp_sp_pv"
+  ],
+  "LNK_POLICY_RISK_OBJECT": [
+   "stg2_mt__uwr_pol_ins_cov_covp_sp_pv",
+   "stg2_mt__uwr_pol_polp_msp_msd_prop_pv"
+  ],
+  "LNK_POLICY_COVERAGE_RISK": [
+   "stg2_mt__uwr_pol_ins_cov_covp_sp_pv"
+  ],
+  "LNK_POLICY_ORG_UNIT": [
+   "stg2_mt__uwr_pol"
+  ],
+  "LNK_POLICY_LOCATION": [
+   "stg2_mt__uwr_pol_disp"
+  ],
+  "LNK_RISK_OBJECT_LOCATION": [
+   "stg2_mt__uwr_qpd_rskl"
+  ],
+  "LNK_RISK_OBJECT_PARTY": [
+   "stg2_mt__uwr_pol_ins_rskp_msp_msd_prop_pv",
+   "stg2_mt__uwr_qpd_rskl_msp_imsd_inp_pv"
+  ],
+  "LNK_RISK_OBJECT_DOCUMENT": [
+   "stg2_mt__uwr_qpd_rskl"
+  ],
+  "LNK_CLAIM_POLICY": [
+   "stg2_mt__clm_clmd"
+  ],
+  "LNK_CLAIM_DOCUMENT": [
+   "stg2_mt__clm_clmd_clma_msp_msd_prop_pv",
+   "stg2_mt__clm_clmd_clmcov_msd_prop_pv"
+  ],
+  "LNK_CLAIM_LOCATION": [
+   "stg2_mt__clm_clmd_clmcov_msd_prop_pv"
+  ],
+  "LNK_CLAIM_PAYMENT_INSTRUMENT": [
+   "stg2_mt__clm_clmd_clmpay_payp_pv"
+  ],
+  "LNK_FINTXN_CLAIM": [
+   "stg2_mt__clm_clmd_clmpay_payp_pv"
+  ],
+  "LNK_FINTXN_PARTY": [
+   "stg2_mt__uwr_qpd"
+  ],
+  "LNK_FINTXN_INSTRUMENT": [
+   "stg2_mt__clm_clmd_clmpay_payp_pv",
+   "stg2_mt__uwr_pol_policy_payment_information"
+  ],
+  "LNK_ORG_UNIT_LOCATION": [
+   "stg2_mt__uwr_pol_off_oa",
+   "stg2_mt__uwr_pol_off_oa_address_prop_pv"
+  ]
+ },
+ "skipped_ambiguous": {
+  "LNK_PARTY_DOCUMENT": [
+   "stg2_mt__clm_clmd_clmap_pv",
+   "stg2_mt__uwr_pol_polp_sp_pv",
+   "stg2_mt__uwr_qpd_polp_rl_pv",
+   "stg2_mt__uwr_qpd_rskl"
+  ],
+  "LNK_PARTY_ORG_UNIT": [
+   "stg2_mt__clm_clmd_clmap_pv",
+   "stg2_mt__uwr_pol",
+   "stg2_mt__uwr_pol_polp_sp_pv",
+   "stg2_mt__uwr_pol_prp_pp_sp_pv",
+   "stg2_mt__uwr_qpd_polp_rl_pv"
+  ],
+  "LNK_PARTY_CHANNEL": [
+   "stg2_mt__clm_clmd_clmap_pv",
+   "stg2_mt__uwr_pol_ins_mbr_pp_sp_pv",
+   "stg2_mt__uwr_pol_polp_sp_pv",
+   "stg2_mt__uwr_pol_prp_pp_sp_pv",
+   "stg2_mt__uwr_qpd_polp_rl_pv"
+  ],
+  "LNK_CHANNEL_ORG_UNIT": [
+   "stg2_mt__clm_clmd_clmap_pv",
+   "stg2_mt__uwr_pol_prp_pp_sp_pv"
+  ],
+  "LNK_PRODUCT_COVERAGE": [],
+  "LNK_QUOTE_PARTY": [
+   "stg2_mt__uwr_pol",
+   "stg2_mt__uwr_pol_ins_mbr_pp_sp_pv",
+   "stg2_mt__uwr_qpd_polp_rl_pv",
+   "stg2_mt__uwr_qpd_rskl"
+  ],
+  "LNK_QUOTE_PRODUCT": [],
+  "LNK_QUOTE_RISK_OBJECT": [
+   "stg2_mt__uwr_qpd_rskl_rskp_rl_pv"
+  ],
+  "LNK_POLICY_PRODUCT": [
+   "stg2_mt__clm_clmd_clmap_pv",
+   "stg2_mt__uwr_pol_polp_sp_pv",
+   "stg2_mt__uwr_qpd_polp_rl_pv"
+  ],
+  "LNK_POLICY_COVERAGE": [],
+  "LNK_POLICY_RISK_OBJECT": [
+   "stg2_mt__clm_clmd_clmap_pv",
+   "stg2_mt__uwr_pol_ins_rskp_sp_pv"
+  ],
+  "LNK_POLICY_COVERAGE_RISK": [
+   "stg2_mt__uwr_pol_ins_rskp_sp_pv"
+  ],
+  "LNK_POLICY_ORG_UNIT": [
+   "stg2_mt__clm_clmd_clmap_pv",
+   "stg2_mt__uwr_pol_polp_sp_pv",
+   "stg2_mt__uwr_qpd_polp_rl_pv"
+  ],
+  "LNK_POLICY_LOCATION": [
+   "stg2_mt__clm_clmd_clmap_pv"
+  ],
+  "LNK_RISK_OBJECT_LOCATION": [
+   "stg2_mt__clm_clmd_clmap_pv"
+  ],
+  "LNK_RISK_OBJECT_PARTY": [
+   "stg2_mt__clm_clmd_clmap_pv",
+   "stg2_mt__uwr_pol_ins_rskp_sp_pv",
+   "stg2_mt__uwr_qpd_rskl",
+   "stg2_mt__uwr_qpd_rskl_rskp_rl_pv"
+  ],
+  "LNK_RISK_OBJECT_DOCUMENT": [
+   "stg2_mt__clm_clmd_clmap_pv"
+  ],
+  "LNK_CLAIM_POLICY": [
+   "stg2_mt__clm_clmd_clmap_pv",
+   "stg2_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv"
+  ],
+  "LNK_CLAIM_DOCUMENT": [
+   "stg2_mt__clm_clmd_clmap_pv"
+  ],
+  "LNK_CLAIM_LOCATION": [
+   "stg2_mt__clm_clmd_clmap_pv",
+   "stg2_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv",
+   "stg2_mt__clm_clmd_clmrsk_rska_properties_pv"
+  ],
+  "LNK_CLAIM_PAYMENT_INSTRUMENT": [],
+  "LNK_FINTXN_CLAIM": [
+   "stg2_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv"
+  ],
+  "LNK_FINTXN_PARTY": [
+   "stg2_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv",
+   "stg2_mt__uwr_pol_polp_sp_pv",
+   "stg2_mt__uwr_qpd_polp_rl_pv",
+   "stg2_mt__uwr_qpd_rskl"
+  ],
+  "LNK_FINTXN_INSTRUMENT": [],
+  "LNK_ORG_UNIT_LOCATION": [
+   "stg2_mt__clm_clmd_clmap_pv",
+   "stg2_mt__uwr_pol_prp_pp_sp_pv"
+  ]
+ },
+ "excluded": [
+  [
+   "LNK_CHANNEL_ORG_UNIT",
+   "stg2_mt__uwr_qpd",
+   "only org-unit slot is POLICY_ISSUING_BRANCH, not the unit that manages the channel"
+  ],
+  [
+   "LNK_POLICY_PRODUCT",
+   "stg2_mt__uwr_pol_prevpol",
+   "only policy slot is PREVIOUS_POLICY; the product belongs to the current policy"
+  ],
+  [
+   "LNK_POLICY_LOCATION",
+   "stg2_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv",
+   "only location slot is CLAIM_EXPENSE_PARTY_ADDRESS, not a policy risk location"
+  ],
+  [
+   "LNK_CLAIM_LOCATION",
+   "stg2_mt__clm_clmd_clma_msp_msd_prop_pv",
+   "only location slot is DOCUMENT_INWARD_ORIGIN_ADDRESS, not a claim location"
+  ]
+ ],
+ "no_source": []
+}
