@@ -1,14 +1,14 @@
-{{ config(materialized='view') }}
--- stage() for LNK_CLAIM_PAYMENT_INSTRUMENT: hub HKEYs (from each hub's own NK) and the link HKEY, over lnkbk_mt_claim_payment_instrument.
+{{ config(materialized='view', tags=['lnk_extra']) }}
+-- stage() for LNK_CLAIM_POLICY: hub HKEYs (from each hub's own NK) and the link HKEY, over lnkbk_mt_claim_policy.
 -- Link NK = 'LNK_x|' || leg business keys, hubs in canonical-sheet order.
 {%- set yaml_metadata -%}
-source_model: 'lnkbk_mt_claim_payment_instrument'
+source_model: 'lnkbk_mt_claim_policy'
 hashed_columns:
   CLAIM_HKEY: 'CLAIM_NK'
-  PAYMENT_INSTRUMENT_HKEY: 'PAYMENT_INSTRUMENT_NK'
-  CLAIM_PAYMENT_INSTRUMENT_HKEY: 'CLAIM_PAYMENT_INSTRUMENT_NK'
+  POLICY_HKEY: 'POLICY_NK'
+  CLAIM_POLICY_HKEY: 'CLAIM_POLICY_NK'
 derived_columns:
-  CLAIM_PAYMENT_INSTRUMENT_NK: "'LNK_CLAIM_PAYMENT_INSTRUMENT|' || CLAIM_BK || '|' || PAYMENT_INSTRUMENT_BK"
+  CLAIM_POLICY_NK: "'LNK_CLAIM_POLICY|' || CLAIM_BK || '|' || POLICY_BK"
 {%- endset -%}
 {% set metadata_dict = fromyaml(yaml_metadata) %}
 {{ automate_dv.stage(include_source_columns=true,

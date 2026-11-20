@@ -1,14 +1,14 @@
-{{ config(materialized='view') }}
--- stage() for LNK_FINTXN_CLAIM: hub HKEYs (from each hub's own NK) and the link HKEY, over lnkbk_mt_fintxn_claim.
+{{ config(materialized='view', tags=['lnk_extra']) }}
+-- stage() for LNK_CLAIM_LOCATION: hub HKEYs (from each hub's own NK) and the link HKEY, over lnkbk_mt_claim_location.
 -- Link NK = 'LNK_x|' || leg business keys, hubs in canonical-sheet order.
 {%- set yaml_metadata -%}
-source_model: 'lnkbk_mt_fintxn_claim'
+source_model: 'lnkbk_mt_claim_location'
 hashed_columns:
-  FINANCIAL_TRANSACTION_HKEY: 'FINANCIAL_TRANSACTION_NK'
   CLAIM_HKEY: 'CLAIM_NK'
-  FINTXN_CLAIM_HKEY: 'FINTXN_CLAIM_NK'
+  LOCATION_HKEY: 'LOCATION_NK'
+  CLAIM_LOCATION_HKEY: 'CLAIM_LOCATION_NK'
 derived_columns:
-  FINTXN_CLAIM_NK: "'LNK_FINTXN_CLAIM|' || FINANCIAL_TRANSACTION_BK || '|' || CLAIM_BK"
+  CLAIM_LOCATION_NK: "'LNK_CLAIM_LOCATION|' || CLAIM_BK || '|' || LOCATION_BK"
 {%- endset -%}
 {% set metadata_dict = fromyaml(yaml_metadata) %}
 {{ automate_dv.stage(include_source_columns=true,

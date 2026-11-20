@@ -39,6 +39,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 PROJ = os.path.dirname(HERE)
 STD = os.path.join(PROJ, "models", "raw_vault", "standard")
 STG_DIR = os.path.join(STD, "staging")
+LKS_DIR = os.path.join(STD, "link_staging")
 LNK_DIR = os.path.join(STD, "links")
 REPORT = os.path.join(PROJ, "build_artifacts", "reports", "links_extra.json")
 
@@ -119,6 +120,7 @@ def write(path, text):
 
 
 def main():
+    os.makedirs(LKS_DIR, exist_ok=True)
     models = {}
     for f in sorted(glob.glob(os.path.join(STG_DIR, "stg2_mt__*.sql"))):
         slots, meta = slots_of(f)
@@ -152,7 +154,7 @@ def main():
             where = " and ".join("%s_BK%s is not null" % (h, slots[h][0]) for h in hubs)
             selects.append("    select %s,\n           LOAD_DATETIME, RECORD_SOURCE\n"
                            "    from {{ ref('%s') }}\n    where %s" % (", ".join(cols), t, where))
-        bk = ("{{ config(materialized='view') }}\n"
+        bk = ("{{ config(materialized='view', tags=['lnk_extra']) }}\n"
               "-- BUILD-SIDE BUSINESS KEYS for %s (%s): %d feeder(s) over %d hub leg(s).\n"
               "--\n"
               "-- Not in the mapper's map. Each feeder is a stg2_mt__ view in which every hub of this link\n"
@@ -163,7 +165,7 @@ def main():
               % (code, name, len(ok), len(hubs))) + "\nunion all\n".join(selects) + "\n"
         write(os.path.join(LNK_DIR, "lnkbk_mt_%s.sql" % slug), bk)
         # ---- stg2: hash the legs and the link key
-        lines = ["{{ config(materialized='view') }}",
+        lines = ["{{ config(materialized='view', tags=['lnk_extra']) }}",
                  "-- stage() for %s: hub HKEYs (from each hub's own NK) and the link HKEY, over lnkbk_mt_%s." % (code, slug),
                  "-- Link NK = 'LNK_x|' || leg business keys, hubs in canonical-sheet order.",
                  "{%- set yaml_metadata -%}", "source_model: 'lnkbk_mt_%s'" % slug, "hashed_columns:"]
@@ -177,10 +179,10 @@ def main():
                   "                      source_model=metadata_dict['source_model'],",
                   "                      hashed_columns=metadata_dict['hashed_columns'],",
                   "                      derived_columns=metadata_dict['derived_columns']) }}"]
-        write(os.path.join(STG_DIR, "stg2_mt_lk__%s.sql" % slug), "\n".join(lines) + "\n")
+        write(os.path.join(LKS_DIR, "stg2_mt_lk__%s.sql" % slug), "\n".join(lines) + "\n")
         # ---- lnkfeed: same columns as the existing lnkfeed_mt_* views
         sel = ", ".join(["%s as %s" % (pk, pk)] + ["%s_HKEY as %s_HKEY" % (h, h) for h in hubs])
-        feed = ("{{ config(materialized='view') }}\n"
+        feed = ("{{ config(materialized='view', tags=['lnk_extra']) }}\n"
                 "-- FEED for %s: %d feeder(s) over %d hub leg(s). BUILD-SIDE (not in the mapper's map);\n"
                 "-- see lnkbk_mt_%s for the feeders and generators/gen_mt_links_extra.py for the rule.\n"
                 "    select %s,\n           LOAD_DATETIME, RECORD_SOURCE\n"
@@ -190,7 +192,7 @@ def main():
         write(os.path.join(LNK_DIR, "lnkfeed_mt_%s.sql" % slug), feed)
         # ---- link
         fk = "\n".join("  - '%s_HKEY'" % h for h in hubs)
-        link = ("{{ config(materialized='incremental') }}\n"
+        link = ("{{ config(materialized='incremental', tags=['lnk_extra']) }}\n"
                 "-- MAXIMUS TRAVEL link() for %s. BUILD-SIDE: not in the mapper's map.\n"
                 "-- Writes the SAME physical table as the OPUS build travel_dv_dbt: separate projects,\n"
                 "-- separate pipelines, one shared vault. This model declares ONLY this project's own\n"

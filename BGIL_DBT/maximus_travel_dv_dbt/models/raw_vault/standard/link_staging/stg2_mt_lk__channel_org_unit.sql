@@ -1,14 +1,14 @@
-{{ config(materialized='view') }}
--- stage() for LNK_FINTXN_PARTY: hub HKEYs (from each hub's own NK) and the link HKEY, over lnkbk_mt_fintxn_party.
+{{ config(materialized='view', tags=['lnk_extra']) }}
+-- stage() for LNK_CHANNEL_ORG_UNIT: hub HKEYs (from each hub's own NK) and the link HKEY, over lnkbk_mt_channel_org_unit.
 -- Link NK = 'LNK_x|' || leg business keys, hubs in canonical-sheet order.
 {%- set yaml_metadata -%}
-source_model: 'lnkbk_mt_fintxn_party'
+source_model: 'lnkbk_mt_channel_org_unit'
 hashed_columns:
-  FINANCIAL_TRANSACTION_HKEY: 'FINANCIAL_TRANSACTION_NK'
-  PARTY_HKEY: 'PARTY_NK'
-  FINTXN_PARTY_HKEY: 'FINTXN_PARTY_NK'
+  DISTRIBUTION_CHANNEL_HKEY: 'DISTRIBUTION_CHANNEL_NK'
+  ORG_UNIT_HKEY: 'ORG_UNIT_NK'
+  CHANNEL_ORG_UNIT_HKEY: 'CHANNEL_ORG_UNIT_NK'
 derived_columns:
-  FINTXN_PARTY_NK: "'LNK_FINTXN_PARTY|' || FINANCIAL_TRANSACTION_BK || '|' || PARTY_BK"
+  CHANNEL_ORG_UNIT_NK: "'LNK_CHANNEL_ORG_UNIT|' || DISTRIBUTION_CHANNEL_BK || '|' || ORG_UNIT_BK"
 {%- endset -%}
 {% set metadata_dict = fromyaml(yaml_metadata) %}
 {{ automate_dv.stage(include_source_columns=true,

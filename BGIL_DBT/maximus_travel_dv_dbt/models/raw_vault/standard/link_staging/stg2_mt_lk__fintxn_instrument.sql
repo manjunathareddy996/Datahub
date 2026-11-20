@@ -1,4 +1,4 @@
-{{ config(materialized='view') }}
+{{ config(materialized='view', tags=['lnk_extra']) }}
 -- stage() for LNK_FINTXN_INSTRUMENT: hub HKEYs (from each hub's own NK) and the link HKEY, over lnkbk_mt_fintxn_instrument.
 -- Link NK = 'LNK_x|' || leg business keys, hubs in canonical-sheet order.
 {%- set yaml_metadata -%}

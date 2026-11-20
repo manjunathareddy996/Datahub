@@ -1,14 +1,14 @@
-{{ config(materialized='view') }}
--- stage() for LNK_PRODUCT_COVERAGE: hub HKEYs (from each hub's own NK) and the link HKEY, over lnkbk_mt_product_coverage.
+{{ config(materialized='view', tags=['lnk_extra']) }}
+-- stage() for LNK_PARTY_ORG_UNIT: hub HKEYs (from each hub's own NK) and the link HKEY, over lnkbk_mt_party_org_unit.
 -- Link NK = 'LNK_x|' || leg business keys, hubs in canonical-sheet order.
 {%- set yaml_metadata -%}
-source_model: 'lnkbk_mt_product_coverage'
+source_model: 'lnkbk_mt_party_org_unit'
 hashed_columns:
-  PRODUCT_HKEY: 'PRODUCT_NK'
-  COVERAGE_HKEY: 'COVERAGE_NK'
-  PRODUCT_COVERAGE_HKEY: 'PRODUCT_COVERAGE_NK'
+  PARTY_HKEY: 'PARTY_NK'
+  ORG_UNIT_HKEY: 'ORG_UNIT_NK'
+  PARTY_ORG_UNIT_HKEY: 'PARTY_ORG_UNIT_NK'
 derived_columns:
-  PRODUCT_COVERAGE_NK: "'LNK_PRODUCT_COVERAGE|' || PRODUCT_BK || '|' || COVERAGE_BK"
+  PARTY_ORG_UNIT_NK: "'LNK_PARTY_ORG_UNIT|' || PARTY_BK || '|' || ORG_UNIT_BK"
 {%- endset -%}
 {% set metadata_dict = fromyaml(yaml_metadata) %}
 {{ automate_dv.stage(include_source_columns=true,

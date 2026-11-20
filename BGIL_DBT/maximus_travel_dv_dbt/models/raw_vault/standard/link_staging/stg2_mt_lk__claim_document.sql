@@ -1,14 +1,14 @@
-{{ config(materialized='view') }}
--- stage() for LNK_RISK_OBJECT_PARTY: hub HKEYs (from each hub's own NK) and the link HKEY, over lnkbk_mt_risk_object_party.
+{{ config(materialized='view', tags=['lnk_extra']) }}
+-- stage() for LNK_CLAIM_DOCUMENT: hub HKEYs (from each hub's own NK) and the link HKEY, over lnkbk_mt_claim_document.
 -- Link NK = 'LNK_x|' || leg business keys, hubs in canonical-sheet order.
 {%- set yaml_metadata -%}
-source_model: 'lnkbk_mt_risk_object_party'
+source_model: 'lnkbk_mt_claim_document'
 hashed_columns:
-  RISK_OBJECT_HKEY: 'RISK_OBJECT_NK'
-  PARTY_HKEY: 'PARTY_NK'
-  RISK_OBJECT_PARTY_HKEY: 'RISK_OBJECT_PARTY_NK'
+  CLAIM_HKEY: 'CLAIM_NK'
+  DOCUMENT_HKEY: 'DOCUMENT_NK'
+  CLAIM_DOCUMENT_HKEY: 'CLAIM_DOCUMENT_NK'
 derived_columns:
-  RISK_OBJECT_PARTY_NK: "'LNK_RISK_OBJECT_PARTY|' || RISK_OBJECT_BK || '|' || PARTY_BK"
+  CLAIM_DOCUMENT_NK: "'LNK_CLAIM_DOCUMENT|' || CLAIM_BK || '|' || DOCUMENT_BK"
 {%- endset -%}
 {% set metadata_dict = fromyaml(yaml_metadata) %}
 {{ automate_dv.stage(include_source_columns=true,

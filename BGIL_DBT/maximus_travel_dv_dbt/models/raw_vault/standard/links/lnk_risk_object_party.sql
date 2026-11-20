@@ -1,4 +1,4 @@
-{{ config(materialized='incremental') }}
+{{ config(materialized='incremental', tags=['lnk_extra']) }}
 -- MAXIMUS TRAVEL link() for LNK_RISK_OBJECT_PARTY. BUILD-SIDE: not in the mapper's map.
 -- Writes the SAME physical table as the OPUS build travel_dv_dbt: separate projects,
 -- separate pipelines, one shared vault. This model declares ONLY this project's own

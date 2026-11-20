@@ -1,4 +1,4 @@
-{{ config(materialized='view') }}
+{{ config(materialized='view', tags=['lnk_extra']) }}
 -- BUILD-SIDE BUSINESS KEYS for LNK_QUOTE_RISK_OBJECT (Quote Risk Object): 4 feeder(s) over 2 hub leg(s).
 --
 -- Not in the mapper's map. Each feeder is a stg2_mt__ view in which every hub of this link

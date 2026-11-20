@@ -1,14 +1,14 @@
-{{ config(materialized='view') }}
--- stage() for LNK_POLICY_PRODUCT: hub HKEYs (from each hub's own NK) and the link HKEY, over lnkbk_mt_policy_product.
+{{ config(materialized='view', tags=['lnk_extra']) }}
+-- stage() for LNK_QUOTE_RISK_OBJECT: hub HKEYs (from each hub's own NK) and the link HKEY, over lnkbk_mt_quote_risk_object.
 -- Link NK = 'LNK_x|' || leg business keys, hubs in canonical-sheet order.
 {%- set yaml_metadata -%}
-source_model: 'lnkbk_mt_policy_product'
+source_model: 'lnkbk_mt_quote_risk_object'
 hashed_columns:
-  POLICY_HKEY: 'POLICY_NK'
-  PRODUCT_HKEY: 'PRODUCT_NK'
-  POLICY_PRODUCT_HKEY: 'POLICY_PRODUCT_NK'
+  QUOTE_HKEY: 'QUOTE_NK'
+  RISK_OBJECT_HKEY: 'RISK_OBJECT_NK'
+  QUOTE_RISK_OBJECT_HKEY: 'QUOTE_RISK_OBJECT_NK'
 derived_columns:
-  POLICY_PRODUCT_NK: "'LNK_POLICY_PRODUCT|' || POLICY_BK || '|' || PRODUCT_BK"
+  QUOTE_RISK_OBJECT_NK: "'LNK_QUOTE_RISK_OBJECT|' || QUOTE_BK || '|' || RISK_OBJECT_BK"
 {%- endset -%}
 {% set metadata_dict = fromyaml(yaml_metadata) %}
 {{ automate_dv.stage(include_source_columns=true,
