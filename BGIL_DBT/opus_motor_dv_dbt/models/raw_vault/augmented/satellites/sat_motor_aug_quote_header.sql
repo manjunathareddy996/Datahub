@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__quote_header'
-src_pk: 'QUOTE_HKEY'
+src_pk:
+  - 'QUOTE_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'QUOTED_GEOGRAPHICAL_SCOPE'
   - 'QUOTED_WAITING_PERIOD'

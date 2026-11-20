@@ -17,6 +17,7 @@ derived_columns:
   PAID_DRIVER_COUNT: 'COVERAGE_MOTOR_PA_OCCUPANT__PAID_DRIVER_COUNT'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v05_coverage'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

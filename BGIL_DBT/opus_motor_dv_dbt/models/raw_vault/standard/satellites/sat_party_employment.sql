@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__party_employment'
-src_pk: 'PARTY_HKEY'
+src_pk:
+  - 'PARTY_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'INDUSTRY_SECTOR'
 src_hashdiff: 'HASHDIFF'

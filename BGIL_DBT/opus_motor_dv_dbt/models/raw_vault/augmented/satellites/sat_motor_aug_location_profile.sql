@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__location_profile'
-src_pk: 'LOCATION_HKEY'
+src_pk:
+  - 'LOCATION_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'DWELLING_DESCRIPTION'
   - 'YEARS_AT_LOCATION'

@@ -33,6 +33,7 @@ derived_columns:
   PROSPECT_NAME: 'AUG_CHANNEL_FIELD_ACTIVITY__PROSPECT_NAME'
   LOAD_DATETIME: 'DISTRIBUTION_CHANNEL_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v06_distribution_channel'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

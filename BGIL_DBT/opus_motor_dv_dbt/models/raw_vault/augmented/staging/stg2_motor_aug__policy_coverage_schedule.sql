@@ -21,6 +21,7 @@ derived_columns:
   SOURCE_LINE_REFERENCE: 'AUG_POLICY_COVERAGE_SCHEDULE__SOURCE_LINE_REFERENCE'
   LOAD_DATETIME: 'POLICY_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v05_coverage'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

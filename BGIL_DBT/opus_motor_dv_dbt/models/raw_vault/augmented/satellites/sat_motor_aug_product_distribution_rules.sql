@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__product_distribution_rules'
-src_pk: 'PRODUCT_HKEY'
+src_pk:
+  - 'PRODUCT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'RTA_CONFIGURATION_RULE_TYPE'
   - 'RTA_CONFIGURATION_VEHICLE_TYPE_CODE'

@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__party_digital_journey_stage'
-src_pk: 'PARTY_HKEY'
+src_pk:
+  - 'PARTY_HKEY'
+  - 'SOURCE_SYSTEM'
 src_cdk:
   - 'JOURNEY_STAGE_CODE_CK'
   - 'JOURNEY_STAGE_CK'

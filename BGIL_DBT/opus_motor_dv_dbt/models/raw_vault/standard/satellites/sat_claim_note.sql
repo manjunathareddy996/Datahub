@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__claim_note'
-src_pk: 'CLAIM_HKEY'
+src_pk:
+  - 'CLAIM_HKEY'
+  - 'SOURCE_SYSTEM'
 src_cdk:
   - 'NOTE_SEQUENCE'
 src_payload:

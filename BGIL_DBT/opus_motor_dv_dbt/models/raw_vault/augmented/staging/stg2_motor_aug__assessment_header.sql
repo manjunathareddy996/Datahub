@@ -17,6 +17,7 @@ derived_columns:
   INSPECTION_TRANSACTION_REFERENCE: 'AUG_ASSESSMENT_HEADER__INSPECTION_TRANSACTION_REFERENCE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v01_claim'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

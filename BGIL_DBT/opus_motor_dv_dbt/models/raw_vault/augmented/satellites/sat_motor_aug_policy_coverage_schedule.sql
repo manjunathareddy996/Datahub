@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__policy_coverage_schedule'
-src_pk: 'POLICY_HKEY'
+src_pk:
+  - 'POLICY_HKEY'
+  - 'SOURCE_SYSTEM'
 src_cdk:
   - 'COVERAGE_REFERENCE_CK'
   - 'COVERAGE_SEQUENCE_CK'

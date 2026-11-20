@@ -19,6 +19,7 @@ derived_columns:
   COMPARISON_SOURCE: 'AUG_CLAIM_COMPARABLE_CLAIM__COMPARISON_SOURCE'
   LOAD_DATETIME: 'CLAIM_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v01_claim'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -65,6 +65,7 @@ derived_columns:
   UNQUALIFIED_REASON_TEXT: 'AUG_CLAIM_HEADER__UNQUALIFIED_REASON_TEXT'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v01_claim'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

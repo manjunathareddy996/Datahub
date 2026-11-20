@@ -21,6 +21,7 @@ derived_columns:
   MEDIA_REFERENCE: 'CLAIM_EVIDENCE__MEDIA_REFERENCE'
   LOAD_DATETIME: 'CLAIM_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v02_claim'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -17,6 +17,7 @@ derived_columns:
   ENDORSEMENT_REMARKS: 'AUG_POLICY_ENDORSEMENT__ENDORSEMENT_REMARKS'
   LOAD_DATETIME: 'POLICY_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v15_policy'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

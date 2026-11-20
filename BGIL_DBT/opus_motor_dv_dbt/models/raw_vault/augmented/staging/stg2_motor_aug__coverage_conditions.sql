@@ -15,6 +15,7 @@ derived_columns:
   MAXIMUM_VEHICLE_AGE: 'AUG_COVERAGE_CONDITIONS__MAXIMUM_VEHICLE_AGE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v04_coverage'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

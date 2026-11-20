@@ -17,6 +17,7 @@ derived_columns:
   RESPONSE_VALUE: 'PROPOSAL_QUESTIONNAIRE__RESPONSE_VALUE'
   LOAD_DATETIME: 'PROPOSAL_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v10_party'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__quote_rating'
-src_pk: 'QUOTE_HKEY'
+src_pk:
+  - 'QUOTE_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'COLLECTED_PREMIUM_AMOUNT'
   - 'COMMISSION_AMOUNT'

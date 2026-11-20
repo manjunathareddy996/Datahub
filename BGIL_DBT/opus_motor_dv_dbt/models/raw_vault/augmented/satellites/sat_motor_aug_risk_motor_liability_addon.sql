@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__risk_motor_liability_addon'
-src_pk: 'RISK_OBJECT_HKEY'
+src_pk:
+  - 'RISK_OBJECT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'LEGAL_LIABILITY_CLEANER_INDICATOR'
   - 'LEGAL_LIABILITY_CLEANER_PREMIUM'

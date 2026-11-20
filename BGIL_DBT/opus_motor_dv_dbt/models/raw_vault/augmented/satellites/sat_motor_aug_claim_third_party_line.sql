@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__claim_third_party_line'
-src_pk: 'CLAIM_HKEY'
+src_pk:
+  - 'CLAIM_HKEY'
+  - 'SOURCE_SYSTEM'
 src_cdk:
   - 'INJURED_PARTY_SEQUENCE_CK'
 src_payload:

@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__party_marketing'
-src_pk: 'PARTY_HKEY'
+src_pk:
+  - 'PARTY_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'PROFILING_DISCLOSURE_OPTED_INDICATOR'
   - 'PROMOTION_NUMBER'

@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__case_external_ref'
-src_pk: 'CASE_HKEY'
+src_pk:
+  - 'CASE_HKEY'
+  - 'SOURCE_SYSTEM'
 src_cdk:
   - 'REFERENCE_TYPE_CK'
 src_payload:

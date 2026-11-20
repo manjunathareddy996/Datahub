@@ -15,6 +15,7 @@ derived_columns:
   PAYMENT_MODE: 'PROPOSAL_PAYMENT__PAYMENT_MODE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v06_distribution_channel'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

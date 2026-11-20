@@ -17,6 +17,7 @@ derived_columns:
   REFERRAL_REASON: 'PROPOSAL_UNDERWRITING__REFERRAL_REASON'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v11_party'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

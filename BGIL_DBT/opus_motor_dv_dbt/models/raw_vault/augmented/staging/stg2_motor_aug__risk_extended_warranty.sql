@@ -19,6 +19,7 @@ derived_columns:
   WARRANTY_INVOICE_DATE: 'AUG_RISK_EXTENDED_WARRANTY__WARRANTY_INVOICE_DATE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v08_org_unit'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__coverage_motor_addon_params'
-src_pk: 'COVERAGE_HKEY'
+src_pk:
+  - 'COVERAGE_HKEY'
+  - 'SOURCE_SYSTEM'
 src_cdk:
   - 'ADD_ON_COVERAGE_CODE_CK'
   - 'TYRE_POSITION_CK'

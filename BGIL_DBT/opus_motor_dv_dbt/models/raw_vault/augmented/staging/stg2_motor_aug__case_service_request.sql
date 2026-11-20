@@ -15,6 +15,7 @@ derived_columns:
   ASSISTANCE_OFFER_PUSHED_INDICATOR: 'AUG_CASE_SERVICE_REQUEST__ASSISTANCE_OFFER_PUSHED_INDICATOR'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v09_party'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

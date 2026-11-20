@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__loss_location_address'
-src_pk: 'LOSS_EVENT_HKEY'
+src_pk:
+  - 'LOSS_EVENT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'ADDRESS_LINE_1'
   - 'ADDRESS_LINE_2'

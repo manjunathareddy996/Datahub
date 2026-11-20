@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__proposal_underwriting'
-src_pk: 'PROPOSAL_HKEY'
+src_pk:
+  - 'PROPOSAL_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'REFERRAL_DATE'
   - 'REFERRAL_REASON'

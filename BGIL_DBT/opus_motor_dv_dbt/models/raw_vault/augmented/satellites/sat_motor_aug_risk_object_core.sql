@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__risk_object_core'
-src_pk: 'RISK_OBJECT_HKEY'
+src_pk:
+  - 'RISK_OBJECT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'ISSUANCE_BLOCK_FROM_DATE'
   - 'ISSUANCE_BLOCK_STATUS'

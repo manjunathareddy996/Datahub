@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__party_identity'
-src_pk: 'PARTY_HKEY'
+src_pk:
+  - 'PARTY_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'UNIQUE_CUSTOMER_IDENTIFICATION_CODE_INDICATOR'
 src_hashdiff: 'HASHDIFF'

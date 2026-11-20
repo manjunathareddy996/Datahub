@@ -21,6 +21,7 @@ derived_columns:
   REINSURANCE_PREMIUM_AMOUNT: 'AUG_CLAIM_CO_RI_SHARE__REINSURANCE_PREMIUM_AMOUNT'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v03_claim'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

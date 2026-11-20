@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__policy_tax_breakup'
-src_pk: 'POLICY_HKEY'
+src_pk:
+  - 'POLICY_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'CESS_AMOUNT'
   - 'CGST_AMOUNT'

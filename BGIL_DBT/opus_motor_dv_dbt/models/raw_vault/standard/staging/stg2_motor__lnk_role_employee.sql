@@ -17,6 +17,7 @@ derived_columns:
   EMPLOYEE_CODE: 'LNK_ROLE_EMPLOYEE__EMPLOYEE_CODE'
   LOAD_DATETIME: 'PARTY_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v11_party'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

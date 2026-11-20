@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__common_communication_preference'
-src_pk: 'PARTY_HKEY'
+src_pk:
+  - 'PARTY_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'CALL_OPT_IN_INDICATOR'
 src_hashdiff: 'HASHDIFF'

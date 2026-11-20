@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__quote_premium_head'
-src_pk: 'QUOTE_HKEY'
+src_pk:
+  - 'QUOTE_HKEY'
+  - 'SOURCE_SYSTEM'
 src_cdk:
   - 'PREMIUM_HEAD_CODE_CK'
   - 'SECTION_CK'

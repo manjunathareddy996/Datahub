@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__risk_object_valuation'
-src_pk: 'RISK_OBJECT_HKEY'
+src_pk:
+  - 'RISK_OBJECT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'CUBIC_METRE_DECLARED_VALUE'
   - 'EXPECTED_RESALE_VALUE_FROM'

@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__risk_motor_ncb_history'
-src_pk: 'RISK_OBJECT_HKEY'
+src_pk:
+  - 'RISK_OBJECT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'BUREAU_REPORTED_PREVIOUS_POLICY_EXPIRY_DATE'
   - 'CLAIM_COUNT_TWO_YEAR'

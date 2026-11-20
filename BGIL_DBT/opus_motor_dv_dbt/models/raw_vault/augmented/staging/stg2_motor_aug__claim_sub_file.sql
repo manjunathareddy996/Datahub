@@ -19,6 +19,7 @@ derived_columns:
   SUB_FILE_REMARKS: 'AUG_CLAIM_SUB_FILE__SUB_FILE_REMARKS'
   LOAD_DATETIME: 'CLAIM_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v02_claim'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__fintxn_claim_payment'
-src_pk: 'FINANCIAL_TRANSACTION_HKEY'
+src_pk:
+  - 'FINANCIAL_TRANSACTION_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'PAYMENT_MODE'
   - 'RECOVERY_AMOUNT'

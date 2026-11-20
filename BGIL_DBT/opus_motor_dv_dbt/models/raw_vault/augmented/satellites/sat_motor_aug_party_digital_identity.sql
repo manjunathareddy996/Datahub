@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__party_digital_identity'
-src_pk: 'PARTY_HKEY'
+src_pk:
+  - 'PARTY_HKEY'
+  - 'SOURCE_SYSTEM'
 src_cdk:
   - 'ACTIVE_SEQUENCE_NUMBER_CK'
   - 'ACCESS_CHANNEL_CK'

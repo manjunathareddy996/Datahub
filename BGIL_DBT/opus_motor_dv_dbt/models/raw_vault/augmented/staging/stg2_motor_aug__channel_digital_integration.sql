@@ -15,6 +15,7 @@ derived_columns:
   PARTNER_REQUEST_REFERENCE: 'AUG_CHANNEL_DIGITAL_INTEGRATION__PARTNER_REQUEST_REFERENCE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v11_party'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

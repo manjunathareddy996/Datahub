@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__policy_premium_summary'
-src_pk: 'POLICY_HKEY'
+src_pk:
+  - 'POLICY_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'CGST_AMOUNT'
   - 'DISCOUNT_AMOUNT'

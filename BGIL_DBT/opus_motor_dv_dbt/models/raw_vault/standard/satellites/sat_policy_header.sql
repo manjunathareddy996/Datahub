@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__policy_header'
-src_pk: 'POLICY_HKEY'
+src_pk:
+  - 'POLICY_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'CONVERSION_FROM_QUOTE_INDICATOR'
   - 'COVER_NOTE_REFERENCE'

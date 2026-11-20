@@ -19,6 +19,7 @@ derived_columns:
   INSTRUMENT_DATE: 'FINTXN_RECON_INSTRUMENT__INSTRUMENT_DATE'
   LOAD_DATETIME: 'FINANCIAL_TRANSACTION_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v06_distribution_channel'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

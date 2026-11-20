@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__claim_tp_forensic'
-src_pk: 'CLAIM_HKEY'
+src_pk:
+  - 'CLAIM_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'PANCHANAMA_DETAIL'
   - 'POLICE_STATION_NAME'

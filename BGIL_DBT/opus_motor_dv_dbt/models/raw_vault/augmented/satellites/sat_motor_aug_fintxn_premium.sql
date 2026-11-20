@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__fintxn_premium'
-src_pk: 'FINANCIAL_TRANSACTION_HKEY'
+src_pk:
+  - 'FINANCIAL_TRANSACTION_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'COLLECTED_PREMIUM_AMOUNT'
   - 'FINAL_PREMIUM'

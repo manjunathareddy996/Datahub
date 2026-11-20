@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__instrument_definition'
-src_pk: 'PAYMENT_INSTRUMENT_HKEY'
+src_pk:
+  - 'PAYMENT_INSTRUMENT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'ACCOUNT_HOLDER_NAME'
   - 'BANK_NAME'

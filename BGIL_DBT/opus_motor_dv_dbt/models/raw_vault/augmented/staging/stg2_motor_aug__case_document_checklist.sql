@@ -23,6 +23,7 @@ derived_columns:
   VERIFICATION_STATUS: 'AUG_CASE_DOCUMENT_CHECKLIST__VERIFICATION_STATUS'
   LOAD_DATETIME: 'CASE_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v02_claim'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

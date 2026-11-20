@@ -19,6 +19,7 @@ derived_columns:
   SURVEYOR_STAGE: 'AUG_CLAIM_SURVEY_APPOINTMENT__SURVEYOR_STAGE'
   LOAD_DATETIME: 'CLAIM_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v02_claim'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

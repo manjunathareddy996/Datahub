@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__case_investigation'
-src_pk: 'CASE_HKEY'
+src_pk:
+  - 'CASE_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'FINDINGS_SUMMARY'
 src_hashdiff: 'HASHDIFF'

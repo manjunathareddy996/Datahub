@@ -43,6 +43,7 @@ derived_columns:
   UTILISED_AMOUNT_ZONAL_HEAD: 'AUG_CHANNEL_SALES_TARGET__UTILISED_AMOUNT_ZONAL_HEAD'
   LOAD_DATETIME: 'DISTRIBUTION_CHANNEL_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v09_party'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

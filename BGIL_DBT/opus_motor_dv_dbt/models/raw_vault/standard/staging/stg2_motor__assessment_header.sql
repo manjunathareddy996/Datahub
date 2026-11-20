@@ -15,6 +15,7 @@ derived_columns:
   ASSESSMENT_STATUS: 'ASSESSMENT_HEADER__ASSESSMENT_STATUS'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v09_party'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

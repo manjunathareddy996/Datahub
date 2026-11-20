@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__quote_vehicle_spec'
-src_pk: 'QUOTE_HKEY'
+src_pk:
+  - 'QUOTE_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'CNG_LPG_KIT_VALUE'
   - 'FIBRE_GLASS_FITMENT_VALUE'

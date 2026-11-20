@@ -27,6 +27,7 @@ derived_columns:
   PRIOR_TENURE_YEARS: 'AUG_QUOTE_PRIOR_INSURANCE__PRIOR_TENURE_YEARS'
   LOAD_DATETIME: 'QUOTE_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v23_quote'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

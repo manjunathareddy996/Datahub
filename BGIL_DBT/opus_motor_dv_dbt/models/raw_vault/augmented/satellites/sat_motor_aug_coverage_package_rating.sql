@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__coverage_package_rating'
-src_pk: 'COVERAGE_HKEY'
+src_pk:
+  - 'COVERAGE_HKEY'
+  - 'SOURCE_SYSTEM'
 src_cdk:
   - 'ADD_ON_PACKAGE_CODE_CK'
   - 'PACKAGE_REFERENCE_CK'

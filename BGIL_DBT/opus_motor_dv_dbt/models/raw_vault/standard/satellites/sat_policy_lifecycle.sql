@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__policy_lifecycle'
-src_pk: 'POLICY_HKEY'
+src_pk:
+  - 'POLICY_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'ASSIGNEE_REFERENCE'
 src_hashdiff: 'HASHDIFF'

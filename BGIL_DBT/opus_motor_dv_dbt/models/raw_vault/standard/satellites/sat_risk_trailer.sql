@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__risk_trailer'
-src_pk: 'RISK_OBJECT_HKEY'
+src_pk:
+  - 'RISK_OBJECT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_cdk:
   - 'TRAILER_SEQUENCE_CK'
 src_payload:

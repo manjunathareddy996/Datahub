@@ -25,6 +25,7 @@ derived_columns:
   SAME_AS_RISK_ADDRESS_INDICATOR: 'AUG_COMMON_ADDRESS__SAME_AS_RISK_ADDRESS_INDICATOR'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v08_org_unit'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

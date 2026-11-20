@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__assessment_bureau_prior_insurance'
-src_pk: 'ASSESSMENT_HKEY'
+src_pk:
+  - 'ASSESSMENT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'BUREAU_CHECK_PERFORMED_INDICATOR'
   - 'BUREAU_DISCREPANCY_RULE_CODE'

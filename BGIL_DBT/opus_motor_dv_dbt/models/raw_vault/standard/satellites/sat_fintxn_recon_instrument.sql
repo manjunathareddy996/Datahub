@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__fintxn_recon_instrument'
-src_pk: 'FINANCIAL_TRANSACTION_HKEY'
+src_pk:
+  - 'FINANCIAL_TRANSACTION_HKEY'
+  - 'SOURCE_SYSTEM'
 src_cdk:
   - 'INSTRUMENT_SEQUENCE_CK'
 src_payload:

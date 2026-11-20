@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__fintxn_channel_authorisation'
-src_pk: 'FINANCIAL_TRANSACTION_HKEY'
+src_pk:
+  - 'FINANCIAL_TRANSACTION_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'AUTHORISATION_PIN_DATE'
   - 'AUTHORISATION_PIN_NUMBER'

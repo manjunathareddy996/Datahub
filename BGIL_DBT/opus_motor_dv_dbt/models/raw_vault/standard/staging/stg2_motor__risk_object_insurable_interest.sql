@@ -25,6 +25,7 @@ derived_columns:
   INTEREST_TYPE: 'RISK_OBJECT_INSURABLE_INTEREST__INTEREST_TYPE'
   LOAD_DATETIME: 'RISK_OBJECT_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v24_risk_object'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -29,6 +29,7 @@ derived_columns:
   TOTAL_OWN_DAMAGE_PREMIUM: 'AUG_FINTXN_PREMIUM__TOTAL_OWN_DAMAGE_PREMIUM'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v11_party'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

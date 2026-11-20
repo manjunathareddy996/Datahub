@@ -31,6 +31,7 @@ derived_columns:
   PREVIOUS_TOTAL_LOSS_CLAIM_INDICATOR: 'AUG_PROPOSAL_DECLARATIONS__PREVIOUS_TOTAL_LOSS_CLAIM_INDICATOR'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v24_risk_object'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

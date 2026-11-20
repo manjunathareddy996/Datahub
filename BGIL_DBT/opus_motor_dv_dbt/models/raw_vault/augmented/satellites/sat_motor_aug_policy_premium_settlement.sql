@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__policy_premium_settlement'
-src_pk: 'POLICY_HKEY'
+src_pk:
+  - 'POLICY_HKEY'
+  - 'SOURCE_SYSTEM'
 src_cdk:
   - 'SETTLEMENT_LINE_SEQUENCE_CK'
   - 'SETTLEMENT_LINE_REFERENCE_CK'

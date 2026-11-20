@@ -17,6 +17,7 @@ derived_columns:
   PREVIOUS_POLICY_CLAIM_COUNT: 'AUG_POLICY_BONUS_TRACKING__PREVIOUS_POLICY_CLAIM_COUNT'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v14_policy'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__claim_assessment_summary'
-src_pk: 'CLAIM_HKEY'
+src_pk:
+  - 'CLAIM_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'ASSESSED_LOSS_AMOUNT'
   - 'EXCESS_DEDUCTED'

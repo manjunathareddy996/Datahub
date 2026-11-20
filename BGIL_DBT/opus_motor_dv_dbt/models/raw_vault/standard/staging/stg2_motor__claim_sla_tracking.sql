@@ -17,6 +17,7 @@ derived_columns:
   PENDING_WITH_ROLE: 'CLAIM_SLA_TRACKING__PENDING_WITH_ROLE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v01_claim'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

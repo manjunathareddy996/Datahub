@@ -15,6 +15,7 @@ derived_columns:
   ASSIGNEE_REFERENCE: 'POLICY_LIFECYCLE__ASSIGNEE_REFERENCE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v11_party'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

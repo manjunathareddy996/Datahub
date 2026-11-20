@@ -19,6 +19,7 @@ derived_columns:
   STAGE_REACHED_INDICATOR: 'AUG_PARTY_DIGITAL_JOURNEY_STAGE__STAGE_REACHED_INDICATOR'
   LOAD_DATETIME: 'PARTY_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v11_party'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

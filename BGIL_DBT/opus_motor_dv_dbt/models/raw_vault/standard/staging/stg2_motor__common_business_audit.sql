@@ -17,6 +17,7 @@ derived_columns:
   SOURCE_APPLICATION_NAME: 'COMMON_BUSINESS_AUDIT__SOURCE_APPLICATION_NAME'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v17_policy'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

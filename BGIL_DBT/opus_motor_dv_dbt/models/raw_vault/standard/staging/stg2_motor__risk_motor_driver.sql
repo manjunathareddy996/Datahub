@@ -25,6 +25,7 @@ derived_columns:
   OWNER_DRIVER_INDICATOR: 'RISK_MOTOR_DRIVER__OWNER_DRIVER_INDICATOR'
   LOAD_DATETIME: 'RISK_OBJECT_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v09_party'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

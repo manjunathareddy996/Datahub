@@ -23,6 +23,7 @@ derived_columns:
   STAMP_DUTY_AMOUNT: 'POLICY_TAX_BREAKUP__STAMP_DUTY_AMOUNT'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v10_party'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -5,7 +5,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__lead_attribution'
-src_pk: 'PARTY_HKEY'
+src_pk:
+  - 'PARTY_HKEY'
+  - 'SOURCE_SYSTEM'
 src_cdk:
   - 'ATTRIBUTION_PARAMETER_CK'
 src_payload:

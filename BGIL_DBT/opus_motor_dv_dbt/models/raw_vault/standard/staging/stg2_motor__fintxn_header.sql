@@ -29,6 +29,7 @@ derived_columns:
   TRANSACTION_TYPE: 'FINTXN_HEADER__TRANSACTION_TYPE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v11_party'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__assessment_header'
-src_pk: 'ASSESSMENT_HKEY'
+src_pk:
+  - 'ASSESSMENT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'ASSESSMENT_STATUS'
 src_hashdiff: 'HASHDIFF'

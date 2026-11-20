@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__channel_digital_integration'
-src_pk: 'DISTRIBUTION_CHANNEL_HKEY'
+src_pk:
+  - 'DISTRIBUTION_CHANNEL_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'PARTNER_REQUEST_REFERENCE'
 src_hashdiff: 'HASHDIFF'

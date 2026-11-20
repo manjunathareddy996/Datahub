@@ -17,6 +17,7 @@ derived_columns:
   SAME_AS_PRIMARY_ADDRESS_INDICATOR: 'AUG_PARTY_CONTACT_ADDRESS_LINK__SAME_AS_PRIMARY_ADDRESS_INDICATOR'
   LOAD_DATETIME: 'LOCATION_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v11_party'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

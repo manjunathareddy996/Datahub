@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__fin_receipt'
-src_pk: 'FINANCIAL_TRANSACTION_HKEY'
+src_pk:
+  - 'FINANCIAL_TRANSACTION_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'BANK_CHARGES_AMOUNT'
   - 'GATEWAY_RESPONSE_IDENTIFIER'

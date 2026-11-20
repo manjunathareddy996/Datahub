@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__coverage_sublimit_schedule'
-src_pk: 'COVERAGE_HKEY'
+src_pk:
+  - 'COVERAGE_HKEY'
+  - 'SOURCE_SYSTEM'
 src_cdk:
   - 'ACTIVE_SEQUENCE_NUMBER'
 src_payload:

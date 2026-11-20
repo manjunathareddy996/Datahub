@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__party_onboarding_journey'
-src_pk: 'PARTY_HKEY'
+src_pk:
+  - 'PARTY_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'JOURNEY_PAGE_URL'
 src_hashdiff: 'HASHDIFF'

@@ -19,6 +19,7 @@ derived_columns:
   PRODUCT_TENURE_YEARS: 'AUG_PRODUCT_DEFINITION__PRODUCT_TENURE_YEARS'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v21_product'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

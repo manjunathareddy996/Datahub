@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__agreement_definition'
-src_pk: 'AGREEMENT_HKEY'
+src_pk:
+  - 'AGREEMENT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'AGREEMENT_REFERENCE_NUMBER'
   - 'EXECUTION_DATE'

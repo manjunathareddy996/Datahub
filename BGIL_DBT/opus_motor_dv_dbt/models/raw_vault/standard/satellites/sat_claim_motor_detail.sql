@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__claim_motor_detail'
-src_pk: 'CLAIM_HKEY'
+src_pk:
+  - 'CLAIM_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'ACCIDENT_TIME'
   - 'DAMAGED_PARTS_DESCRIPTION'

@@ -19,6 +19,7 @@ derived_columns:
   LEAD_SOURCE: 'PARTY_MARKETING__LEAD_SOURCE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v06_distribution_channel'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

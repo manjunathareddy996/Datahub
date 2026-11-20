@@ -19,6 +19,7 @@ derived_columns:
   DEVIATED_ADD_ON_PREMIUM: 'AUG_RISK_MOTOR_ADDON__DEVIATED_ADD_ON_PREMIUM'
   LOAD_DATETIME: 'RISK_OBJECT_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v14_policy'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

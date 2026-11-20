@@ -17,6 +17,7 @@ derived_columns:
   SUM_INSURED_AMOUNT: 'POLICY_SUM_INSURED_BREAKUP__SUM_INSURED_AMOUNT'
   LOAD_DATETIME: 'POLICY_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v19_policy'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

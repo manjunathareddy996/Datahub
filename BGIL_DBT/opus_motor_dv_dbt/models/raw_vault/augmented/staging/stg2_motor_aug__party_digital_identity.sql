@@ -31,6 +31,7 @@ derived_columns:
   THIRD_IP_ADDRESS: 'AUG_PARTY_DIGITAL_IDENTITY__THIRD_IP_ADDRESS'
   LOAD_DATETIME: 'PARTY_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v11_party'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

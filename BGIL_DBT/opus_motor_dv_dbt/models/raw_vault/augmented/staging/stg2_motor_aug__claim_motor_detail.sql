@@ -113,6 +113,7 @@ derived_columns:
   WEIGHT_CARRIED_AT_LOSS: 'AUG_CLAIM_MOTOR_DETAIL__WEIGHT_CARRIED_AT_LOSS'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v01_claim'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -5,7 +5,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__product_rider_catalogue'
-src_pk: 'PRODUCT_HKEY'
+src_pk:
+  - 'PRODUCT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_cdk:
   - 'ACTIVE_SEQUENCE_NUMBER_CK'
   - 'RIDER_CODE_CK'

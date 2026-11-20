@@ -19,6 +19,7 @@ derived_columns:
   SECONDARY_DEPARTMENT_CODE: 'AUG_ORG_UNIT_DEFINITION__SECONDARY_DEPARTMENT_CODE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v08_org_unit'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

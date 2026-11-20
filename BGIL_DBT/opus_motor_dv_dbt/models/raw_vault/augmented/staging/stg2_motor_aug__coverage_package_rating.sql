@@ -39,6 +39,7 @@ derived_columns:
   PACKAGE_SUM_INSURED: 'AUG_COVERAGE_PACKAGE_RATING__PACKAGE_SUM_INSURED'
   LOAD_DATETIME: 'COVERAGE_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v04_coverage'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

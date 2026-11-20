@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__claim_pa_detail'
-src_pk: 'CLAIM_HKEY'
+src_pk:
+  - 'CLAIM_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'PA_CLAIM_INDICATOR'
 src_hashdiff: 'HASHDIFF'

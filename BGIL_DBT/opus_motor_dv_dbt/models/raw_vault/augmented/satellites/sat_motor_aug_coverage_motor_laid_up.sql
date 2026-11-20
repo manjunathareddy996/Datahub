@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__coverage_motor_laid_up'
-src_pk: 'COVERAGE_HKEY'
+src_pk:
+  - 'COVERAGE_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'LAID_UP_END_DATE'
   - 'LAID_UP_START_DATE'

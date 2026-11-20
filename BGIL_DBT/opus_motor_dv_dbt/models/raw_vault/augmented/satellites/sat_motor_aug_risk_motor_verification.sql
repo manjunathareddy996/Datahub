@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__risk_motor_verification'
-src_pk: 'RISK_OBJECT_HKEY'
+src_pk:
+  - 'RISK_OBJECT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'BUREAU_ENQUIRY_RECORD_REFERENCE'
   - 'CHANGE_APPROVAL_RECEIVED_INDICATOR'

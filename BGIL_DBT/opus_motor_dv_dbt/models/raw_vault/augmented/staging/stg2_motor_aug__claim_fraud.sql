@@ -19,6 +19,7 @@ derived_columns:
   BYPASS_AUTHORISED_BY_USER_REFERENCE: 'AUG_CLAIM_FRAUD__BYPASS_AUTHORISED_BY_USER_REFERENCE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v02_claim'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

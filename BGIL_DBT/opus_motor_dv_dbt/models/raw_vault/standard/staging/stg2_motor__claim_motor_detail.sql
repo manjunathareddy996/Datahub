@@ -73,6 +73,7 @@ derived_columns:
   WORKSHOP_REPAIR_STATUS: 'CLAIM_MOTOR_DETAIL__WORKSHOP_REPAIR_STATUS'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v03_claim'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

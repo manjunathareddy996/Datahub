@@ -19,6 +19,7 @@ derived_columns:
   RELATIONSHIP_TO_INSURED: 'LNK_ROLE_NOMINEE_BENEFICIARY__RELATIONSHIP_TO_INSURED'
   LOAD_DATETIME: 'PARTY_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v07_location'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

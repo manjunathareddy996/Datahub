@@ -21,6 +21,7 @@ derived_columns:
   TRAILER_REGISTRATION_NUMBER: 'RISK_TRAILER__TRAILER_REGISTRATION_NUMBER'
   LOAD_DATETIME: 'RISK_OBJECT_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v10_party'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

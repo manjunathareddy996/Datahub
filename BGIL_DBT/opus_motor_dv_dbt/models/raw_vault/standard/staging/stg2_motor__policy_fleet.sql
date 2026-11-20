@@ -15,6 +15,7 @@ derived_columns:
   NAMED_DRIVER_POLICY_INDICATOR: 'POLICY_FLEET__NAMED_DRIVER_POLICY_INDICATOR'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v19_policy'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

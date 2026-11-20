@@ -23,6 +23,7 @@ derived_columns:
   ACCOUNTING_POSTING_DATE: 'AUG_POLICY_PREMIUM_SETTLEMENT__ACCOUNTING_POSTING_DATE'
   LOAD_DATETIME: 'POLICY_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v14_policy'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

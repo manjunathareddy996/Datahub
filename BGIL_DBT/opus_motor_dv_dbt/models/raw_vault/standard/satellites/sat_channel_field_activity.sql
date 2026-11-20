@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__channel_field_activity'
-src_pk: 'DISTRIBUTION_CHANNEL_HKEY'
+src_pk:
+  - 'DISTRIBUTION_CHANNEL_HKEY'
+  - 'SOURCE_SYSTEM'
 src_cdk:
   - 'ACTIVITY_REFERENCE_CK'
 src_payload:

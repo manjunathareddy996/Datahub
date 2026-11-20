@@ -19,6 +19,7 @@ derived_columns:
   FINANCIER_BRANCH_NAME: 'AUG_RISK_OBJECT_INSURABLE_INTEREST__FINANCIER_BRANCH_NAME'
   LOAD_DATETIME: 'RISK_OBJECT_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v06_distribution_channel'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

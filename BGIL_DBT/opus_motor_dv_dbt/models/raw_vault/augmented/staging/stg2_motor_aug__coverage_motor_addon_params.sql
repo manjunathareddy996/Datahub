@@ -21,6 +21,7 @@ derived_columns:
   TYRE_DETAIL: 'AUG_COVERAGE_MOTOR_ADDON_PARAMS__TYRE_DETAIL'
   LOAD_DATETIME: 'COVERAGE_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v05_coverage'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

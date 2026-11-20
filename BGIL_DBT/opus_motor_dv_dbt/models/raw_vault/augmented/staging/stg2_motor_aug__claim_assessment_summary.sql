@@ -15,6 +15,7 @@ derived_columns:
   VOLUNTARY_EXCESS_DEDUCTED: 'AUG_CLAIM_ASSESSMENT_SUMMARY__VOLUNTARY_EXCESS_DEDUCTED'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v01_claim'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

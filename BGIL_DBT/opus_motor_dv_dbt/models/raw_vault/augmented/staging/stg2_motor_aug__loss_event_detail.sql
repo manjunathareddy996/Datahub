@@ -15,6 +15,7 @@ derived_columns:
   CAUSE_TYPE_CODE: 'AUG_LOSS_EVENT_DETAIL__CAUSE_TYPE_CODE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v02_claim'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

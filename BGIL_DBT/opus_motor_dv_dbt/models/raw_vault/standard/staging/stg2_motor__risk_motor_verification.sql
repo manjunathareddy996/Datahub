@@ -21,6 +21,7 @@ derived_columns:
   VERIFICATION_REQUEST_NUMBER: 'RISK_MOTOR_VERIFICATION__VERIFICATION_REQUEST_NUMBER'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v15_policy'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

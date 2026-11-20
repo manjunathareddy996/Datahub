@@ -27,6 +27,7 @@ derived_columns:
   USAGE_BASED_PLAN_TYPE: 'RISK_MOTOR_TELEMATICS__USAGE_BASED_PLAN_TYPE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v25_risk_object'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

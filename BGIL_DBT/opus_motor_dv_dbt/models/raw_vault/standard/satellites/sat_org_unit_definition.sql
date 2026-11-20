@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__org_unit_definition'
-src_pk: 'ORG_UNIT_HKEY'
+src_pk:
+  - 'ORG_UNIT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'ORG_UNIT_CODE'
   - 'ORG_UNIT_NAME'

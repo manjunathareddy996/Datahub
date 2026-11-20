@@ -23,6 +23,7 @@ derived_columns:
   RTO_CLUSTER_CODE: 'AUG_COMMON_ADMIN_GEOGRAPHY__RTO_CLUSTER_CODE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v07_location'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

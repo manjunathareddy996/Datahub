@@ -17,6 +17,7 @@ derived_columns:
   PREMIUM_OPTION: 'QUOTE_COMPARISON__PREMIUM_OPTION'
   LOAD_DATETIME: 'QUOTE_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v11_party'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

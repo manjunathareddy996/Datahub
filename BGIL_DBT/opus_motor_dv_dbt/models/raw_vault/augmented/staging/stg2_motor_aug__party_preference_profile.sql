@@ -21,6 +21,7 @@ derived_columns:
   PREFERRED_CONTACT_DATE: 'AUG_PARTY_PREFERENCE_PROFILE__PREFERRED_CONTACT_DATE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v11_party'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

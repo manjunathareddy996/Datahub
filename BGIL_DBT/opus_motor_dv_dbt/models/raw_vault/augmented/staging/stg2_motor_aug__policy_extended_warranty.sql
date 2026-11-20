@@ -19,6 +19,7 @@ derived_columns:
   WARRANTY_TYPE: 'AUG_POLICY_EXTENDED_WARRANTY__WARRANTY_TYPE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v16_policy'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

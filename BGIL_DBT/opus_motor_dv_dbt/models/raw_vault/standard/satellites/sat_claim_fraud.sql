@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__claim_fraud'
-src_pk: 'CLAIM_HKEY'
+src_pk:
+  - 'CLAIM_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'DOUBLE_CLAIM_OVERRIDE_INDICATOR'
   - 'FRAUD_SUSPICION_INDICATOR'

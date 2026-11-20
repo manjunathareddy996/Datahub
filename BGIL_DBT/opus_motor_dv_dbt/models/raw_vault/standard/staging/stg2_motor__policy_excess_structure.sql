@@ -19,6 +19,7 @@ derived_columns:
   EXCESS_PERCENTAGE: 'POLICY_EXCESS_STRUCTURE__EXCESS_PERCENTAGE'
   LOAD_DATETIME: 'POLICY_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v19_policy'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

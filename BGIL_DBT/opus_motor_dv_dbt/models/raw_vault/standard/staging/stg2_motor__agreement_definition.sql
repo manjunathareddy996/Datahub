@@ -19,6 +19,7 @@ derived_columns:
   MASTER_AGREEMENT_REFERENCE: 'AGREEMENT_DEFINITION__MASTER_AGREEMENT_REFERENCE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v12_policy'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -21,6 +21,7 @@ derived_columns:
   TP_POLICY_START_DATE: 'POLICY_EXTERNAL_TP_LINK__TP_POLICY_START_DATE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v25_risk_object'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

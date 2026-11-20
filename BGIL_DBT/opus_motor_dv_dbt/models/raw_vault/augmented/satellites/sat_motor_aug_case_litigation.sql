@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__case_litigation'
-src_pk: 'CASE_HKEY'
+src_pk:
+  - 'CASE_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'COURT_CASE_NUMBER'
   - 'COURT_RELEASE_ORDER_OBTAINED_INDICATOR'

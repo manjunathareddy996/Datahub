@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__party_contact_address_link'
-src_pk: 'PARTY_LOCATION_HKEY'
+src_pk:
+  - 'PARTY_LOCATION_HKEY'
+  - 'SOURCE_SYSTEM'
 src_cdk:
   - 'ADDRESS_USAGE_TYPE_CK'
 src_payload:

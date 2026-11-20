@@ -21,6 +21,7 @@ derived_columns:
   EFFECTIVE_DATE: 'PRODUCT_UW_RULE__EFFECTIVE_DATE'
   LOAD_DATETIME: 'PRODUCT_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v21_product'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

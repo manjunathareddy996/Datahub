@@ -31,6 +31,7 @@ derived_columns:
   WHATSAPP_OPT_IN_INDICATOR: 'COMMON_CONTACT__WHATSAPP_OPT_IN_INDICATOR'
   LOAD_DATETIME: 'PARTY_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v09_party'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

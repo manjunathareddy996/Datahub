@@ -17,6 +17,7 @@ derived_columns:
   LAST_MODIFIED_BY_USER_REFERENCE: 'AUG_COMMON_BUSINESS_AUDIT__LAST_MODIFIED_BY_USER_REFERENCE'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v15_policy'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

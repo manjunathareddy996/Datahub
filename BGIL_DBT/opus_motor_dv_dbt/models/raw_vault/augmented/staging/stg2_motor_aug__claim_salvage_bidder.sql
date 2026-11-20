@@ -21,6 +21,7 @@ derived_columns:
   BID_INVITATION_SENT_DATE: 'AUG_CLAIM_SALVAGE_BIDDER__BID_INVITATION_SENT_DATE'
   LOAD_DATETIME: 'CLAIM_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v02_claim'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__proposal_header'
-src_pk: 'PROPOSAL_HKEY'
+src_pk:
+  - 'PROPOSAL_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'COVER_PACKAGE_CODE'
   - 'COVER_PACKAGE_DESCRIPTION'

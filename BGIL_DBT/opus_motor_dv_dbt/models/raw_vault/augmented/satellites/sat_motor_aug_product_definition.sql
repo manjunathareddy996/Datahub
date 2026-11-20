@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__product_definition'
-src_pk: 'PRODUCT_HKEY'
+src_pk:
+  - 'PRODUCT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'APPLICABLE_VEHICLE_TYPE_CODE'
   - 'PRODUCT_PACKAGE_NAME'

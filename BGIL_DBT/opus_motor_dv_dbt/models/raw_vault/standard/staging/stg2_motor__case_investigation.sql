@@ -15,6 +15,7 @@ derived_columns:
   FINDINGS_SUMMARY: 'CASE_INVESTIGATION__FINDINGS_SUMMARY'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v02_claim'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

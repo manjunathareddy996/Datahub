@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__claim_co_ri_share'
-src_pk: 'CLAIM_HKEY'
+src_pk:
+  - 'CLAIM_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'CO_INSURANCE_RECOVERY_AMOUNT'
   - 'REINSURANCE_ENDORSEMENT_NUMBER'

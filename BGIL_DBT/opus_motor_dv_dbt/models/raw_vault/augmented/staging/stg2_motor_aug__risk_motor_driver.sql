@@ -21,6 +21,7 @@ derived_columns:
   DRIVER_LINE_PARTICULARS: 'AUG_RISK_MOTOR_DRIVER__DRIVER_LINE_PARTICULARS'
   LOAD_DATETIME: 'RISK_OBJECT_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v05_coverage'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

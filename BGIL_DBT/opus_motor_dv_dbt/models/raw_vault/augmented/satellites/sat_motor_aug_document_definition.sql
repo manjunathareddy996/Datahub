@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__document_definition'
-src_pk: 'DOCUMENT_HKEY'
+src_pk:
+  - 'DOCUMENT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'INVOICE_PRESENT_INDICATOR'
   - 'OCR_ACCEPTED_DATE'

@@ -23,6 +23,7 @@ derived_columns:
   INTERACTION_TIME: 'AUG_PARTY_INTERACTION_EVENT__INTERACTION_TIME'
   LOAD_DATETIME: 'PARTY_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v11_party'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

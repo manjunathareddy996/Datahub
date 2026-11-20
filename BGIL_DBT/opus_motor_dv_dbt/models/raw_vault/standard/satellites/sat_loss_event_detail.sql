@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__loss_event_detail'
-src_pk: 'LOSS_EVENT_HKEY'
+src_pk:
+  - 'LOSS_EVENT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'CAUSE_OF_LOSS'
   - 'ESTIMATED_LOSS_AMOUNT'

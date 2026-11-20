@@ -21,6 +21,7 @@ derived_columns:
   RATING_FACTOR_VALUE: 'AUG_POLICY_DISCOUNT_LOADING_APPLIED__RATING_FACTOR_VALUE'
   LOAD_DATETIME: 'POLICY_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v13_policy'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

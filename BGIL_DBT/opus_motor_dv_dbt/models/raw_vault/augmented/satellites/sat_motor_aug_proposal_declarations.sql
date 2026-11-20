@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__proposal_declarations'
-src_pk: 'PROPOSAL_HKEY'
+src_pk:
+  - 'PROPOSAL_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'EXISTING_MOTOR_POLICY_NUMBER'
   - 'EXISTING_NON_MOTOR_POLICY_INDICATOR'

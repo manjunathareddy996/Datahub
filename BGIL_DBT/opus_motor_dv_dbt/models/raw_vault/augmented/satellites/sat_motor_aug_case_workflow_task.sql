@@ -5,7 +5,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__case_workflow_task'
-src_pk: 'CASE_HKEY'
+src_pk:
+  - 'CASE_HKEY'
+  - 'SOURCE_SYSTEM'
 src_cdk:
   - 'TASK_CODE_CK'
 src_payload:

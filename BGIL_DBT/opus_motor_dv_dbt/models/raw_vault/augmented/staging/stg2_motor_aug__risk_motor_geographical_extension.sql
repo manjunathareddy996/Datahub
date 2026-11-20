@@ -17,6 +17,7 @@ derived_columns:
   COVERED_INDICATOR: 'AUG_RISK_MOTOR_GEOGRAPHICAL_EXTENSION__COVERED_INDICATOR'
   LOAD_DATETIME: 'RISK_OBJECT_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v06_distribution_channel'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

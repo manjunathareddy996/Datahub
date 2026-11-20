@@ -5,7 +5,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__case_document_checklist'
-src_pk: 'CASE_HKEY'
+src_pk:
+  - 'CASE_HKEY'
+  - 'SOURCE_SYSTEM'
 src_cdk:
   - 'REQUIRED_DOCUMENT_TYPE_CK'
   - 'DOCUMENT_TYPE_CK'

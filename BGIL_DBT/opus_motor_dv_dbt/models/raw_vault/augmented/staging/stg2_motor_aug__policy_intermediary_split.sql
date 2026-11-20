@@ -17,6 +17,7 @@ derived_columns:
   SERVICE_CHARGE_RATE: 'AUG_POLICY_INTERMEDIARY_SPLIT__SERVICE_CHARGE_RATE'
   LOAD_DATETIME: 'POLICY_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v11_party'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__proposal_payment'
-src_pk: 'PROPOSAL_HKEY'
+src_pk:
+  - 'PROPOSAL_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'PAYMENT_MODE'
 src_hashdiff: 'HASHDIFF'

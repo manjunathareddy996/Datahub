@@ -31,6 +31,7 @@ derived_columns:
   PASSPORT_NUMBER: 'PARTY_IDENTIFICATION__PASSPORT_NUMBER'
   LOAD_DATETIME: 'PARTY_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v10_party'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

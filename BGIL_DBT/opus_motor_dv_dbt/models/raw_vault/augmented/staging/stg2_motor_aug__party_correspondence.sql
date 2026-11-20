@@ -21,6 +21,7 @@ derived_columns:
   COMMUNICATION_SCHEDULED_INDICATOR: 'AUG_PARTY_CORRESPONDENCE__COMMUNICATION_SCHEDULED_INDICATOR'
   LOAD_DATETIME: 'PARTY_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v10_party'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__common_business_audit'
-src_pk: 'POLICY_HKEY'
+src_pk:
+  - 'POLICY_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'LAST_MODIFIED_BY_USER_NAME'
   - 'LAST_MODIFIED_BY_USER_REFERENCE'

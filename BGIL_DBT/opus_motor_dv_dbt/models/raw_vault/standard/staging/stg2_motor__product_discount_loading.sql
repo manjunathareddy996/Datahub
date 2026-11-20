@@ -19,6 +19,7 @@ derived_columns:
   RULE_CODE: 'PRODUCT_DISCOUNT_LOADING__RULE_CODE'
   LOAD_DATETIME: 'PRODUCT_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v20_product'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

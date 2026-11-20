@@ -77,6 +77,7 @@ derived_columns:
   UNIFIED_RENEWAL_STATUS: 'AUG_POLICY_RENEWAL__UNIFIED_RENEWAL_STATUS'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v14_policy'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

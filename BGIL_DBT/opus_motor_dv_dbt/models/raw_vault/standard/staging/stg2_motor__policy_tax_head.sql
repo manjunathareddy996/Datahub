@@ -23,6 +23,7 @@ derived_columns:
   TAX_HEAD_NAME: 'POLICY_TAX_HEAD__TAX_HEAD_NAME'
   LOAD_DATETIME: 'POLICY_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v16_policy'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -19,6 +19,7 @@ derived_columns:
   BRANCH_NAME: 'INSTRUMENT_DEFINITION__BRANCH_NAME'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v06_distribution_channel'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

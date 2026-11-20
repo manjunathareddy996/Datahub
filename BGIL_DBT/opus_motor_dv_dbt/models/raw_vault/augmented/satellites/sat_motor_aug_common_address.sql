@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__common_address'
-src_pk: 'LOCATION_HKEY'
+src_pk:
+  - 'LOCATION_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'ADDRESS_LINE4'
   - 'ADDRESS_LINE_5'

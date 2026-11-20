@@ -19,6 +19,7 @@ derived_columns:
   AUTHORISATION_PIN_STATUS: 'AUG_FINTXN_CHANNEL_AUTHORISATION__AUTHORISATION_PIN_STATUS'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v11_party'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

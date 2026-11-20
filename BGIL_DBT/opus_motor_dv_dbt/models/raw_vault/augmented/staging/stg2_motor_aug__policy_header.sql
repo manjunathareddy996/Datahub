@@ -55,6 +55,7 @@ derived_columns:
   UNDERWRITING_YEAR: 'AUG_POLICY_HEADER__UNDERWRITING_YEAR'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v13_policy'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

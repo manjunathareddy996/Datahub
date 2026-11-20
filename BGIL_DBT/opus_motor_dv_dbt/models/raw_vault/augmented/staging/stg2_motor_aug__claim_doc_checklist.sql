@@ -23,6 +23,7 @@ derived_columns:
   DOCUMENT_TYPE: 'AUG_CLAIM_DOC_CHECKLIST__DOCUMENT_TYPE'
   LOAD_DATETIME: 'CLAIM_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v01_claim'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

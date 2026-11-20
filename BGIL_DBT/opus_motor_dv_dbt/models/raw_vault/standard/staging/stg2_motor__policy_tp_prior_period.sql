@@ -25,6 +25,7 @@ derived_columns:
   PRIOR_POLICY_START_DATE: 'POLICY_TP_PRIOR_PERIOD__PRIOR_POLICY_START_DATE'
   LOAD_DATETIME: 'POLICY_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v18_policy'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

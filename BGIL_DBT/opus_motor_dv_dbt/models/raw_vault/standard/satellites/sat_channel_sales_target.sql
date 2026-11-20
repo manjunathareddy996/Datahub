@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__channel_sales_target'
-src_pk: 'DISTRIBUTION_CHANNEL_HKEY'
+src_pk:
+  - 'DISTRIBUTION_CHANNEL_HKEY'
+  - 'SOURCE_SYSTEM'
 src_cdk:
   - 'TARGET_PERIOD_CK'
   - 'TARGET_TYPE_CK'

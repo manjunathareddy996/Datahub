@@ -19,6 +19,7 @@ derived_columns:
   OUTSTANDING_RESERVE_AMOUNT: 'CLAIM_RESERVE__OUTSTANDING_RESERVE_AMOUNT'
   LOAD_DATETIME: 'CLAIM_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v03_claim'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

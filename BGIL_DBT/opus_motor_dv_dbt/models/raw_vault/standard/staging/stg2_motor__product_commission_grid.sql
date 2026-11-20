@@ -19,6 +19,7 @@ derived_columns:
   MAXIMUM_PAYABLE_PERCENTAGE: 'PRODUCT_COMMISSION_GRID__MAXIMUM_PAYABLE_PERCENTAGE'
   LOAD_DATETIME: 'PRODUCT_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v20_product'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

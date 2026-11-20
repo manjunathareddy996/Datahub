@@ -25,6 +25,7 @@ derived_columns:
   COMPULSORY_PA_WAIVER_INDICATOR: 'RISK_MOTOR_CPA__COMPULSORY_PA_WAIVER_INDICATOR'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v25_risk_object'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

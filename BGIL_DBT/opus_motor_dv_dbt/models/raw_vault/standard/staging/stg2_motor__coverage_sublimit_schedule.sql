@@ -17,6 +17,7 @@ derived_columns:
   PER_DAY_LIMIT: 'COVERAGE_SUBLIMIT_SCHEDULE__PER_DAY_LIMIT'
   LOAD_DATETIME: 'COVERAGE_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v04_coverage'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

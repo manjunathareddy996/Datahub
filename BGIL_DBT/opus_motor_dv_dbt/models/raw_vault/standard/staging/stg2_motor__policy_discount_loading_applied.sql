@@ -27,6 +27,7 @@ derived_columns:
   PERCENTAGE_APPLIED: 'POLICY_DISCOUNT_LOADING_APPLIED__PERCENTAGE_APPLIED'
   LOAD_DATETIME: 'POLICY_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v18_policy'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__party_preference_profile'
-src_pk: 'PARTY_HKEY'
+src_pk:
+  - 'PARTY_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'CALLBACK_REQUESTED_INDICATOR'
   - 'DOCUMENT_PICKUP_PREFERRED_DATE'

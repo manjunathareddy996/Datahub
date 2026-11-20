@@ -4,7 +4,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__party_identity'
-src_pk: 'PARTY_HKEY'
+src_pk:
+  - 'PARTY_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'AGE'
   - 'DATE_OF_BIRTH'

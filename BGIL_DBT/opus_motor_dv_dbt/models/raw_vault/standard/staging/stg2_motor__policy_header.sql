@@ -53,6 +53,7 @@ derived_columns:
   SHORT_PERIOD_INDICATOR: 'POLICY_HEADER__SHORT_PERIOD_INDICATOR'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_stitch_motor__v16_policy'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__channel_definition'
-src_pk: 'DISTRIBUTION_CHANNEL_HKEY'
+src_pk:
+  - 'DISTRIBUTION_CHANNEL_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'CHANNEL_CATEGORY'
   - 'CHANNEL_NAME'

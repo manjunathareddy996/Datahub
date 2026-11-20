@@ -19,6 +19,7 @@ derived_columns:
   CERTIFICATE_NUMBER: 'POLICY_CERTIFICATE__CERTIFICATE_NUMBER'
   LOAD_DATETIME: 'POLICY_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v12_policy'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

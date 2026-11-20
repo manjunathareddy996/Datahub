@@ -5,7 +5,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor__risk_motor_ncb_history'
-src_pk: 'RISK_OBJECT_HKEY'
+src_pk:
+  - 'RISK_OBJECT_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'BREAK_IN_INSURANCE_INDICATOR'
   - 'IDV_PREVIOUS_YEAR'

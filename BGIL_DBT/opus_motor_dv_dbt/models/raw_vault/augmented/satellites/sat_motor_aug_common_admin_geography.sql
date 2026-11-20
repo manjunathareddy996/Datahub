@@ -3,7 +3,9 @@
 
 {%- set yaml_metadata -%}
 source_model: 'stg2_motor_aug__common_admin_geography'
-src_pk: 'LOCATION_HKEY'
+src_pk:
+  - 'LOCATION_HKEY'
+  - 'SOURCE_SYSTEM'
 src_payload:
   - 'COMMERCIAL_REGISTRATION_ZONE'
   - 'EFFECTIVE_DATE'

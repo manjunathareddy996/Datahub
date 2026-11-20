@@ -21,6 +21,7 @@ derived_columns:
   APPLICABLE_VEHICLE_TYPE_CODE: 'AUG_PRODUCT_DISCOUNT_LOADING__APPLICABLE_VEHICLE_TYPE_CODE'
   LOAD_DATETIME: 'PRODUCT_BK__MA_LOAD_DATETIME'
   RECORD_SOURCE: '!OPUS_stitch_motor__v21_product'
+  SOURCE_SYSTEM: '!OPUS_MOTOR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
