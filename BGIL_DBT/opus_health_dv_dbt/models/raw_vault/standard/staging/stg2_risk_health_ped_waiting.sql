@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v33_quote'
+source_model: 'opus_health_stitch_v33_quote'
 hashed_columns:
   RISK_OBJECT_HKEY: 'RISK_OBJECT_NK'
   HASHDIFF:
@@ -17,7 +17,7 @@ derived_columns:
   CONDITION_CODE_CK: 'RISK_HEALTH_PED_WAITING__CONDITION_CODE_CK'
   CONDITION_NAME: 'RISK_HEALTH_PED_WAITING__CONDITION_NAME'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v33_quote'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V33_QUOTE'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

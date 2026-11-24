@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v34_risk_object'
+source_model: 'opus_health_stitch_v34_risk_object'
 hashed_columns:
   RISK_OBJECT_HKEY: 'RISK_OBJECT_NK'
   HASHDIFF:
@@ -33,7 +33,7 @@ derived_columns:
   OTHER_HEALTH_DECLARATION_DETAIL: 'AUG_RISK_PERSON_INSURED__OTHER_HEALTH_DECLARATION_DETAIL'
   PREVIOUS_SUM_INSURED: 'AUG_RISK_PERSON_INSURED__PREVIOUS_SUM_INSURED'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v34_risk_object'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V34_RISK_OBJECT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

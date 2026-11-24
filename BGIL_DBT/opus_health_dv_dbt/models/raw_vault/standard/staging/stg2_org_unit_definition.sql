@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v14_org_unit'
+source_model: 'opus_health_stitch_v14_org_unit'
 hashed_columns:
   ORG_UNIT_HKEY: 'ORG_UNIT_NK'
   HASHDIFF:
@@ -27,7 +27,7 @@ derived_columns:
   PARENT_ORG_UNIT_REFERENCE: 'ORG_UNIT_DEFINITION__PARENT_ORG_UNIT_REFERENCE'
   ZONE_NAME: 'ORG_UNIT_DEFINITION__ZONE_NAME'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v14_org_unit'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V14_ORG_UNIT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

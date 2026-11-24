@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v23_policy'
+source_model: 'opus_health_stitch_v23_policy'
 hashed_columns:
   PARTY_HKEY: 'PARTY_NK'
   HASHDIFF:
@@ -15,7 +15,7 @@ derived_columns:
   PARTY_NK: "case when COMMON_COMMUNICATION_PREFERENCE__PREFERRED_CHANNEL_CODE is not null then 'HUB_PARTY|' || PARTY_BK end"
   PREFERRED_CHANNEL_CODE: 'COMMON_COMMUNICATION_PREFERENCE__PREFERRED_CHANNEL_CODE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v23_policy'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V23_POLICY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

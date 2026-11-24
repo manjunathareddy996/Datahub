@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v33_quote'
+source_model: 'opus_health_stitch_v33_quote'
 hashed_columns:
   PARTY_HKEY: 'PARTY_NK'
   HASHDIFF:
@@ -15,7 +15,7 @@ derived_columns:
   PARTY_NK: "case when AUG_PARTY_ORGANISATION_PROFILE__MSME_ENTERPRISE_TYPE is not null then 'HUB_PARTY|' || PARTY_BK end"
   MSME_ENTERPRISE_TYPE: 'AUG_PARTY_ORGANISATION_PROFILE__MSME_ENTERPRISE_TYPE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v33_quote'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V33_QUOTE'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

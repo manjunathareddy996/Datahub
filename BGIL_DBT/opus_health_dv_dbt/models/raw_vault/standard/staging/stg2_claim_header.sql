@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v07_claim'
+source_model: 'opus_health_stitch_v07_claim'
 hashed_columns:
   CLAIM_HKEY: 'CLAIM_NK'
   HASHDIFF:
@@ -39,7 +39,7 @@ derived_columns:
   POLICY_REFERENCE: 'CLAIM_HEADER__POLICY_REFERENCE'
   REGISTRATION_DATE: 'CLAIM_HEADER__REGISTRATION_DATE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v07_claim'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V07_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

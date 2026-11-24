@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v09_claim'
+source_model: 'opus_health_stitch_v09_claim'
 hashed_columns:
   POLICY_HKEY: 'POLICY_NK'
   HASHDIFF:
@@ -23,7 +23,7 @@ derived_columns:
   PRO_RATA_EMPLOYER_CONTRIBUTION_AMOUNT: 'AUG_POLICY_CERTIFICATE__PRO_RATA_EMPLOYER_CONTRIBUTION_AMOUNT'
   PRO_RATA_MEMBER_PREMIUM: 'AUG_POLICY_CERTIFICATE__PRO_RATA_MEMBER_PREMIUM'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v09_claim'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V09_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v11_claim'
+source_model: 'opus_health_stitch_v11_claim'
 hashed_columns:
   FINANCIAL_TRANSACTION_HKEY: 'FINANCIAL_TRANSACTION_NK'
   HASHDIFF:
@@ -31,7 +31,7 @@ derived_columns:
   TDS_ON_CLAIM_AMOUNT: 'FINTXN_CLAIM_PAYMENT__TDS_ON_CLAIM_AMOUNT'
   UTR_NUMBER: 'FINTXN_CLAIM_PAYMENT__UTR_NUMBER'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v11_claim'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V11_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v13_financial_account'
+source_model: 'opus_health_stitch_v13_financial_account'
 hashed_columns:
   DISTRIBUTION_CHANNEL_HKEY: 'DISTRIBUTION_CHANNEL_NK'
   HASHDIFF:
@@ -15,7 +15,7 @@ derived_columns:
   DISTRIBUTION_CHANNEL_NK: "case when AUG_CHANNEL_DEFINITION__BUSINESS_DEVELOPMENT_MANAGER_REFERENCE is not null then 'HUB_DISTRIBUTION_CHANNEL|' || DISTRIBUTION_CHANNEL_BK end"
   BUSINESS_DEVELOPMENT_MANAGER_REFERENCE: 'AUG_CHANNEL_DEFINITION__BUSINESS_DEVELOPMENT_MANAGER_REFERENCE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v13_financial_account'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V13_FINANCIAL_ACCOUNT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -57,7 +57,7 @@ with source as (
     nullif(trim("ALT_EMAIL_ID"::varchar), '') as alt_email_id,
     nullif(trim("SYSTEM_IP"::varchar), '') as system_ip,
     nullif(trim("USERNAME"::varchar), '') as username,
-    nullif(trim("STATUS"::varchar), '') as status,
+    case when upper(nullif(trim("STATUS"::varchar), '')) = 'A' then 'ACTIVE' else nullif(trim("STATUS"::varchar), '') end as status,
     nullif(trim("UNIQUE_ID"::varchar), '') as unique_id,
     nullif(trim("PREFERRED_CONTACT_OPT"::varchar), '') as preferred_contact_opt,
     nullif(trim("POLICY_REF"::varchar), '') as policy_ref,

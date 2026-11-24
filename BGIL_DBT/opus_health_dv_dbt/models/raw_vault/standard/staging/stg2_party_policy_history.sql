@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v21_party'
+source_model: 'opus_health_stitch_v21_party'
 hashed_columns:
   PARTY_HKEY: 'PARTY_NK'
   HASHDIFF:
@@ -15,7 +15,7 @@ derived_columns:
   PARTY_NK: "case when PARTY_POLICY_HISTORY__CONTINUOUS_YEARS_INSURED is not null then 'HUB_PARTY|' || PARTY_BK end"
   CONTINUOUS_YEARS_INSURED: 'PARTY_POLICY_HISTORY__CONTINUOUS_YEARS_INSURED'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v21_party'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V21_PARTY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

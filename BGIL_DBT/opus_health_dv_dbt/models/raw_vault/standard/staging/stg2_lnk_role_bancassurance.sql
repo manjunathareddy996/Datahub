@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v34_risk_object'
+source_model: 'opus_health_stitch_v34_risk_object'
 hashed_columns:
   PARTY_HKEY: 'PARTY_NK'
   HASHDIFF:
@@ -17,7 +17,7 @@ derived_columns:
   ROLE_TYPE_CK: 'LNK_ROLE_BANCASSURANCE__ROLE_TYPE_CK'
   BANK_PARTNER_CODE: 'LNK_ROLE_BANCASSURANCE__BANK_PARTNER_CODE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v34_risk_object'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V34_RISK_OBJECT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

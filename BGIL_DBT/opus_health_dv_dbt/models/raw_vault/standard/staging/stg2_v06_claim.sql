@@ -3,7 +3,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v06_claim'
+source_model: 'opus_health_stitch_v06_claim'
 hashed_columns:
   CLAIM_HKEY: 'CLAIM_NK'
   LOCATION_HKEY: 'LOCATION_NK'
@@ -22,7 +22,7 @@ derived_columns:
   CLAIM_POLICY_NK: "case when __LNK_CLAIM_POLICY = 1 then 'LNK_CLAIM_POLICY|' || CLAIM_BK || '|' || POLICY_BK end"
   POLICY_LOCATION_NK: "case when __LNK_POLICY_LOCATION = 1 then 'LNK_POLICY_LOCATION|' || LOCATION_BK || '|' || POLICY_BK end"
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v06_claim'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V06_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

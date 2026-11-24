@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v31_product'
+source_model: 'opus_health_stitch_v31_product'
 hashed_columns:
   PRODUCT_HKEY: 'PRODUCT_NK'
   HASHDIFF:
@@ -19,7 +19,7 @@ derived_columns:
   MEMBER_BACKDATING_LIMIT_DAYS: 'PRODUCT_HEALTH_MEMBERSHIP_RULES__MEMBER_BACKDATING_LIMIT_DAYS'
   MEMBER_BULK_UPLOAD_ALLOWED_INDICATOR: 'PRODUCT_HEALTH_MEMBERSHIP_RULES__MEMBER_BULK_UPLOAD_ALLOWED_INDICATOR'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v31_product'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V31_PRODUCT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

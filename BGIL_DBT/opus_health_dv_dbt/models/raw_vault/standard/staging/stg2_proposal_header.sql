@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v28_policy'
+source_model: 'opus_health_stitch_v28_policy'
 hashed_columns:
   PROPOSAL_HKEY: 'PROPOSAL_NK'
   HASHDIFF:
@@ -15,7 +15,7 @@ derived_columns:
   PROPOSAL_NK: "case when PROPOSAL_HEADER__PROPOSAL_STATUS is not null then 'HUB_PROPOSAL|' || PROPOSAL_BK end"
   PROPOSAL_STATUS: 'PROPOSAL_HEADER__PROPOSAL_STATUS'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v28_policy'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V28_POLICY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v02_assessment'
+source_model: 'opus_health_stitch_v02_assessment'
 hashed_columns:
   QUOTE_HKEY: 'QUOTE_NK'
   HASHDIFF:
@@ -23,7 +23,7 @@ derived_columns:
   QUOTE_VERSION: 'QUOTE_HEADER__QUOTE_VERSION'
   REQUESTED_COVER_START_DATE: 'QUOTE_HEADER__REQUESTED_COVER_START_DATE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v02_assessment'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V02_ASSESSMENT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

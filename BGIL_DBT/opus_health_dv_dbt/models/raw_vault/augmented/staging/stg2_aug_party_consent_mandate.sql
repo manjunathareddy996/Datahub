@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v16_party'
+source_model: 'opus_health_stitch_v16_party'
 hashed_columns:
   PARTY_HKEY: 'PARTY_NK'
   HASHDIFF:
@@ -35,7 +35,7 @@ derived_columns:
   MANDATE_RESPONSIBLE_APPROVER_REFERENCE: 'AUG_PARTY_CONSENT_MANDATE__MANDATE_RESPONSIBLE_APPROVER_REFERENCE'
   MANDATE_UPDATE_REQUEST_REASON: 'AUG_PARTY_CONSENT_MANDATE__MANDATE_UPDATE_REQUEST_REASON'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v16_party'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V16_PARTY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

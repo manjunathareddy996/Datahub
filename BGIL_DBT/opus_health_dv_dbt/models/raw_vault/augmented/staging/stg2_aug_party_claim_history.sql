@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v09_claim'
+source_model: 'opus_health_stitch_v09_claim'
 hashed_columns:
   PARTY_HKEY: 'PARTY_NK'
   HASHDIFF:
@@ -15,7 +15,7 @@ derived_columns:
   PARTY_NK: "case when AUG_PARTY_CLAIM_HISTORY__PRIOR_CLAIM_NARRATIVE is not null then 'HUB_PARTY|' || PARTY_BK end"
   PRIOR_CLAIM_NARRATIVE: 'AUG_PARTY_CLAIM_HISTORY__PRIOR_CLAIM_NARRATIVE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v09_claim'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V09_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

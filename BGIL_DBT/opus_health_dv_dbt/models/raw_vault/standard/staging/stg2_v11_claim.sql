@@ -3,7 +3,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v11_claim'
+source_model: 'opus_health_stitch_v11_claim'
 hashed_columns:
   AGREEMENT_HKEY: 'AGREEMENT_NK'
   CLAIM_HKEY: 'CLAIM_NK'
@@ -97,7 +97,7 @@ derived_columns:
   POLICY_PRODUCT_NK: "case when __LNK_POLICY_PRODUCT = 1 then 'LNK_POLICY_PRODUCT|' || POLICY_BK || '|' || PRODUCT_BK end"
   PARTY_ROLE_NK: "case when ROLE_TYPE_CODE is not null then 'LNK_PARTY_ROLE|' || PARTY_BK || '|' || ROLE_TYPE_CODE end"
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v11_claim'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V11_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

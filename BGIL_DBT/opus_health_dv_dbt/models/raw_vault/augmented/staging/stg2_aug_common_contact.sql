@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v15_party'
+source_model: 'opus_health_stitch_v15_party'
 hashed_columns:
   PARTY_HKEY: 'PARTY_NK'
   HASHDIFF:
@@ -19,7 +19,7 @@ derived_columns:
   CONTACT_PERSON_NAME: 'AUG_COMMON_CONTACT__CONTACT_PERSON_NAME'
   CONTACT_POINT: 'AUG_COMMON_CONTACT__CONTACT_POINT'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v15_party'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V15_PARTY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

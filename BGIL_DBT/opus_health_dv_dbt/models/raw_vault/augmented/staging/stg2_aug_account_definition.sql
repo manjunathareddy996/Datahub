@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v13_financial_account'
+source_model: 'opus_health_stitch_v13_financial_account'
 hashed_columns:
   FINANCIAL_ACCOUNT_HKEY: 'FINANCIAL_ACCOUNT_NK'
   HASHDIFF:
@@ -21,7 +21,7 @@ derived_columns:
   BRANCH_ADDRESS: 'AUG_ACCOUNT_DEFINITION__BRANCH_ADDRESS'
   LOAN_TENURE: 'AUG_ACCOUNT_DEFINITION__LOAN_TENURE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v13_financial_account'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V13_FINANCIAL_ACCOUNT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

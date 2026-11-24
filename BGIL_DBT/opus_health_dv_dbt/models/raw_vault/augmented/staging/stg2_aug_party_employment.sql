@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v14_org_unit'
+source_model: 'opus_health_stitch_v14_org_unit'
 hashed_columns:
   PARTY_HKEY: 'PARTY_NK'
   HASHDIFF:
@@ -17,7 +17,7 @@ derived_columns:
   EMPLOYEE_NUMBER: 'AUG_PARTY_EMPLOYMENT__EMPLOYEE_NUMBER'
   MONTHLY_SALARY_AMOUNT: 'AUG_PARTY_EMPLOYMENT__MONTHLY_SALARY_AMOUNT'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v14_org_unit'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V14_ORG_UNIT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

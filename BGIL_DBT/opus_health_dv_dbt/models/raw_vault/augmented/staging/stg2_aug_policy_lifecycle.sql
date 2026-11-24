@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v24_policy'
+source_model: 'opus_health_stitch_v24_policy'
 hashed_columns:
   POLICY_HKEY: 'POLICY_NK'
   HASHDIFF:
@@ -25,7 +25,7 @@ derived_columns:
   SUBMISSION_REJECTION_REASON: 'AUG_POLICY_LIFECYCLE__SUBMISSION_REJECTION_REASON'
   UNDERWRITER_REFERRAL_REASON: 'AUG_POLICY_LIFECYCLE__UNDERWRITER_REFERRAL_REASON'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v24_policy'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V24_POLICY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

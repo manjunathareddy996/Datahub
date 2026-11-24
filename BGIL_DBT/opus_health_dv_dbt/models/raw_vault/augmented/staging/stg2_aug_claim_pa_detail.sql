@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v05_claim'
+source_model: 'opus_health_stitch_v05_claim'
 hashed_columns:
   CLAIM_HKEY: 'CLAIM_NK'
   HASHDIFF:
@@ -17,7 +17,7 @@ derived_columns:
   CAUSE_OF_DEATH_DESCRIPTION: 'AUG_CLAIM_PA_DETAIL__CAUSE_OF_DEATH_DESCRIPTION'
   TRANSPORTATION_OF_MORTAL_REMAINS_DATE: 'AUG_CLAIM_PA_DETAIL__TRANSPORTATION_OF_MORTAL_REMAINS_DATE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v05_claim'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V05_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

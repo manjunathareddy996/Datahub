@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v11_claim'
+source_model: 'opus_health_stitch_v11_claim'
 hashed_columns:
   LOCATION_HKEY: 'LOCATION_NK'
   HASHDIFF:
@@ -33,7 +33,7 @@ derived_columns:
   STATE_NAME: 'COMMON_ADDRESS__STATE_NAME'
   STREET_NAME: 'COMMON_ADDRESS__STREET_NAME'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v11_claim'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V11_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

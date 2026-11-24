@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v02_assessment'
+source_model: 'opus_health_stitch_v02_assessment'
 hashed_columns:
   ASSESSMENT_HKEY: 'ASSESSMENT_NK'
   HASHDIFF:
@@ -33,7 +33,7 @@ derived_columns:
   PRIORITY: 'ASSESSMENT_HEADER__PRIORITY'
   SCHEDULED_DATE: 'ASSESSMENT_HEADER__SCHEDULED_DATE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v02_assessment'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V02_ASSESSMENT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

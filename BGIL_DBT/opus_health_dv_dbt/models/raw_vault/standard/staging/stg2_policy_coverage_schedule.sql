@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v25_policy'
+source_model: 'opus_health_stitch_v25_policy'
 hashed_columns:
   POLICY_HKEY: 'POLICY_NK'
   HASHDIFF:
@@ -37,7 +37,7 @@ derived_columns:
   SUM_INSURED: 'POLICY_COVERAGE_SCHEDULE__SUM_INSURED'
   WAITING_PERIOD: 'POLICY_COVERAGE_SCHEDULE__WAITING_PERIOD'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v25_policy'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V25_POLICY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v15_party'
+source_model: 'opus_health_stitch_v15_party'
 hashed_columns:
   PARTY_HKEY: 'PARTY_NK'
   HASHDIFF:
@@ -29,7 +29,7 @@ derived_columns:
   IFSC_CODE: 'PARTY_BANKING__IFSC_CODE'
   MICR_CODE: 'PARTY_BANKING__MICR_CODE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v15_party'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V15_PARTY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -3,14 +3,14 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v30_policy'
+source_model: 'opus_health_stitch_v30_policy'
 hashed_columns:
   POLICY_HKEY: 'POLICY_NK'
 derived_columns:
   POLICY_BK: 'POLICY_BK'
   POLICY_NK: "'HUB_POLICY|' || POLICY_BK"
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v30_policy'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V30_POLICY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

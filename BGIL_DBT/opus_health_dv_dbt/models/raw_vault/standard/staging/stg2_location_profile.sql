@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v09_claim'
+source_model: 'opus_health_stitch_v09_claim'
 hashed_columns:
   LOCATION_HKEY: 'LOCATION_NK'
   HASHDIFF:
@@ -15,7 +15,7 @@ derived_columns:
   LOCATION_NK: "case when LOCATION_PROFILE__LOCATION_NAME is not null then 'HUB_LOCATION|' || LOCATION_BK end"
   LOCATION_NAME: 'LOCATION_PROFILE__LOCATION_NAME'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v09_claim'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V09_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

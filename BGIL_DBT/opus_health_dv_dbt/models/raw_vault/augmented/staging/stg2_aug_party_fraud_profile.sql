@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v01_agreement'
+source_model: 'opus_health_stitch_v01_agreement'
 hashed_columns:
   PARTY_HKEY: 'PARTY_NK'
   HASHDIFF:
@@ -15,7 +15,7 @@ derived_columns:
   PARTY_NK: "case when AUG_PARTY_FRAUD_PROFILE__FRAUD_SUSPICION_REASON is not null then 'HUB_PARTY|' || PARTY_BK end"
   FRAUD_SUSPICION_REASON: 'AUG_PARTY_FRAUD_PROFILE__FRAUD_SUSPICION_REASON'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v01_agreement'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V01_AGREEMENT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

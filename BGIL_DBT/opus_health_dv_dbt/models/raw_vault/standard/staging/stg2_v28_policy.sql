@@ -3,7 +3,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v28_policy'
+source_model: 'opus_health_stitch_v28_policy'
 hashed_columns:
   ASSESSMENT_HKEY: 'ASSESSMENT_NK'
   DISTRIBUTION_CHANNEL_HKEY: 'DISTRIBUTION_CHANNEL_NK'
@@ -63,7 +63,7 @@ derived_columns:
   QUOTE_PROPOSAL_NK: "case when __LNK_QUOTE_PROPOSAL = 1 then 'LNK_QUOTE_PROPOSAL|' || PROPOSAL_BK || '|' || QUOTE_BK end"
   RISK_OBJECT_PARTY_NK: "case when __LNK_RISK_OBJECT_PARTY = 1 then 'LNK_RISK_OBJECT_PARTY|' || PARTY_BK || '|' || RISK_OBJECT_BK end"
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v28_policy'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V28_POLICY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

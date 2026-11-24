@@ -3,7 +3,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v23_policy'
+source_model: 'opus_health_stitch_v23_policy'
 hashed_columns:
   FINANCIAL_TRANSACTION_HKEY: 'FINANCIAL_TRANSACTION_NK'
   LOCATION_HKEY: 'LOCATION_NK'
@@ -34,7 +34,7 @@ derived_columns:
   POLICY_PARTY_NK: "case when __LNK_POLICY_PARTY = 1 then 'LNK_POLICY_PARTY|' || PARTY_BK || '|' || POLICY_BK end"
   POLICY_PRODUCT_NK: "case when __LNK_POLICY_PRODUCT = 1 then 'LNK_POLICY_PRODUCT|' || POLICY_BK || '|' || PRODUCT_BK end"
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v23_policy'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V23_POLICY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

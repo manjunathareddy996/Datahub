@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v11_claim'
+source_model: 'opus_health_stitch_v11_claim'
 hashed_columns:
   PARTY_HKEY: 'PARTY_NK'
   HASHDIFF:
@@ -19,7 +19,7 @@ derived_columns:
   BRANCH_CONTACT_MANDATE_INDICATOR: 'AUG_PARTY_BANKING__BRANCH_CONTACT_MANDATE_INDICATOR'
   BRANCH_CONTACT_NUMBER: 'AUG_PARTY_BANKING__BRANCH_CONTACT_NUMBER'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v11_claim'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V11_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

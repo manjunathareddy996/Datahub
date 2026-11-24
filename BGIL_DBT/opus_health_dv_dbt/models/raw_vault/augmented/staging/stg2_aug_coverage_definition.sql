@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v12_coverage'
+source_model: 'opus_health_stitch_v12_coverage'
 hashed_columns:
   COVERAGE_HKEY: 'COVERAGE_NK'
   HASHDIFF:
@@ -23,7 +23,7 @@ derived_columns:
   SECTION_REFERENCE: 'AUG_COVERAGE_DEFINITION__SECTION_REFERENCE'
   SELF_COVERED_INDICATOR: 'AUG_COVERAGE_DEFINITION__SELF_COVERED_INDICATOR'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v12_coverage'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V12_COVERAGE'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

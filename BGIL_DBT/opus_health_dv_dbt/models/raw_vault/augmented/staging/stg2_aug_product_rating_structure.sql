@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v31_product'
+source_model: 'opus_health_stitch_v31_product'
 hashed_columns:
   PRODUCT_HKEY: 'PRODUCT_NK'
   HASHDIFF:
@@ -17,7 +17,7 @@ derived_columns:
   MAXIMUM_PREMIUM_PERMITTED: 'AUG_PRODUCT_RATING_STRUCTURE__MAXIMUM_PREMIUM_PERMITTED'
   PREMIUM_LOADING_APPLICABLE_INDICATOR: 'AUG_PRODUCT_RATING_STRUCTURE__PREMIUM_LOADING_APPLICABLE_INDICATOR'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v31_product'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V31_PRODUCT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

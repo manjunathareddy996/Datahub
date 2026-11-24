@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v09_claim'
+source_model: 'opus_health_stitch_v09_claim'
 hashed_columns:
   CLAIM_HKEY: 'CLAIM_NK'
   HASHDIFF:
@@ -15,7 +15,7 @@ derived_columns:
   CLAIM_NK: "case when CLAIM_CO_RI_SHARE__CO_INSURANCE_OUR_SHARE_AMOUNT is not null then 'HUB_CLAIM|' || CLAIM_BK end"
   CO_INSURANCE_OUR_SHARE_AMOUNT: 'CLAIM_CO_RI_SHARE__CO_INSURANCE_OUR_SHARE_AMOUNT'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v09_claim'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V09_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

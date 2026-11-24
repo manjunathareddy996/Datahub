@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v31_product'
+source_model: 'opus_health_stitch_v31_product'
 hashed_columns:
   PRODUCT_HKEY: 'PRODUCT_NK'
   HASHDIFF:
@@ -63,7 +63,7 @@ derived_columns:
   VALIDATION_HARD_STOP_INDICATOR: 'AUG_PRODUCT_CAPTURE_PARAMETER__VALIDATION_HARD_STOP_INDICATOR'
   VALIDATION_STOP_TRIGGER_VALUE: 'AUG_PRODUCT_CAPTURE_PARAMETER__VALIDATION_STOP_TRIGGER_VALUE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v31_product'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V31_PRODUCT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -3,7 +3,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v03_assessment'
+source_model: 'opus_health_stitch_v03_assessment'
 hashed_columns:
   ASSESSMENT_HKEY: 'ASSESSMENT_NK'
   CLAIM_HKEY: 'CLAIM_NK'
@@ -71,7 +71,7 @@ derived_columns:
   RISK_OBJECT_ASSESSMENT_NK: "case when __LNK_RISK_OBJECT_ASSESSMENT = 1 then 'LNK_RISK_OBJECT_ASSESSMENT|' || ASSESSMENT_BK || '|' || RISK_OBJECT_BK end"
   RISK_OBJECT_PARTY_NK: "case when __LNK_RISK_OBJECT_PARTY = 1 then 'LNK_RISK_OBJECT_PARTY|' || PARTY_BK || '|' || RISK_OBJECT_BK end"
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v03_assessment'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V03_ASSESSMENT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

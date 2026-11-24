@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v33_quote'
+source_model: 'opus_health_stitch_v33_quote'
 hashed_columns:
   QUOTE_HKEY: 'QUOTE_NK'
   HASHDIFF:
@@ -27,7 +27,7 @@ derived_columns:
   RATE_SOURCE_NAME: 'AUG_QUOTE_PREMIUM_RATE_SLAB__RATE_SOURCE_NAME'
   SUM_INSURED_SLAB_AMOUNT: 'AUG_QUOTE_PREMIUM_RATE_SLAB__SUM_INSURED_SLAB_AMOUNT'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v33_quote'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V33_QUOTE'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

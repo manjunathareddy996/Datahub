@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v01_agreement'
+source_model: 'opus_health_stitch_v01_agreement'
 hashed_columns:
   DOCUMENT_HKEY: 'DOCUMENT_NK'
   HASHDIFF:
@@ -21,7 +21,7 @@ derived_columns:
   PROOF_OF_DELIVERY_NUMBER: 'AUG_DOCUMENT_DEFINITION__PROOF_OF_DELIVERY_NUMBER'
   RECEIVED_TIME: 'AUG_DOCUMENT_DEFINITION__RECEIVED_TIME'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v01_agreement'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V01_AGREEMENT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

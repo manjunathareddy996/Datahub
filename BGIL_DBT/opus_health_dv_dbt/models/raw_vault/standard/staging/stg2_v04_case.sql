@@ -3,14 +3,14 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v04_case'
+source_model: 'opus_health_stitch_v04_case'
 hashed_columns:
   CASE_HKEY: 'CASE_NK'
 derived_columns:
   CASE_BK: 'CASE_BK'
   CASE_NK: "'HUB_CASE|' || CASE_BK"
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v04_case'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V04_CASE'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

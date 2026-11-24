@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v01_agreement'
+source_model: 'opus_health_stitch_v01_agreement'
 hashed_columns:
   AGREEMENT_HKEY: 'AGREEMENT_NK'
   HASHDIFF:
@@ -57,7 +57,7 @@ derived_columns:
   SERVICE_CHARGE_PERCENTAGE: 'AUG_AGREEMENT_COMMERCIAL_TERMS__SERVICE_CHARGE_PERCENTAGE'
   SURCHARGE_PERCENTAGE: 'AUG_AGREEMENT_COMMERCIAL_TERMS__SURCHARGE_PERCENTAGE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v01_agreement'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V01_AGREEMENT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

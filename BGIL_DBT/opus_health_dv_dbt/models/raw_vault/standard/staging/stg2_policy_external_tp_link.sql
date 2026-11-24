@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v23_policy'
+source_model: 'opus_health_stitch_v23_policy'
 hashed_columns:
   POLICY_HKEY: 'POLICY_NK'
   HASHDIFF:
@@ -15,7 +15,7 @@ derived_columns:
   POLICY_NK: "case when POLICY_EXTERNAL_TP_LINK__TP_FINANCE_TYPE is not null then 'HUB_POLICY|' || POLICY_BK end"
   TP_FINANCE_TYPE: 'POLICY_EXTERNAL_TP_LINK__TP_FINANCE_TYPE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v23_policy'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V23_POLICY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

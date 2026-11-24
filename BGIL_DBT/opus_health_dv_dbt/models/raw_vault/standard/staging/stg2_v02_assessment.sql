@@ -3,7 +3,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v02_assessment'
+source_model: 'opus_health_stitch_v02_assessment'
 hashed_columns:
   ASSESSMENT_HKEY: 'ASSESSMENT_NK'
   CASE_HKEY: 'CASE_NK'
@@ -33,7 +33,7 @@ derived_columns:
   POLICY_PRODUCT_NK: "case when __LNK_POLICY_PRODUCT = 1 then 'LNK_POLICY_PRODUCT|' || POLICY_BK || '|' || PRODUCT_BK end"
   QUOTE_PRODUCT_NK: "case when __LNK_QUOTE_PRODUCT = 1 then 'LNK_QUOTE_PRODUCT|' || PRODUCT_BK || '|' || QUOTE_BK end"
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v02_assessment'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V02_ASSESSMENT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

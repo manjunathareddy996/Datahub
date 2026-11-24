@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v11_claim'
+source_model: 'opus_health_stitch_v11_claim'
 hashed_columns:
   PARTY_HKEY: 'PARTY_NK'
   HASHDIFF:
@@ -15,7 +15,7 @@ derived_columns:
   PARTY_NK: "case when AUG_PROVIDER_BANKING__BENEFICIARY_NAME is not null then 'HUB_PARTY|' || PARTY_BK end"
   BENEFICIARY_NAME: 'AUG_PROVIDER_BANKING__BENEFICIARY_NAME'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v11_claim'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V11_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

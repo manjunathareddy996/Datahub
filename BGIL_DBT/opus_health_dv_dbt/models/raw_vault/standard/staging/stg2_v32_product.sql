@@ -3,7 +3,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v32_product'
+source_model: 'opus_health_stitch_v32_product'
 hashed_columns:
   COVERAGE_HKEY: 'COVERAGE_NK'
   DISTRIBUTION_CHANNEL_HKEY: 'DISTRIBUTION_CHANNEL_NK'
@@ -61,7 +61,7 @@ derived_columns:
   QUOTE_PRODUCT_NK: "case when __LNK_QUOTE_PRODUCT = 1 then 'LNK_QUOTE_PRODUCT|' || PRODUCT_BK || '|' || QUOTE_BK end"
   QUOTE_PROPOSAL_NK: "case when __LNK_QUOTE_PROPOSAL = 1 then 'LNK_QUOTE_PROPOSAL|' || PROPOSAL_BK || '|' || QUOTE_BK end"
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v32_product'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V32_PRODUCT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

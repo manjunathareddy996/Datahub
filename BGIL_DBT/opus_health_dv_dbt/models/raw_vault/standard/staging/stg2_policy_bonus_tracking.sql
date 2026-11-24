@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v14_org_unit'
+source_model: 'opus_health_stitch_v14_org_unit'
 hashed_columns:
   POLICY_HKEY: 'POLICY_NK'
   HASHDIFF:
@@ -19,7 +19,7 @@ derived_columns:
   CUMULATIVE_BONUS_PERCENTAGE: 'POLICY_BONUS_TRACKING__CUMULATIVE_BONUS_PERCENTAGE'
   NCB_PERCENTAGE: 'POLICY_BONUS_TRACKING__NCB_PERCENTAGE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v14_org_unit'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V14_ORG_UNIT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v20_party'
+source_model: 'opus_health_stitch_v20_party'
 hashed_columns:
   POLICY_HKEY: 'POLICY_NK'
   HASHDIFF:
@@ -31,7 +31,7 @@ derived_columns:
   MEMBER_STATUS: 'POLICY_CERTIFICATE__MEMBER_STATUS'
   MEMBER_SUM_INSURED: 'POLICY_CERTIFICATE__MEMBER_SUM_INSURED'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v20_party'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V20_PARTY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

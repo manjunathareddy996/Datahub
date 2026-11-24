@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v31_product'
+source_model: 'opus_health_stitch_v31_product'
 hashed_columns:
   RISK_OBJECT_HKEY: 'RISK_OBJECT_NK'
   HASHDIFF:
@@ -23,7 +23,7 @@ derived_columns:
   LOAN_AMOUNT: 'RISK_OBJECT_INSURABLE_INTEREST__LOAN_AMOUNT'
   LOAN_TYPE: 'RISK_OBJECT_INSURABLE_INTEREST__LOAN_TYPE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v31_product'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V31_PRODUCT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

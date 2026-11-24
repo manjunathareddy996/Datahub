@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v05_claim'
+source_model: 'opus_health_stitch_v05_claim'
 hashed_columns:
   CLAIM_HKEY: 'CLAIM_NK'
   HASHDIFF:
@@ -17,7 +17,7 @@ derived_columns:
   RESERVE_HEAD_CODE_CK: 'CLAIM_RESERVE_HEAD__RESERVE_HEAD_CODE_CK'
   OPENING_RESERVE: 'CLAIM_RESERVE_HEAD__OPENING_RESERVE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v05_claim'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V05_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

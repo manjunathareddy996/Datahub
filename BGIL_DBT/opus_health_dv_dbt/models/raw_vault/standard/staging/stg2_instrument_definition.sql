@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v09_claim'
+source_model: 'opus_health_stitch_v09_claim'
 hashed_columns:
   PAYMENT_INSTRUMENT_HKEY: 'PAYMENT_INSTRUMENT_NK'
   HASHDIFF:
@@ -15,7 +15,7 @@ derived_columns:
   PAYMENT_INSTRUMENT_NK: "case when INSTRUMENT_DEFINITION__CARD_NUMBER_MASKED is not null then 'HUB_PAYMENT_INSTRUMENT|' || PAYMENT_INSTRUMENT_BK end"
   CARD_NUMBER_MASKED: 'INSTRUMENT_DEFINITION__CARD_NUMBER_MASKED'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v09_claim'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V09_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

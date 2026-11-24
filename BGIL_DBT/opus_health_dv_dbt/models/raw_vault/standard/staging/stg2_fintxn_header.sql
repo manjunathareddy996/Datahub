@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v31_product'
+source_model: 'opus_health_stitch_v31_product'
 hashed_columns:
   FINANCIAL_TRANSACTION_HKEY: 'FINANCIAL_TRANSACTION_NK'
   HASHDIFF:
@@ -19,7 +19,7 @@ derived_columns:
   ORIGINATING_SYSTEM_REFERENCE: 'FINTXN_HEADER__ORIGINATING_SYSTEM_REFERENCE'
   SOURCE_REFERENCE_NUMBER: 'FINTXN_HEADER__SOURCE_REFERENCE_NUMBER'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v31_product'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V31_PRODUCT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

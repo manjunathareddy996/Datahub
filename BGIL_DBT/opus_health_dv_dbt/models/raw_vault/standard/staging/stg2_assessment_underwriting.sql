@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v22_policy'
+source_model: 'opus_health_stitch_v22_policy'
 hashed_columns:
   ASSESSMENT_HKEY: 'ASSESSMENT_NK'
   HASHDIFF:
@@ -19,7 +19,7 @@ derived_columns:
   SPECIAL_CONDITIONS_RECOMMENDED: 'ASSESSMENT_UNDERWRITING__SPECIAL_CONDITIONS_RECOMMENDED'
   UNDERWRITING_REMARKS: 'ASSESSMENT_UNDERWRITING__UNDERWRITING_REMARKS'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v22_policy'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V22_POLICY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

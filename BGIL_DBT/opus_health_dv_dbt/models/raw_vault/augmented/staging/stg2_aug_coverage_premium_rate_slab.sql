@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v12_coverage'
+source_model: 'opus_health_stitch_v12_coverage'
 hashed_columns:
   COVERAGE_HKEY: 'COVERAGE_NK'
   HASHDIFF:
@@ -29,7 +29,7 @@ derived_columns:
   SLAB_PREMIUM_RATE: 'AUG_COVERAGE_PREMIUM_RATE_SLAB__SLAB_PREMIUM_RATE'
   SUM_INSURED_SLAB_AMOUNT: 'AUG_COVERAGE_PREMIUM_RATE_SLAB__SUM_INSURED_SLAB_AMOUNT'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v12_coverage'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V12_COVERAGE'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

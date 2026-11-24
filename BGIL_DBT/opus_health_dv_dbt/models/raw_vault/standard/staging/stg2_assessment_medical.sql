@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v03_assessment'
+source_model: 'opus_health_stitch_v03_assessment'
 hashed_columns:
   ASSESSMENT_HKEY: 'ASSESSMENT_NK'
   HASHDIFF:
@@ -19,7 +19,7 @@ derived_columns:
   MEDICAL_MANAGEMENT_TYPE: 'ASSESSMENT_MEDICAL__MEDICAL_MANAGEMENT_TYPE'
   MEDICAL_TEST_TYPE: 'ASSESSMENT_MEDICAL__MEDICAL_TEST_TYPE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v03_assessment'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V03_ASSESSMENT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

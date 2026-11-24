@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v32_product'
+source_model: 'opus_health_stitch_v32_product'
 hashed_columns:
   PROPOSAL_HKEY: 'PROPOSAL_NK'
   HASHDIFF:
@@ -17,7 +17,7 @@ derived_columns:
   QUESTION_CODE_CK: 'PROPOSAL_QUESTIONNAIRE__QUESTION_CODE_CK'
   RESPONSE_VALUE: 'PROPOSAL_QUESTIONNAIRE__RESPONSE_VALUE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v32_product'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V32_PRODUCT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

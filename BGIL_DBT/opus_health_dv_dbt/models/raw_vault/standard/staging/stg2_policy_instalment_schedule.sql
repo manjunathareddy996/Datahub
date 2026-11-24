@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v12_coverage'
+source_model: 'opus_health_stitch_v12_coverage'
 hashed_columns:
   POLICY_HKEY: 'POLICY_NK'
   HASHDIFF:
@@ -25,7 +25,7 @@ derived_columns:
   OUTSTANDING_AFTER_INSTALMENT: 'POLICY_INSTALMENT_SCHEDULE__OUTSTANDING_AFTER_INSTALMENT'
   PAID_AMOUNT: 'POLICY_INSTALMENT_SCHEDULE__PAID_AMOUNT'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v12_coverage'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V12_COVERAGE'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

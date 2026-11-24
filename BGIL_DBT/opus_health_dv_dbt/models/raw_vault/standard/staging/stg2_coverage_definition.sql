@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v12_coverage'
+source_model: 'opus_health_stitch_v12_coverage'
 hashed_columns:
   COVERAGE_HKEY: 'COVERAGE_NK'
   HASHDIFF:
@@ -15,7 +15,7 @@ derived_columns:
   COVERAGE_NK: "case when COVERAGE_DEFINITION__COVERAGE_DESCRIPTION is not null then 'HUB_COVERAGE|' || COVERAGE_BK end"
   COVERAGE_DESCRIPTION: 'COVERAGE_DEFINITION__COVERAGE_DESCRIPTION'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v12_coverage'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V12_COVERAGE'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

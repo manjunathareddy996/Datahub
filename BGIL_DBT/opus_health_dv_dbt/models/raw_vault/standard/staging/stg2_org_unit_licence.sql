@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v14_org_unit'
+source_model: 'opus_health_stitch_v14_org_unit'
 hashed_columns:
   ORG_UNIT_HKEY: 'ORG_UNIT_NK'
   HASHDIFF:
@@ -15,7 +15,7 @@ derived_columns:
   ORG_UNIT_NK: "case when ORG_UNIT_LICENCE__GST_REGISTRATION_NUMBER is not null then 'HUB_ORG_UNIT|' || ORG_UNIT_BK end"
   GST_REGISTRATION_NUMBER: 'ORG_UNIT_LICENCE__GST_REGISTRATION_NUMBER'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v14_org_unit'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V14_ORG_UNIT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

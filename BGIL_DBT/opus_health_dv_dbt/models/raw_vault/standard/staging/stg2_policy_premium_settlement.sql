@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v34_risk_object'
+source_model: 'opus_health_stitch_v34_risk_object'
 hashed_columns:
   POLICY_HKEY: 'POLICY_NK'
   HASHDIFF:
@@ -17,7 +17,7 @@ derived_columns:
   SETTLEMENT_LINE_SEQUENCE_CK: 'POLICY_PREMIUM_SETTLEMENT__SETTLEMENT_LINE_SEQUENCE_CK'
   PREMIUM_REALISATION_DATE: 'POLICY_PREMIUM_SETTLEMENT__PREMIUM_REALISATION_DATE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v34_risk_object'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V34_RISK_OBJECT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

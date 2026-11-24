@@ -3,14 +3,14 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v07_claim'
+source_model: 'opus_health_stitch_v07_claim'
 hashed_columns:
   CLAIM_HKEY: 'CLAIM_NK'
 derived_columns:
   CLAIM_BK: 'CLAIM_BK'
   CLAIM_NK: "'HUB_CLAIM|' || CLAIM_BK"
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v07_claim'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V07_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

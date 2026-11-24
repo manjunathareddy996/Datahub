@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v34_risk_object'
+source_model: 'opus_health_stitch_v34_risk_object'
 hashed_columns:
   CLAIM_HKEY: 'CLAIM_NK'
   HASHDIFF:
@@ -15,7 +15,7 @@ derived_columns:
   CLAIM_NK: "case when CLAIM_SLA_TRACKING__LAST_ACTION_DATE is not null then 'HUB_CLAIM|' || CLAIM_BK end"
   LAST_ACTION_DATE: 'CLAIM_SLA_TRACKING__LAST_ACTION_DATE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v34_risk_object'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V34_RISK_OBJECT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

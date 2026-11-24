@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v26_policy'
+source_model: 'opus_health_stitch_v26_policy'
 hashed_columns:
   POLICY_HKEY: 'POLICY_NK'
   HASHDIFF:
@@ -23,7 +23,7 @@ derived_columns:
   PREVIOUS_YEAR_SUM_INSURED_AMOUNT: 'AUG_POLICY_RENEWAL__PREVIOUS_YEAR_SUM_INSURED_AMOUNT'
   RENEWAL_BUSINESS_INDICATOR: 'AUG_POLICY_RENEWAL__RENEWAL_BUSINESS_INDICATOR'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v26_policy'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V26_POLICY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v17_party'
+source_model: 'opus_health_stitch_v17_party'
 hashed_columns:
   POLICY_HKEY: 'POLICY_NK'
   HASHDIFF:
@@ -39,7 +39,7 @@ derived_columns:
   PREVIOUS_POLICY_INCEPTION_DATE: 'AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_INCEPTION_DATE'
   PREVIOUS_POLICY_START_DATE: 'AUG_POLICY_PORTABILITY_MIGRATION__PREVIOUS_POLICY_START_DATE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v17_party'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V17_PARTY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

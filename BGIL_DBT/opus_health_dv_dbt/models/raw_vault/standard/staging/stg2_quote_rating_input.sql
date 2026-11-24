@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v33_quote'
+source_model: 'opus_health_stitch_v33_quote'
 hashed_columns:
   QUOTE_HKEY: 'QUOTE_NK'
   HASHDIFF:
@@ -17,7 +17,7 @@ derived_columns:
   FACTOR_CODE_CK: 'QUOTE_RATING_INPUT__FACTOR_CODE_CK'
   FACTOR_VALUE: 'QUOTE_RATING_INPUT__FACTOR_VALUE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v33_quote'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V33_QUOTE'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

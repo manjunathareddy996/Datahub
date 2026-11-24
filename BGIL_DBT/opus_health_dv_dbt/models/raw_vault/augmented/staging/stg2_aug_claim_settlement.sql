@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v11_claim'
+source_model: 'opus_health_stitch_v11_claim'
 hashed_columns:
   CLAIM_HKEY: 'CLAIM_NK'
   HASHDIFF:
@@ -15,7 +15,7 @@ derived_columns:
   CLAIM_NK: "case when AUG_CLAIM_SETTLEMENT__CLAIM_APPROVAL_DATE is not null then 'HUB_CLAIM|' || CLAIM_BK end"
   CLAIM_APPROVAL_DATE: 'AUG_CLAIM_SETTLEMENT__CLAIM_APPROVAL_DATE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v11_claim'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V11_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

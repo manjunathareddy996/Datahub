@@ -3,7 +3,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v24_policy'
+source_model: 'opus_health_stitch_v24_policy'
 hashed_columns:
   COVERAGE_HKEY: 'COVERAGE_NK'
   POLICY_HKEY: 'POLICY_NK'
@@ -22,7 +22,7 @@ derived_columns:
   POLICY_PRODUCT_NK: "case when __LNK_POLICY_PRODUCT = 1 then 'LNK_POLICY_PRODUCT|' || POLICY_BK || '|' || PRODUCT_BK end"
   PRODUCT_COVERAGE_NK: "case when __LNK_PRODUCT_COVERAGE = 1 then 'LNK_PRODUCT_COVERAGE|' || COVERAGE_BK || '|' || PRODUCT_BK end"
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v24_policy'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V24_POLICY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

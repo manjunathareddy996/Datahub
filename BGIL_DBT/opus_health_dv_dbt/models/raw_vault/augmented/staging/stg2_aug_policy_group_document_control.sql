@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v33_quote'
+source_model: 'opus_health_stitch_v33_quote'
 hashed_columns:
   POLICY_HKEY: 'POLICY_NK'
   HASHDIFF:
@@ -51,7 +51,7 @@ derived_columns:
   TERM_END_DATE_SCHEDULE_TEXT: 'AUG_POLICY_GROUP_DOCUMENT_CONTROL__TERM_END_DATE_SCHEDULE_TEXT'
   TRANSCRIPT_DOCUMENT_PRODUCED_INDICATOR: 'AUG_POLICY_GROUP_DOCUMENT_CONTROL__TRANSCRIPT_DOCUMENT_PRODUCED_INDICATOR'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v33_quote'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V33_QUOTE'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

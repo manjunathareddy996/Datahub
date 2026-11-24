@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v23_policy'
+source_model: 'opus_health_stitch_v23_policy'
 hashed_columns:
   POLICY_HKEY: 'POLICY_NK'
   HASHDIFF:
@@ -21,7 +21,7 @@ derived_columns:
   SERVICE_CHARGE_AMOUNT: 'AUG_POLICY_INTERMEDIARY_SPLIT__SERVICE_CHARGE_AMOUNT'
   SERVICE_CHARGE_RATE: 'AUG_POLICY_INTERMEDIARY_SPLIT__SERVICE_CHARGE_RATE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v23_policy'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V23_POLICY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

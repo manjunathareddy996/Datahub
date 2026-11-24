@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v16_party'
+source_model: 'opus_health_stitch_v16_party'
 hashed_columns:
   PARTY_HKEY: 'PARTY_NK'
   HASHDIFF:
@@ -23,7 +23,7 @@ derived_columns:
   PARTNER_IDENTIFIER: 'AUG_PARTY_IDENTIFICATION__PARTNER_IDENTIFIER'
   PROVIDER_REGISTRATION_NUMBER: 'AUG_PARTY_IDENTIFICATION__PROVIDER_REGISTRATION_NUMBER'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v16_party'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V16_PARTY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

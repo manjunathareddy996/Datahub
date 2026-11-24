@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v04_case'
+source_model: 'opus_health_stitch_v04_case'
 hashed_columns:
   CASE_HKEY: 'CASE_NK'
   HASHDIFF:
@@ -15,7 +15,7 @@ derived_columns:
   CASE_NK: "case when AUG_CASE_EXTERNAL_REF__REDIRECT_INDICATOR is not null then 'HUB_CASE|' || CASE_BK end"
   REDIRECT_INDICATOR: 'AUG_CASE_EXTERNAL_REF__REDIRECT_INDICATOR'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v04_case'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V04_CASE'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

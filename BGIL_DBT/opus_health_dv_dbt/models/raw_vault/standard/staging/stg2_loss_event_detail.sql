@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v11_claim'
+source_model: 'opus_health_stitch_v11_claim'
 hashed_columns:
   LOSS_EVENT_HKEY: 'LOSS_EVENT_NK'
   HASHDIFF:
@@ -17,7 +17,7 @@ derived_columns:
   LOSS_DATE: 'LOSS_EVENT_DETAIL__LOSS_DATE'
   LOSS_EVENT_TYPE: 'LOSS_EVENT_DETAIL__LOSS_EVENT_TYPE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v11_claim'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V11_CLAIM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

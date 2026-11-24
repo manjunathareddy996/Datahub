@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v04_case'
+source_model: 'opus_health_stitch_v04_case'
 hashed_columns:
   CASE_HKEY: 'CASE_NK'
   HASHDIFF:
@@ -17,7 +17,7 @@ derived_columns:
   REFERENCE_TYPE_CK: 'CASE_EXTERNAL_REF__REFERENCE_TYPE_CK'
   EXTERNAL_REFERENCE: 'CASE_EXTERNAL_REF__EXTERNAL_REFERENCE'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v04_case'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V04_CASE'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

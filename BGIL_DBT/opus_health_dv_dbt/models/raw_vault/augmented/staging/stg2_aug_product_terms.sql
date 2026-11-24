@@ -4,7 +4,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v32_product'
+source_model: 'opus_health_stitch_v32_product'
 hashed_columns:
   PRODUCT_HKEY: 'PRODUCT_NK'
   HASHDIFF:
@@ -31,7 +31,7 @@ derived_columns:
   PORT_IN_BLOCKED_INDICATOR: 'AUG_PRODUCT_TERMS__PORT_IN_BLOCKED_INDICATOR'
   RENEWAL_ADVANCE_ISSUANCE_DAYS: 'AUG_PRODUCT_TERMS__RENEWAL_ADVANCE_ISSUANCE_DAYS'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v32_product'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V32_PRODUCT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -3,7 +3,7 @@
 {{ config(materialized='view') }}
 
 {%- set yaml_metadata -%}
-source_model: 'stitch_v21_party'
+source_model: 'opus_health_stitch_v21_party'
 hashed_columns:
   DISTRIBUTION_CHANNEL_HKEY: 'DISTRIBUTION_CHANNEL_NK'
   DOCUMENT_HKEY: 'DOCUMENT_NK'
@@ -43,7 +43,7 @@ derived_columns:
   RISK_OBJECT_DOCUMENT_NK: "case when __LNK_RISK_OBJECT_DOCUMENT = 1 then 'LNK_RISK_OBJECT_DOCUMENT|' || DOCUMENT_BK || '|' || RISK_OBJECT_BK end"
   RISK_OBJECT_PARTY_NK: "case when __LNK_RISK_OBJECT_PARTY = 1 then 'LNK_RISK_OBJECT_PARTY|' || PARTY_BK || '|' || RISK_OBJECT_BK end"
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!stitch_v21_party'
+  RECORD_SOURCE: '!OPUS_HEALTH_STITCH_V21_PARTY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
