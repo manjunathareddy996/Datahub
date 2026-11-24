@@ -102,7 +102,7 @@ with source as (
     nullif(trim(to_varchar("PLANSI")), '') as plansi,
     "POLICY_PREMIUM"::number as policy_premium,
     nullif(trim(to_varchar("POLICY_REF")), '') as policy_ref,
-    nullif(trim(to_varchar("PREMIUMPAYERID")), '') as premiumpayerid,
+    nullif(trim(to_varchar("PREMIUMPAYERID"), ' ' || char(160)), '') as premiumpayerid,
     nullif(trim(to_varchar("PRJOURNEY")), '') as prjourney,
     nullif(trim(to_varchar("PROPASTRAVELLER")), '') as propastraveller,
     nullif(trim(to_varchar("PROPOSERDEASES")), '') as proposerdeases,
