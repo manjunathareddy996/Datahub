@@ -10,8 +10,8 @@ hashed_columns:
   PARTY_LOCATION_HKEY: 'PARTY_LOCATION_HKEY_NK'
 derived_columns:
   PARTY_HKEY_NK: "'HUB_PARTY|' || partner_id"
-  LOCATION_HKEY_NK: "'HUB_LOCATION|' || billing_loc"
-  PARTY_LOCATION_HKEY_NK: "'LNK_PARTY_LOCATION|' || partner_id || '|' || billing_loc"
+  LOCATION_HKEY_NK: "'HUB_LOCATION|' || (location_code)"
+  PARTY_LOCATION_HKEY_NK: "'LNK_PARTY_LOCATION|' || partner_id || '|' || location_code"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_CLM_SUPP_EXTN'
 {%- endset -%}
