@@ -2,13 +2,9 @@
 -- TRAVEL STANDARD-MODEL stitch for LNK_FINTXN_PARTY (Financial Txn Party). One SELECT per (source table x hub-key branch
 -- combination); every leg's business key is the SAME expression as that branch's hub staging
 -- model (stg2_hub_<table>__<branch>.sql, PARENT_BK), so link legs always resolve to a hub row.
--- Both/all legs of a link row come from one source row. 5 branch select(s).
+-- Both/all legs of a link row come from one source row. 4 branch select(s).
 -- Rows where a leg is null (or, for traveller / benefit branches, where the traveller's name /
 -- the benefit limit is absent) are not emitted.
-    select (transaction_id) as FINANCIAL_TRANSACTION_BK, (cft_mst_comp_ref) as PARTY_BK, INC_JOB_UPDATED_AT, '!OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS' as RECORD_SRC
-    from {{ ref('stg_travel__ba_trv_data_policy_dtls') }}
-    where (transaction_id) is not null and (cft_mst_comp_ref) is not null
-union all
     select (transaction_id) as FINANCIAL_TRANSACTION_BK, (payer_part_id) as PARTY_BK, INC_JOB_UPDATED_AT, '!OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS' as RECORD_SRC
     from {{ ref('stg_travel__ba_trv_data_policy_dtls') }}
     where (transaction_id) is not null and (payer_part_id) is not null

@@ -1,6 +1,6 @@
 {{ config(materialized='incremental') }}
 
--- TRAVEL STANDARD-MODEL hub() for HUB_PARTY, 6 contributing table(s).
+-- TRAVEL STANDARD-MODEL hub() for HUB_PARTY, 4 contributing branch(es).
 
 {%- set yaml_metadata -%}
 source_model:
