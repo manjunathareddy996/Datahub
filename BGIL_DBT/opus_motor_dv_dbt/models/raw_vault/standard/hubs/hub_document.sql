@@ -2,10 +2,9 @@
 {{ config(materialized='incremental') }}
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'stg2_motor__v02_claim'
+source_model: 'hubfeed_motor__document'
 src_pk: 'DOCUMENT_HKEY'
-src_nk: 'DOCUMENT_BK'
+src_nk: 'PARENT_BK'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 {%- endset -%}

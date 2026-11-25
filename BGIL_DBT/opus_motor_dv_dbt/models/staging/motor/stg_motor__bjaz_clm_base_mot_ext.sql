@@ -5,7 +5,7 @@
 with source as (
 
     select
-        nullif(trim(to_varchar("CLAIM_ID")), '') as claim_id,
+        nullif(trim(regexp_replace(to_varchar("CLAIM_ID"), '\\.0+$', '')), '') as claim_id,
         nullif(trim(to_varchar("CLM_TYPE")), '') as clm_type,
         nullif(trim(to_varchar("NOTIFICATION_DATE")), '') as notification_date,
         nullif(trim(to_varchar("DRIVER_PART_ID")), '') as driver_part_id,

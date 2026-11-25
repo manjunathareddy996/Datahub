@@ -2,17 +2,9 @@
 {{ config(materialized='incremental') }}
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'stg2_motor__v06_distribution_channel'
-  - 'stg2_motor__v07_location'
-  - 'stg2_motor__v08_org_unit'
-  - 'stg2_motor__v10_party'
-  - 'stg2_motor__v11_party'
-  - 'stg2_motor__v12_policy'
-  - 'stg2_motor__v15_policy'
-  - 'stg2_motor__v22_quote'
+source_model: 'hubfeed_motor__location'
 src_pk: 'LOCATION_HKEY'
-src_nk: 'LOCATION_BK'
+src_nk: 'PARENT_BK'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 {%- endset -%}

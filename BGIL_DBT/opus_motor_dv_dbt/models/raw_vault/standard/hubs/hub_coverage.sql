@@ -2,12 +2,9 @@
 {{ config(materialized='incremental') }}
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'stg2_motor__v04_coverage'
-  - 'stg2_motor__v05_coverage'
-  - 'stg2_motor__v21_product'
+source_model: 'hubfeed_motor__coverage'
 src_pk: 'COVERAGE_HKEY'
-src_nk: 'COVERAGE_BK'
+src_nk: 'PARENT_BK'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 {%- endset -%}

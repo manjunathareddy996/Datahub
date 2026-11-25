@@ -2,10 +2,9 @@
 {{ config(materialized='incremental') }}
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'stg2_motor__v06_distribution_channel'
+source_model: 'hubfeed_motor__payment_instrument'
 src_pk: 'PAYMENT_INSTRUMENT_HKEY'
-src_nk: 'PAYMENT_INSTRUMENT_BK'
+src_nk: 'PARENT_BK'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 {%- endset -%}

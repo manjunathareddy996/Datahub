@@ -2,14 +2,9 @@
 {{ config(materialized='incremental') }}
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'stg2_mxm__v01_assessment'
-  - 'stg2_mxm__v04_claim'
-  - 'stg2_mxm__v09_party'
-  - 'stg2_mxm__v11_party'
-  - 'stg2_mxm__v14_risk_object'
+source_model: 'hubfeed_mxm__quote'
 src_pk: 'QUOTE_HKEY'
-src_nk: 'QUOTE_BK'
+src_nk: 'PARENT_BK'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 {%- endset -%}

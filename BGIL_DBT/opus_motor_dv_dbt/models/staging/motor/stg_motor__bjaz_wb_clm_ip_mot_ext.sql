@@ -5,7 +5,7 @@
 with source as (
 
     select
-        nullif(trim(to_varchar("CLAIM_ID")), '') as claim_id,
+        nullif(trim(regexp_replace(to_varchar("CLAIM_ID"), '\\.0+$', '')), '') as claim_id,
         nullif(trim(to_varchar("IP_NO")), '') as ip_no,
         nullif(trim(to_varchar("TP_POLICY_REF")), '') as tp_policy_ref,
         nullif(trim(to_varchar("TP_INS_COMP_NAME")), '') as tp_ins_comp_name,

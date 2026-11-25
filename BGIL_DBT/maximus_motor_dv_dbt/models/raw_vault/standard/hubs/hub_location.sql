@@ -2,13 +2,9 @@
 {{ config(materialized='incremental') }}
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'stg2_mxm__v08_location'
-  - 'stg2_mxm__v09_party'
-  - 'stg2_mxm__v12_policy'
-  - 'stg2_mxm__v14_risk_object'
+source_model: 'hubfeed_mxm__location'
 src_pk: 'LOCATION_HKEY'
-src_nk: 'LOCATION_BK'
+src_nk: 'PARENT_BK'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 {%- endset -%}

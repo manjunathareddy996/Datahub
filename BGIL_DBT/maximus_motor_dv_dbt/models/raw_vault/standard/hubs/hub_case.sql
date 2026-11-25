@@ -2,10 +2,9 @@
 {{ config(materialized='incremental') }}
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'stg2_mxm__v02_case'
+source_model: 'hubfeed_mxm__case'
 src_pk: 'CASE_HKEY'
-src_nk: 'CASE_BK'
+src_nk: 'PARENT_BK'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 {%- endset -%}

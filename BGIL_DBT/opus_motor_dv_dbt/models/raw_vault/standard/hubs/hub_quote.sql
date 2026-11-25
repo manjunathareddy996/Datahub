@@ -2,14 +2,9 @@
 {{ config(materialized='incremental') }}
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'stg2_motor__v11_party'
-  - 'stg2_motor__v15_policy'
-  - 'stg2_motor__v20_product'
-  - 'stg2_motor__v22_quote'
-  - 'stg2_motor__v23_quote'
+source_model: 'hubfeed_motor__quote'
 src_pk: 'QUOTE_HKEY'
-src_nk: 'QUOTE_BK'
+src_nk: 'PARENT_BK'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 {%- endset -%}

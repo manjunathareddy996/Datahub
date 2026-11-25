@@ -2,17 +2,9 @@
 {{ config(materialized='incremental') }}
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'stg2_mxm__v03_claim'
-  - 'stg2_mxm__v04_claim'
-  - 'stg2_mxm__v08_location'
-  - 'stg2_mxm__v09_party'
-  - 'stg2_mxm__v10_party'
-  - 'stg2_mxm__v11_party'
-  - 'stg2_mxm__v12_policy'
-  - 'stg2_mxm__v14_risk_object'
+source_model: 'hubfeed_mxm__party'
 src_pk: 'PARTY_HKEY'
-src_nk: 'PARTY_BK'
+src_nk: 'PARENT_BK'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 {%- endset -%}

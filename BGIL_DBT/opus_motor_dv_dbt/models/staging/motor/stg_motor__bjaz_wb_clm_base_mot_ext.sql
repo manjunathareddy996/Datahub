@@ -5,7 +5,7 @@
 with source as (
 
     select
-        nullif(trim(to_varchar("CLAIM_ID")), '') as claim_id,
+        nullif(trim(regexp_replace(to_varchar("CLAIM_ID"), '\\.0+$', '')), '') as claim_id,
         nullif(trim(to_varchar("TIME_OF_LOSS")), '') as time_of_loss,
         nullif(trim(to_varchar("NOTIFIED_BY")), '') as notified_by,
         nullif(trim(to_varchar("LOSS_DESC")), '') as loss_desc,

@@ -1,0 +1,22 @@
+{{ config(materialized='view', tags=['hubfeed']) }}
+-- FEED for HUB_QUOTE: unions the contributing stg2 models and exposes the business key
+-- QUOTE_BK as PARENT_BK, the shared HUB column name used by partner and travel.
+    select QUOTE_HKEY, QUOTE_BK as PARENT_BK, LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_motor__v11_party') }}
+    where QUOTE_BK is not null
+union all
+    select QUOTE_HKEY, QUOTE_BK as PARENT_BK, LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_motor__v15_policy') }}
+    where QUOTE_BK is not null
+union all
+    select QUOTE_HKEY, QUOTE_BK as PARENT_BK, LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_motor__v20_product') }}
+    where QUOTE_BK is not null
+union all
+    select QUOTE_HKEY, QUOTE_BK as PARENT_BK, LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_motor__v22_quote') }}
+    where QUOTE_BK is not null
+union all
+    select QUOTE_HKEY, QUOTE_BK as PARENT_BK, LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_motor__v23_quote') }}
+    where QUOTE_BK is not null

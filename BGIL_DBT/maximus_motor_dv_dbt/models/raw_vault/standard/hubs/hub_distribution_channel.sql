@@ -2,11 +2,9 @@
 {{ config(materialized='incremental') }}
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'stg2_mxm__v09_party'
-  - 'stg2_mxm__v10_party'
+source_model: 'hubfeed_mxm__distribution_channel'
 src_pk: 'DISTRIBUTION_CHANNEL_HKEY'
-src_nk: 'DISTRIBUTION_CHANNEL_BK'
+src_nk: 'PARENT_BK'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 {%- endset -%}

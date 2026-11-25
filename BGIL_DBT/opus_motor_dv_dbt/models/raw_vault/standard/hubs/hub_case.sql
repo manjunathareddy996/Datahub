@@ -2,14 +2,9 @@
 {{ config(materialized='incremental') }}
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'stg2_motor__v02_claim'
-  - 'stg2_motor__v03_claim'
-  - 'stg2_motor__v09_party'
-  - 'stg2_motor__v11_party'
-  - 'stg2_motor__v13_policy'
+source_model: 'hubfeed_motor__case'
 src_pk: 'CASE_HKEY'
-src_nk: 'CASE_BK'
+src_nk: 'PARENT_BK'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 {%- endset -%}

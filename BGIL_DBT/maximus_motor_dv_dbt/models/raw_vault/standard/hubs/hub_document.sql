@@ -2,12 +2,9 @@
 {{ config(materialized='incremental') }}
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'stg2_mxm__v01_assessment'
-  - 'stg2_mxm__v06_document'
-  - 'stg2_mxm__v14_risk_object'
+source_model: 'hubfeed_mxm__document'
 src_pk: 'DOCUMENT_HKEY'
-src_nk: 'DOCUMENT_BK'
+src_nk: 'PARENT_BK'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 {%- endset -%}

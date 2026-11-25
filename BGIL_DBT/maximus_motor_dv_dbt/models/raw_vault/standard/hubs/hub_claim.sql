@@ -2,14 +2,9 @@
 {{ config(materialized='incremental') }}
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'stg2_mxm__v01_assessment'
-  - 'stg2_mxm__v03_claim'
-  - 'stg2_mxm__v04_claim'
-  - 'stg2_mxm__v06_document'
-  - 'stg2_mxm__v09_party'
+source_model: 'hubfeed_mxm__claim'
 src_pk: 'CLAIM_HKEY'
-src_nk: 'CLAIM_BK'
+src_nk: 'PARENT_BK'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 {%- endset -%}

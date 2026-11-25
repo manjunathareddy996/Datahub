@@ -6,7 +6,7 @@ with source as (
 
     select
         nullif(trim(to_varchar("REQUEST_ID")), '') as request_id,
-        nullif(trim(to_varchar("CLAIM_ID")), '') as claim_id,
+        nullif(trim(regexp_replace(to_varchar("CLAIM_ID"), '\\.0+$', '')), '') as claim_id,
         nullif(trim(to_varchar("INVOICE_YN")), '') as invoice_yn,
         nullif(trim(to_varchar("CLAIM_STAGE")), '') as claim_stage,
         nullif(trim(to_varchar("FLAG")), '') as flag,
