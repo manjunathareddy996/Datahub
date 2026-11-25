@@ -1,0 +1,115 @@
+{
+ "opus_partner": {
+  "built": {
+   "LNK_AGREEMENT_CHANNEL": [
+    "stg2_link_bjaz_intermediary__agreement_channel"
+   ],
+   "LNK_AGREEMENT_PARTY": [
+    "stg2_link_bjaz_intermediary__agreement_party"
+   ],
+   "LNK_CLAIM_RISK_OBJECT": [
+    "stg2_link_clm_interested_parties__claim_risk_object"
+   ],
+   "LNK_PARTY_CHANNEL": [
+    "stg2_link_bjaz_clm_supp_extn__party_channel",
+    "stg2_link_bjaz_intermediary__party_channel"
+   ],
+   "LNK_PARTY_DOCUMENT": [
+    "stg2_link_bjaz_t_kyc_ocr__party_document",
+    "stg2_link_bjaz_t_kyc_poa_document__party_document",
+    "stg2_link_bjaz_t_kyc_poi_document__party_document"
+   ],
+   "LNK_PARTY_ORG_UNIT": [
+    "stg2_link_bjaz_t_ckyc_otp__party_org_unit",
+    "stg2_link_bjaz_t_ckyc_search__party_org_unit",
+    "stg2_link_bjaz_t_ekyc__party_org_unit",
+    "stg2_link_bjaz_t_kyc_auth__party_org_unit",
+    "stg2_link_bjaz_t_kyc_details__party_org_unit",
+    "stg2_link_bjaz_t_kyc_incoming__party_org_unit",
+    "stg2_link_bjaz_t_kyc_name_match__party_org_unit",
+    "stg2_link_bjaz_t_kyc_ocr__party_org_unit",
+    "stg2_link_bjaz_t_kyc_poa_document__party_org_unit",
+    "stg2_link_bjaz_t_kyc_poi_document__party_org_unit"
+   ],
+   "LNK_POLICY_DOCUMENT": [
+    "stg2_link_bjaz_t_kyc_ocr__policy_document",
+    "stg2_link_bjaz_t_kyc_poa_document__policy_document",
+    "stg2_link_bjaz_t_kyc_poi_document__policy_document"
+   ],
+   "LNK_POLICY_LOCATION": [
+    "stg2_link_ocp_interested_parties__policy_location"
+   ],
+   "LNK_POLICY_ORG_UNIT": [
+    "stg2_link_bjaz_t_ckyc_otp__policy_org_unit",
+    "stg2_link_bjaz_t_ckyc_search__policy_org_unit",
+    "stg2_link_bjaz_t_ekyc__policy_org_unit",
+    "stg2_link_bjaz_t_kyc_auth__policy_org_unit",
+    "stg2_link_bjaz_t_kyc_details__policy_org_unit",
+    "stg2_link_bjaz_t_kyc_incoming__policy_org_unit",
+    "stg2_link_bjaz_t_kyc_name_match__policy_org_unit",
+    "stg2_link_bjaz_t_kyc_ocr__policy_org_unit",
+    "stg2_link_bjaz_t_kyc_poa_document__policy_org_unit",
+    "stg2_link_bjaz_t_kyc_poi_document__policy_org_unit"
+   ],
+   "LNK_RISK_OBJECT_PARTY": [
+    "stg2_link_clm_interested_parties__risk_object_party"
+   ]
+  },
+  "doubtful": {
+   "LNK_AGREEMENT_CHANNEL": "both legs are bjaz_intermediary.intermediary_id",
+   "LNK_PARTY_DOCUMENT": "KYC document keys (field_type:field_value or docs_type:docs_number); confirm the party is the document owner",
+   "LNK_POLICY_DOCUMENT": "policy key exists only on rows whose field_type is a policy; the document key is then built from the same field_value, so the pair may be a value linked to itself",
+   "LNK_POLICY_LOCATION": "location leg is ocp_interested_parties.mailing_address_id, not a policy risk location"
+  },
+  "helpers": [
+   "stage_kyc__bjaz_t_kyc_poa_document",
+   "stage_kyc__bjaz_t_kyc_poi_document"
+  ]
+ },
+ "maximus_partner": {
+  "built": {
+   "LNK_CHANNEL_ORG_UNIT": [
+    "stg2_mp__pd_prop_sp_pv"
+   ],
+   "LNK_ORG_UNIT_LOCATION": [
+    "stg2_mp__pd_prop_sp_pv"
+   ],
+   "LNK_PARTY_CHANNEL": [
+    "stg2_mp__pd_prop_sp_pv"
+   ],
+   "LNK_PARTY_ORG_UNIT": [
+    "stg2_mp__pd_prop_msdp_pv",
+    "stg2_mp__pd_prop_sp_pv"
+   ],
+   "LNK_PARTY_PAYMENT_INSTRUMENT": [
+    "stg2_mp__pd_prop_msdp_pv"
+   ],
+   "LNK_POLICY_CHANNEL": [
+    "stg2_mp__pd_prop_sp_pv"
+   ],
+   "LNK_POLICY_LOCATION": [
+    "stg2_mp__pd_prop_sp_pv"
+   ],
+   "LNK_POLICY_ORG_UNIT": [
+    "stg2_mp__pd_prop_sp_pv"
+   ],
+   "LNK_POLICY_PARTY": [
+    "stg2_mp__pd_prop_sp_pv"
+   ],
+   "LNK_POLICY_PRODUCT": [
+    "stg2_mp__pd_prop_sp_pv"
+   ]
+  },
+  "doubtful": {
+   "LNK_CHANNEL_ORG_UNIT": "all legs of this link come from pd_prop_sp_pv: PARTY_BK is bagic_employee_code and POLICY_BK is pa_policy, so these are employee-based keys",
+   "LNK_ORG_UNIT_LOCATION": "all legs of this link come from pd_prop_sp_pv: PARTY_BK is bagic_employee_code and POLICY_BK is pa_policy, so these are employee-based keys",
+   "LNK_PARTY_CHANNEL": "all legs of this link come from pd_prop_sp_pv: PARTY_BK is bagic_employee_code and POLICY_BK is pa_policy, so these are employee-based keys",
+   "LNK_PARTY_ORG_UNIT": "all legs of this link come from pd_prop_sp_pv: PARTY_BK is bagic_employee_code and POLICY_BK is pa_policy, so these are employee-based keys",
+   "LNK_POLICY_CHANNEL": "all legs of this link come from pd_prop_sp_pv: PARTY_BK is bagic_employee_code and POLICY_BK is pa_policy, so these are employee-based keys",
+   "LNK_POLICY_LOCATION": "all legs of this link come from pd_prop_sp_pv: PARTY_BK is bagic_employee_code and POLICY_BK is pa_policy, so these are employee-based keys",
+   "LNK_POLICY_ORG_UNIT": "all legs of this link come from pd_prop_sp_pv: PARTY_BK is bagic_employee_code and POLICY_BK is pa_policy, so these are employee-based keys",
+   "LNK_POLICY_PARTY": "all legs of this link come from pd_prop_sp_pv: PARTY_BK is bagic_employee_code and POLICY_BK is pa_policy, so these are employee-based keys",
+   "LNK_POLICY_PRODUCT": "all legs of this link come from pd_prop_sp_pv: PARTY_BK is bagic_employee_code and POLICY_BK is pa_policy, so these are employee-based keys"
+  }
+ }
+}

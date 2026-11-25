@@ -45,6 +45,9 @@ models:
         staging:
           +materialized: view
           +tags: ["standard_stg2"]
+        link_staging:
+          +materialized: view
+          +tags: ["lnk_stg2"]
         unpivot:
           +materialized: view
           +tags: ["unpivot"]
