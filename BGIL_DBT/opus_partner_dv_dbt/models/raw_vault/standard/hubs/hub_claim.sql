@@ -5,7 +5,7 @@
 
 {%- set yaml_metadata -%}
 source_model:
-  - 'stg2_hub_clm_interested_parties__claim'
+  - 'stg2_hub_clm_bases__claim'
 src_pk: 'CLAIM_HKEY'
 src_nk: 'PARENT_BK'
 src_ldts: 'LOAD_DATETIME'
